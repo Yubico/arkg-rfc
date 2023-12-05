@@ -439,10 +439,14 @@ TODO: IANA registry? COSE/JOSE?
 
 The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the NIST curve `secp256r1` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the NIST curve `secp256r1` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-256 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The NIST curve `secp256r1` [SEC2].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The NIST curve `secp256r1` [SEC2].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
@@ -451,10 +455,14 @@ The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the foll
 
 The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the NIST curve `secp384r1` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the NIST curve `secp384r1` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-384 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-384 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The NIST curve `secp384r1` [SEC2].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The NIST curve `secp384r1` [SEC2].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-384 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-384 [FIPS 180-4].
 - `L_bl`: 48
 - `L_mac`: 48
 
@@ -463,10 +471,14 @@ The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the foll
 
 The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the NIST curve `secp521r1` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the NIST curve `secp521r1` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-512 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-512 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The NIST curve `secp521r1` [SEC2].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The NIST curve `secp521r1` [SEC2].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-512 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-512 [FIPS 180-4].
 - `L_bl`: 64
 - `L_mac`: 64
 
@@ -475,10 +487,14 @@ The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the foll
 
 The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the SECG curve `secp256k1` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the SECG curve `secp256k1` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-256 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The SECG curve `secp256k1` [SEC2].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The SECG curve `secp256k1` [SEC2].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
@@ -487,10 +503,14 @@ The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the fo
 
 The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the curve `Ed25519` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the NIST curve `X25519` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-256 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The curve `Ed25519` [REF?].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The curve `X25519` [REF?].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
@@ -499,10 +519,14 @@ The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the foll
 
 The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
-- `BL`: Elliptic curve arithmetic on the curve `X25519` as described in section [Using elliptic curve arithmetic for key blinding].
-- `KEM`: [ECDH][RFC6090] on the NIST curve `X25519` as described in section [Using ECDH as the KEM].
-- `MAC`: HMAC using SHA-256 as described in section [Using HMAC as the MAC].
-- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF].
+- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+  - `crv`: The curve `X25519` [REF?].
+- `KEM`: [ECDH][RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+  - `crv`: The curve `X25519` [REF?].
+- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
+- `KDF`: HKDF using SHA-256 as described in section [Using HKDF as the KDF] with the parameter:
+  - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
