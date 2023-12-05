@@ -143,8 +143,16 @@ Instantiations MUST satisfy the following compatibility criteria:
 - Output key material `okm` of length `L_bl` of `KDF`
   is a valid input blinding factor `tau` of `BL-Blind-Public-Key` and `BL-Blind-Secret-Key`.
 
+  It is permissible for some `KDF` outputs to not be valid blinding factors,
+  as long as this happens with negligible probability -
+  see section [Design Rationale: Using a MAC].
+
 - Output key material `okm` of length `L_mac` of `KDF`
   is a valid input MAC key `k` of `MAC-Tag(k, m)` and `MAC-Verify(k, m, t)`.
+
+  It is permissible for some `KDF` outputs to not be valid MAC keys,
+  as long as this happens with negligible probability -
+  see section [Design Rationale: Using a MAC].
 
 We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM-MAC-KDF`,
 substituting the chosen instantiation for the `BL`, `KEM`, `MAC` and `KDF` parts.
