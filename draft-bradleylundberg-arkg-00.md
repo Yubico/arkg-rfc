@@ -303,8 +303,9 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk = G^sk
-    If pk equals the point at infinity, abort with an error.
+    pk_tmp = G^sk
+    If pk_tmp equals the point at infinity, abort with an error.
+    pk = pk_tmp
 
     TODO: Also reject G?
 
@@ -312,8 +313,9 @@ BL-Generate-Keypair() -> (pk, sk)
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
     If tau = 0 or tau >= N, abort with an error.
-    pk_tau = pk * (G^tau)
-    If pk_tau equals the point at infinity, abort with an error.
+    pk_tau_tmp = pk * (G^tau)
+    If pk_tau_tmp equals the point at infinity, abort with an error.
+    pk_tau = pk_tau_tmp
 
     TODO: Also reject G?
 
@@ -321,8 +323,9 @@ BL-Blind-Public-Key(pk, tau) -> pk_tau
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
     If tau = 0 or tau >= N, abort with an error.
-    sk_tau = sk + tau
-    If sk_tau = 0, abort with an error.
+    sk_tau_tmp = sk + tau
+    If sk_tau_tmp = 0, abort with an error.
+    sk_tau = sk_tau_tmp
 
     TODO: Also reject 1?
 ```
@@ -355,8 +358,9 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk = G^sk
-    If pk equals the point at infinity, abort with an error.
+    pk_tmp = G^sk
+    If pk_tmp equals the point at infinity, abort with an error.
+    pk = pk_tmp
 
     TODO: Also reject G?
 
