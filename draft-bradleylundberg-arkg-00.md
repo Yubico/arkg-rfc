@@ -156,6 +156,10 @@ Instantiations MUST satisfy the following compatibility criteria:
 
 We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM-MAC-KDF`,
 substituting the chosen instantiation for the `BL`, `KEM`, `MAC` and `KDF` parts.
+Note that this pattern cannot in general be unambiguously parsed;
+implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
+Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
+This is to prevent usage of algorithm combinations that may be incompatible or insecure.
 
 
 ### The function ARKG-Generate-Seed
