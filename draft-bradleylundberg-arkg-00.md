@@ -638,6 +638,13 @@ The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the follo
 - `L_mac`: 32
 
 
+## COSE bindings
+
+TODO?: Define COSE representations for interoperability:
+- ARKG public seed (for interoperability between different implementers of `ARKG-Generate-Seed` and `ARKG-Derive-Public-Key`)
+- ARKG key handle (for interoperability between different implementers of `ARKG-Derive-Public-Key` and `ARKG-Derive-Secret-Key`)
+
+
 ## Security Considerations
 
 TODO
