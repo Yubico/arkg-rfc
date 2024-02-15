@@ -101,6 +101,17 @@ Some motivating use cases of ARKG include:
 
 ## The Asynchronous Remote Key Generation (ARKG) algorithm
 
+The ARKG algorithm consists of three functions, each performed by one of two participants:
+the _delegating party_ or the _subordinate party_.
+The delegating party generates an ARKG _seed pair_ and emits the _public seed_ to the subordinate party
+while keeping the _private seed_ secret.
+The subordinate party can then use the public seed to generate derived public keys and _key handles_,
+and the delegating party can use the private seed and a key handle to derive the corresponding private key.
+
+The following subsections define some notation and
+the abstract instance parameters used to construct the three ARKG functions,
+followed by the definitions of the three ARKG functions.
+
 
 ### Notation
 
@@ -246,9 +257,10 @@ This is to prevent usage of algorithm combinations that may be incompatible or i
 
 ### The function ARKG-Generate-Seed
 
-This function is performed by the holder of the ARKG seed private key `sk`.
-The resulting ARKG seed public key `pk` is provided to the delegate party
-which will then be able to generate public keys on behalf of the holder of `sk`.
+This function is performed by the delegating party.
+The delegating party generates the ARKG seed pair `(pk, sk)`
+and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
+The subordinate party will then be able to generate public keys on behalf of the delegating party.
 
 ```
 ARKG-Generate-Seed() -> (pk, sk)
@@ -272,10 +284,12 @@ ARKG-Generate-Seed() -> (pk, sk)
 
 ### The function ARKG-Derive-Public-Key
 
-This function is performed by the holder of the ARKG seed public key `(pk_kem, pk_bl)`.
-The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols.
-The resulting key handle `kh` can be used by the holder of the ARKG seed private key
-to derive the private key corresponding to `pk'`.
+This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
+The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols,
+and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
+
+This function may be invoked any number of times with the same public seed,
+in order to generate any number of public keys.
 
 ```
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
@@ -314,9 +328,12 @@ the procedure can safely be retried with the same arguments.
 
 ### The function ARKG-Derive-Secret-Key
 
-This function is performed by the holder of the ARKG seed private key `(sk_kem, sk_bl)`.
+This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
 The resulting secret key `sk'` can be used in asymmetric cryptography protocols
 to prove possession of `sk'` to an external party that has the corresponding public key.
+
+This function may be invoked any number of times with the same private seed,
+in order to derive the same or different secret keys any number of times.
 
 ```
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
