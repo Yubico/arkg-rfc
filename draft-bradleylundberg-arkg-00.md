@@ -496,7 +496,7 @@ TODO: Caveats? I think I read in some paper or thesis about specific drawbacks o
 ### Using HMAC as the MAC
 
 Let `Hash` be a cryptographic hash function.
-Then the `MAC` parameter of ARKG may be instantiated as follows:
+Then the `MAC` parameter of ARKG may be instantiated using HMAC [RFC2104] as follows:
 
 ```
 MAC-Tag(k, m) -> t
@@ -517,7 +517,7 @@ MAC-Verify(k, m, t) -> { 0, 1 }
 ### Using HKDF as the KDF
 
 Let `Hash` be a cryptographic hash function.
-Then the `KDF` parameter of ARKG may be instantiated as follows:
+Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as follows:
 
 ```
 KDF(info, ikm, L) -> okm
