@@ -752,6 +752,7 @@ TODO
 
 ## Authors' Addresses
 
+```
 Emil Lundberg
 Yubico
 Kungsgatan 44
@@ -761,11 +762,13 @@ Sweden
 Phone: (+46) 73 247 30 62
 EMail: emil@yubico.com
 EMail: emil@emlun.se
+```
 
-
+```
 John Bradley
 Yubico
 TODO
 
 Phone: TODO
 EMail: TODO
+```
