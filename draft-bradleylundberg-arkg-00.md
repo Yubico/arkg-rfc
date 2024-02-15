@@ -125,7 +125,7 @@ The following notation is used throughout this document:
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
 
-- `BL`: An asymmetric key blinding scheme, consisting of:
+- `BL`: An asymmetric key blinding scheme [Wilson], consisting of:
   - Function `BL-Generate-Keypair() -> (pk, sk)`: Generate a blinding key pair.
 
     No input.
@@ -150,6 +150,8 @@ The parameters of an ARKG instance are:
   `tau` is an opaque octet string of length `L_bl`.
   The representations of `sk`, `sk_tau` and `L_bl` are an undefined implementation detail.
 
+  See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
+
 - `KEM`: A key encapsulation mechanism, consisting of the functions:
   - `KEM-Generate-Keypair() -> (pk, sk)`: Generate a key encapsulation key pair.
 
@@ -172,6 +174,8 @@ The parameters of an ARKG instance are:
   `pk`, `k` and `c` are opaque octet strings.
   The representation of `sk` is an undefined implementation detail.
 
+  See [Wilson] for definitions of security properties required of the key encapsulation mechanism `KEM`.
+
 - `MAC`: A message authentication code (MAC) scheme, consisting of:
   - Function `MAC-Tag(k, m) -> t`: Generate a message authentication tag for a given message using a given key.
 
@@ -191,6 +195,8 @@ The parameters of an ARKG instance are:
   `m` and `t` are opaque octet strings of arbitrary length.
   The representation of `L_mac` is an undefined implementation detail.
 
+  See [Frymann2020] for definitions of security properties required of the message authentication code scheme `MAC`.
+
 - `KDF`: A variable-length key derivation function with the signature:
   `KDF(info, ikm, L) -> okm`
 
@@ -201,6 +207,8 @@ The parameters of an ARKG instance are:
   `info` and `ikm` are opaque octet strings of arbitrary length.
   `okm` is an opaque octet string of length `L`.
   `L` is an integer with undefined representation.
+
+  See [Frymann2020] for definitions of security properties required of the key derivation function `KDF`.
 
 A concrete ARKG instantiation MUST specify the instantiation
 of each of the above functions and values.
