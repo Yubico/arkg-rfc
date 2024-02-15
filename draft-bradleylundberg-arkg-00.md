@@ -112,7 +112,8 @@ The following notation is used throughout this document:
   they are encoded using UTF-8.
 
 - Elliptic curve operations are written in multiplicative notation:
-  `*` denotes point multiplication, `^` denotes point exponentiation
+  `*` denotes point multiplication, i.e., the curve group operation;
+  `^` denotes point exponentiation, i.e., repeated point multiplication;
   and `+` denotes scalar addition modulo the curve order.
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
