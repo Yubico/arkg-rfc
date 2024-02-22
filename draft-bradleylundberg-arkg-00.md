@@ -691,10 +691,13 @@ which benefits greatly from such optimizations.
 
 It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. [Frymann2020]:
-The ARKG construction in this document can be reduced to the construction by Frymann et al.
-when elliptic curve point multiplication and scalar addition is used as the key blinding scheme
-and ECDH on the same curve with the same keys is used as the KEM.
-Hence if one can break PK-unlinkability or SK-security of such an instance of the ARKG construction in this document,
+the construction by Frymann et al. can be reduced to the ARKG construction in this document
+by instantiating `KEM` as group exponentiation
+and instantiating `BL` as group multiplication to blind public keys and modular integer addition to blind secret keys.
+The `MAC` and `KDF` parameters correspond trivially to the MAC and KDF parameters in [Frymann2020],
+where KDF<sub>1</sub>(_k_) = KDF(_k_, _l_<sub>1</sub>) and KDF<sub>2</sub>(_k_) = KDF(_k_, _l_<sub>2</sub>)
+with fixed labels _l_<sub>1</sub> and _l_<sub>2</sub>.
+Hence if one can break PK-unlinkability or SK-security of the ARKG construction in this document,
 one can also break the same property of the construction by Frymann et al.
 
 
