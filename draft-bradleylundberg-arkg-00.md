@@ -1,7 +1,63 @@
-# DRAFT: The Asynchronous Remote Key Generation (ARKG) algorithm
+---
+###
+# Internet-Draft Markdown Template
+#
+# Rename this file from draft-todo-yourname-protocol.md to get started.
+# Draft name format is "draft-<yourname>-<workgroup>-<name>.md".
+#
+# For initial setup, you only need to edit the first block of fields.
+# Only "title" needs to be changed; delete "abbrev" if your title is short.
+# Any other content can be edited, but be careful not to introduce errors.
+# Some fields will be set automatically during setup if they are unchanged.
+#
+# Don't include "-00" or "-latest" in the filename.
+# Labels in the form draft-<yourname>-<workgroup>-<name>-latest are used by
+# the tools to refer to the current version; see "docname" for example.
+#
+# This template uses kramdown-rfc: https://github.com/cabo/kramdown-rfc
+# You can replace the entire file if you prefer a different format.
+# Change the file extension to match the format (.xml for XML, etc...)
+#
+###
+
+title: "The Asynchronous Remote Key Generation (ARKG) algorithm"
+abbrev: "AKRG"
+lang: en
+category: info
+
+docname: draft-bradleylundberg-cfrg-akrg
+submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+number:
+date: 
+consensus: true
+v: 3
+area: AREA
+workgroup: CFRG
+keyword:
+ - KDF
+venue:
+  group: CFRG
+  type: Individual
+  github: Yubico/arkg-rfc
 
 
-## Abstract
+author:
+- role: editor
+  fullname: Emil Lundberg
+  organization: Yubico
+  street: Kungsgatan 44
+  city: Stockholm
+  country: SE
+  email: emil@emlun.se
+
+- fullname: John Bradley
+  organization: Yubico
+  email: ve7jtb@ve7jtb.com
+    
+
+
+
+--- abstract
 
 Asynchronous Remote Key Generation (ARKG) is an abstract algorithm
 that enables delegation of asymmetric public key generation without giving access to the corresponding private keys.
@@ -17,17 +73,10 @@ and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future.
 
 
-## Status of This Memo
 
-TODO
+--- middle
 
-
-## Copyright Notice
-
-TODO
-
-
-## Introduction
+# Introduction
 
 Asymmetric cryptography, also called public key cryptography, is a fundamental component of much of modern information security.
 However, even the flexibility of asymmetric cryptosystems is not always enough for all applications.
@@ -731,6 +780,8 @@ TODO: Ask authors for canonical reference addresses
 [sec1]: http://www.secg.org/sec1-v2.pdf
 
 
+--- back
+
 ## Acknowledgements
 
 ARKG was first proposed under this name by Frymann et al. [Frymann2020],
@@ -748,30 +799,13 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
 
 
-## Appendix A. Test Vectors
+## Test Vectors
 
 TODO
 
 
-## Authors' Addresses
+## Document History
 
-```
-Emil Lundberg
-Yubico
-Kungsgatan 44
-111 37 Stockholm
-Sweden
+-00
+	Initial Version
 
-Phone: (+46) 73 247 30 62
-EMail: emil@yubico.com
-EMail: emil@emlun.se
-```
-
-```
-John Bradley
-Yubico
-TODO
-
-Phone: TODO
-EMail: TODO
-```
