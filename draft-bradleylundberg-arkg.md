@@ -25,10 +25,10 @@ abbrev: "ARKG"
 lang: en
 category: info
 
-docname: draft-bradleylundberg-cfrg-arkg
+docname: draft-bradleylundberg-cfrg-arkg-00
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
-date: 
+date:
 consensus: true
 v: 3
 area: AREA
@@ -53,8 +53,42 @@ author:
 - fullname: John Bradley
   organization: Yubico
   email: ve7jtb@ve7jtb.com
-    
 
+contributor:
+  fullname: Dain Nilsson
+  organization: Yubico
+
+normative:
+  RFC2104:
+  RFC3279:
+  BIP32:
+    target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+    title: BIP 32 Hierarchical Deterministic Wallets
+    author:
+    - name: Pieter Wuille
+    date: 2012
+informative:
+  Clermont:
+    target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
+    author:
+    - name: Sebastian A. Clermont
+    - org: Technische Universität Darmstadt
+    date: 2022
+    title: Post Quantum Asynchronous Remote Key Generation. Master's thesis
+  Wilson:
+    author:
+    - name: Spencer MacLaren Wilson
+    - org: University of Waterloo,
+    title: Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis
+    date: 2023
+    target: http://hdl.handle.net/10012/19316
+  WebAuthn-Recovery:
+    author:
+    - name: Emil Lundberg
+    - name: Dain Nilsson
+    title: WebAuthn recovery extension Asynchronous delegated key generation without shared secrets. GitHub
+    date: 2019
+    target: https://github.com/Yubico/webauthn-recovery-extension
 
 
 --- abstract
@@ -694,24 +728,24 @@ TODO?: Define COSE representations for interoperability:
 - ARKG key handle (for interoperability between different implementers of `ARKG-Derive-Public-Key` and `ARKG-Derive-Secret-Key`)
 
 
-## Security Considerations
+# Security Considerations {#Security}
 
 TODO
 
 
-## Privacy Considerations
+# Privacy Considerations {#Privacy}
 
 TODO
 
 
-## IANA Considerations
+# IANA Considerations {#IANA}
 
 TODO
 
 
-## Design rationale
+# Design rationale
 
-### Using a MAC
+## Using a MAC
 
 The ARKG construction by Wilson [Wilson] omits the MAC and instead encodes application context in the PRF labels,
 arguing this leads to invalid keys/signatures in cases that would have a bad MAC.
@@ -755,18 +789,17 @@ one can also break the same property of the construction by Frymann et al.
 TODO
 
 
-## References
+# References
 
 TODO
 
 TODO: Ask authors for canonical reference addresses
 
-- [BIP32]: Pieter Wuille. BIP 32: Hierarchical Deterministic Wallets. GitHub, 2012. https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
-- [Clermont]: Sebastian A. Clermont. Post Quantum Asynchronous Remote Key Generation. Master's thesis, Technische Universität Darmstadt, 2022. https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
+
+-
 - [Frymann2020]: Nick Frymann, Daniel Gardham, Franziskus Kiefer, Emil Lundberg, Mark Manulis and Dain Nilsson. Asynchronous Remote Key Generation: An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security, 2020. https://eprint.iacr.org/2020/1004
 - [Frymann2023]: Nick Frymann, Daniel Gardham and Mark Manulis. Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy, 2023. https://eprint.iacr.org/2023/419
-- [WebAuthn-Recovery]: Emil Lundberg and Dain Nilsson. WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub, 2019. https://github.com/Yubico/webauthn-recovery-extension
-- [Wilson]: Spencer MacLaren Wilson. Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis, University of Waterloo, 2023. http://hdl.handle.net/10012/19316
+-
 
 
 [att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
@@ -774,7 +807,6 @@ TODO: Ask authors for canonical reference addresses
 [ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
 [hkdf]: https://tools.ietf.org/html/rfc5869
 [privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
-[rfc3279]: https://tools.ietf.org/html/rfc3279.html
 [rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
 [rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
 [sec1]: http://www.secg.org/sec1-v2.pdf
@@ -782,7 +814,7 @@ TODO: Ask authors for canonical reference addresses
 
 --- back
 
-## Acknowledgements
+# Acknowledgements
 
 ARKG was first proposed under this name by Frymann et al. [Frymann2020],
 who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson [WebAuthn-Recovery],
@@ -799,13 +831,13 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
 
 
-## Test Vectors
+# Test Vectors
 
 TODO
 
 
-## Document History
+# Document History
 
 -00
-	Initial Version
+  Initial Version
 
