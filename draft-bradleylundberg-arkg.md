@@ -20,7 +20,7 @@
 #
 ###
 
-title: "The Asynchronous Remote Key Generation (ARKG) algorithm"
+title: The Asynchronous Remote Key Generation (ARKG) algorithm
 abbrev: "ARKG"
 lang: en
 category: info
@@ -59,6 +59,7 @@ contributor:
   organization: Yubico
 
 normative:
+  hkdf: RFC5869
   RFC2104:
   RFC3279:
   BIP32:
@@ -67,6 +68,13 @@ normative:
     author:
     - name: Pieter Wuille
     date: 2012
+  SEC1:
+    target: http://www.secg.org/sec1-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2020
+    title: SEC 1 Elliptic Curve Cryptography
+
 informative:
   Clermont:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
@@ -89,6 +97,26 @@ informative:
     title: WebAuthn recovery extension Asynchronous delegated key generation without shared secrets. GitHub
     date: 2019
     target: https://github.com/Yubico/webauthn-recovery-extension
+  Frymann2020:
+    author:
+    - name: Nick Frymann
+    - name: Daniel Gardham
+    - name: Franziskus Kiefer
+    - name: Emil Lundberg
+    - name: Mark Manulis
+    - name: Dain Nilsson
+    title: Asynchronous Remote Key Generation - An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS
+    date: 2020
+    target: https://eprint.iacr.org/2020/1004
+  Frymann2023:
+    author:
+    - name: Nick Frymann
+    - name: Daniel Gardham
+    - name: Mark Manulis
+    title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy,
+    date: 2023
+    target: https://eprint.iacr.org/2023/419
+
 
 
 --- abstract
@@ -796,20 +824,14 @@ TODO
 TODO: Ask authors for canonical reference addresses
 
 
--
-- [Frymann2020]: Nick Frymann, Daniel Gardham, Franziskus Kiefer, Emil Lundberg, Mark Manulis and Dain Nilsson. Asynchronous Remote Key Generation: An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security, 2020. https://eprint.iacr.org/2020/1004
-- [Frymann2023]: Nick Frymann, Daniel Gardham and Mark Manulis. Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy, 2023. https://eprint.iacr.org/2023/419
--
-
 
 [att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
 [authdata]: https://w3c.github.io/webauthn/#authenticator-data
 [ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
-[hkdf]: https://tools.ietf.org/html/rfc5869
 [privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
 [rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
 [rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
-[sec1]: http://www.secg.org/sec1-v2.pdf
+
 
 
 --- back
