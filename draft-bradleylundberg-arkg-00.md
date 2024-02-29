@@ -21,11 +21,11 @@
 ###
 
 title: "The Asynchronous Remote Key Generation (ARKG) algorithm"
-abbrev: "AKRG"
+abbrev: "ARKG"
 lang: en
 category: info
 
-docname: draft-bradleylundberg-cfrg-akrg
+docname: draft-bradleylundberg-cfrg-arkg
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date: 
