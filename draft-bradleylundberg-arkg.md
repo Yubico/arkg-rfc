@@ -854,12 +854,12 @@ TODO: Ask authors for canonical reference addresses
 
 ARKG was first proposed under this name by Frymann et al. [Frymann2020],
 who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson [WebAuthn-Recovery],
-which was in turn inspired by a similar construction by Pieter Wuille [BIP32] used to create privacy-preserving Bitcoin addresses.
+which was in turn inspired by a similar construction by Wuille [BIP32] used to create privacy-preserving Bitcoin addresses.
 Frymann et al. [Frymann2020] generalized the constructions by Lundberg, Nilsson and Wuille
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Wilson [Wilson], Clermont [Clermont] and Frymann et al. [Frymann2023].
+were developed independently by Clermont [Clermont], Frymann et al. [Frymann2023] and Wilson [Wilson].
 
 This document adopts the construction proposed by Wilson [Wilson],
 modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [Frymann2020].
