@@ -19,6 +19,8 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
+stand_alone: true
+ipr: trust200902
 
 title: The Asynchronous Remote Key Generation (ARKG) algorithm
 abbrev: "ARKG"
@@ -31,7 +33,7 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
+area: Security
 workgroup: CFRG
 keyword:
  - KDF
