@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="us-ascii"?>
 ---
 ###
 # Internet-Draft Markdown Template
