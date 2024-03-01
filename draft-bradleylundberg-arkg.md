@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="us-ascii"?>
 ---
 ###
 # Internet-Draft Markdown Template
@@ -84,21 +85,14 @@ informative:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
     - name: Sebastian A. Clermont
-    - org: Technische Universität Darmstadt
+    - org: "Technische Universität Darmstadt"
     date: 2022
-    title: Post Quantum Asynchronous Remote Key Generation. Master's thesis
-  Wilson:
-    author:
-    - name: Spencer MacLaren Wilson
-    - org: University of Waterloo,
-    title: Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis
-    date: 2023
-    target: http://hdl.handle.net/10012/19316
+    title: "Post Quantum Asynchronous Remote Key Generation. Master's thesis"
   WebAuthn-Recovery:
     author:
     - name: Emil Lundberg
     - name: Dain Nilsson
-    title: WebAuthn recovery extension Asynchronous delegated key generation without shared secrets. GitHub
+    title: "WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub"
     date: 2019
     target: https://github.com/Yubico/webauthn-recovery-extension
   Frymann2020:
@@ -109,7 +103,7 @@ informative:
     - name: Emil Lundberg
     - name: Mark Manulis
     - name: Dain Nilsson
-    title: Asynchronous Remote Key Generation - An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS
+    title: "Asynchronous Remote Key Generation: An Analysis of Yubico's Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security"
     date: 2020
     target: https://eprint.iacr.org/2020/1004
   Frymann2023:
@@ -117,9 +111,16 @@ informative:
     - name: Nick Frymann
     - name: Daniel Gardham
     - name: Mark Manulis
-    title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy,
+    title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy
     date: 2023
     target: https://eprint.iacr.org/2023/419
+  Wilson:
+    author:
+    - name: Spencer MacLaren Wilson
+    - org: University of Waterloo,
+    title: "Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"
+    date: 2023
+    target: http://hdl.handle.net/10012/19316
 
 
 
@@ -510,7 +511,7 @@ TODO: IANA registry? COSE/JOSE?
 ### Using elliptic curve arithmetic for key blinding
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020]
+can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020] [Wilson]
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
