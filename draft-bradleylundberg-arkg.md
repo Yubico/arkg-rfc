@@ -61,7 +61,11 @@ contributor:
 normative:
   hkdf: RFC5869
   RFC2104:
+  RFC2119:
   RFC3279:
+  RFC4949:
+  RFC6090:
+  RFC5869:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
@@ -208,6 +212,10 @@ Some motivating use cases of ARKG include:
 
 
 [rfc9052-direct-key-agreement]: https://www.rfc-editor.org/rfc/rfc9052.html#name-direct-key-agreement
+
+## Requirements Language
+
+{::boilerplate bcp14-tagged}
 
 
 ## The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -382,7 +390,7 @@ ARKG-Generate-Seed() -> (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)   An ARKG seed key pair with public key pk and private key sk.
+      (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
 
    The output (pk, sk) is calculated as follows:
 
@@ -415,11 +423,13 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem     A key encapsulation public key.
         pk_bl      A key blinding public key.
-        info       Optional context and application specific information (can be a zero-length string).
+        info       Optional context and application specific information
+                     (can be a zero-length string).
 
     Output:
         pk'        A blinded public key.
-        kh         A key handle for deriving the blinded secret key sk' corresponding to pk'.
+        kh         A key handle for deriving the blinded
+                     secret key sk' corresponding to pk'.
 
     The output (pk, sk) is calculated as follows:
 
@@ -453,14 +463,16 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
         KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
         MAC        The MAC scheme chosen for the ARKG instantiation.
         KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the key blinding scheme BL.
+        L_bl       The length in octets of the blinding factor tau of the
+                     key blinding scheme BL.
         L_mac      The length in octets of the MAC key of the MAC scheme MAC.
 
     Inputs:
         sk_kem     A key encapsulation secret key.
         sk_bl      A key blinding secret key.
         kh         A key handle output from ARKG-Derive-Public-Key.
-        info       Optional context and application specific information (can be a zero-length string).
+        info       Optional context and application specific information
+                     (can be a zero-length string).
 
     Output:
         sk'        A blinded secret key.
@@ -498,7 +510,7 @@ TODO: IANA registry? COSE/JOSE?
 ### Using elliptic curve arithmetic for key blinding
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann] [Wilson]
+can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020]
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
@@ -599,7 +611,7 @@ If elliptic curve arithmetic is used for key blinding and ECDH is used as the KE
 as described in the previous sections,
 then both of them MAY use the same curve or MAY use different curves.
 If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. [Frymann]
+as both the key blinding public key and the KEM public key. [Frymann2020]
 
 TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
 
