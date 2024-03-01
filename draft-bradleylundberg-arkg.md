@@ -1,7 +1,129 @@
-# DRAFT: The Asynchronous Remote Key Generation (ARKG) algorithm
+---
+###
+# Internet-Draft Markdown Template
+#
+# Rename this file from draft-todo-yourname-protocol.md to get started.
+# Draft name format is "draft-<yourname>-<workgroup>-<name>.md".
+#
+# For initial setup, you only need to edit the first block of fields.
+# Only "title" needs to be changed; delete "abbrev" if your title is short.
+# Any other content can be edited, but be careful not to introduce errors.
+# Some fields will be set automatically during setup if they are unchanged.
+#
+# Don't include "-00" or "-latest" in the filename.
+# Labels in the form draft-<yourname>-<workgroup>-<name>-latest are used by
+# the tools to refer to the current version; see "docname" for example.
+#
+# This template uses kramdown-rfc: https://github.com/cabo/kramdown-rfc
+# You can replace the entire file if you prefer a different format.
+# Change the file extension to match the format (.xml for XML, etc...)
+#
+###
+
+title: The Asynchronous Remote Key Generation (ARKG) algorithm
+abbrev: "ARKG"
+lang: en
+category: info
+
+docname: draft-bradleylundberg-cfrg-arkg-00
+submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+number:
+date:
+consensus: true
+v: 3
+area: AREA
+workgroup: CFRG
+keyword:
+ - KDF
+venue:
+  group: CFRG
+  type: Individual
+  github: Yubico/arkg-rfc
 
 
-## Abstract
+author:
+- role: editor
+  fullname: Emil Lundberg
+  organization: Yubico
+  street: Kungsgatan 44
+  city: Stockholm
+  country: SE
+  email: emil@emlun.se
+
+- fullname: John Bradley
+  organization: Yubico
+  email: ve7jtb@ve7jtb.com
+
+contributor:
+  fullname: Dain Nilsson
+  organization: Yubico
+
+normative:
+  hkdf: RFC5869
+  RFC2104:
+  RFC2119:
+  RFC3279:
+  RFC4949:
+  RFC6090:
+  RFC5869:
+  BIP32:
+    target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+    title: BIP 32 Hierarchical Deterministic Wallets
+    author:
+    - name: Pieter Wuille
+    date: 2012
+  SEC1:
+    target: http://www.secg.org/sec1-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2020
+    title: SEC 1 Elliptic Curve Cryptography
+
+informative:
+  Clermont:
+    target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
+    author:
+    - name: Sebastian A. Clermont
+    - org: Technische Universität Darmstadt
+    date: 2022
+    title: Post Quantum Asynchronous Remote Key Generation. Master's thesis
+  Wilson:
+    author:
+    - name: Spencer MacLaren Wilson
+    - org: University of Waterloo,
+    title: Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis
+    date: 2023
+    target: http://hdl.handle.net/10012/19316
+  WebAuthn-Recovery:
+    author:
+    - name: Emil Lundberg
+    - name: Dain Nilsson
+    title: WebAuthn recovery extension Asynchronous delegated key generation without shared secrets. GitHub
+    date: 2019
+    target: https://github.com/Yubico/webauthn-recovery-extension
+  Frymann2020:
+    author:
+    - name: Nick Frymann
+    - name: Daniel Gardham
+    - name: Franziskus Kiefer
+    - name: Emil Lundberg
+    - name: Mark Manulis
+    - name: Dain Nilsson
+    title: Asynchronous Remote Key Generation - An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS
+    date: 2020
+    target: https://eprint.iacr.org/2020/1004
+  Frymann2023:
+    author:
+    - name: Nick Frymann
+    - name: Daniel Gardham
+    - name: Mark Manulis
+    title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy,
+    date: 2023
+    target: https://eprint.iacr.org/2023/419
+
+
+
+--- abstract
 
 Asynchronous Remote Key Generation (ARKG) is an abstract algorithm
 that enables delegation of asymmetric public key generation without giving access to the corresponding private keys.
@@ -17,17 +139,10 @@ and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future.
 
 
-## Status of This Memo
 
-TODO
+--- middle
 
-
-## Copyright Notice
-
-TODO
-
-
-## Introduction
+# Introduction
 
 Asymmetric cryptography, also called public key cryptography, is a fundamental component of much of modern information security.
 However, even the flexibility of asymmetric cryptosystems is not always enough for all applications.
@@ -97,6 +212,10 @@ Some motivating use cases of ARKG include:
 
 
 [rfc9052-direct-key-agreement]: https://www.rfc-editor.org/rfc/rfc9052.html#name-direct-key-agreement
+
+## Requirements Language
+
+{::boilerplate bcp14-tagged}
 
 
 ## The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -271,7 +390,7 @@ ARKG-Generate-Seed() -> (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)   An ARKG seed key pair with public key pk and private key sk.
+      (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
 
    The output (pk, sk) is calculated as follows:
 
@@ -304,11 +423,13 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem     A key encapsulation public key.
         pk_bl      A key blinding public key.
-        info       Optional context and application specific information (can be a zero-length string).
+        info       Optional context and application specific information
+                     (can be a zero-length string).
 
     Output:
         pk'        A blinded public key.
-        kh         A key handle for deriving the blinded secret key sk' corresponding to pk'.
+        kh         A key handle for deriving the blinded
+                     secret key sk' corresponding to pk'.
 
     The output (pk, sk) is calculated as follows:
 
@@ -342,14 +463,16 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
         KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
         MAC        The MAC scheme chosen for the ARKG instantiation.
         KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the key blinding scheme BL.
+        L_bl       The length in octets of the blinding factor tau of the
+                     key blinding scheme BL.
         L_mac      The length in octets of the MAC key of the MAC scheme MAC.
 
     Inputs:
         sk_kem     A key encapsulation secret key.
         sk_bl      A key blinding secret key.
         kh         A key handle output from ARKG-Derive-Public-Key.
-        info       Optional context and application specific information (can be a zero-length string).
+        info       Optional context and application specific information
+                     (can be a zero-length string).
 
     Output:
         sk'        A blinded secret key.
@@ -387,7 +510,7 @@ TODO: IANA registry? COSE/JOSE?
 ### Using elliptic curve arithmetic for key blinding
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann] [Wilson]
+can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020]
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
@@ -488,7 +611,7 @@ If elliptic curve arithmetic is used for key blinding and ECDH is used as the KE
 as described in the previous sections,
 then both of them MAY use the same curve or MAY use different curves.
 If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. [Frymann]
+as both the key blinding public key and the KEM public key. [Frymann2020]
 
 TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
 
@@ -645,24 +768,24 @@ TODO?: Define COSE representations for interoperability:
 - ARKG key handle (for interoperability between different implementers of `ARKG-Derive-Public-Key` and `ARKG-Derive-Secret-Key`)
 
 
-## Security Considerations
+# Security Considerations {#Security}
 
 TODO
 
 
-## Privacy Considerations
+# Privacy Considerations {#Privacy}
 
 TODO
 
 
-## IANA Considerations
+# IANA Considerations {#IANA}
 
 TODO
 
 
-## Design rationale
+# Design rationale
 
-### Using a MAC
+## Using a MAC
 
 The ARKG construction by Wilson [Wilson] omits the MAC and instead encodes application context in the PRF labels,
 arguing this leads to invalid keys/signatures in cases that would have a bad MAC.
@@ -706,32 +829,26 @@ one can also break the same property of the construction by Frymann et al.
 TODO
 
 
-## References
+# References
 
 TODO
 
 TODO: Ask authors for canonical reference addresses
 
-- [BIP32]: Pieter Wuille. BIP 32: Hierarchical Deterministic Wallets. GitHub, 2012. https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
-- [Clermont]: Sebastian A. Clermont. Post Quantum Asynchronous Remote Key Generation. Master's thesis, Technische Universität Darmstadt, 2022. https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
-- [Frymann2020]: Nick Frymann, Daniel Gardham, Franziskus Kiefer, Emil Lundberg, Mark Manulis and Dain Nilsson. Asynchronous Remote Key Generation: An Analysis of Yubico’s Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security, 2020. https://eprint.iacr.org/2020/1004
-- [Frymann2023]: Nick Frymann, Daniel Gardham and Mark Manulis. Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy, 2023. https://eprint.iacr.org/2023/419
-- [WebAuthn-Recovery]: Emil Lundberg and Dain Nilsson. WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub, 2019. https://github.com/Yubico/webauthn-recovery-extension
-- [Wilson]: Spencer MacLaren Wilson. Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis, University of Waterloo, 2023. http://hdl.handle.net/10012/19316
 
 
 [att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
 [authdata]: https://w3c.github.io/webauthn/#authenticator-data
 [ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
-[hkdf]: https://tools.ietf.org/html/rfc5869
 [privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
-[rfc3279]: https://tools.ietf.org/html/rfc3279.html
 [rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
 [rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
-[sec1]: http://www.secg.org/sec1-v2.pdf
 
 
-## Acknowledgements
+
+--- back
+
+# Acknowledgements
 
 ARKG was first proposed under this name by Frymann et al. [Frymann2020],
 who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson [WebAuthn-Recovery],
@@ -748,30 +865,13 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
 
 
-## Appendix A. Test Vectors
+# Test Vectors
 
 TODO
 
 
-## Authors' Addresses
+# Document History
 
-```
-Emil Lundberg
-Yubico
-Kungsgatan 44
-111 37 Stockholm
-Sweden
+-00
+  Initial Version
 
-Phone: (+46) 73 247 30 62
-EMail: emil@yubico.com
-EMail: emil@emlun.se
-```
-
-```
-John Bradley
-Yubico
-TODO
-
-Phone: TODO
-EMail: TODO
-```

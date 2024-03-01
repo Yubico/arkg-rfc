@@ -1,1 +1,1 @@
-draft-bradleylundberg-arkg-00.md
+draft-bradleylundberg-arkg.md
