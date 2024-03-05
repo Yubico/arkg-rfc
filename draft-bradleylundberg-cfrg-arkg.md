@@ -27,7 +27,7 @@ abbrev: "ARKG"
 lang: en
 category: info
 
-docname: draft-bradleylundberg-cfrg-arkg-00
+docname: draft-bradleylundberg-cfrg-arkg-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
