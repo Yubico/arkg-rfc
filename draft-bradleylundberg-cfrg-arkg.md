@@ -45,12 +45,6 @@ normative:
   RFC4949:
   RFC5869:
   RFC6090:
-  BIP32:
-    target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
-    title: BIP 32 Hierarchical Deterministic Wallets
-    author:
-    - name: Pieter Wuille
-    date: 2012
   SEC1:
     target: http://www.secg.org/sec1-v2.pdf
     author:
@@ -59,6 +53,12 @@ normative:
     title: SEC 1 Elliptic Curve Cryptography
 
 informative:
+  BIP32:
+    target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+    title: BIP 32 Hierarchical Deterministic Wallets
+    author:
+    - name: Pieter Wuille
+    date: 2012
   Clermont:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
