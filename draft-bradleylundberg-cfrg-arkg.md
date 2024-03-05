@@ -49,8 +49,8 @@ normative:
     target: http://www.secg.org/sec1-v2.pdf
     author:
     - org: Certicom Research
-    date: 2020
-    title: SEC 1 Elliptic Curve Cryptography
+    date: 2009
+    title: 'SEC 1: Elliptic Curve Cryptography'
 
 informative:
   BIP32:
