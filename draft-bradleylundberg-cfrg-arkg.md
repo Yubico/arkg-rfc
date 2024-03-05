@@ -168,7 +168,7 @@ Some motivating use cases of ARKG include:
 - Enhanced forward secrecy for encrypted messaging.
   For example, [section 8.5.4 of RFC 9052][rfc9052-direct-key-agreement] defines COSE representations for encrypted messages and notes that
   "Since COSE is designed for a store-and-forward environment rather than an online environment,
-  [...] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
+  \[...\] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
   Applications could work around this limitation by exchanging a large number of keys in advance,
   but that number limits how many messages can be sent before another such exchange is needed.
   This also requires the sender to allocate storage space for the keys,
