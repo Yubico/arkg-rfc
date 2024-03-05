@@ -200,7 +200,7 @@ Some motivating use cases of ARKG include:
 {::boilerplate bcp14-tagged}
 
 
-## The Asynchronous Remote Key Generation (ARKG) algorithm
+# The Asynchronous Remote Key Generation (ARKG) algorithm
 
 The ARKG algorithm consists of three functions, each performed by one of two participants:
 the _delegating party_ or the _subordinate party_.
@@ -214,7 +214,7 @@ the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
 
 
-### Notation
+## Notation
 
 The following notation is used throughout this document:
 
@@ -232,7 +232,7 @@ The following notation is used throughout this document:
   greater than or equal to `min_inc` and strictly less than `max_exc`.
 
 
-### Instance parameters
+## Instance parameters
 
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
@@ -356,7 +356,7 @@ Concrete ARKG instances MUST always be identified by lookup in a registry of ful
 This is to prevent usage of algorithm combinations that may be incompatible or insecure.
 
 
-### The function ARKG-Generate-Seed
+## The function ARKG-Generate-Seed
 
 This function is performed by the delegating party.
 The delegating party generates the ARKG seed pair `(pk, sk)`
@@ -383,7 +383,7 @@ ARKG-Generate-Seed() -> (pk, sk)
 ```
 
 
-### The function ARKG-Derive-Public-Key
+## The function ARKG-Derive-Public-Key
 
 This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
 The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols,
@@ -429,7 +429,7 @@ for example because `KDF` returns an invalid `tau` or `mk`,
 the procedure can safely be retried with the same arguments.
 
 
-### The function ARKG-Derive-Secret-Key
+## The function ARKG-Derive-Secret-Key
 
 This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
 The resulting secret key `sk'` can be used in asymmetric cryptography protocols
@@ -481,7 +481,7 @@ of a correct and honest implementation of `ARKG-Derive-Secret-Key`.
 See also section [Design Rationale: Using a MAC].
 
 
-## Generic ARKG instantiations
+# Generic ARKG instantiations
 
 This section defines generic formulae for instantiating the individual ARKG parameters,
 which can be used to define concrete ARKG instantiations.
@@ -489,7 +489,7 @@ which can be used to define concrete ARKG instantiations.
 TODO: IANA registry? COSE/JOSE?
 
 
-### Using elliptic curve arithmetic for key blinding
+## Using elliptic curve arithmetic for key blinding
 
 Instantiations of ARKG whose output keys are elliptic curve keys
 can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020] [Wilson]
@@ -539,7 +539,7 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
 ```
 
 
-### Using ECDH as the KEM
+## Using ECDH as the KEM
 
 Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism.
 This section defines a general formula for such instantiations of `KEM`.
@@ -587,7 +587,7 @@ KEM-Decaps(sk, c) -> k
 ```
 
 
-### Using both elliptic curve arithmetic for key blinding and ECDH as the KEM
+## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM
 
 If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
 as described in the previous sections,
@@ -598,7 +598,7 @@ as both the key blinding public key and the KEM public key. [Frymann2020]
 TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
 
 
-### Using HMAC as the MAC
+## Using HMAC as the MAC
 
 Let `Hash` be a cryptographic hash function.
 Then the `MAC` parameter of ARKG may be instantiated using HMAC [RFC2104] as follows:
@@ -619,7 +619,7 @@ MAC-Verify(k, m, t) -> { 0, 1 }
 ```
 
 
-### Using HKDF as the KDF
+## Using HKDF as the KDF
 
 Let `Hash` be a cryptographic hash function.
 Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as follows:
@@ -640,14 +640,14 @@ KDF(info, ikm, L) -> okm
 ```
 
 
-## Concrete ARKG instantiations
+# Concrete ARKG instantiations
 
 This section defines an initial set of concrete ARKG instantiations.
 
 TODO: IANA registry? COSE/JOSE?
 
 
-#### ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
 
 The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
@@ -663,7 +663,7 @@ The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the foll
 - `L_mac`: 32
 
 
-#### ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
+## ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
 
 The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instantiation:
 
@@ -679,7 +679,7 @@ The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the foll
 - `L_mac`: 48
 
 
-#### ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
+## ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
 
 The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instantiation:
 
@@ -695,7 +695,7 @@ The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the foll
 - `L_mac`: 64
 
 
-#### ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
 
 The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
@@ -711,7 +711,7 @@ The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the fo
 - `L_mac`: 32
 
 
-#### ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
 
 The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
@@ -727,7 +727,7 @@ The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the foll
 - `L_mac`: 32
 
 
-#### ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
 
 The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
 
@@ -743,7 +743,7 @@ The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the follo
 - `L_mac`: 32
 
 
-## COSE bindings
+# COSE bindings
 
 TODO?: Define COSE representations for interoperability:
 - ARKG public seed (for interoperability between different implementers of `ARKG-Generate-Seed` and `ARKG-Derive-Public-Key`)
