@@ -361,7 +361,7 @@ The subordinate party will then be able to generate public keys on behalf of the
 
 ~~~pseudocode
 ARKG-Generate-Seed() -> (pk, sk)
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
@@ -391,7 +391,7 @@ in order to generate any number of public keys.
 
 ~~~pseudocode
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
         MAC       A MAC scheme.
@@ -439,7 +439,7 @@ in order to derive the same or different secret keys any number of times.
 
 ~~~pseudocode
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
         MAC       A MAC scheme.
