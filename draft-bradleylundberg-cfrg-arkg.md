@@ -41,13 +41,10 @@ contributor:
   organization: Yubico
 
 normative:
-  hkdf: RFC5869
   RFC2104:
-  RFC2119:
-  RFC3279:
   RFC4949:
-  RFC6090:
   RFC5869:
+  RFC6090:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
