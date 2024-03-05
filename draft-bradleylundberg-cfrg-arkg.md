@@ -51,6 +51,12 @@ normative:
     - org: Certicom Research
     date: 2009
     title: 'SEC 1: Elliptic Curve Cryptography'
+  SEC2:
+    target: http://www.secg.org/sec2-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2010
+    title: 'SEC 2: Recommended Elliptic Curve Domain Parameters'
 
 informative:
   BIP32:
