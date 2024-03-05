@@ -405,8 +405,9 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
-        info      Optional context and application specific
-                    information (can be a zero-length string).
+        info      An octet string containing optional context
+                    and application specific information
+                    (can be a zero-length string).
 
     Output:
         pk'       A blinded public key.
@@ -454,8 +455,9 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
         sk_kem    A key encapsulation secret key.
         sk_bl     A key blinding secret key.
         kh        A key handle output from ARKG-Derive-Public-Key.
-        info      Optional context and application specific
-                    information (can be a zero-length string).
+        info      An octet string containing optional context
+                    and application specific information
+                    (can be a zero-length string).
 
     Output:
         sk'       A blinded secret key.
