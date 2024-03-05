@@ -497,10 +497,10 @@ Let `crv` be an elliptic curve.
 Then the `BL` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
@@ -546,13 +546,13 @@ Let `crv` be an elliptic curve used for ECDH.
 Then the `KEM` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve coordinate field elements are encoded to and from octet strings
-  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
