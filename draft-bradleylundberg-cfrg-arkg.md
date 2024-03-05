@@ -13,14 +13,14 @@ number:
 date:
 consensus: true
 v: 3
-area: Security
-workgroup: CFRG
+area: "IRTF"
+workgroup: "Crypto Forum"
 keyword:
  - KDF
 venue:
-  group: CFRG
-  type: Individual
-  github: Yubico/arkg-rfc
+  group: "Crypto Forum"
+  type: "Research Group"
+  github: "Yubico/arkg-rfc"
 
 
 author:
