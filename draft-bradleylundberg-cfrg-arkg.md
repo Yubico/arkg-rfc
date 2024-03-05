@@ -646,7 +646,7 @@ TODO: IANA registry? COSE/JOSE?
 
 ## ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp256r1` [SEC2].
@@ -662,7 +662,7 @@ The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the foll
 
 ## ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
 
-The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instantiation:
+The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp384r1` [SEC2].
@@ -678,7 +678,7 @@ The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the foll
 
 ## ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
 
-The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instantiation:
+The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp521r1` [SEC2].
@@ -694,7 +694,7 @@ The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the foll
 
 ## ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The SECG curve `secp256k1` [SEC2].
@@ -710,7 +710,7 @@ The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the fo
 
 ## ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The curve `Ed25519` [REF?].
@@ -726,7 +726,7 @@ The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the foll
 
 ## ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The curve `X25519` [REF?].
