@@ -200,20 +200,6 @@ Some motivating use cases of ARKG include:
 {::boilerplate bcp14-tagged}
 
 
-# The Asynchronous Remote Key Generation (ARKG) algorithm
-
-The ARKG algorithm consists of three functions, each performed by one of two participants:
-the _delegating party_ or the _subordinate party_.
-The delegating party generates an ARKG _seed pair_ and emits the _public seed_ to the subordinate party
-while keeping the _private seed_ secret.
-The subordinate party can then use the public seed to generate derived public keys and _key handles_,
-and the delegating party can use the private seed and a key handle to derive the corresponding private key.
-
-The following subsections define some notation and
-the abstract instance parameters used to construct the three ARKG functions,
-followed by the definitions of the three ARKG functions.
-
-
 ## Notation
 
 The following notation is used throughout this document:
@@ -230,6 +216,19 @@ The following notation is used throughout this document:
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
   greater than or equal to `min_inc` and strictly less than `max_exc`.
+
+
+# The Asynchronous Remote Key Generation (ARKG) algorithm
+
+The ARKG algorithm consists of three functions, each performed by one of two participants:
+the _delegating party_ or the _subordinate party_.
+The delegating party generates an ARKG _seed pair_ and emits the _public seed_ to the subordinate party
+while keeping the _private seed_ secret.
+The subordinate party can then use the public seed to generate derived public keys and _key handles_,
+and the delegating party can use the private seed and a key handle to derive the corresponding private key.
+
+The following subsections define the abstract instance parameters used to construct the three ARKG functions,
+followed by the definitions of the three ARKG functions.
 
 
 ## Instance parameters
