@@ -485,8 +485,6 @@ See also {{design-rationale-mac}}.
 This section defines generic formulae for instantiating the individual ARKG parameters,
 which can be used to define concrete ARKG instantiations.
 
-TODO: IANA registry? COSE/JOSE?
-
 
 ## Using elliptic curve arithmetic for key blinding {#blinding-ec}
 
