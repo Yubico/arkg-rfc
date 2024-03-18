@@ -1040,7 +1040,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 6 September 2024</td>
+<td class="center">Expires 19 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-05" class="published">5 March 2024</time>
+<time datetime="2024-03-18" class="published">18 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-06">6 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-19">19 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1543,25 +1543,27 @@ This is to prevent usage of algorithm combinations that may be incompatible or i
 The delegating party generates the ARKG seed pair <code>(pk, sk)</code>
 and keeps the private seed <code>sk</code> secret, while the public seed <code>pk</code> is provided to the subordinate party.
 The subordinate party will then be able to generate public keys on behalf of the delegating party.<a href="#section-1.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-1.2.3-2">```
+<div class="lang-pseudocode sourcecode" id="section-1.2.3-2">
+<pre>
 ARKG-Generate-Seed() -&gt; (pk, sk)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.<a href="#section-1.2.3-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.2.3-3">
-<pre>
-Inputs: None
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
 
-Output:
-  (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
-</pre><a href="#section-1.2.3-3" class="pilcrow">¶</a>
+    Inputs: None
+
+    Output:
+        (pk, sk)  An ARKG seed key pair with public key pk
+                    and private key sk.
+
+    The output (pk, sk) is calculated as follows:
+
+    (pk_kem, sk_kem) = KEM-Generate-Keypair()
+    (pk_bl, sk_bl) = BL-Generate-Keypair()
+    pk = (pk_kem, pk_bl)
+    sk = (sk_kem, sk_bl)
+</pre><a href="#section-1.2.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-1.2.3-4">The output (pk, sk) is calculated as follows:<a href="#section-1.2.3-4" class="pilcrow">¶</a></p>
-<p id="section-1.2.3-5">(pk_kem, sk_kem) = KEM-Generate-Keypair()
-   (pk_bl, sk_bl) = BL-Generate-Keypair()
-   pk = (pk_kem, pk_bl)
-   sk = (sk_kem, sk_bl)
-```<a href="#section-1.2.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-function-arkg-derive-public-key">
@@ -1574,42 +1576,44 @@ The resulting public key <code>pk'</code> can be provided to external parties to
 and the resulting key handle <code>kh</code> can be used by the delegating party to derive the private key corresponding to <code>pk'</code>.<a href="#section-1.2.4-1" class="pilcrow">¶</a></p>
 <p id="section-1.2.4-2">This function may be invoked any number of times with the same public seed,
 in order to generate any number of public keys.<a href="#section-1.2.4-2" class="pilcrow">¶</a></p>
-<p id="section-1.2.4-3">```
+<div class="lang-pseudocode sourcecode" id="section-1.2.4-3">
+<pre>
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.<a href="#section-1.2.4-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.2.4-4">
-<pre>
-Inputs:
-    pk_kem     A key encapsulation public key.
-    pk_bl      A key blinding public key.
-    info       Optional context and application specific information
-                 (can be a zero-length string).
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
-Output:
-    pk'        A blinded public key.
-    kh         A key handle for deriving the blinded
-                 secret key sk' corresponding to pk'.
+    Inputs:
+        pk_kem    A key encapsulation public key.
+        pk_bl     A key blinding public key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
-The output (pk, sk) is calculated as follows:
+    Output:
+        pk'       A blinded public key.
+        kh        A key handle for deriving the blinded
+                    secret key sk' corresponding to pk'.
 
-(k, c) = KEM-Encaps(pk_kem)
-tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-mk  = KDF("arkg-mac"   || 0x00 || info, k, L_mac)
-tag = MAC-Tag(mk, c || info)
+    The output (pk, sk) is calculated as follows:
 
-pk' = BL-Blind-Public-Key(pk_bl, tau)
-kh = (c, tag) ```
-</pre><a href="#section-1.2.4-4" class="pilcrow">¶</a>
+    (k, c) = KEM-Encaps(pk_kem)
+    tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
+    mk  = KDF("arkg-mac"   || 0x00 || info, k, L_mac)
+    tag = MAC-Tag(mk, c || info)
+
+    pk' = BL-Blind-Public-Key(pk_bl, tau)
+    kh = (c, tag)
+</pre><a href="#section-1.2.4-3" class="pilcrow">¶</a>
 </div>
-<p id="section-1.2.4-5">If this procedure aborts due to an error,
+<p id="section-1.2.4-4">If this procedure aborts due to an error,
 for example because <code>KDF</code> returns an invalid <code>tau</code> or <code>mk</code>,
-the procedure can safely be retried with the same arguments.<a href="#section-1.2.4-5" class="pilcrow">¶</a></p>
+the procedure can safely be retried with the same arguments.<a href="#section-1.2.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-function-arkg-derive-secret-key">
@@ -1622,48 +1626,49 @@ The resulting secret key <code>sk'</code> can be used in asymmetric cryptography
 to prove possession of <code>sk'</code> to an external party that has the corresponding public key.<a href="#section-1.2.5-1" class="pilcrow">¶</a></p>
 <p id="section-1.2.5-2">This function may be invoked any number of times with the same private seed,
 in order to derive the same or different secret keys any number of times.<a href="#section-1.2.5-2" class="pilcrow">¶</a></p>
-<p id="section-1.2.5-3">```
+<div class="lang-pseudocode sourcecode" id="section-1.2.5-3">
+<pre>
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -&gt; sk'
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the
-                     key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.<a href="#section-1.2.5-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.2.5-4">
-<pre>
-Inputs:
-    sk_kem     A key encapsulation secret key.
-    sk_bl      A key blinding secret key.
-    kh         A key handle output from ARKG-Derive-Public-Key.
-    info       Optional context and application specific information
-                 (can be a zero-length string).
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
-Output:
-    sk'        A blinded secret key.
+    Inputs:
+        sk_kem    A key encapsulation secret key.
+        sk_bl     A key blinding secret key.
+        kh        A key handle output from ARKG-Derive-Public-Key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
-The output sk' is calculated as follows:
+    Output:
+        sk'       A blinded secret key.
 
-(c, tag) = kh
-k = KEM-Decaps(sk_kem, c)
-mk = KDF("arkg-mac" || 0x00 || info, k, L_mac)
+    The output sk' is calculated as follows:
 
-If MAC-Verify(mk, c || info, tag) = 0:
-    Abort with an error.
+    (c, tag) = kh
+    k = KEM-Decaps(sk_kem, c)
+    mk = KDF("arkg-mac" || 0x00 || info, k, L_mac)
 
-tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-sk' = BL-Blind-Secret-Key(sk_bl, tau) ```
-</pre><a href="#section-1.2.5-4" class="pilcrow">¶</a>
+    If MAC-Verify(mk, c || info, tag) = 0:
+        Abort with an error.
+
+    tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
+    sk' = BL-Blind-Secret-Key(sk_bl, tau)
+</pre><a href="#section-1.2.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-1.2.5-5">Errors in this procedure are typically unrecoverable.
+<p id="section-1.2.5-4">Errors in this procedure are typically unrecoverable.
 For example, <code>KDF</code> might return an invalid <code>tau</code> or <code>mk</code>, or the <code>tag</code> may be invalid.
 ARKG instantiations <span class="bcp14">SHOULD</span> be chosen in a way that such errors are impossible
 if <code>kh</code> was generated by an honest and correct implementation of <code>ARKG-Derive-Public-Key</code>.
 Incorrect or malicious implementations of <code>ARKG-Derive-Public-Key</code> do not degrade the security
 of a correct and honest implementation of <code>ARKG-Derive-Secret-Key</code>.
-See also section [Design Rationale: Using a MAC].<a href="#section-1.2.5-5" class="pilcrow">¶</a></p>
+See also section [Design Rationale: Using a MAC].<a href="#section-1.2.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1702,39 +1707,37 @@ using the procedures defined in sections 2.3.7 and 2.3.8 of <span><a href="#SEC1
               <p id="section-1.3.1-3.4.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-1.3.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-1.3.1-4">```
-BL-Generate-Keypair() -&gt; (pk, sk)<a href="#section-1.3.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.1-5">
+<div class="lang-pseudocode sourcecode" id="section-1.3.1-4">
 <pre>
-sk = Random(1, N)
-pk_tmp = G^sk
-If pk_tmp equals the point at infinity, abort with an error.
-pk = pk_tmp
+BL-Generate-Keypair() -&gt; (pk, sk)
 
-TODO: Also reject G?
-</pre><a href="#section-1.3.1-5" class="pilcrow">¶</a>
-</div>
-<p id="section-1.3.1-6">BL-Blind-Public-Key(pk, tau) -&gt; pk_tau<a href="#section-1.3.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.1-7">
-<pre>
-If tau = 0 or tau &gt;= N, abort with an error.
-pk_tau_tmp = pk * (G^tau)
-If pk_tau_tmp equals the point at infinity, abort with an error.
-pk_tau = pk_tau_tmp
+    sk = Random(1, N)
+    pk_tmp = G^sk
+    If pk_tmp equals the point at infinity, abort with an error.
+    pk = pk_tmp
 
-TODO: Also reject G?
-</pre><a href="#section-1.3.1-7" class="pilcrow">¶</a>
-</div>
-<p id="section-1.3.1-8">BL-Blind-Secret-Key(sk, tau) -&gt; sk_tau<a href="#section-1.3.1-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.1-9">
-<pre>
-If tau = 0 or tau &gt;= N, abort with an error.
-sk_tau_tmp = sk + tau
-If sk_tau_tmp = 0, abort with an error.
-sk_tau = sk_tau_tmp
+    TODO: Also reject G?
 
-TODO: Also reject 1? ```
-</pre><a href="#section-1.3.1-9" class="pilcrow">¶</a>
+
+BL-Blind-Public-Key(pk, tau) -&gt; pk_tau
+
+    If tau = 0 or tau &gt;= N, abort with an error.
+    pk_tau_tmp = pk * (G^tau)
+    If pk_tau_tmp equals the point at infinity, abort with an error.
+    pk_tau = pk_tau_tmp
+
+    TODO: Also reject G?
+
+
+BL-Blind-Secret-Key(sk, tau) -&gt; sk_tau
+
+    If tau = 0 or tau &gt;= N, abort with an error.
+    sk_tau_tmp = sk + tau
+    If sk_tau_tmp = 0, abort with an error.
+    sk_tau = sk_tau_tmp
+
+    TODO: Also reject 1?
+</pre><a href="#section-1.3.1-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1771,32 +1774,30 @@ using public key (curve point) <code>pk</code> and secret key (exponent) <code>s
               <p id="section-1.3.2-3.6.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-1.3.2-3.6.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-1.3.2-4">```
-KEM-Generate-Keypair() -&gt; (pk, sk)<a href="#section-1.3.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.2-5">
+<div class="lang-pseudocode sourcecode" id="section-1.3.2-4">
 <pre>
-sk = Random(1, N)
-pk_tmp = G^sk
-If pk_tmp equals the point at infinity, abort with an error.
-pk = pk_tmp
+KEM-Generate-Keypair() -&gt; (pk, sk)
 
-TODO: Also reject G?
-</pre><a href="#section-1.3.2-5" class="pilcrow">¶</a>
-</div>
-<p id="section-1.3.2-6">KEM-Encaps(pk) -&gt; (k, c)
-    (pk', sk') = KEM-Generate-Keypair()<a href="#section-1.3.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.2-7">
-<pre>
-k = ECDH(pk, sk')
-c = pk'
-</pre><a href="#section-1.3.2-7" class="pilcrow">¶</a>
-</div>
-<p id="section-1.3.2-8">KEM-Decaps(sk, c) -&gt; k<a href="#section-1.3.2-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.2-9">
-<pre>
-pk' = c
-k = ECDH(pk', sk) ```
-</pre><a href="#section-1.3.2-9" class="pilcrow">¶</a>
+    sk = Random(1, N)
+    pk_tmp = G^sk
+    If pk_tmp equals the point at infinity, abort with an error.
+    pk = pk_tmp
+
+    TODO: Also reject G?
+
+
+KEM-Encaps(pk) -&gt; (k, c)
+    (pk', sk') = KEM-Generate-Keypair()
+
+    k = ECDH(pk, sk')
+    c = pk'
+
+
+KEM-Decaps(sk, c) -&gt; k
+
+    pk' = c
+    k = ECDH(pk', sk)
+</pre><a href="#section-1.3.2-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1820,22 +1821,21 @@ as both the key blinding public key and the KEM public key. <span>[<a href="#Fry
           </h4>
 <p id="section-1.3.4-1">Let <code>Hash</code> be a cryptographic hash function.
 Then the <code>MAC</code> parameter of ARKG may be instantiated using HMAC <span>[<a href="#RFC2104" class="cite xref">RFC2104</a>]</span> as follows:<a href="#section-1.3.4-1" class="pilcrow">¶</a></p>
-<p id="section-1.3.4-2">```
-MAC-Tag(k, m) -&gt; t<a href="#section-1.3.4-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.4-3">
+<div class="lang-pseudocode sourcecode" id="section-1.3.4-2">
 <pre>
-t = HMAC-Hash(K=k, text=m)
-</pre><a href="#section-1.3.4-3" class="pilcrow">¶</a>
-</div>
-<p id="section-1.3.4-4">MAC-Verify(k, m, t) -&gt; { 0, 1 }<a href="#section-1.3.4-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.4-5">
-<pre>
-t' = HMAC-Hash(K=k, text=m)
-If t = t':
-    return 1
-Else:
-    return 0 ```
-</pre><a href="#section-1.3.4-5" class="pilcrow">¶</a>
+MAC-Tag(k, m) -&gt; t
+
+    t = HMAC-Hash(K=k, text=m)
+
+
+MAC-Verify(k, m, t) -&gt; { 0, 1 }
+
+    t' = HMAC-Hash(K=k, text=m)
+    If t = t':
+        return 1
+    Else:
+        return 0
+</pre><a href="#section-1.3.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1846,21 +1846,21 @@ Else:
           </h4>
 <p id="section-1.3.5-1">Let <code>Hash</code> be a cryptographic hash function.
 Then the <code>KDF</code> parameter of ARKG may be instantiated using HKDF <span>[<a href="#RFC5869" class="cite xref">RFC5869</a>]</span> as follows:<a href="#section-1.3.5-1" class="pilcrow">¶</a></p>
-<p id="section-1.3.5-2">```
-KDF(info, ikm, L) -&gt; okm<a href="#section-1.3.5-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.3.5-3">
+<div class="lang-pseudocode sourcecode" id="section-1.3.5-2">
 <pre>
-PRK = HKDF-Extract with the arguments:
-    Hash: Hash
-    salt: not set
-    IKM: ikm
+KDF(info, ikm, L) -&gt; okm
 
-okm = HKDF-Expand with the arguments:
-    Hash: Hash
-    PRK: PRK
-    info: info
-    L: L ```
-</pre><a href="#section-1.3.5-3" class="pilcrow">¶</a>
+    PRK = HKDF-Extract with the arguments:
+        Hash: Hash
+        salt: not set
+        IKM: ikm
+
+    okm = HKDF-Expand with the arguments:
+        Hash: Hash
+        PRK: PRK
+        info: info
+        L: L
+</pre><a href="#section-1.3.5-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2276,10 +2276,6 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Wuille, P.</span>, <span class="refTitle">"BIP 32 Hierarchical Deterministic Wallets"</span>, <time datetime="2012" class="refDate">2012</time>, <span>&lt;<a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="hkdf">[hkdf]</dt>
-        <dd>
-<span class="refAuthor">Krawczyk, H.</span> and <span class="refAuthor">P. Eronen</span>, <span class="refTitle">"HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"</span>, <span class="seriesInfo">RFC 5869</span>, <span class="seriesInfo">DOI 10.17487/RFC5869</span>, <time datetime="2010-05" class="refDate">May 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5869">https://www.rfc-editor.org/rfc/rfc5869</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2104">[RFC2104]</dt>
         <dd>
 <span class="refAuthor">Krawczyk, H.</span>, <span class="refAuthor">Bellare, M.</span>, and <span class="refAuthor">R. Canetti</span>, <span class="refTitle">"HMAC: Keyed-Hashing for Message Authentication"</span>, <span class="seriesInfo">RFC 2104</span>, <span class="seriesInfo">DOI 10.17487/RFC2104</span>, <time datetime="1997-02" class="refDate">February 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2104">https://www.rfc-editor.org/rfc/rfc2104</a>&gt;</span>. </dd>
@@ -2287,10 +2283,6 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC3279">[RFC3279]</dt>
-        <dd>
-<span class="refAuthor">Bassham, L.</span>, <span class="refAuthor">Polk, W.</span>, and <span class="refAuthor">R. Housley</span>, <span class="refTitle">"Algorithms and Identifiers for the Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 3279</span>, <span class="seriesInfo">DOI 10.17487/RFC3279</span>, <time datetime="2002-04" class="refDate">April 2002</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3279">https://www.rfc-editor.org/rfc/rfc3279</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4949">[RFC4949]</dt>
         <dd>

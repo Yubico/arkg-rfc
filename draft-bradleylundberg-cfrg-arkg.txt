@@ -5,7 +5,7 @@
 CFRG                                                    E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 6 September 2024                                   5 March 2024
+Expires: 19 September 2024                                 18 March 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 September 2024.
+   This Internet-Draft will expire on 19 September 2024.
 
 Copyright Notice
 
@@ -397,19 +397,23 @@ Table of Contents
    subordinate party.  The subordinate party will then be able to
    generate public keys on behalf of the delegating party.
 
-   ``` ARKG-Generate-Seed() -> (pk, sk) Options: BL The key blinding
-   scheme chosen for the ARKG instantiation.  KEM The key encapsulation
-   mechanism chosen for the ARKG instantiation.
+   ARKG-Generate-Seed() -> (pk, sk)
+       Options:
+           BL        A key blinding scheme.
+           KEM       A key encapsulation mechanism.
 
-Inputs: None
+       Inputs: None
 
-Output:
-  (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
+       Output:
+           (pk, sk)  An ARKG seed key pair with public key pk
+                       and private key sk.
 
-   The output (pk, sk) is calculated as follows:
+       The output (pk, sk) is calculated as follows:
 
-   (pk_kem, sk_kem) = KEM-Generate-Keypair() (pk_bl, sk_bl) = BL-
-   Generate-Keypair() pk = (pk_kem, pk_bl) sk = (sk_kem, sk_bl) ```
+       (pk_kem, sk_kem) = KEM-Generate-Keypair()
+       (pk_bl, sk_bl) = BL-Generate-Keypair()
+       pk = (pk_kem, pk_bl)
+       sk = (sk_kem, sk_bl)
 
 1.2.4.  The function ARKG-Derive-Public-Key
 
@@ -422,35 +426,37 @@ Output:
    This function may be invoked any number of times with the same public
    seed, in order to generate any number of public keys.
 
-   ``` ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
-   Options: BL The key blinding scheme chosen for the ARKG
-   instantiation.  KEM The key encapsulation mechanism chosen for the
-   ARKG instantiation.  MAC The MAC scheme chosen for the ARKG
-   instantiation.  KDF The key derivation function chosen for the ARKG
-   instantiation.  L_bl The length in octets of the blinding factor tau
-   of the key blinding scheme BL.  L_mac The length in octets of the MAC
-   key of the MAC scheme MAC.
+   ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
+       Options:
+           BL        A key blinding scheme.
+           KEM       A key encapsulation mechanism.
+           MAC       A MAC scheme.
+           KDF       A key derivation function.
+           L_bl      The length in octets of the blinding factor tau
+                       of the key blinding scheme BL.
+           L_mac     The length in octets of the MAC key
+                       of the MAC scheme MAC.
 
-   Inputs:
-       pk_kem     A key encapsulation public key.
-       pk_bl      A key blinding public key.
-       info       Optional context and application specific information
-                    (can be a zero-length string).
+       Inputs:
+           pk_kem    A key encapsulation public key.
+           pk_bl     A key blinding public key.
+           info      Optional context and application specific
+                       information (can be a zero-length string).
 
-   Output:
-       pk'        A blinded public key.
-       kh         A key handle for deriving the blinded
-                    secret key sk' corresponding to pk'.
+       Output:
+           pk'       A blinded public key.
+           kh        A key handle for deriving the blinded
+                       secret key sk' corresponding to pk'.
 
-   The output (pk, sk) is calculated as follows:
+       The output (pk, sk) is calculated as follows:
 
-   (k, c) = KEM-Encaps(pk_kem)
-   tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-   mk  = KDF("arkg-mac"   || 0x00 || info, k, L_mac)
-   tag = MAC-Tag(mk, c || info)
+       (k, c) = KEM-Encaps(pk_kem)
+       tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
+       mk  = KDF("arkg-mac"   || 0x00 || info, k, L_mac)
+       tag = MAC-Tag(mk, c || info)
 
-   pk' = BL-Blind-Public-Key(pk_bl, tau)
-   kh = (c, tag) ```
+       pk' = BL-Blind-Public-Key(pk_bl, tau)
+       kh = (c, tag)
 
    If this procedure aborts due to an error, for example because KDF
    returns an invalid tau or mk, the procedure can safely be retried
@@ -467,36 +473,38 @@ Output:
    private seed, in order to derive the same or different secret keys
    any number of times.
 
-   ``` ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk' Options:
-   BL The key blinding scheme chosen for the ARKG instantiation.  KEM
-   The key encapsulation mechanism chosen for the ARKG instantiation.
-   MAC The MAC scheme chosen for the ARKG instantiation.  KDF The key
-   derivation function chosen for the ARKG instantiation.  L_bl The
-   length in octets of the blinding factor tau of the key blinding
-   scheme BL.  L_mac The length in octets of the MAC key of the MAC
-   scheme MAC.
+   ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
+       Options:
+           BL        A key blinding scheme.
+           KEM       A key encapsulation mechanism.
+           MAC       A MAC scheme.
+           KDF       A key derivation function.
+           L_bl      The length in octets of the blinding factor tau
+                       of the key blinding scheme BL.
+           L_mac     The length in octets of the MAC key
+                       of the MAC scheme MAC.
 
-   Inputs:
-       sk_kem     A key encapsulation secret key.
-       sk_bl      A key blinding secret key.
-       kh         A key handle output from ARKG-Derive-Public-Key.
-       info       Optional context and application specific information
-                    (can be a zero-length string).
+       Inputs:
+           sk_kem    A key encapsulation secret key.
+           sk_bl     A key blinding secret key.
+           kh        A key handle output from ARKG-Derive-Public-Key.
+           info      Optional context and application specific
+                       information (can be a zero-length string).
 
-   Output:
-       sk'        A blinded secret key.
+       Output:
+           sk'       A blinded secret key.
 
-   The output sk' is calculated as follows:
+       The output sk' is calculated as follows:
 
-   (c, tag) = kh
-   k = KEM-Decaps(sk_kem, c)
-   mk = KDF("arkg-mac" || 0x00 || info, k, L_mac)
+       (c, tag) = kh
+       k = KEM-Decaps(sk_kem, c)
+       mk = KDF("arkg-mac" || 0x00 || info, k, L_mac)
 
-   If MAC-Verify(mk, c || info, tag) = 0:
-       Abort with an error.
+       If MAC-Verify(mk, c || info, tag) = 0:
+           Abort with an error.
 
-   tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-   sk' = BL-Blind-Secret-Key(sk_bl, tau) ```
+       tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
+       sk' = BL-Blind-Secret-Key(sk_bl, tau)
 
    Errors in this procedure are typically unrecoverable.  For example,
    KDF might return an invalid tau or mk, or the tag may be invalid.
@@ -537,32 +545,34 @@ Output:
 
    *  G is the generator of crv.
 
-   ``` BL-Generate-Keypair() -> (pk, sk)
+   BL-Generate-Keypair() -> (pk, sk)
 
-   sk = Random(1, N)
-   pk_tmp = G^sk
-   If pk_tmp equals the point at infinity, abort with an error.
-   pk = pk_tmp
+       sk = Random(1, N)
+       pk_tmp = G^sk
+       If pk_tmp equals the point at infinity, abort with an error.
+       pk = pk_tmp
 
-   TODO: Also reject G?
+       TODO: Also reject G?
+
 
    BL-Blind-Public-Key(pk, tau) -> pk_tau
 
-   If tau = 0 or tau >= N, abort with an error.
-   pk_tau_tmp = pk * (G^tau)
-   If pk_tau_tmp equals the point at infinity, abort with an error.
-   pk_tau = pk_tau_tmp
+       If tau = 0 or tau >= N, abort with an error.
+       pk_tau_tmp = pk * (G^tau)
+       If pk_tau_tmp equals the point at infinity, abort with an error.
+       pk_tau = pk_tau_tmp
 
-   TODO: Also reject G?
+       TODO: Also reject G?
+
 
    BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
-   If tau = 0 or tau >= N, abort with an error.
-   sk_tau_tmp = sk + tau
-   If sk_tau_tmp = 0, abort with an error.
-   sk_tau = sk_tau_tmp
+       If tau = 0 or tau >= N, abort with an error.
+       sk_tau_tmp = sk + tau
+       If sk_tau_tmp = 0, abort with an error.
+       sk_tau = sk_tau_tmp
 
-   TODO: Also reject 1? ```
+       TODO: Also reject 1?
 
 1.3.2.  Using ECDH as the KEM
 
@@ -592,24 +602,27 @@ Output:
 
    *  G is the generator of crv.
 
-   ``` KEM-Generate-Keypair() -> (pk, sk)
+   KEM-Generate-Keypair() -> (pk, sk)
 
-   sk = Random(1, N)
-   pk_tmp = G^sk
-   If pk_tmp equals the point at infinity, abort with an error.
-   pk = pk_tmp
+       sk = Random(1, N)
+       pk_tmp = G^sk
+       If pk_tmp equals the point at infinity, abort with an error.
+       pk = pk_tmp
 
-   TODO: Also reject G?
+       TODO: Also reject G?
 
-   KEM-Encaps(pk) -> (k, c) (pk', sk') = KEM-Generate-Keypair()
 
-   k = ECDH(pk, sk')
-   c = pk'
+   KEM-Encaps(pk) -> (k, c)
+       (pk', sk') = KEM-Generate-Keypair()
+
+       k = ECDH(pk, sk')
+       c = pk'
+
 
    KEM-Decaps(sk, c) -> k
 
-   pk' = c
-   k = ECDH(pk', sk) ```
+       pk' = c
+       k = ECDH(pk', sk)
 
 1.3.3.  Using both elliptic curve arithmetic for key blinding and ECDH
         as the KEM
@@ -629,35 +642,36 @@ Output:
    Let Hash be a cryptographic hash function.  Then the MAC parameter of
    ARKG may be instantiated using HMAC [RFC2104] as follows:
 
-   ``` MAC-Tag(k, m) -> t
+   MAC-Tag(k, m) -> t
 
-   t = HMAC-Hash(K=k, text=m)
+       t = HMAC-Hash(K=k, text=m)
+
 
    MAC-Verify(k, m, t) -> { 0, 1 }
 
-   t' = HMAC-Hash(K=k, text=m)
-   If t = t':
-       return 1
-   Else:
-       return 0 ```
+       t' = HMAC-Hash(K=k, text=m)
+       If t = t':
+           return 1
+       Else:
+           return 0
 
 1.3.5.  Using HKDF as the KDF
 
    Let Hash be a cryptographic hash function.  Then the KDF parameter of
    ARKG may be instantiated using HKDF [RFC5869] as follows:
 
-   ``` KDF(info, ikm, L) -> okm
+   KDF(info, ikm, L) -> okm
 
-   PRK = HKDF-Extract with the arguments:
-       Hash: Hash
-       salt: not set
-       IKM: ikm
+       PRK = HKDF-Extract with the arguments:
+           Hash: Hash
+           salt: not set
+           IKM: ikm
 
-   okm = HKDF-Expand with the arguments:
-       Hash: Hash
-       PRK: PRK
-       info: info
-       L: L ```
+       okm = HKDF-Expand with the arguments:
+           Hash: Hash
+           PRK: PRK
+           info: info
+           L: L
 
 1.4.  Concrete ARKG instantiations
 
@@ -930,11 +944,6 @@ Output:
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
               0032.mediawiki>.
 
-   [hkdf]     Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
-              Key Derivation Function (HKDF)", RFC 5869,
-              DOI 10.17487/RFC5869, May 2010,
-              <https://www.rfc-editor.org/rfc/rfc5869>.
-
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
               DOI 10.17487/RFC2104, February 1997,
@@ -944,12 +953,6 @@ Output:
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
-              Identifiers for the Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 3279, DOI 10.17487/RFC3279, April
-              2002, <https://www.rfc-editor.org/rfc/rfc3279>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
