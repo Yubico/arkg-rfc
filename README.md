@@ -10,7 +10,11 @@ This is the working area for the individual Internet-Draft, "The Asynchronous Re
 
 ## Contributing
 
-TBD
+See the
+[guidelines for contributions](https://github.com/Yubico/arkg-rfc/blob/main/CONTRIBUTING.md).
+
+Contributions can be made by creating pull requests.
+The GitHub interface supports creating pull requests using the Edit (✏) button.
 
 
 ## Command Line Usage
