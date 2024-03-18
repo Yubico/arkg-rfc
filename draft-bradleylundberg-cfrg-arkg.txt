@@ -2,7 +2,7 @@
 
 
 
-CFRG                                                    E. Lundberg, Ed.
+Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
 Expires: 19 September 2024                                 18 March 2024
@@ -1023,6 +1023,8 @@ Appendix B.  Test Vectors
 Appendix C.  Document History
 
    -00 Initial Version
+
+   -01 Editorial Fixes to formatting and references.
 
 Contributors
 
