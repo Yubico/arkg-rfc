@@ -41,13 +41,10 @@ contributor:
   organization: Yubico
 
 normative:
-  hkdf: RFC5869
   RFC2104:
-  RFC2119:
-  RFC3279:
   RFC4949:
-  RFC6090:
   RFC5869:
+  RFC6090:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
@@ -363,24 +360,25 @@ The delegating party generates the ARKG seed pair `(pk, sk)`
 and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
 The subordinate party will then be able to generate public keys on behalf of the delegating party.
 
-```
+~~~pseudocode
 ARKG-Generate-Seed() -> (pk, sk)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
 
     Inputs: None
 
     Output:
-      (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
+        (pk, sk)  An ARKG seed key pair with public key pk
+                    and private key sk.
 
-   The output (pk, sk) is calculated as follows:
+    The output (pk, sk) is calculated as follows:
 
-   (pk_kem, sk_kem) = KEM-Generate-Keypair()
-   (pk_bl, sk_bl) = BL-Generate-Keypair()
-   pk = (pk_kem, pk_bl)
-   sk = (sk_kem, sk_bl)
-```
+    (pk_kem, sk_kem) = KEM-Generate-Keypair()
+    (pk_bl, sk_bl) = BL-Generate-Keypair()
+    pk = (pk_kem, pk_bl)
+    sk = (sk_kem, sk_bl)
+~~~
 
 
 ### The function ARKG-Derive-Public-Key
@@ -392,26 +390,28 @@ and the resulting key handle `kh` can be used by the delegating party to derive 
 This function may be invoked any number of times with the same public seed,
 in order to generate any number of public keys.
 
-```
+~~~pseudocode
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
     Inputs:
-        pk_kem     A key encapsulation public key.
-        pk_bl      A key blinding public key.
-        info       Optional context and application specific information
-                     (can be a zero-length string).
+        pk_kem    A key encapsulation public key.
+        pk_bl     A key blinding public key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
     Output:
-        pk'        A blinded public key.
-        kh         A key handle for deriving the blinded
-                     secret key sk' corresponding to pk'.
+        pk'       A blinded public key.
+        kh        A key handle for deriving the blinded
+                    secret key sk' corresponding to pk'.
 
     The output (pk, sk) is calculated as follows:
 
@@ -422,7 +422,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
 
     pk' = BL-Blind-Public-Key(pk_bl, tau)
     kh = (c, tag)
-```
+~~~
 
 If this procedure aborts due to an error,
 for example because `KDF` returns an invalid `tau` or `mk`,
@@ -438,26 +438,27 @@ to prove possession of `sk'` to an external party that has the corresponding pub
 This function may be invoked any number of times with the same private seed,
 in order to derive the same or different secret keys any number of times.
 
-```
+~~~pseudocode
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the
-                     key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
     Inputs:
-        sk_kem     A key encapsulation secret key.
-        sk_bl      A key blinding secret key.
-        kh         A key handle output from ARKG-Derive-Public-Key.
-        info       Optional context and application specific information
-                     (can be a zero-length string).
+        sk_kem    A key encapsulation secret key.
+        sk_bl     A key blinding secret key.
+        kh        A key handle output from ARKG-Derive-Public-Key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
     Output:
-        sk'        A blinded secret key.
+        sk'       A blinded secret key.
 
     The output sk' is calculated as follows:
 
@@ -470,7 +471,7 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
     sk' = BL-Blind-Secret-Key(sk_bl, tau)
-```
+~~~
 
 Errors in this procedure are typically unrecoverable.
 For example, `KDF` might return an invalid `tau` or `mk`, or the `tag` may be invalid.
@@ -507,7 +508,7 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
 
-```
+~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
@@ -536,7 +537,7 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     sk_tau = sk_tau_tmp
 
     TODO: Also reject 1?
-```
+~~~
 
 
 ### Using ECDH as the KEM
@@ -562,7 +563,7 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
 
-```
+~~~pseudocode
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
@@ -584,7 +585,7 @@ KEM-Decaps(sk, c) -> k
 
     pk' = c
     k = ECDH(pk', sk)
-```
+~~~
 
 
 ### Using both elliptic curve arithmetic for key blinding and ECDH as the KEM
@@ -603,7 +604,7 @@ TODO: Caveats? I think I read in some paper or thesis about specific drawbacks o
 Let `Hash` be a cryptographic hash function.
 Then the `MAC` parameter of ARKG may be instantiated using HMAC [RFC2104] as follows:
 
-```
+~~~pseudocode
 MAC-Tag(k, m) -> t
 
     t = HMAC-Hash(K=k, text=m)
@@ -616,7 +617,7 @@ MAC-Verify(k, m, t) -> { 0, 1 }
         return 1
     Else:
         return 0
-```
+~~~
 
 
 ### Using HKDF as the KDF
@@ -624,7 +625,7 @@ MAC-Verify(k, m, t) -> { 0, 1 }
 Let `Hash` be a cryptographic hash function.
 Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as follows:
 
-```
+~~~pseudocode
 KDF(info, ikm, L) -> okm
 
     PRK = HKDF-Extract with the arguments:
@@ -637,7 +638,7 @@ KDF(info, ikm, L) -> okm
         PRK: PRK
         info: info
         L: L
-```
+~~~
 
 
 ## Concrete ARKG instantiations
