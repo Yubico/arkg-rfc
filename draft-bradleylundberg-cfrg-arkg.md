@@ -809,23 +809,6 @@ one can also break the same property of the construction by Frymann et al.
 TODO
 
 
-# References
-
-TODO
-
-TODO: Ask authors for canonical reference addresses
-
-
-
-[att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
-[authdata]: https://w3c.github.io/webauthn/#authenticator-data
-[ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
-[privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
-[rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
-[rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
-
-
-
 --- back
 
 # Acknowledgements
