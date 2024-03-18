@@ -41,13 +41,10 @@ contributor:
   organization: Yubico
 
 normative:
-  hkdf: RFC5869
   RFC2104:
-  RFC2119:
-  RFC3279:
   RFC4949:
-  RFC6090:
   RFC5869:
+  RFC6090:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
@@ -200,21 +197,7 @@ Some motivating use cases of ARKG include:
 {::boilerplate bcp14-tagged}
 
 
-## The Asynchronous Remote Key Generation (ARKG) algorithm
-
-The ARKG algorithm consists of three functions, each performed by one of two participants:
-the _delegating party_ or the _subordinate party_.
-The delegating party generates an ARKG _seed pair_ and emits the _public seed_ to the subordinate party
-while keeping the _private seed_ secret.
-The subordinate party can then use the public seed to generate derived public keys and _key handles_,
-and the delegating party can use the private seed and a key handle to derive the corresponding private key.
-
-The following subsections define some notation and
-the abstract instance parameters used to construct the three ARKG functions,
-followed by the definitions of the three ARKG functions.
-
-
-### Notation
+## Notation
 
 The following notation is used throughout this document:
 
@@ -225,14 +208,27 @@ The following notation is used throughout this document:
 
 - Elliptic curve operations are written in multiplicative notation:
   `*` denotes point multiplication, i.e., the curve group operation;
-  `^` denotes point exponentiation, i.e., repeated point multiplication;
+  `^` denotes point exponentiation, i.e., repeated point multiplication of the base with itself;
   and `+` denotes scalar addition modulo the curve order.
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
   greater than or equal to `min_inc` and strictly less than `max_exc`.
 
 
-### Instance parameters
+# The Asynchronous Remote Key Generation (ARKG) algorithm
+
+The ARKG algorithm consists of three functions, each performed by one of two participants:
+the _delegating party_ or the _subordinate party_.
+The delegating party generates an ARKG _seed pair_ and emits the _public seed_ to the subordinate party
+while keeping the _private seed_ secret.
+The subordinate party can then use the public seed to generate derived public keys and _key handles_,
+and the delegating party can use the private seed and a key handle to derive the corresponding private key.
+
+The following subsections define the abstract instance parameters used to construct the three ARKG functions,
+followed by the definitions of the three ARKG functions.
+
+
+## Instance parameters
 
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
@@ -339,14 +335,14 @@ Instantiations MUST satisfy the following compatibility criteria:
 
   It is permissible for some `KDF` outputs to not be valid blinding factors,
   as long as this happens with negligible probability -
-  see section [Design Rationale: Using a MAC].
+  see {{design-rationale-mac}}.
 
 - Output key material `okm` of length `L_mac` of `KDF`
   is a valid input MAC key `k` of `MAC-Tag(k, m)` and `MAC-Verify(k, m, t)`.
 
   It is permissible for some `KDF` outputs to not be valid MAC keys,
   as long as this happens with negligible probability -
-  see section [Design Rationale: Using a MAC].
+  see {{design-rationale-mac}}.
 
 We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM-MAC-KDF`,
 substituting the chosen instantiation for the `BL`, `KEM`, `MAC` and `KDF` parts.
@@ -356,34 +352,35 @@ Concrete ARKG instances MUST always be identified by lookup in a registry of ful
 This is to prevent usage of algorithm combinations that may be incompatible or insecure.
 
 
-### The function ARKG-Generate-Seed
+## The function ARKG-Generate-Seed
 
 This function is performed by the delegating party.
 The delegating party generates the ARKG seed pair `(pk, sk)`
 and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
 The subordinate party will then be able to generate public keys on behalf of the delegating party.
 
-```
+~~~pseudocode
 ARKG-Generate-Seed() -> (pk, sk)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
 
     Inputs: None
 
     Output:
-      (pk, sk)  An ARKG seed key pair with public key pk and private key sk.
+        (pk, sk)  An ARKG seed key pair with public key pk
+                    and private key sk.
 
-   The output (pk, sk) is calculated as follows:
+    The output (pk, sk) is calculated as follows:
 
-   (pk_kem, sk_kem) = KEM-Generate-Keypair()
-   (pk_bl, sk_bl) = BL-Generate-Keypair()
-   pk = (pk_kem, pk_bl)
-   sk = (sk_kem, sk_bl)
-```
+    (pk_kem, sk_kem) = KEM-Generate-Keypair()
+    (pk_bl, sk_bl) = BL-Generate-Keypair()
+    pk = (pk_kem, pk_bl)
+    sk = (sk_kem, sk_bl)
+~~~
 
 
-### The function ARKG-Derive-Public-Key
+## The function ARKG-Derive-Public-Key
 
 This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
 The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols,
@@ -392,26 +389,28 @@ and the resulting key handle `kh` can be used by the delegating party to derive 
 This function may be invoked any number of times with the same public seed,
 in order to generate any number of public keys.
 
-```
+~~~pseudocode
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
     Inputs:
-        pk_kem     A key encapsulation public key.
-        pk_bl      A key blinding public key.
-        info       Optional context and application specific information
-                     (can be a zero-length string).
+        pk_kem    A key encapsulation public key.
+        pk_bl     A key blinding public key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
     Output:
-        pk'        A blinded public key.
-        kh         A key handle for deriving the blinded
-                     secret key sk' corresponding to pk'.
+        pk'       A blinded public key.
+        kh        A key handle for deriving the blinded
+                    secret key sk' corresponding to pk'.
 
     The output (pk, sk) is calculated as follows:
 
@@ -422,14 +421,14 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
 
     pk' = BL-Blind-Public-Key(pk_bl, tau)
     kh = (c, tag)
-```
+~~~
 
 If this procedure aborts due to an error,
 for example because `KDF` returns an invalid `tau` or `mk`,
 the procedure can safely be retried with the same arguments.
 
 
-### The function ARKG-Derive-Secret-Key
+## The function ARKG-Derive-Secret-Key
 
 This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
 The resulting secret key `sk'` can be used in asymmetric cryptography protocols
@@ -438,26 +437,27 @@ to prove possession of `sk'` to an external party that has the corresponding pub
 This function may be invoked any number of times with the same private seed,
 in order to derive the same or different secret keys any number of times.
 
-```
+~~~pseudocode
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
     Options:
-        BL         The key blinding scheme chosen for the ARKG instantiation.
-        KEM        The key encapsulation mechanism chosen for the ARKG instantiation.
-        MAC        The MAC scheme chosen for the ARKG instantiation.
-        KDF        The key derivation function chosen for the ARKG instantiation.
-        L_bl       The length in octets of the blinding factor tau of the
-                     key blinding scheme BL.
-        L_mac      The length in octets of the MAC key of the MAC scheme MAC.
+        BL        A key blinding scheme.
+        KEM       A key encapsulation mechanism.
+        MAC       A MAC scheme.
+        KDF       A key derivation function.
+        L_bl      The length in octets of the blinding factor tau
+                    of the key blinding scheme BL.
+        L_mac     The length in octets of the MAC key
+                    of the MAC scheme MAC.
 
     Inputs:
-        sk_kem     A key encapsulation secret key.
-        sk_bl      A key blinding secret key.
-        kh         A key handle output from ARKG-Derive-Public-Key.
-        info       Optional context and application specific information
-                     (can be a zero-length string).
+        sk_kem    A key encapsulation secret key.
+        sk_bl     A key blinding secret key.
+        kh        A key handle output from ARKG-Derive-Public-Key.
+        info      Optional context and application specific
+                    information (can be a zero-length string).
 
     Output:
-        sk'        A blinded secret key.
+        sk'       A blinded secret key.
 
     The output sk' is calculated as follows:
 
@@ -470,7 +470,7 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
     sk' = BL-Blind-Secret-Key(sk_bl, tau)
-```
+~~~
 
 Errors in this procedure are typically unrecoverable.
 For example, `KDF` might return an invalid `tau` or `mk`, or the `tag` may be invalid.
@@ -478,18 +478,16 @@ ARKG instantiations SHOULD be chosen in a way that such errors are impossible
 if `kh` was generated by an honest and correct implementation of `ARKG-Derive-Public-Key`.
 Incorrect or malicious implementations of `ARKG-Derive-Public-Key` do not degrade the security
 of a correct and honest implementation of `ARKG-Derive-Secret-Key`.
-See also section [Design Rationale: Using a MAC].
+See also {{design-rationale-mac}}.
 
 
-## Generic ARKG instantiations
+# Generic ARKG instantiations
 
 This section defines generic formulae for instantiating the individual ARKG parameters,
 which can be used to define concrete ARKG instantiations.
 
-TODO: IANA registry? COSE/JOSE?
 
-
-### Using elliptic curve arithmetic for key blinding
+## Using elliptic curve arithmetic for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
 can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020] [Wilson]
@@ -507,7 +505,7 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
 
-```
+~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
@@ -536,10 +534,10 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     sk_tau = sk_tau_tmp
 
     TODO: Also reject 1?
-```
+~~~
 
 
-### Using ECDH as the KEM
+## Using ECDH as the KEM {#kem-ecdh}
 
 Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism.
 This section defines a general formula for such instantiations of `KEM`.
@@ -562,7 +560,7 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
 
-```
+~~~pseudocode
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
@@ -584,10 +582,10 @@ KEM-Decaps(sk, c) -> k
 
     pk' = c
     k = ECDH(pk', sk)
-```
+~~~
 
 
-### Using both elliptic curve arithmetic for key blinding and ECDH as the KEM
+## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
 
 If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
 as described in the previous sections,
@@ -598,12 +596,12 @@ as both the key blinding public key and the KEM public key. [Frymann2020]
 TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
 
 
-### Using HMAC as the MAC
+## Using HMAC as the MAC {#mac-hmac}
 
 Let `Hash` be a cryptographic hash function.
 Then the `MAC` parameter of ARKG may be instantiated using HMAC [RFC2104] as follows:
 
-```
+~~~pseudocode
 MAC-Tag(k, m) -> t
 
     t = HMAC-Hash(K=k, text=m)
@@ -616,15 +614,15 @@ MAC-Verify(k, m, t) -> { 0, 1 }
         return 1
     Else:
         return 0
-```
+~~~
 
 
-### Using HKDF as the KDF
+## Using HKDF as the KDF {#kdf-hkdf}
 
 Let `Hash` be a cryptographic hash function.
 Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as follows:
 
-```
+~~~pseudocode
 KDF(info, ikm, L) -> okm
 
     PRK = HKDF-Extract with the arguments:
@@ -637,113 +635,113 @@ KDF(info, ikm, L) -> okm
         PRK: PRK
         info: info
         L: L
-```
+~~~
 
 
-## Concrete ARKG instantiations
+# Concrete ARKG instantiations
 
 This section defines an initial set of concrete ARKG instantiations.
 
 TODO: IANA registry? COSE/JOSE?
 
 
-#### ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp256r1` [SEC2].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
   - `crv`: The NIST curve `secp256r1` [SEC2].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
 
-#### ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
+## ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
 
-The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instantiation:
+The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp384r1` [SEC2].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
   - `crv`: The NIST curve `secp384r1` [SEC2].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-384 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-384 [FIPS 180-4].
 - `L_bl`: 48
 - `L_mac`: 48
 
 
-#### ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
+## ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
 
-The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instantiation:
+The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The NIST curve `secp521r1` [SEC2].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
   - `crv`: The NIST curve `secp521r1` [SEC2].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-512 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-512 [FIPS 180-4].
 - `L_bl`: 64
 - `L_mac`: 64
 
 
-#### ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The SECG curve `secp256k1` [SEC2].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
   - `crv`: The SECG curve `secp256k1` [SEC2].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
 
-#### ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The curve `Ed25519` [REF?].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
   - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
 
-#### ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
 
-The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instantiation:
+The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in section [Using elliptic curve arithmetic for key blinding] with the parameter:
+- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
   - `crv`: The curve `X25519` [REF?].
-- `KEM`: ECDH [RFC6090] as described in section [Using ECDH as the KEM] with the parameter:
+- `KEM`: ECDH [RFC6090] as described in {{kem-ecdh}} with the parameter:
   - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in section [Using HMAC as the MAC] with the parameter:
+- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in section [Using HKDF as the KDF] with the parameter:
+- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
 - `L_bl`: 32
 - `L_mac`: 32
 
 
-## COSE bindings
+# COSE bindings
 
 TODO?: Define COSE representations for interoperability:
 - ARKG public seed (for interoperability between different implementers of `ARKG-Generate-Seed` and `ARKG-Derive-Public-Key`)
@@ -767,7 +765,7 @@ TODO
 
 # Design rationale
 
-## Using a MAC
+## Using a MAC {#design-rationale-mac}
 
 The ARKG construction by Wilson [Wilson] omits the MAC and instead encodes application context in the PRF labels,
 arguing this leads to invalid keys/signatures in cases that would have a bad MAC.
