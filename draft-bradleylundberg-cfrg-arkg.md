@@ -121,6 +121,8 @@ We expect that additional instances will be defined in the future.
 
 --- middle
 
+{:emlun: source="Emil"}
+
 # Introduction
 
 Asymmetric cryptography, also called public key cryptography, is a fundamental component of much of modern information security.
@@ -513,8 +515,6 @@ BL-Generate-Keypair() -> (pk, sk)
     If pk_tmp equals the point at infinity, abort with an error.
     pk = pk_tmp
 
-    TODO: Also reject G?
-
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
@@ -523,8 +523,6 @@ BL-Blind-Public-Key(pk, tau) -> pk_tau
     If pk_tau_tmp equals the point at infinity, abort with an error.
     pk_tau = pk_tau_tmp
 
-    TODO: Also reject G?
-
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
@@ -532,9 +530,11 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
-
-    TODO: Also reject 1?
 ~~~
+
+[^also_reject_g]{:emlun}
+[^also_reject_1]{:emlun}
+
 
 
 ## Using ECDH as the KEM {#kem-ecdh}
@@ -568,8 +568,6 @@ KEM-Generate-Keypair() -> (pk, sk)
     If pk_tmp equals the point at infinity, abort with an error.
     pk = pk_tmp
 
-    TODO: Also reject G?
-
 
 KEM-Encaps(pk) -> (k, c)
     (pk', sk') = KEM-Generate-Keypair()
@@ -584,6 +582,8 @@ KEM-Decaps(sk, c) -> k
     k = ECDH(pk', sk)
 ~~~
 
+[^also_reject_g]{:emlun}
+
 
 ## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
 
@@ -593,7 +593,7 @@ then both of them MAY use the same curve or MAY use different curves.
 If both use the same curve, then it is also possible to use the same public key
 as both the key blinding public key and the KEM public key. [Frymann2020]
 
-TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
+[^same_key_caveats]{:emlun}
 
 
 ## Using HMAC as the MAC {#mac-hmac}
@@ -858,3 +858,7 @@ TODO
 -01
   Editorial Fixes to formatting and references.
 
+
+[^also_reject_g]: ISSUE: Also reject point G?
+[^also_reject_1]: ISSUE: Also reject scalar 1?
+[^same_key_caveats]: ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
