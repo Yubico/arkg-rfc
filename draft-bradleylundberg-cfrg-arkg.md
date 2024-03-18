@@ -121,6 +121,8 @@ We expect that additional instances will be defined in the future.
 
 --- middle
 
+{:emlun: source="Emil"}
+
 # Introduction
 
 Asymmetric cryptography, also called public key cryptography, is a fundamental component of much of modern information security.
@@ -490,7 +492,7 @@ which can be used to define concrete ARKG instantiations.
 ## Using elliptic curve arithmetic for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020] [Wilson]
+can use elliptic curve arithmetic as the key blinding scheme `BL` [Frymann2020] [Wilson].
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
@@ -513,8 +515,6 @@ BL-Generate-Keypair() -> (pk, sk)
     If pk_tmp equals the point at infinity, abort with an error.
     pk = pk_tmp
 
-    TODO: Also reject G?
-
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
@@ -523,8 +523,6 @@ BL-Blind-Public-Key(pk, tau) -> pk_tau
     If pk_tau_tmp equals the point at infinity, abort with an error.
     pk_tau = pk_tau_tmp
 
-    TODO: Also reject G?
-
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
@@ -532,14 +530,16 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
-
-    TODO: Also reject 1?
 ~~~
+
+[^also_reject_g]{:emlun}
+[^also_reject_1]{:emlun}
+
 
 
 ## Using ECDH as the KEM {#kem-ecdh}
 
-Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism.
+Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [Frymann2020] [Wilson].
 This section defines a general formula for such instantiations of `KEM`.
 
 Let `crv` be an elliptic curve used for ECDH.
@@ -568,8 +568,6 @@ KEM-Generate-Keypair() -> (pk, sk)
     If pk_tmp equals the point at infinity, abort with an error.
     pk = pk_tmp
 
-    TODO: Also reject G?
-
 
 KEM-Encaps(pk) -> (k, c)
     (pk', sk') = KEM-Generate-Keypair()
@@ -584,6 +582,8 @@ KEM-Decaps(sk, c) -> k
     k = ECDH(pk', sk)
 ~~~
 
+[^also_reject_g]{:emlun}
+
 
 ## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
 
@@ -593,7 +593,7 @@ then both of them MAY use the same curve or MAY use different curves.
 If both use the same curve, then it is also possible to use the same public key
 as both the key blinding public key and the KEM public key. [Frymann2020]
 
-TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
+[^same_key_caveats]{:emlun}
 
 
 ## Using HMAC as the MAC {#mac-hmac}
@@ -809,23 +809,6 @@ one can also break the same property of the construction by Frymann et al.
 TODO
 
 
-# References
-
-TODO
-
-TODO: Ask authors for canonical reference addresses
-
-
-
-[att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
-[authdata]: https://w3c.github.io/webauthn/#authenticator-data
-[ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
-[privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
-[rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
-[rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
-
-
-
 --- back
 
 # Acknowledgements
@@ -858,3 +841,7 @@ TODO
 -01
   Editorial Fixes to formatting and references.
 
+
+[^also_reject_g]: ISSUE: Also reject point G?
+[^also_reject_1]: ISSUE: Also reject scalar 1?
+[^same_key_caveats]: ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
