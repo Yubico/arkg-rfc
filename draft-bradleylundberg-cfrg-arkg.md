@@ -502,8 +502,8 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - Elliptic curve scalar values are encoded to and from octet strings
   using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
@@ -547,8 +547,8 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 KEM-Generate-Keypair() -> (pk, sk)
