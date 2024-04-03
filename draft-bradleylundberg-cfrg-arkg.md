@@ -511,15 +511,11 @@ BL-Generate-Keypair() -> (pk, sk)
     sk = Random(1, N)
     pk = G^sk
 
-    TODO: Also reject G?
-
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
     If tau = 0 or tau >= N, abort with an error.
     pk_tau = pk * (G^tau)
-
-    TODO: Also reject G?
 
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
@@ -528,8 +524,6 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
-
-    TODO: Also reject 1?
 ~~~
 
 
@@ -561,8 +555,6 @@ KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
     pk = G^sk
-
-    TODO: Also reject G?
 
 
 KEM-Encaps(pk) -> (k, c)
