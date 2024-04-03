@@ -225,7 +225,8 @@ Table of Contents
    *  Elliptic curve operations are written in additive notation: +
       denotes point addition, i.e., the curve group operation; * denotes
       point multiplication, i.e., repeated point addition; and + also
-      denotes scalar addition modulo the curve order.
+      denotes scalar addition modulo the curve order. * has higher
+      precedence than +, i.e., a + b * C is equivalent to a + (b * C).
 
    *  Random(min_inc, max_exc) represents a cryptographically secure
       random integer greater than or equal to min_inc and strictly less

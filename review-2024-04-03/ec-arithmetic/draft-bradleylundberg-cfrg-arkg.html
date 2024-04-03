@@ -1374,7 +1374,8 @@ they are encoded using UTF-8.<a href="#section-1.2-2.2.1" class="pilcrow">¶</a>
             <p id="section-1.2-2.3.1">Elliptic curve operations are written in additive notation:
 <code>+</code> denotes point addition, i.e., the curve group operation;
 <code>*</code> denotes point multiplication, i.e., repeated point addition;
-and <code>+</code> also denotes scalar addition modulo the curve order.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
+and <code>+</code> also denotes scalar addition modulo the curve order.
+<code>*</code> has higher precedence than <code>+</code>, i.e., <code>a + b * C</code> is equivalent to <code>a + (b * C)</code>.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.4">
             <p id="section-1.2-2.4.1"><code>Random(min_inc, max_exc)</code> represents a cryptographically secure random integer
