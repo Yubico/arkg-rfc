@@ -625,14 +625,14 @@ Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as fol
 ~~~pseudocode
 KDF(info, ikm, L) -> okm
 
-    PRK = HKDF-Extract with the arguments:
+    prk = HKDF-Extract with the arguments:
         Hash: Hash
         salt: not set
         IKM: ikm
 
     okm = HKDF-Expand with the arguments:
         Hash: Hash
-        PRK: PRK
+        PRK: prk
         info: info
         L: L
 ~~~
