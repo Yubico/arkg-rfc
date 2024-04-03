@@ -206,10 +206,11 @@ The following notation is used throughout this document:
 - When literal text strings are to be interpreted as octet strings,
   they are encoded using UTF-8.
 
-- Elliptic curve operations are written in multiplicative notation:
-  `*` denotes point multiplication, i.e., the curve group operation;
-  `^` denotes point exponentiation, i.e., repeated point multiplication of the base with itself;
-  and `+` denotes scalar addition modulo the curve order.
+- Elliptic curve operations are written in additive notation:
+  `+` denotes point addition, i.e., the curve group operation;
+  `*` denotes point multiplication, i.e., repeated point addition;
+  and `+` also denotes scalar addition modulo the curve order.
+  `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
   greater than or equal to `min_inc` and strictly less than `max_exc`.
@@ -509,13 +510,13 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk = G^sk
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
     If tau = 0 or tau >= N, abort with an error.
-    pk_tau = pk * (G^tau)
+    pk_tau = pk + tau * G
 
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
@@ -554,7 +555,7 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk = G^sk
+    pk = sk * G
 
 
 KEM-Encaps(pk) -> (k, c)
