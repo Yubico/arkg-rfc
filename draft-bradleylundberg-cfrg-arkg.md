@@ -585,15 +585,15 @@ KEM-Decaps(sk, c) -> k
 ~~~
 
 
-## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
+## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
 
-If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
-as described in the previous sections,
-then both of them MAY use the same curve or MAY use different curves.
-If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. [Frymann2020]
-
-TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
+When an ARKG instance uses the same type of key for both the key blinding and the KEM -
+for example, if elliptic curve arithmetic is used for key blinding as described in {{blinding-ec}}
+and ECDH is used as the KEM as described in {{kem-ecdh}} [Frymann2020] -
+then the two keys MAY be the same key.
+Representations of such an ARKG seed MAY allow for omitting the second copy of the constituent key,
+but such representations MUST clearly identify that the single constituent key is to be used
+both as the key blinding key and the KEM key.
 
 
 ## Using HMAC as the MAC {#mac-hmac}
