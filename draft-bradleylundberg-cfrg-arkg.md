@@ -379,6 +379,22 @@ ARKG-Generate-Seed() -> (pk, sk)
     sk = (sk_kem, sk_bl)
 ~~~
 
+### Deterministic key generation
+
+Although the above definition expresses the key generation as opaque,
+likely sampling random key distributions,
+implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
+`KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
+as deriving keys deterministically from some given input key material.
+This can be thought of as defining a single-use ARKG instance where these functions return a constant result.
+This use case is beyond the scope of this document
+since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
+even if applications choose to distribute the delegating party across multiple processing entities.
+
+For example, one entity may randomly sample `pk_bl`, derive `pk_kem` deterministically from `pk_bl`
+and submit only `pk_bl` to a separate service that uses the same procedure to also derive the same `pk_kem`.
+This document considers both of these entities as parts of the same logical delegating party.
+
 
 ## The function ARKG-Derive-Public-Key
 
