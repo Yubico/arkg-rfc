@@ -45,20 +45,26 @@ normative:
   RFC4949:
   RFC5869:
   RFC6090:
+  SEC1:
+    target: http://www.secg.org/sec1-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2009
+    title: 'SEC 1: Elliptic Curve Cryptography'
+  SEC2:
+    target: http://www.secg.org/sec2-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2010
+    title: 'SEC 2: Recommended Elliptic Curve Domain Parameters'
+
+informative:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
     author:
     - name: Pieter Wuille
     date: 2012
-  SEC1:
-    target: http://www.secg.org/sec1-v2.pdf
-    author:
-    - org: Certicom Research
-    date: 2020
-    title: SEC 1 Elliptic Curve Cryptography
-
-informative:
   Clermont:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
@@ -121,6 +127,8 @@ We expect that additional instances will be defined in the future.
 
 --- middle
 
+{:emlun: source="Emil"}
+
 # Introduction
 
 Asymmetric cryptography, also called public key cryptography, is a fundamental component of much of modern information security.
@@ -168,7 +176,7 @@ Some motivating use cases of ARKG include:
 - Enhanced forward secrecy for encrypted messaging.
   For example, [section 8.5.4 of RFC 9052][rfc9052-direct-key-agreement] defines COSE representations for encrypted messages and notes that
   "Since COSE is designed for a store-and-forward environment rather than an online environment,
-  [...] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
+  \[...\] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
   Applications could work around this limitation by exchanging a large number of keys in advance,
   but that number limits how many messages can be sent before another such exchange is needed.
   This also requires the sender to allocate storage space for the keys,
@@ -362,7 +370,7 @@ The subordinate party will then be able to generate public keys on behalf of the
 
 ~~~pseudocode
 ARKG-Generate-Seed() -> (pk, sk)
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
@@ -392,7 +400,7 @@ in order to generate any number of public keys.
 
 ~~~pseudocode
 ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
         MAC       A MAC scheme.
@@ -405,8 +413,9 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
-        info      Optional context and application specific
-                    information (can be a zero-length string).
+        info      An octet string containing optional context
+                    and application specific information
+                    (can be a zero-length string).
 
     Output:
         pk'       A blinded public key.
@@ -440,7 +449,7 @@ in order to derive the same or different secret keys any number of times.
 
 ~~~pseudocode
 ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
-    Options:
+    ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
         MAC       A MAC scheme.
@@ -454,8 +463,9 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
         sk_kem    A key encapsulation secret key.
         sk_bl     A key blinding secret key.
         kh        A key handle output from ARKG-Derive-Public-Key.
-        info      Optional context and application specific
-                    information (can be a zero-length string).
+        info      An octet string containing optional context
+                    and application specific information
+                    (can be a zero-length string).
 
     Output:
         sk'       A blinded secret key.
@@ -491,17 +501,17 @@ which can be used to define concrete ARKG instantiations.
 ## Using elliptic curve arithmetic for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL`. [Frymann2020] [Wilson]
+can use elliptic curve arithmetic as the key blinding scheme `BL` [Frymann2020] [Wilson].
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
 Then the `BL` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `G` is the generator of `crv`.
 - `N` is the order of `G`.
@@ -530,20 +540,20 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
 ## Using ECDH as the KEM {#kem-ecdh}
 
-Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism.
+Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [Frymann2020] [Wilson].
 This section defines a general formula for such instantiations of `KEM`.
 
 Let `crv` be an elliptic curve used for ECDH.
 Then the `KEM` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve coordinate field elements are encoded to and from octet strings
-  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
@@ -580,7 +590,7 @@ then both of them MAY use the same curve or MAY use different curves.
 If both use the same curve, then it is also possible to use the same public key
 as both the key blinding public key and the KEM public key. [Frymann2020]
 
-TODO: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
+[^same_key_caveats]{:emlun}
 
 
 ## Using HMAC as the MAC {#mac-hmac}
@@ -612,14 +622,14 @@ Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as fol
 ~~~pseudocode
 KDF(info, ikm, L) -> okm
 
-    PRK = HKDF-Extract with the arguments:
+    prk = HKDF-Extract with the arguments:
         Hash: Hash
         salt: not set
         IKM: ikm
 
     okm = HKDF-Expand with the arguments:
         Hash: Hash
-        PRK: PRK
+        PRK: prk
         info: info
         L: L
 ~~~
@@ -796,23 +806,6 @@ one can also break the same property of the construction by Frymann et al.
 TODO
 
 
-# References
-
-TODO
-
-TODO: Ask authors for canonical reference addresses
-
-
-
-[att-cred-data]: https://w3c.github.io/webauthn/#attested-credential-data
-[authdata]: https://w3c.github.io/webauthn/#authenticator-data
-[ctap2-canon]: https://fidoalliance.org/specs/fido-v2.0-ps-20190130/fido-client-to-authenticator-protocol-v2.0-ps-20190130.html#ctap2-canonical-cbor-encoding-form
-[privacy-cons]: https://www.w3.org/TR/2019/WD-webauthn-2-20191126/#sctn-credential-id-privacy-leak
-[rp-auth-ext-processing]: https://w3c.github.io/webauthn/#sctn-verifying-assertion
-[rp-reg-ext-processing]: https://w3c.github.io/webauthn/#sctn-registering-a-new-credential
-
-
-
 --- back
 
 # Acknowledgements
@@ -845,3 +838,5 @@ TODO
 -01
   Editorial Fixes to formatting and references.
 
+
+[^same_key_caveats]: ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
