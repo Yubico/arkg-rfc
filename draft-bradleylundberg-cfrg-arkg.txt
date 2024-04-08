@@ -673,14 +673,14 @@ Table of Contents
 
    KDF(info, ikm, L) -> okm
 
-       PRK = HKDF-Extract with the arguments:
+       prk = HKDF-Extract with the arguments:
            Hash: Hash
            salt: not set
            IKM: ikm
 
        okm = HKDF-Expand with the arguments:
            Hash: Hash
-           PRK: PRK
+           PRK: prk
            info: info
            L: L
 
