@@ -421,7 +421,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
         kh        A key handle for deriving the blinded
                     secret key sk' corresponding to pk'.
 
-    The output (pk, sk) is calculated as follows:
+    The output (pk', kh) is calculated as follows:
 
     (k, c) = KEM-Encaps(pk_kem)
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
