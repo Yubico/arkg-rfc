@@ -376,8 +376,8 @@ ARKG-Generate-Seed() -> (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)  An ARKG seed key pair with public key pk
-                    and private key sk.
+        (pk, sk)  An ARKG seed pair with public seed pk
+                    and private seed sk.
 
     The output (pk, sk) is calculated as follows:
 
