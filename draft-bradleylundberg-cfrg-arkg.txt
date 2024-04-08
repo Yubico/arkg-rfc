@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 19 September 2024                                 18 March 2024
+Expires: 10 October 2024                                    8 April 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 September 2024.
+   This Internet-Draft will expire on 10 October 2024.
 
 Copyright Notice
 
@@ -538,11 +538,10 @@ Table of Contents
    instantiated as follows:
 
    *  Elliptic curve points are encoded to and from octet strings using
-      the procedures defined in sections 2.3.3 and 2.3.4 of SEC 1
-      [SEC1].
+      the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
    *  Elliptic curve scalar values are encoded to and from octet strings
-      using the procedures defined in sections 2.3.7 and 2.3.8 of SEC 1
+      using the procedures defined in sections 2.3.7 and 2.3.8 of
       [SEC1].
 
    *  N is the order of crv.
@@ -588,15 +587,14 @@ Table of Contents
    of ARKG may be instantiated as follows:
 
    *  Elliptic curve points are encoded to and from octet strings using
-      the procedures defined in sections 2.3.3 and 2.3.4 of SEC 1
-      [SEC1].
+      the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
    *  Elliptic curve coordinate field elements are encoded to and from
       octet strings using the procedures defined in sections 2.3.5 and
-      2.3.6 of SEC 1 [SEC1].
+      2.3.6 of [SEC1].
 
    *  Elliptic curve scalar values are encoded to and from octet strings
-      using the procedures defined in sections 2.3.7 and 2.3.8 of SEC 1
+      using the procedures defined in sections 2.3.7 and 2.3.8 of
       [SEC1].
 
    *  ECDH(pk, sk) represents the compact output of ECDH [RFC6090] using
@@ -927,10 +925,6 @@ Table of Contents
 
 11.1.  Normative References
 
-   [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
-              2012, <https://github.com/bitcoin/bips/blob/master/bip-
-              0032.mediawiki>.
-
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
               DOI 10.17487/RFC2104, February 1997,
@@ -959,10 +953,18 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [SEC1]     Certicom Research, "SEC 1 Elliptic Curve Cryptography",
-              2020, <http://www.secg.org/sec1-v2.pdf>.
+   [SEC1]     Certicom Research, "SEC 1: Elliptic Curve Cryptography",
+              2009, <http://www.secg.org/sec1-v2.pdf>.
+
+   [SEC2]     Certicom Research, "SEC 2: Recommended Elliptic Curve
+              Domain Parameters", 2010,
+              <http://www.secg.org/sec2-v2.pdf>.
 
 11.2.  Informative References
+
+   [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
+              2012, <https://github.com/bitcoin/bips/blob/master/bip-
+              0032.mediawiki>.
 
    [Clermont] Clermont, S. A. and Technische Universität Darmstadt,
               "Post Quantum Asynchronous Remote Key Generation. Master's
