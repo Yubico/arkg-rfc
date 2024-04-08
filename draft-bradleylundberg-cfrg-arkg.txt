@@ -102,9 +102,8 @@ Table of Contents
      9.1.  Using a MAC
      9.2.  Implementation Status
    10. References
-   11. References
-     11.1.  Normative References
-     11.2.  Informative References
+     10.1.  Normative References
+     10.2.  Informative References
    Appendix A.  Acknowledgements
    Appendix B.  Test Vectors
    Appendix C.  Document History
@@ -532,9 +531,9 @@ Table of Contents
 3.1.  Using elliptic curve arithmetic for key blinding
 
    Instantiations of ARKG whose output keys are elliptic curve keys can
-   use elliptic curve arithmetic as the key blinding scheme BL.
-   Frymann2020 [Wilson] This section defines a general formula for such
-   instantiations of BL.
+   use elliptic curve arithmetic as the key blinding scheme BL
+   Frymann2020 [Wilson].  This section defines a general formula for
+   such instantiations of BL.
 
    Let crv be an elliptic curve.  Then the BL parameter of ARKG may be
    instantiated as follows:
@@ -557,8 +556,6 @@ Table of Contents
        If pk_tmp equals the point at infinity, abort with an error.
        pk = pk_tmp
 
-       TODO: Also reject G?
-
 
    BL-Blind-Public-Key(pk, tau) -> pk_tau
 
@@ -566,8 +563,6 @@ Table of Contents
        pk_tau_tmp = pk * (G^tau)
        If pk_tau_tmp equals the point at infinity, abort with an error.
        pk_tau = pk_tau_tmp
-
-       TODO: Also reject G?
 
 
    BL-Blind-Secret-Key(sk, tau) -> sk_tau
@@ -577,13 +572,19 @@ Table of Contents
        If sk_tau_tmp = 0, abort with an error.
        sk_tau = sk_tau_tmp
 
-       TODO: Also reject 1?
+
+   // ISSUE: Also reject point G?
+   //
+   // -- Emil
+   // ISSUE: Also reject scalar 1?
+   //
+   // -- Emil
 
 3.2.  Using ECDH as the KEM
 
    Instantiations of ARKG can use ECDH [RFC6090] as the key
-   encapsulation mechanism.  This section defines a general formula for
-   such instantiations of KEM.
+   encapsulation mechanism KEM Frymann2020 [Wilson].  This section
+   defines a general formula for such instantiations of KEM.
 
    Let crv be an elliptic curve used for ECDH.  Then the KEM parameter
    of ARKG may be instantiated as follows:
@@ -613,8 +614,6 @@ Table of Contents
        If pk_tmp equals the point at infinity, abort with an error.
        pk = pk_tmp
 
-       TODO: Also reject G?
-
 
    KEM-Encaps(pk) -> (k, c)
        (pk', sk') = KEM-Generate-Keypair()
@@ -628,6 +627,11 @@ Table of Contents
        pk' = c
        k = ECDH(pk', sk)
 
+
+   // ISSUE: Also reject point G?
+   //
+   // -- Emil
+
 3.3.  Using both elliptic curve arithmetic for key blinding and ECDH as
       the KEM
 
@@ -638,8 +642,11 @@ Table of Contents
    as both the key blinding public key and the KEM public key.
    [Frymann2020]
 
-   TODO: Caveats?  I think I read in some paper or thesis about specific
-   drawbacks of using the same key for both.
+
+   // ISSUE: Caveats?  I think I read in some paper or thesis about
+   // specific drawbacks of using the same key for both.
+   //
+   // -- Emil
 
 3.4.  Using HMAC as the MAC
 
@@ -919,13 +926,7 @@ Table of Contents
 
 10.  References
 
-   TODO
-
-   TODO: Ask authors for canonical reference addresses
-
-11.  References
-
-11.1.  Normative References
+10.1.  Normative References
 
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
@@ -962,7 +963,7 @@ Table of Contents
               Domain Parameters", 2010,
               <http://www.secg.org/sec2-v2.pdf>.
 
-11.2.  Informative References
+10.2.  Informative References
 
    [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
