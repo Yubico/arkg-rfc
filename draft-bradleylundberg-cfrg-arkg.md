@@ -45,20 +45,26 @@ normative:
   RFC4949:
   RFC5869:
   RFC6090:
+  SEC1:
+    target: http://www.secg.org/sec1-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2009
+    title: 'SEC 1: Elliptic Curve Cryptography'
+  SEC2:
+    target: http://www.secg.org/sec2-v2.pdf
+    author:
+    - org: Certicom Research
+    date: 2010
+    title: 'SEC 2: Recommended Elliptic Curve Domain Parameters'
+
+informative:
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
     author:
     - name: Pieter Wuille
     date: 2012
-  SEC1:
-    target: http://www.secg.org/sec1-v2.pdf
-    author:
-    - org: Certicom Research
-    date: 2020
-    title: SEC 1 Elliptic Curve Cryptography
-
-informative:
   Clermont:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
@@ -168,7 +174,7 @@ Some motivating use cases of ARKG include:
 - Enhanced forward secrecy for encrypted messaging.
   For example, [section 8.5.4 of RFC 9052][rfc9052-direct-key-agreement] defines COSE representations for encrypted messages and notes that
   "Since COSE is designed for a store-and-forward environment rather than an online environment,
-  [...] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
+  \[...\] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
   Applications could work around this limitation by exchanging a large number of keys in advance,
   but that number limits how many messages can be sent before another such exchange is needed.
   This also requires the sender to allocate storage space for the keys,
@@ -497,10 +503,10 @@ Let `crv` be an elliptic curve.
 Then the `BL` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `N` is the order of `crv`.
 - `G` is the generator of `crv`.
@@ -546,13 +552,13 @@ Let `crv` be an elliptic curve used for ECDH.
 Then the `KEM` parameter of ARKG may be instantiated as follows:
 
 - Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
 
 - Elliptic curve coordinate field elements are encoded to and from octet strings
-  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC1].
 
 - Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC 1][sec1].
+  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
