@@ -382,11 +382,11 @@ ARKG-Generate-Seed() -> (pk, sk)
 ### Deterministic key generation
 
 Although the above definition expresses the key generation as opaque,
-likely sampling random key distributions,
+likely sampling uniformly random key distributions,
 implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
 `KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
-as deriving keys deterministically from some given input key material.
-This can be thought of as defining a single-use ARKG instance where these functions return a constant result.
+as deterministic functions of some out-of-band input.
+This can be thought of as defining a single-use ARKG instance where these function outputs are static.
 This use case is beyond the scope of this document
 since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
 even if applications choose to distribute the delegating party across multiple processing entities.
