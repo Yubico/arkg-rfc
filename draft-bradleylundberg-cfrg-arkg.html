@@ -1040,7 +1040,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 10 October 2024</td>
+<td class="center">Expires 11 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-04-08" class="published">8 April 2024</time>
+<time datetime="2024-04-09" class="published">9 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-10-10">10 October 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-11">11 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1614,7 +1614,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
         kh        A key handle for deriving the blinded
                     secret key sk' corresponding to pk'.
 
-    The output (pk, sk) is calculated as follows:
+    The output (pk', kh) is calculated as follows:
 
     (k, c) = KEM-Encaps(pk_kem)
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
