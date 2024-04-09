@@ -1165,6 +1165,11 @@ We expect that additional instances will be defined in the future.<a href="#sect
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-the-function-arkg-generate-" class="internal xref">The function ARKG-Generate-Seed</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-deterministic-key-generatio" class="internal xref">Deterministic key generation</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-the-function-arkg-derive-pu" class="internal xref">The function ARKG-Derive-Public-Key</a></p>
@@ -1576,6 +1581,25 @@ ARKG-Generate-Seed() -&gt; (pk, sk)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
+</div>
+<div id="deterministic-key-generation">
+<section id="section-2.2.1">
+          <h4 id="name-deterministic-key-generatio">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-deterministic-key-generatio" class="section-name selfRef">Deterministic key generation</a>
+          </h4>
+<p id="section-2.2.1-1">Although the above definition expresses the key generation as opaque,
+likely sampling uniformly random key distributions,
+implementations <span class="bcp14">MAY</span> choose to implement the functions <code>BL-Generate-Keypair()</code>,
+<code>KEM-Generate-Keypair()</code> and <code>ARKG-Generate-Seed()</code>
+as deterministic functions of some out-of-band input.
+This can be thought of as defining a single-use ARKG instance where these function outputs are static.
+This use case is beyond the scope of this document
+since the implementation of <code>ARKG-Generate-Seed</code> is internal to the delegating party,
+even if applications choose to distribute the delegating party across multiple processing entities.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">For example, one entity may randomly sample <code>pk_bl</code>, derive <code>pk_kem</code> deterministically from <code>pk_bl</code>
+and submit only <code>pk_bl</code> to a separate service that uses the same procedure to also derive the same <code>pk_kem</code>.
+This document considers both of these entities as parts of the same logical delegating party.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+</section>
 </div>
 </section>
 </div>
