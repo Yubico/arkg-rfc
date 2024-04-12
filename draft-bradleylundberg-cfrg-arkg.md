@@ -377,8 +377,8 @@ ARKG-Generate-Seed() -> (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)  An ARKG seed key pair with public key pk
-                    and private key sk.
+        (pk, sk)  An ARKG seed pair with public seed pk
+                    and private seed sk.
 
     The output (pk, sk) is calculated as follows:
 
@@ -387,6 +387,22 @@ ARKG-Generate-Seed() -> (pk, sk)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 ~~~
+
+### Deterministic key generation
+
+Although the above definition expresses the key generation as opaque,
+likely sampling uniformly random key distributions,
+implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
+`KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
+as deterministic functions of some out-of-band input.
+This can be thought of as defining a single-use ARKG instance where these function outputs are static.
+This use case is beyond the scope of this document
+since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
+even if applications choose to distribute the delegating party across multiple processing entities.
+
+For example, one entity may randomly sample `pk_bl`, derive `pk_kem` deterministically from `pk_bl`
+and submit only `pk_bl` to a separate service that uses the same procedure to also derive the same `pk_kem`.
+This document considers both of these entities as parts of the same logical delegating party.
 
 
 ## The function ARKG-Derive-Public-Key
@@ -422,7 +438,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
         kh        A key handle for deriving the blinded
                     secret key sk' corresponding to pk'.
 
-    The output (pk, sk) is calculated as follows:
+    The output (pk', kh) is calculated as follows:
 
     (k, c) = KEM-Encaps(pk_kem)
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
@@ -582,15 +598,15 @@ KEM-Decaps(sk, c) -> k
 ~~~
 
 
-## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
+## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
 
-If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
-as described in the previous sections,
-then both of them MAY use the same curve or MAY use different curves.
-If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. [Frymann2020]
-
-[^same_key_caveats]{:emlun}
+When an ARKG instance uses the same type of key for both the key blinding and the KEM -
+for example, if elliptic curve arithmetic is used for key blinding as described in {{blinding-ec}}
+and ECDH is used as the KEM as described in {{kem-ecdh}} [Frymann2020] -
+then the two keys MAY be the same key.
+Representations of such an ARKG seed MAY allow for omitting the second copy of the constituent key,
+but such representations MUST clearly identify that the single constituent key is to be used
+both as the key blinding key and the KEM key.
 
 
 ## Using HMAC as the MAC {#mac-hmac}
@@ -837,6 +853,3 @@ TODO
 
 -01
   Editorial Fixes to formatting and references.
-
-
-[^same_key_caveats]: ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
