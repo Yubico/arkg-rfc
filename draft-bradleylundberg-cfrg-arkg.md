@@ -214,10 +214,11 @@ The following notation is used throughout this document:
 - When literal text strings are to be interpreted as octet strings,
   they are encoded using UTF-8.
 
-- Elliptic curve operations are written in multiplicative notation:
-  `*` denotes point multiplication, i.e., the curve group operation;
-  `^` denotes point exponentiation, i.e., repeated point multiplication of the base with itself;
-  and `+` denotes scalar addition modulo the curve order.
+- Elliptic curve operations are written in additive notation:
+  `+` denotes point addition, i.e., the curve group operation;
+  `*` denotes point multiplication, i.e., repeated point addition;
+  and `+` also denotes scalar addition modulo the curve order.
+  `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
   greater than or equal to `min_inc` and strictly less than `max_exc`.
@@ -528,24 +529,20 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - Elliptic curve scalar values are encoded to and from octet strings
   using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
     If tau = 0 or tau >= N, abort with an error.
-    pk_tau_tmp = pk * (G^tau)
-    If pk_tau_tmp equals the point at infinity, abort with an error.
-    pk_tau = pk_tau_tmp
+    pk_tau = pk + tau * G
 
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
@@ -555,10 +552,6 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
 ~~~
-
-[^also_reject_g]{:emlun}
-[^also_reject_1]{:emlun}
-
 
 
 ## Using ECDH as the KEM {#kem-ecdh}
@@ -581,16 +574,14 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 KEM-Encaps(pk) -> (k, c)
@@ -605,8 +596,6 @@ KEM-Decaps(sk, c) -> k
     pk' = c
     k = ECDH(pk', sk)
 ~~~
-
-[^also_reject_g]{:emlun}
 
 
 ## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
@@ -864,7 +853,3 @@ TODO
 
 -01
   Editorial Fixes to formatting and references.
-
-
-[^also_reject_g]: ISSUE: Also reject point G?
-[^also_reject_1]: ISSUE: Also reject scalar 1?
