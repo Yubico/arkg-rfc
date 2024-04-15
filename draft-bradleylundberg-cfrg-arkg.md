@@ -200,10 +200,11 @@ The following notation is used throughout this document:
 - When literal text strings are to be interpreted as octet strings,
   they are encoded using UTF-8.
 
-- Elliptic curve operations are written in multiplicative notation:
-  `*` denotes point multiplication, i.e., the curve group operation;
-  `^` denotes point exponentiation, i.e., repeated point multiplication of the base with itself;
-  and `+` denotes scalar addition modulo the curve order.
+- Elliptic curve operations are written in additive notation:
+  `+` denotes point addition, i.e., the curve group operation;
+  `*` denotes point multiplication, i.e., repeated point addition;
+  and `+` also denotes scalar addition modulo the curve order.
+  `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
 
 - `Random(min_inc, max_exc)` represents a cryptographically secure random integer
   greater than or equal to `min_inc` and strictly less than `max_exc`.
@@ -362,8 +363,8 @@ ARKG-Generate-Seed() -> (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)  An ARKG seed key pair with public key pk
-                    and private key sk.
+        (pk, sk)  An ARKG seed pair with public seed pk
+                    and private seed sk.
 
     The output (pk, sk) is calculated as follows:
 
@@ -372,6 +373,22 @@ ARKG-Generate-Seed() -> (pk, sk)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 ~~~
+
+### Deterministic key generation
+
+Although the above definition expresses the key generation as opaque,
+likely sampling uniformly random key distributions,
+implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
+`KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
+as deterministic functions of some out-of-band input.
+This can be thought of as defining a single-use ARKG instance where these function outputs are static.
+This use case is beyond the scope of this document
+since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
+even if applications choose to distribute the delegating party across multiple processing entities.
+
+For example, one entity may randomly sample `pk_bl`, derive `pk_kem` deterministically from `pk_bl`
+and submit only `pk_bl` to a separate service that uses the same procedure to also derive the same `pk_kem`.
+This document considers both of these entities as parts of the same logical delegating party.
 
 
 ## The function ARKG-Derive-Public-Key
@@ -407,7 +424,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
         kh        A key handle for deriving the blinded
                     secret key sk' corresponding to pk'.
 
-    The output (pk, sk) is calculated as follows:
+    The output (pk', kh) is calculated as follows:
 
     (k, c) = KEM-Encaps(pk_kem)
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
@@ -498,24 +515,20 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - Elliptic curve scalar values are encoded to and from octet strings
   using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau) -> pk_tau
 
     If tau = 0 or tau >= N, abort with an error.
-    pk_tau_tmp = pk * (G^tau)
-    If pk_tau_tmp equals the point at infinity, abort with an error.
-    pk_tau = pk_tau_tmp
+    pk_tau = pk + tau * G
 
 
 BL-Blind-Secret-Key(sk, tau) -> sk_tau
@@ -525,10 +538,6 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
 ~~~
-
-[^also_reject_g]{:emlun}
-[^also_reject_1]{:emlun}
-
 
 
 ## Using ECDH as the KEM {#kem-ecdh}
@@ -551,16 +560,14 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
   using public key (curve point) `pk` and secret key (exponent) `sk`.
 
-- `N` is the order of `crv`.
 - `G` is the generator of `crv`.
+- `N` is the order of `G`.
 
 ~~~pseudocode
 KEM-Generate-Keypair() -> (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 KEM-Encaps(pk) -> (k, c)
@@ -576,18 +583,16 @@ KEM-Decaps(sk, c) -> k
     k = ECDH(pk', sk)
 ~~~
 
-[^also_reject_g]{:emlun}
 
+## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
 
-## Using both elliptic curve arithmetic for key blinding and ECDH as the KEM {#blinding-kem-ecdh}
-
-If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
-as described in the previous sections,
-then both of them MAY use the same curve or MAY use different curves.
-If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. [Frymann2020]
-
-[^same_key_caveats]{:emlun}
+When an ARKG instance uses the same type of key for both the key blinding and the KEM -
+for example, if elliptic curve arithmetic is used for key blinding as described in {{blinding-ec}}
+and ECDH is used as the KEM as described in {{kem-ecdh}} [Frymann2020] -
+then the two keys MAY be the same key.
+Representations of such an ARKG seed MAY allow for omitting the second copy of the constituent key,
+but such representations MUST clearly identify that the single constituent key is to be used
+both as the key blinding key and the KEM key.
 
 
 ## Using HMAC as the MAC {#mac-hmac}
@@ -834,8 +839,3 @@ TODO
 
 -01
   Editorial Fixes to formatting and references.
-
-
-[^also_reject_g]: ISSUE: Also reject point G?
-[^also_reject_1]: ISSUE: Also reject scalar 1?
-[^same_key_caveats]: ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.
