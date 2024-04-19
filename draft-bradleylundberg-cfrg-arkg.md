@@ -517,7 +517,7 @@ which can be used to define concrete ARKG instantiations.
 ## Using elliptic curve arithmetic for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL` [Frymann2020] [Wilson].
+can use elliptic curve arithmetic as the key blinding scheme `BL` [Frymann2020]&nbsp;[Wilson].
 This section defines a general formula for such instantiations of `BL`.
 
 Let `crv` be an elliptic curve.
@@ -556,7 +556,7 @@ BL-Blind-Secret-Key(sk, tau) -> sk_tau
 
 ## Using ECDH as the KEM {#kem-ecdh}
 
-Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [Frymann2020] [Wilson].
+Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [Frymann2020]&nbsp;[Wilson].
 This section defines a general formula for such instantiations of `KEM`.
 
 Let `crv` be an elliptic curve used for ECDH.
