@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 14 October 2024                                   12 April 2024
+Expires: 21 October 2024                                   19 April 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 October 2024.
+   This Internet-Draft will expire on 21 October 2024.
 
 Copyright Notice
 
@@ -551,7 +551,7 @@ Table of Contents
 
    Instantiations of ARKG whose output keys are elliptic curve keys can
    use elliptic curve arithmetic as the key blinding scheme BL
-   Frymann2020 [Wilson].  This section defines a general formula for
+   [Frymann2020] [Wilson].  This section defines a general formula for
    such instantiations of BL.
 
    Let crv be an elliptic curve.  Then the BL parameter of ARKG may be
@@ -590,7 +590,7 @@ Table of Contents
 3.2.  Using ECDH as the KEM
 
    Instantiations of ARKG can use ECDH [RFC6090] as the key
-   encapsulation mechanism KEM Frymann2020 [Wilson].  This section
+   encapsulation mechanism KEM [Frymann2020] [Wilson].  This section
    defines a general formula for such instantiations of KEM.
 
    Let crv be an elliptic curve used for ECDH.  Then the KEM parameter
