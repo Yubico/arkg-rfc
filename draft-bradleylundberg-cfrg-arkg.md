@@ -713,38 +713,6 @@ The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the fo
 - `L_mac`: 32
 
 
-## ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
-
-The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
-
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
-  - `crv`: The curve `Ed25519` [REF?].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
-
-
-## ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
-
-The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
-
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `KEM`: ECDH [RFC6090] as described in {{kem-ecdh}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
-
-
 # COSE bindings
 
 TODO?: Define COSE representations for interoperability:
