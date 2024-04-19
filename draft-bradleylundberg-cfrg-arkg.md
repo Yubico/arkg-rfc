@@ -330,9 +330,9 @@ The parameters of an ARKG instance are:
 A concrete ARKG instantiation MUST specify the instantiation
 of each of the above functions and values.
 
-The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole.
-For example, if `BL-Blind-Public-Key` and `BL-Blind-Secret-Key` output ECDSA keys,
-then the ARKG instance will also output ECDSA keys.
+The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole. 
+For example, if `BL-Blind-Public-Key` and `BL-Blind-Secret-Key` output keys for ECDSA over NIST P-256,
+then the ARKG instance will also output keys for ECDSA over NIST P-256.
 
 Instantiations MUST satisfy the following compatibility criteria:
 
