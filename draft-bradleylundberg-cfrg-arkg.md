@@ -145,8 +145,11 @@ Some motivating use cases of ARKG include:
   which is set to use single-use asymmetric keys to prevent colluding verifiers from using public keys as correlation handles.
   Each digital identity credential would thus be issued with a single-use proof-of-possession key,
   used only once to present the credential to a verifier.
-  ARKG enables offline usage scenarios by allowing pre-generation of public keys for single-use credentials
+  ARKG empowers both online and offline usage scenarios:
+  for offline scenarios, ARKG enables pre-generation of public keys for single-use credentials
   without needing to access the hardware security device that holds the private keys.
+  For online scenarios, ARKG gives the credential issuer assurance
+  that all derived private keys are bound to the same secure hardware element.
 
 - __Enhanced forward secrecy__:
   The use of ARKG can facilitate forward secrecy in certain contexts.
