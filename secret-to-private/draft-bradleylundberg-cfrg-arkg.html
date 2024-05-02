@@ -1214,6 +1214,12 @@ We expect that additional instances will be defined in the future.<a href="#sect
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-arkg-p256k-ecdh-p256k-hmac-" class="internal xref">ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-arkg-ed25519-x25519-hmac-sh" class="internal xref">ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-arkg-x25519-x25519-hmac-sha" class="internal xref">ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
@@ -2073,6 +2079,102 @@ KDF(info, ikm, L) -&gt; okm
 </li>
           <li class="normal" id="section-4.4-2.6">
             <p id="section-4.4-2.6.1"><code>L_mac</code>: 32<a href="#section-4.4-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="arkg-ed25519-x25519-hmac-sha256-hkdf-sha256">
+<section id="section-4.5">
+        <h3 id="name-arkg-ed25519-x25519-hmac-sh">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-arkg-ed25519-x25519-hmac-sh" class="section-name selfRef">ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256</a>
+        </h3>
+<p id="section-4.5-1">The identifier <code>ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256</code> represents the following ARKG instance:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.1">
+            <p id="section-4.5-2.1.1"><code>BL</code>: Elliptic curve arithmetic as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameter:<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.1.2.1">
+                <p id="section-4.5-2.1.2.1.1"><code>crv</code>: The curve <code>Ed25519</code> [REF?].<a href="#section-4.5-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.5-2.2">
+            <p id="section-4.5-2.2.1"><code>KEM</code>: ECDH as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.2</a> with the parameter:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.2.2.1">
+                <p id="section-4.5-2.2.2.1.1"><code>crv</code>: The curve <code>X25519</code> [REF?].<a href="#section-4.5-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.5-2.3">
+            <p id="section-4.5-2.3.1"><code>MAC</code>: HMAC as described in <a href="#mac-hmac" class="auto internal xref">Section 3.4</a> with the parameter:<a href="#section-4.5-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.3.2.1">
+                <p id="section-4.5-2.3.2.1.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.5-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.5-2.4">
+            <p id="section-4.5-2.4.1"><code>KDF</code>: HKDF as described in <a href="#kdf-hkdf" class="auto internal xref">Section 3.5</a> with the parameter:<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.4.2.1">
+                <p id="section-4.5-2.4.2.1.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.5-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.5-2.5">
+            <p id="section-4.5-2.5.1"><code>L_bl</code>: 32<a href="#section-4.5-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.5-2.6">
+            <p id="section-4.5-2.6.1"><code>L_mac</code>: 32<a href="#section-4.5-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="arkg-x25519-x25519-hmac-sha256-hkdf-sha256">
+<section id="section-4.6">
+        <h3 id="name-arkg-x25519-x25519-hmac-sha">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-arkg-x25519-x25519-hmac-sha" class="section-name selfRef">ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256</a>
+        </h3>
+<p id="section-4.6-1">The identifier <code>ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256</code> represents the following ARKG instance:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.1">
+            <p id="section-4.6-2.1.1"><code>BL</code>: Elliptic curve arithmetic as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameter:<a href="#section-4.6-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.1.2.1">
+                <p id="section-4.6-2.1.2.1.1"><code>crv</code>: The curve <code>X25519</code> [REF?].<a href="#section-4.6-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.6-2.2">
+            <p id="section-4.6-2.2.1"><code>KEM</code>: ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span> as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.2</a> with the parameter:<a href="#section-4.6-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.2.2.1">
+                <p id="section-4.6-2.2.2.1.1"><code>crv</code>: The curve <code>X25519</code> [REF?].<a href="#section-4.6-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.6-2.3">
+            <p id="section-4.6-2.3.1"><code>MAC</code>: HMAC as described in <a href="#mac-hmac" class="auto internal xref">Section 3.4</a> with the parameter:<a href="#section-4.6-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.3.2.1">
+                <p id="section-4.6-2.3.2.1.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.6-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.6-2.4">
+            <p id="section-4.6-2.4.1"><code>KDF</code>: HKDF as described in <a href="#kdf-hkdf" class="auto internal xref">Section 3.5</a> with the parameter:<a href="#section-4.6-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.4.2.1">
+                <p id="section-4.6-2.4.2.1.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.6-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-4.6-2.5">
+            <p id="section-4.6-2.5.1"><code>L_bl</code>: 32<a href="#section-4.6-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.6-2.6">
+            <p id="section-4.6-2.6.1"><code>L_mac</code>: 32<a href="#section-4.6-2.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

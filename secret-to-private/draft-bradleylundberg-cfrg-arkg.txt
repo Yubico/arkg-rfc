@@ -92,6 +92,8 @@ Table of Contents
      4.2.  ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
      4.3.  ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
      4.4.  ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
+     4.5.  ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
+     4.6.  ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
    5.  COSE bindings
    6.  Security Considerations
    7.  Privacy Considerations
@@ -746,6 +748,59 @@ Table of Contents
    *  KEM: ECDH as described in Section 3.2 with the parameter:
 
       -  crv: The SECG curve secp256k1 [SEC2].
+
+   *  MAC: HMAC as described in Section 3.4 with the parameter:
+
+      -  Hash: SHA-256 [FIPS 180-4].
+
+   *  KDF: HKDF as described in Section 3.5 with the parameter:
+
+      -  Hash: SHA-256 [FIPS 180-4].
+
+   *  L_bl: 32
+
+   *  L_mac: 32
+
+4.5.  ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
+
+   The identifier ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256 represents
+   the following ARKG instance:
+
+   *  BL: Elliptic curve arithmetic as described in Section 3.1 with the
+      parameter:
+
+      -  crv: The curve Ed25519 [REF?].
+
+   *  KEM: ECDH as described in Section 3.2 with the parameter:
+
+      -  crv: The curve X25519 [REF?].
+
+   *  MAC: HMAC as described in Section 3.4 with the parameter:
+
+      -  Hash: SHA-256 [FIPS 180-4].
+
+   *  KDF: HKDF as described in Section 3.5 with the parameter:
+
+      -  Hash: SHA-256 [FIPS 180-4].
+
+   *  L_bl: 32
+
+   *  L_mac: 32
+
+4.6.  ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
+
+   The identifier ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256 represents
+   the following ARKG instance:
+
+   *  BL: Elliptic curve arithmetic as described in Section 3.1 with the
+      parameter:
+
+      -  crv: The curve X25519 [REF?].
+
+   *  KEM: ECDH [RFC6090] as described in Section 3.2 with the
+      parameter:
+
+      -  crv: The curve X25519 [REF?].
 
    *  MAC: HMAC as described in Section 3.4 with the parameter:
 
