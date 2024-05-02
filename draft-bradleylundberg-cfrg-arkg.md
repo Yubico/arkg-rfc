@@ -150,6 +150,8 @@ Some motivating use cases of ARKG include:
   without needing to access the hardware security device that holds the private keys.
   For online scenarios, ARKG gives the credential issuer assurance
   that all derived private keys are bound to the same secure hardware element.
+  In both cases, application performance may be improved
+  since public keys can be generated in a general-purpose execution environment instead of a secure enclave.
 
 - __Enhanced forward secrecy__:
   The use of ARKG can facilitate forward secrecy in certain contexts.
