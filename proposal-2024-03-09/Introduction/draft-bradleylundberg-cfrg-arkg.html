@@ -20,12 +20,12 @@ a set of formulae for instantiating the abstract primitives using concrete primi
 and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future. 
     " name="description">
-<meta content="xml2rfc 3.20.1" name="generator">
+<meta content="xml2rfc 3.21.0" name="generator">
 <meta content="KDF" name="keyword">
 <meta content="draft-bradleylundberg-cfrg-arkg-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.20.1
-    Python 3.11.8
+  xml2rfc 3.21.0
+    Python 3.11.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -1036,11 +1036,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ARKG</td>
-<td class="right">April 2024</td>
+<td class="right">May 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 11 October 2024</td>
+<td class="center">Expires 3 November 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-04-09" class="published">9 April 2024</time>
+<time datetime="2024-05-02" class="published">2 May 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-10-11">11 October 2024</time></dd>
+<dd class="expires"><time datetime="2024-11-03">3 November 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1165,6 +1165,11 @@ We expect that additional instances will be defined in the future.<a href="#sect
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-the-function-arkg-generate-" class="internal xref">The function ARKG-Generate-Seed</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-deterministic-key-generatio" class="internal xref">Deterministic key generation</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-the-function-arkg-derive-pu" class="internal xref">The function ARKG-Derive-Public-Key</a></p>
@@ -1184,7 +1189,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-using-ecdh-as-the-kem" class="internal xref">Using ECDH as the KEM</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-using-both-elliptic-curve-a" class="internal xref">Using both elliptic curve arithmetic for key blinding and ECDH as the KEM</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-using-the-same-key-for-both" class="internal xref">Using the same key for both key blinding and KEM</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-using-hmac-as-the-mac" class="internal xref">Using HMAC as the MAC</a></p>
@@ -1360,10 +1365,11 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 they are encoded using UTF-8.<a href="#section-1.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.3">
-            <p id="section-1.2-2.3.1">Elliptic curve operations are written in multiplicative notation:
-<code>*</code> denotes point multiplication, i.e., the curve group operation;
-<code>^</code> denotes point exponentiation, i.e., repeated point multiplication of the base with itself;
-and <code>+</code> denotes scalar addition modulo the curve order.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.3.1">Elliptic curve operations are written in additive notation:
+<code>+</code> denotes point addition, i.e., the curve group operation;
+<code>*</code> denotes point multiplication, i.e., repeated point addition;
+and <code>+</code> also denotes scalar addition modulo the curve order.
+<code>*</code> has higher precedence than <code>+</code>, i.e., <code>a + b * C</code> is equivalent to <code>a + (b * C)</code>.<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.4">
             <p id="section-1.2-2.4.1"><code>Random(min_inc, max_exc)</code> represents a cryptographically secure random integer
@@ -1558,8 +1564,8 @@ ARKG-Generate-Seed() -&gt; (pk, sk)
     Inputs: None
 
     Output:
-        (pk, sk)  An ARKG seed key pair with public key pk
-                    and private key sk.
+        (pk, sk)  An ARKG seed pair with public seed pk
+                    and private seed sk.
 
     The output (pk, sk) is calculated as follows:
 
@@ -1568,6 +1574,25 @@ ARKG-Generate-Seed() -&gt; (pk, sk)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
+</div>
+<div id="deterministic-key-generation">
+<section id="section-2.2.1">
+          <h4 id="name-deterministic-key-generatio">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-deterministic-key-generatio" class="section-name selfRef">Deterministic key generation</a>
+          </h4>
+<p id="section-2.2.1-1">Although the above definition expresses the key generation as opaque,
+likely sampling uniformly random key distributions,
+implementations <span class="bcp14">MAY</span> choose to implement the functions <code>BL-Generate-Keypair()</code>,
+<code>KEM-Generate-Keypair()</code> and <code>ARKG-Generate-Seed()</code>
+as deterministic functions of some out-of-band input.
+This can be thought of as defining a single-use ARKG instance where these function outputs are static.
+This use case is beyond the scope of this document
+since the implementation of <code>ARKG-Generate-Seed</code> is internal to the delegating party,
+even if applications choose to distribute the delegating party across multiple processing entities.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">For example, one entity may randomly sample <code>pk_bl</code>, derive <code>pk_kem</code> deterministically from <code>pk_bl</code>
+and submit only <code>pk_bl</code> to a separate service that uses the same procedure to also derive the same <code>pk_kem</code>.
+This document considers both of these entities as parts of the same logical delegating party.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+</section>
 </div>
 </section>
 </div>
@@ -1606,7 +1631,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
         kh        A key handle for deriving the blinded
                     secret key sk' corresponding to pk'.
 
-    The output (pk, sk) is calculated as follows:
+    The output (pk', kh) is calculated as follows:
 
     (k, c) = KEM-Encaps(pk_kem)
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
@@ -1707,10 +1732,10 @@ using the procedures defined in sections 2.3.3 and 2.3.4 of <span>[<a href="#SEC
 using the procedures defined in sections 2.3.7 and 2.3.8 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.3">
-            <p id="section-3.1-3.3.1"><code>N</code> is the order of <code>crv</code>.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.3.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.4">
-            <p id="section-3.1-3.4.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-3.1-3.4.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.4.1"><code>N</code> is the order of <code>G</code>.<a href="#section-3.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <div class="lang-pseudocode sourcecode" id="section-3.1-4">
@@ -1718,17 +1743,13 @@ using the procedures defined in sections 2.3.7 and 2.3.8 of <span>[<a href="#SEC
 BL-Generate-Keypair() -&gt; (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau) -&gt; pk_tau
 
     If tau = 0 or tau &gt;= N, abort with an error.
-    pk_tau_tmp = pk * (G^tau)
-    If pk_tau_tmp equals the point at infinity, abort with an error.
-    pk_tau = pk_tau_tmp
+    pk_tau = pk + tau * G
 
 
 BL-Blind-Secret-Key(sk, tau) -&gt; sk_tau
@@ -1739,8 +1760,6 @@ BL-Blind-Secret-Key(sk, tau) -&gt; sk_tau
     sk_tau = sk_tau_tmp
 </pre><a href="#section-3.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-3.1-5"><span class="cref" id="also_reject_g">ISSUE: Also reject point G?<span class="crefSource">Emil</span></span>
-          <span class="cref" id="also_reject_1">ISSUE: Also reject scalar 1?<span class="crefSource">Emil</span></span><a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="kem-ecdh">
@@ -1770,10 +1789,10 @@ using the procedures defined in sections 2.3.7 and 2.3.8 of <span>[<a href="#SEC
 using public key (curve point) <code>pk</code> and secret key (exponent) <code>sk</code>.<a href="#section-3.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-3.5">
-            <p id="section-3.2-3.5.1"><code>N</code> is the order of <code>crv</code>.<a href="#section-3.2-3.5.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-3.5.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-3.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-3.6">
-            <p id="section-3.2-3.6.1"><code>G</code> is the generator of <code>crv</code>.<a href="#section-3.2-3.6.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-3.6.1"><code>N</code> is the order of <code>G</code>.<a href="#section-3.2-3.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <div class="lang-pseudocode sourcecode" id="section-3.2-4">
@@ -1781,9 +1800,7 @@ using public key (curve point) <code>pk</code> and secret key (exponent) <code>s
 KEM-Generate-Keypair() -&gt; (pk, sk)
 
     sk = Random(1, N)
-    pk_tmp = G^sk
-    If pk_tmp equals the point at infinity, abort with an error.
-    pk = pk_tmp
+    pk = sk * G
 
 
 KEM-Encaps(pk) -&gt; (k, c)
@@ -1799,20 +1816,20 @@ KEM-Decaps(sk, c) -&gt; k
     k = ECDH(pk', sk)
 </pre><a href="#section-3.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-5"><span class="cref" id="also_reject_g_1">ISSUE: Also reject point G?<span class="crefSource">Emil</span></span><a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="blinding-kem-ecdh">
+<div id="blinding-kem-same-key">
 <section id="section-3.3">
-        <h3 id="name-using-both-elliptic-curve-a">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-using-both-elliptic-curve-a" class="section-name selfRef">Using both elliptic curve arithmetic for key blinding and ECDH as the KEM</a>
+        <h3 id="name-using-the-same-key-for-both">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-using-the-same-key-for-both" class="section-name selfRef">Using the same key for both key blinding and KEM</a>
         </h3>
-<p id="section-3.3-1">If elliptic curve arithmetic is used for key blinding and ECDH is used as the KEM,
-as described in the previous sections,
-then both of them <span class="bcp14">MAY</span> use the same curve or <span class="bcp14">MAY</span> use different curves.
-If both use the same curve, then it is also possible to use the same public key
-as both the key blinding public key and the KEM public key. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span><a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2"><span class="cref" id="same_key_caveats">ISSUE: Caveats? I think I read in some paper or thesis about specific drawbacks of using the same key for both.<span class="crefSource">Emil</span></span><a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-1">When an ARKG instance uses the same type of key for both the key blinding and the KEM -
+for example, if elliptic curve arithmetic is used for key blinding as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a>
+and ECDH is used as the KEM as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.2</a> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> -
+then the two keys <span class="bcp14">MAY</span> be the same key.
+Representations of such an ARKG seed <span class="bcp14">MAY</span> allow for omitting the second copy of the constituent key,
+but such representations <span class="bcp14">MUST</span> clearly identify that the single constituent key is to be used
+both as the key blinding key and the KEM key.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="mac-hmac">
