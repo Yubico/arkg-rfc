@@ -1298,7 +1298,9 @@ ARKG empowers both online and offline usage scenarios:
 for offline scenarios, ARKG enables pre-generation of public keys for single-use credentials
 without needing to access the hardware security device that holds the private keys.
 For online scenarios, ARKG gives the credential issuer assurance
-that all derived private keys are bound to the same secure hardware element.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+that all derived private keys are bound to the same secure hardware element.
+In both cases, application performance may be improved
+since public keys can be generated in a general-purpose execution environment instead of a secure enclave.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-3.2">
           <p id="section-1-3.2.1"><strong>Enhanced forward secrecy</strong>:
