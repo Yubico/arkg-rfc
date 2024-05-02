@@ -233,7 +233,7 @@ The parameters of an ARKG instance are:
 
     No input.
 
-    Output consists of a blinding public key `pk` and a blinding secret key `sk`.
+    Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
   - Function `BL-Blind-Public-Key(pk, tau) -> pk_tau`: Deterministically compute a blinded public key.
 
@@ -241,11 +241,11 @@ The parameters of an ARKG instance are:
 
     Output consists of the blinded public key `pk_tau`.
 
-  - Function `BL-Blind-Secret-Key(sk, tau) -> sk_tau`: Deterministically compute a blinded secret key.
+  - Function `BL-Blind-Private-Key(sk, tau) -> sk_tau`: Deterministically compute a blinded private key.
 
-    Input consists of a blinding secret key `sk` and a blinding factor `tau`.
+    Input consists of a blinding private key `sk` and a blinding factor `tau`.
 
-    Output consists of the blinded secret key `sk_tau`.
+    Output consists of the blinded private key `sk_tau`.
 
   - Integer `L_bl`: The length of the blinding factor `tau` in octets.
 
@@ -260,7 +260,7 @@ The parameters of an ARKG instance are:
 
     No input.
 
-    Output consists of public key `pk` and secret key `sk`.
+    Output consists of public key `pk` and private key `sk`.
 
   - `KEM-Encaps(pk) -> (k, c)`: Generate a key encapsulation.
 
@@ -270,7 +270,7 @@ The parameters of an ARKG instance are:
 
   - `KEM-Decaps(sk, c) -> k`: Decapsulate a shared secret.
 
-    Input consists of encapsulation secret key `sk` and encapsulation ciphertext `c`.
+    Input consists of encapsulation private key `sk` and encapsulation ciphertext `c`.
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
@@ -317,7 +317,7 @@ A concrete ARKG instantiation MUST specify the instantiation
 of each of the above functions and values.
 
 The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole.
-For example, if `BL-Blind-Public-Key` and `BL-Blind-Secret-Key` output ECDSA keys,
+For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
 Instantiations MUST satisfy the following compatibility criteria:
@@ -326,7 +326,7 @@ Instantiations MUST satisfy the following compatibility criteria:
   is a valid input key material `ikm` of `KDF`.
 
 - Output key material `okm` of length `L_bl` of `KDF`
-  is a valid input blinding factor `tau` of `BL-Blind-Public-Key` and `BL-Blind-Secret-Key`.
+  is a valid input blinding factor `tau` of `BL-Blind-Public-Key` and `BL-Blind-Private-Key`.
 
   It is permissible for some `KDF` outputs to not be valid blinding factors,
   as long as this happens with negligible probability -
@@ -422,7 +422,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Output:
         pk'       A blinded public key.
         kh        A key handle for deriving the blinded
-                    secret key sk' corresponding to pk'.
+                    private key sk' corresponding to pk'.
 
     The output (pk', kh) is calculated as follows:
 
@@ -440,17 +440,17 @@ for example because `KDF` returns an invalid `tau` or `mk`,
 the procedure can safely be retried with the same arguments.
 
 
-## The function ARKG-Derive-Secret-Key
+## The function ARKG-Derive-Private-Key
 
 This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
-The resulting secret key `sk'` can be used in asymmetric cryptography protocols
+The resulting private key `sk'` can be used in asymmetric cryptography protocols
 to prove possession of `sk'` to an external party that has the corresponding public key.
 
 This function may be invoked any number of times with the same private seed,
-in order to derive the same or different secret keys any number of times.
+in order to derive the same or different private keys any number of times.
 
 ~~~pseudocode
-ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
+ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -462,15 +462,15 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
                     of the MAC scheme MAC.
 
     Inputs:
-        sk_kem    A key encapsulation secret key.
-        sk_bl     A key blinding secret key.
+        sk_kem    A key encapsulation private key.
+        sk_bl     A key blinding private key.
         kh        A key handle output from ARKG-Derive-Public-Key.
         info      An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
 
     Output:
-        sk'       A blinded secret key.
+        sk'       A blinded private key.
 
     The output sk' is calculated as follows:
 
@@ -482,7 +482,7 @@ ARKG-Derive-Secret-Key((sk_kem, sk_bl), kh, info) -> sk'
         Abort with an error.
 
     tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-    sk' = BL-Blind-Secret-Key(sk_bl, tau)
+    sk' = BL-Blind-Private-Key(sk_bl, tau)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
@@ -490,7 +490,7 @@ For example, `KDF` might return an invalid `tau` or `mk`, or the `tag` may be in
 ARKG instantiations SHOULD be chosen in a way that such errors are impossible
 if `kh` was generated by an honest and correct implementation of `ARKG-Derive-Public-Key`.
 Incorrect or malicious implementations of `ARKG-Derive-Public-Key` do not degrade the security
-of a correct and honest implementation of `ARKG-Derive-Secret-Key`.
+of a correct and honest implementation of `ARKG-Derive-Private-Key`.
 See also {{design-rationale-mac}}.
 
 
@@ -531,7 +531,7 @@ BL-Blind-Public-Key(pk, tau) -> pk_tau
     pk_tau = pk + tau * G
 
 
-BL-Blind-Secret-Key(sk, tau) -> sk_tau
+BL-Blind-Private-Key(sk, tau) -> sk_tau
 
     If tau = 0 or tau >= N, abort with an error.
     sk_tau_tmp = sk + tau
@@ -558,7 +558,7 @@ Then the `KEM` parameter of ARKG may be instantiated as follows:
   using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
 
 - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
-  using public key (curve point) `pk` and secret key (exponent) `sk`.
+  using public key (curve point) `pk` and private key (exponent) `sk`.
 
 - `G` is the generator of `crv`.
 - `N` is the order of `G`.
@@ -744,7 +744,7 @@ The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the follo
 
 TODO?: Define COSE representations for interoperability:
 - ARKG public seed (for interoperability between different implementers of `ARKG-Generate-Seed` and `ARKG-Derive-Public-Key`)
-- ARKG key handle (for interoperability between different implementers of `ARKG-Derive-Public-Key` and `ARKG-Derive-Secret-Key`)
+- ARKG key handle (for interoperability between different implementers of `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key`)
 
 
 # Security Considerations {#Security}
@@ -775,27 +775,27 @@ and those addressed to other delegating parties.
 We anticipate use cases where a private key usage request may contain key handles for several delegating parties
 eligible to fulfill the request,
 and the delegate party to be used can be chosen opportunistically depending on which are available at the time.
-Without the MAC, choosing the wrong key handle would cause the `ARKG-Derive-Secret-Key` procedure to silently derive the wrong key
+Without the MAC, choosing the wrong key handle would cause the `ARKG-Derive-Private-Key` procedure to silently derive the wrong key
 instead of returning an explicit error, which would in turn lead to an invalid signature or similar final output.
 This would make it difficult or impossible to diagnose the root cause of the issue and present actionable user feedback.
 The MAC also allows ARKG key handles to be transmitted via heterogeneous data channels,
 possibly including a mix of ARKG key handles and similar values used for other algorithms.
 
 The second purpose is so that the delegating party can be assured that no errors should happen
-during the execution of `ARKG-Derive-Secret-Key`, such as out-of-range or invalid key values.
+during the execution of `ARKG-Derive-Private-Key`, such as out-of-range or invalid key values.
 For example, key generation in `ARKG-Derive-Public-Key` might be done by randomly testing candidates [NIST.SP.800-56Ar3]
 and retrying `ARKG-Derive-Public-Key` until a valid candidate is found.
-A MAC enables `ARKG-Derive-Secret-Key` to assume that the first candidate from a given pseudo-random seed will be successful,
+A MAC enables `ARKG-Derive-Private-Key` to assume that the first candidate from a given pseudo-random seed will be successful,
 and otherwise return an explicit error rejecting the key handle as invalid.
 `ARKG-Derive-Public-Key` is likely to run on powerful general-purpose hardware, such as a laptop, smartphone or server,
-while `ARKG-Derive-Secret-Key` might run on more constrained hardware such as a cryptographic smart card,
+while `ARKG-Derive-Private-Key` might run on more constrained hardware such as a cryptographic smart card,
 which benefits greatly from such optimizations.
 
 It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. [Frymann2020]:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
 by instantiating `KEM` as group exponentiation
-and instantiating `BL` as group multiplication to blind public keys and modular integer addition to blind secret keys.
+and instantiating `BL` as group multiplication to blind public keys and modular integer addition to blind private keys.
 The `MAC` and `KDF` parameters correspond trivially to the MAC and KDF parameters in [Frymann2020],
 where KDF<sub>1</sub>(_k_) = KDF(_k_, _l_<sub>1</sub>) and KDF<sub>2</sub>(_k_) = KDF(_k_, _l_<sub>2</sub>)
 with fixed labels _l_<sub>1</sub> and _l_<sub>2</sub>.
