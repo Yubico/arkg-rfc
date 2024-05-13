@@ -1790,8 +1790,8 @@ KEM-Encaps(pk, info) -&gt; (k, c)
 
 KEM-Decaps(sk, c, info) -&gt; k
 
-    t = LEFT(c, L)
-    c' = DROP_LEFT(c, L)
+    t = LEFT(c, 16)
+    c' = DROP_LEFT(c, 16)
     k' = Sub-Kem-Decaps(sk, c', info)
 
     prk = HKDF-Extract with the arguments:
