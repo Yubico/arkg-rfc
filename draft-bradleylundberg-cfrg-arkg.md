@@ -45,6 +45,8 @@ normative:
   RFC4949:
   RFC5869:
   RFC6090:
+  RFC7748:
+  RFC8032:
   RFC8610:
   RFC9380:
   SEC1:
@@ -633,6 +635,52 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   ~~~
 
 
+## Using X25519 or X448 as the KEM {#kem-x25519-x448}
+
+Instantiations of ARKG can use X25519 or X448 [RFC7748] as the key encapsulation mechanism `KEM`.
+This section defines a general formula for such instantiations of `KEM`.
+
+This formula has the following parameters:
+
+- `DH-Function`: the function X25519 or the function X448 [RFC7748].
+
+The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
+
+- `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
+  or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
+- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+
+  - `Random-Bytes(N)` represents a cryptographically secure,
+    uniformly distributed random octet string of length `N`.
+  - `L` is 32 if `DH-Function` is X25519, or 56 if `DH-Function` is X448.
+  - `G` is the octet string `h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'`
+    if `DH-Function` is X25519,
+    or the octet string `h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'`
+    if `DH-Function` is X448.
+
+    These are the little-endian encodings of the integers 9 and 5,
+    which is the u-coordinate of the generator point of the respective curve group.
+
+  ~~~pseudocode
+  Sub-Kem-Generate-Keypair() -> (pk, sk)
+
+      sk = Random-Bytes(L)
+      pk = DH-Function(sk, G)
+
+
+  Sub-Kem-Encaps(pk, info) -> (k, c)
+
+      (pk', sk') = Sub-Kem-Generate-Keypair()
+
+      k = DH-Function(sk', pk)
+      c = pk'
+
+
+  Sub-Kem-Decaps(sk, c, info) -> k
+
+      k = DH-Function(sk, c)
+  ~~~
+
 
 ## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
 
@@ -703,6 +751,129 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
 
+
+## ARKG-curve25519ADD-X25519
+
+The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `curve25519` [RFC7748].
+  - `hash-to-crv-suite`: `curve25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-curve25519ADD-X25519'`.
+
+  WARNING: Some algorithms on curve25519, including X25519 [RFC7748],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on curve25519, including X25519 [RFC7748],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X25519 [RFC7748].
+
+
+## ARKG-curve448ADD-X448
+
+The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `curve448` [RFC7748].
+  - `hash-to-crv-suite`: `curve448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-curve448ADD-X448'`.
+
+  WARNING: Some algorithms on curve25519, including X448 [RFC7748],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on curve25519, including X448 [RFC7748],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X448 [RFC7748].
+
+
+## ARKG-edwards25519ADD-X25519
+
+The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `edwards25519` [RFC7748].
+  - `hash-to-crv-suite`: `edwards25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-edwards25519ADD-X25519'`.
+
+  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on edwards25519, including EdDSA [RFC8032],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X25519 [RFC7748].
+
+
+## ARKG-edwards448ADD-X448
+
+The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `edwards448` [RFC7748].
+  - `hash-to-crv-suite`: `edwards448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-edwards448ADD-X448'`.
+
+  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on edwards25519, including EdDSA [RFC8032],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X448 [RFC7748].
 
 
 # COSE bindings
