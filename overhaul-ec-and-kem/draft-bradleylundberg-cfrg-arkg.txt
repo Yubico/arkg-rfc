@@ -455,9 +455,9 @@ Table of Contents
 3.1.  Using elliptic curve addition for key blinding
 
    Instantiations of ARKG whose output keys are elliptic curve keys can
-   use elliptic curve addition as the key blinding scheme BL Frymann2020
-   [Wilson].  This section defines a general formula for such
-   instantiations of BL.
+   use elliptic curve addition as the key blinding scheme BL
+   [Frymann2020] [Wilson].  This section defines a general formula for
+   such instantiations of BL.
 
    This formula has the following parameters:
 
@@ -610,7 +610,7 @@ Table of Contents
 3.3.  Using ECDH as the KEM
 
    Instantiations of ARKG can use ECDH [RFC6090] as the key
-   encapsulation mechanism KEM Frymann2020 [Wilson], This section
+   encapsulation mechanism KEM [Frymann2020] [Wilson].  This section
    defines a general formula for such instantiations of KEM.
 
    This formula has the following parameters:
