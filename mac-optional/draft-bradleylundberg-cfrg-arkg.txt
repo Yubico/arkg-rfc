@@ -1259,14 +1259,14 @@ Table of Contents
    which point it may be difficult or impossible to diagnose the root
    cause of the invalid signature and present actionable user feedback.
 
-   A simple solution for this is to simply have the delegating party
-   emit an opaque identifier for the ARKG seed pair along with the
-   result of ARKG-Generate-Seed, and have the subordinate party
-   communicate that identifier along with the key handle output of ARKG-
-   Derive-Public-Key. This way the delegating party knows which ARKG
-   private seed to use with which key handle to compute the correct
-   result in ARKG-Derive-Private-Key, and can ignore any key handles
-   that belong to a different delegating party.
+   A simple solution for this is to have the delegating party emit an
+   opaque identifier for the ARKG seed pair along with the result of
+   ARKG-Generate-Seed, and have the subordinate party communicate that
+   identifier along with the key handle output of ARKG-Derive-Public-
+   Key. This way the delegating party knows which ARKG private seed to
+   use with which key handle to compute the correct result in ARKG-
+   Derive-Private-Key, and can ignore any key handles that belong to a
+   different delegating party.
 
    However, this solution may be unsuitable for some implementatiosn due
    to privacy implications.  This is discussed further in Section 8.1.

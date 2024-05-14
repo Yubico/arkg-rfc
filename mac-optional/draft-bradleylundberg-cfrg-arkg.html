@@ -2750,7 +2750,7 @@ this might cause the <code>ARKG-Derive-Private-Key</code> procedure to silently 
 which would in turn lead to an invalid signature.
 This might not be detected until a third party attempts to verify the signature,
 at which point it may be difficult or impossible to diagnose the root cause of the invalid signature and present actionable user feedback.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">A simple solution for this is to simply have the delegating party emit an opaque identifier for the ARKG seed pair
+<p id="section-6.1-3">A simple solution for this is to have the delegating party emit an opaque identifier for the ARKG seed pair
 along with the result of <code>ARKG-Generate-Seed</code>,
 and have the subordinate party communicate that identifier along with the key handle output of <code>ARKG-Derive-Public-Key</code>.
 This way the delegating party knows which ARKG private seed to use with which key handle
