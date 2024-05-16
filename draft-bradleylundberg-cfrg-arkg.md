@@ -1092,7 +1092,7 @@ This way the delegating party knows which ARKG private seed to use with which ke
 to compute the correct result in `ARKG-Derive-Private-Key`,
 and can ignore any key handles that belong to a different delegating party.
 
-However, this solution may be unsuitable for some implementatiosn due to privacy implications.
+However, this solution may be unsuitable for some implementations due to privacy implications.
 This is discussed further in {{arkg-seed-correlation}}.
 
 
