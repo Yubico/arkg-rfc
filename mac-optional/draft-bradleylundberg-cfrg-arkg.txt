@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 15 November 2024                                    14 May 2024
+Expires: 17 November 2024                                    16 May 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 November 2024.
+   This Internet-Draft will expire on 17 November 2024.
 
 Copyright Notice
 
@@ -1268,7 +1268,7 @@ Table of Contents
    Derive-Private-Key, and can ignore any key handles that belong to a
    different delegating party.
 
-   However, this solution may be unsuitable for some implementatiosn due
+   However, this solution may be unsuitable for some implementations due
    to privacy implications.  This is discussed further in Section 8.1.
 
 7.  Security Considerations
