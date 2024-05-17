@@ -1191,8 +1191,15 @@ TODO
 
 # Document History
 
--00
-  Initial Version
+- 00 Initial Version
 
--01
-  Editorial Fixes to formatting and references.
+- 01 Editorial Fixes to formatting and references.
+
+- 02
+  - Rewritten introduction.
+  - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+  - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
+  - Eliminated top-level MAC and KDF instance parameters.
+  - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
+  - Added curve/edwards25519/448 instances.
+  - Added proposal for COSE bindings and key reference types.
