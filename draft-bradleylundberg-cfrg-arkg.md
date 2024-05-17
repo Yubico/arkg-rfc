@@ -45,6 +45,10 @@ normative:
   RFC4949:
   RFC5869:
   RFC6090:
+  RFC7748:
+  RFC8032:
+  RFC8610:
+  RFC9380:
   SEC1:
     target: http://www.secg.org/sec1-v2.pdf
     author:
@@ -183,8 +187,8 @@ ARKG consists of three procedures:
   This can be repeated with any number of key handles.
 
 Notably, ARKG can be built entirely using established cryptographic primitives.
-The required primitives are a public key blinding scheme, a key encapsulation mechanism (KEM),
-a key derivation function (KDF) and a message authentication code (MAC) scheme.
+The required primitives are a public key blinding scheme and a key encapsulation mechanism (KEM),
+which may in turn use a key derivation function (KDF) and a message authentication code (MAC) scheme.
 Both conventional primitives and quantum-resistant alternatives exist that meet these requirements. [Wilson]
 
 
@@ -202,17 +206,14 @@ The following notation is used throughout this document:
 
 - The symbol `||` represents octet string concatenation.
 
-- When literal text strings are to be interpreted as octet strings,
-  they are encoded using UTF-8.
+- Literal text strings and octet strings are denoted
+  using the CDDL syntax defined in {{Section 3.1 of RFC8610}}.
 
 - Elliptic curve operations are written in additive notation:
   `+` denotes point addition, i.e., the curve group operation;
   `*` denotes point multiplication, i.e., repeated point addition;
   and `+` also denotes scalar addition modulo the curve order.
   `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
-
-- `Random(min_inc, max_exc)` represents a cryptographically secure random integer
-  greater than or equal to `min_inc` and strictly less than `max_exc`.
 
 
 # The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -228,7 +229,7 @@ The following subsections define the abstract instance parameters used to constr
 followed by the definitions of the three ARKG functions.
 
 
-## Instance parameters
+## Instance parameters {#arkg-params}
 
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
@@ -252,11 +253,9 @@ The parameters of an ARKG instance are:
 
     Output consists of the blinded private key `sk_tau`.
 
-  - Integer `L_bl`: The length of the blinding factor `tau` in octets.
-
-  `pk` and `pk_tau` are opaque octet strings of arbitrary length.
-  `tau` is an opaque octet string of length `L_bl`.
-  The representations of `sk`, `sk_tau` and `L_bl` are an undefined implementation detail.
+  `tau` is an opaque octet string of arbitrary length.
+  The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
+  The representations of `sk` and `sk_tau` are an undefined implementation detail.
 
   See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
 
@@ -267,56 +266,33 @@ The parameters of an ARKG instance are:
 
     Output consists of public key `pk` and private key `sk`.
 
-  - `KEM-Encaps(pk) -> (k, c)`: Generate a key encapsulation.
+  - `KEM-Encaps(pk, info) -> (k, c)`: Generate a key encapsulation.
 
-    Input consists of an encapsulation public key `pk`.
+    Input consists of an encapsulation public key `pk`
+    and a domain separation parameter `info`.
+    `info` is an opaque octet string of arbitrary length.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
 
-  - `KEM-Decaps(sk, c) -> k`: Decapsulate a shared secret.
+  - `KEM-Decaps(sk, c, info) -> k`: Decapsulate a shared secret.
 
-    Input consists of encapsulation private key `sk` and encapsulation ciphertext `c`.
+    Input consists of encapsulation private key `sk`, encapsulation ciphertext `c`
+    and a domain separation parameter `info`.
+    `info` is an opaque octet string of arbitrary length.
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
-  `pk`, `k` and `c` are opaque octet strings.
+  `k` and `c` are opaque octet strings.
+  The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
 
-  See [Wilson] for definitions of security properties required of the key encapsulation mechanism `KEM`.
+  The KEM MUST guarantee integrity of the ciphertext,
+  meaning that knowledge of the public key `pk` and the domain separation parameter `info`
+  is required in order to create any ciphertext `c` that can be successfully decapsulated by the corresponding private key `sk`.
+  {{hmac-kem}} describes a general formula for how any KEM can be adapted to include this guarantee.
+  {{design-rationale-mac}} discusses the reasons for this requirement.
 
-- `MAC`: A message authentication code (MAC) scheme, consisting of:
-  - Function `MAC-Tag(k, m) -> t`: Generate a message authentication tag for a given message using a given key.
-
-    Input consists of the shared MAC key `k` and the message `m`.
-
-    Output consists of the MAC tag `t`.
-
-  - Function `MAC-Verify(k, m, t) -> { 0, 1 }`: Verify a message authentication tag.
-
-    Input consists of the shared MAC key `k`, the message `m` and the MAC tag `t`.
-
-    Output is 1 if and only if `MAC-Tag(k, m) = t`.
-
-  - Integer `L_mac`: The length of the MAC key `k` in octets.
-
-  `k` is an opaque octet string of length `L_mac`.
-  `m` and `t` are opaque octet strings of arbitrary length.
-  The representation of `L_mac` is an undefined implementation detail.
-
-  See [Frymann2020] for definitions of security properties required of the message authentication code scheme `MAC`.
-
-- `KDF`: A variable-length key derivation function with the signature:
-  `KDF(info, ikm, L) -> okm`
-
-  Input consists of a domain separation parameter `info`, input key material `ikm` and output length `L`.
-
-  Output consists of output key material `okm` of length `L` in octets.
-
-  `info` and `ikm` are opaque octet strings of arbitrary length.
-  `okm` is an opaque octet string of length `L`.
-  `L` is an integer with undefined representation.
-
-  See [Frymann2020] for definitions of security properties required of the key derivation function `KDF`.
+  See [Wilson] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
 
 A concrete ARKG instantiation MUST specify the instantiation
 of each of the above functions and values.
@@ -325,27 +301,8 @@ The output keys of the `BL` scheme are also the output keys of the ARKG instance
 For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
-Instantiations MUST satisfy the following compatibility criteria:
-
-- The output shared secret `k` of `KEM-Encaps` and `KEM-Decaps`
-  is a valid input key material `ikm` of `KDF`.
-
-- Output key material `okm` of length `L_bl` of `KDF`
-  is a valid input blinding factor `tau` of `BL-Blind-Public-Key` and `BL-Blind-Private-Key`.
-
-  It is permissible for some `KDF` outputs to not be valid blinding factors,
-  as long as this happens with negligible probability -
-  see {{design-rationale-mac}}.
-
-- Output key material `okm` of length `L_mac` of `KDF`
-  is a valid input MAC key `k` of `MAC-Tag(k, m)` and `MAC-Verify(k, m, t)`.
-
-  It is permissible for some `KDF` outputs to not be valid MAC keys,
-  as long as this happens with negligible probability -
-  see {{design-rationale-mac}}.
-
-We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM-MAC-KDF`,
-substituting the chosen instantiation for the `BL`, `KEM`, `MAC` and `KDF` parts.
+We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM`,
+substituting the chosen instantiation for the `BL` and `KEM`.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
@@ -410,12 +367,6 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
-        MAC       A MAC scheme.
-        KDF       A key derivation function.
-        L_bl      The length in octets of the blinding factor tau
-                    of the key blinding scheme BL.
-        L_mac     The length in octets of the MAC key
-                    of the MAC scheme MAC.
 
     Inputs:
         pk_kem    A key encapsulation public key.
@@ -431,17 +382,12 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    (k, c) = KEM-Encaps(pk_kem)
-    tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
-    mk  = KDF("arkg-mac"   || 0x00 || info, k, L_mac)
-    tag = MAC-Tag(mk, c || info)
-
+    (tau, c) = KEM-Encaps(pk_kem, info)
     pk' = BL-Blind-Public-Key(pk_bl, tau)
-    kh = (c, tag)
+    kh = c
 ~~~
 
 If this procedure aborts due to an error,
-for example because `KDF` returns an invalid `tau` or `mk`,
 the procedure can safely be retried with the same arguments.
 
 
@@ -459,12 +405,6 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
-        MAC       A MAC scheme.
-        KDF       A key derivation function.
-        L_bl      The length in octets of the blinding factor tau
-                    of the key blinding scheme BL.
-        L_mac     The length in octets of the MAC key
-                    of the MAC scheme MAC.
 
     Inputs:
         sk_kem    A key encapsulation private key.
@@ -479,19 +419,15 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
-    (c, tag) = kh
-    k = KEM-Decaps(sk_kem, c)
-    mk = KDF("arkg-mac" || 0x00 || info, k, L_mac)
-
-    If MAC-Verify(mk, c || info, tag) = 0:
+    tau = KEM-Decaps(sk_kem, kh, info)
+    If decapsulation failed:
         Abort with an error.
 
-    tau = KDF("arkg-blind" || 0x00 || info, k, L_bl)
     sk' = BL-Blind-Private-Key(sk_bl, tau)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
-For example, `KDF` might return an invalid `tau` or `mk`, or the `tag` may be invalid.
+For example, `KEM-Decaps` may fail to decapsulate the KEM ciphertext `kh` if it fails an integrity check.
 ARKG instantiations SHOULD be chosen in a way that such errors are impossible
 if `kh` was generated by an honest and correct implementation of `ARKG-Derive-Public-Key`.
 Incorrect or malicious implementations of `ARKG-Derive-Public-Key` do not degrade the security
@@ -505,43 +441,152 @@ This section defines generic formulae for instantiating the individual ARKG para
 which can be used to define concrete ARKG instantiations.
 
 
-## Using elliptic curve arithmetic for key blinding {#blinding-ec}
+## Using elliptic curve addition for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve arithmetic as the key blinding scheme `BL` [Frymann2020]&nbsp;[Wilson].
+can use elliptic curve addition as the key blinding scheme `BL` [Frymann2020]&nbsp;[Wilson].
 This section defines a general formula for such instantiations of `BL`.
 
-Let `crv` be an elliptic curve.
+This formula has the following parameters:
+
+- `crv`: An elliptic curve.
+- `hash-to-crv-suite`: A hash-to-curve suite [RFC9380]
+  suitable for hashing to the scalar field of `crv`.
+- `hash-to-field-DST`: A domain separation tag satisfying the requirements stated in {{Section 3.1 of RFC9380}}.
+
 Then the `BL` parameter of ARKG may be instantiated as follows:
 
-- Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
-
-- Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
-
-- `G` is the generator of `crv`.
+- `G` is the generator of the prime order subgroup of `crv`.
 - `N` is the order of `G`.
+- The function `hash_to_field` is defined in {{Section 5 of RFC9380}}.
 
 ~~~pseudocode
 BL-Generate-Keypair() -> (pk, sk)
 
-    sk = Random(1, N)
-    pk = sk * G
+    Generate (pk, sk) using some procedure defined for the curve crv.
 
 
-BL-Blind-Public-Key(pk, tau) -> pk_tau
+BL-Blind-Public-Key(pk, tau, info) -> pk_tau
 
-    If tau = 0 or tau >= N, abort with an error.
-    pk_tau = pk + tau * G
+    tau' = hash_to_field(tau, 1) with the parameters:
+        DST: 'arkg-BL-' || hash-to-field-DST || info
+        F: GF(N), the scalar field
+           of the prime order subgroup of crv
+        p: N
+        m: 1
+        L: The L defined in hash-to-crv-suite
+        expand_message: The expand_message function
+                        defined in hash-to-crv-suite
+
+    pk_tau = pk + tau' * G
 
 
-BL-Blind-Private-Key(sk, tau) -> sk_tau
+BL-Blind-Private-Key(sk, tau, info) -> sk_tau
 
-    If tau = 0 or tau >= N, abort with an error.
-    sk_tau_tmp = sk + tau
+    tau' = hash_to_field(tau, 1) with the parameters:
+        DST: 'arkg-BL-' || hash-to-field-DST || info
+        F: GF(N), the scalar field
+           of the prime order subgroup of crv.
+        p: N
+        m: 1
+        L: The L defined in hash-to-crv-suite
+        expand_message: The expand_message function
+                        defined in hash-to-crv-suite
+
+    sk_tau_tmp = sk + tau'
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
+~~~
+
+
+## Using HMAC to adapt a KEM without integrity protection {#hmac-kem}
+
+Not all key encapsulation mechanisms guarantee ciphertext integrity,
+meaning that a valid KEM ciphertext can be created only with knowledge of the KEM public key.
+This section defines a general formula for adapting any KEM to include integrity protection
+by prepending a MAC to the KEM ciphertext.
+
+For example, ECDH does not guarantee ciphertext integrity - any elliptic curve point is a valid ECDH ciphertext
+and can be successfully decapsulated using any elliptic curve private scalar.
+
+This formula has the following parameters:
+
+- `Hash`: A cryptographic hash function.
+- `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
+  except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
+  `Sub-Kem` defines the functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
+
+The `KEM` parameter of ARKG may be instantiated using `Sub-Kem`,
+HMAC [RFC2104] and HKDF [RFC5869] as follows:
+
+- `L` is the output length of `Hash` in octets.
+- `LEFT(X, n)` is the first `n` bytes of the byte array `X`.
+- `DROP_LEFT(X, n)` is the byte array `X` without the first `n` bytes.
+
+We truncate the HMAC output to 128 bits (16 octets)
+because as described in {{design-rationale-mac}},
+ARKG needs ciphertext integrity only to ensure correctness, not for security.
+Extendable-output functions used as the `Hash` parameter SHOULD still be instantiated
+with an output length appropriate for the desired security level,
+in order to not leak information about the `Sub-KEM` shared secret key.
+
+~~~pseudocode
+
+KEM-Generate-Keypair() -> (pk, sk)
+
+    (pk, sk) = Sub-Kem-Generate-Keypair()
+
+
+KEM-Encaps(pk, info) -> (k, c)
+
+    (k', c') = Sub-Kem-Encaps(pk, info)
+
+    prk = HKDF-Extract with the arguments:
+        Hash: Hash
+        salt: not set
+        IKM: k'
+
+    mk = HKDF-Expand with the arguments:
+        Hash: Hash
+        PRK: prk
+        info: 'arkg-KEM-mac' || info
+        L: L
+    t = HMAC-Hash-128(K=mk, text=info)
+
+    k = HKDF-Expand with the arguments:
+        Hash: Hash
+        PRK: prk
+        info: 'arkg-KEM-shared' || info
+        L: The length of k' in octets.
+    c = t || c'
+
+
+KEM-Decaps(sk, c, info) -> k
+
+    t = LEFT(c, 16)
+    c' = DROP_LEFT(c, 16)
+    k' = Sub-Kem-Decaps(sk, c', info)
+
+    prk = HKDF-Extract with the arguments:
+        Hash: Hash
+        salt: not set
+        IKM: k'
+
+    mk = HKDF-Expand with the arguments:
+        Hash: Hash
+        PRK: prk
+        info: 'arkg-KEM-mac' || info
+        L: L
+
+    t' = HMAC-Hash-128(K=mk, text=info)
+    If t = t':
+        k = HKDF-Expand with the arguments:
+            Hash: Hash
+            PRK: prk
+            info: 'arkg-KEM-shared' || info
+            L: The length of k' in octets.
+    Else:
+        Abort with an error.
 ~~~
 
 
@@ -550,43 +595,92 @@ BL-Blind-Private-Key(sk, tau) -> sk_tau
 Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [Frymann2020]&nbsp;[Wilson].
 This section defines a general formula for such instantiations of `KEM`.
 
-Let `crv` be an elliptic curve used for ECDH.
-Then the `KEM` parameter of ARKG may be instantiated as follows:
+This formula has the following parameters:
 
-- Elliptic curve points are encoded to and from octet strings
-  using the procedures defined in sections 2.3.3 and 2.3.4 of [SEC1].
+- `crv`: an elliptic curve valid for use with ECDH [RFC6090].
+- `Hash`: A cryptographic hash function.
 
-- Elliptic curve coordinate field elements are encoded to and from octet strings
-  using the procedures defined in sections 2.3.5 and 2.3.6 of [SEC1].
+The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
-- Elliptic curve scalar values are encoded to and from octet strings
-  using the procedures defined in sections 2.3.7 and 2.3.8 of [SEC1].
+- `Hash`: `Hash`.
+- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
-- `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
-  using public key (curve point) `pk` and private key (exponent) `sk`.
+  - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
+    are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1],
+    without point compression.
 
-- `G` is the generator of `crv`.
-- `N` is the order of `G`.
+  - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
+    using public key (curve point) `pk` and private key (exponent) `sk`.
 
-~~~pseudocode
-KEM-Generate-Keypair() -> (pk, sk)
+  - `G` is the generator of the prime order subgroup of `crv`.
+  - `N` is the order of `G`.
 
-    sk = Random(1, N)
-    pk = sk * G
+  ~~~pseudocode
+  Sub-Kem-Generate-Keypair() -> (pk, sk)
 
-
-KEM-Encaps(pk) -> (k, c)
-    (pk', sk') = KEM-Generate-Keypair()
-
-    k = ECDH(pk, sk')
-    c = pk'
+      Generate (pk, sk) using some procedure defined for crv.
 
 
-KEM-Decaps(sk, c) -> k
+  Sub-Kem-Encaps(pk, info) -> (k, c)
 
-    pk' = c
-    k = ECDH(pk', sk)
-~~~
+      (pk', sk') = Sub-Kem-Generate-Keypair()
+
+      k = ECDH(pk, sk')
+      c = Elliptic-Curve-Point-to-Octet-String(pk')
+
+
+  Sub-Kem-Decaps(sk, c, info) -> k
+
+      pk' = Octet-String-to-Elliptic-Curve-Point(c)
+      k = ECDH(pk', sk)
+  ~~~
+
+
+## Using X25519 or X448 as the KEM {#kem-x25519-x448}
+
+Instantiations of ARKG can use X25519 or X448 [RFC7748] as the key encapsulation mechanism `KEM`.
+This section defines a general formula for such instantiations of `KEM`.
+
+This formula has the following parameters:
+
+- `DH-Function`: the function X25519 or the function X448 [RFC7748].
+
+The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
+
+- `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
+  or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
+- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+
+  - `Random-Bytes(N)` represents a cryptographically secure,
+    uniformly distributed random octet string of length `N`.
+  - `L` is 32 if `DH-Function` is X25519, or 56 if `DH-Function` is X448.
+  - `G` is the octet string `h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'`
+    if `DH-Function` is X25519,
+    or the octet string `h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'`
+    if `DH-Function` is X448.
+
+    These are the little-endian encodings of the integers 9 and 5,
+    which is the u-coordinate of the generator point of the respective curve group.
+
+  ~~~pseudocode
+  Sub-Kem-Generate-Keypair() -> (pk, sk)
+
+      sk = Random-Bytes(L)
+      pk = DH-Function(sk, G)
+
+
+  Sub-Kem-Encaps(pk, info) -> (k, c)
+
+      (pk', sk') = Sub-Kem-Generate-Keypair()
+
+      k = DH-Function(sk', pk)
+      c = pk'
+
+
+  Sub-Kem-Decaps(sk, c, info) -> k
+
+      k = DH-Function(sk, c)
+  ~~~
 
 
 ## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
@@ -600,48 +694,6 @@ but such representations MUST clearly identify that the single constituent key i
 both as the key blinding key and the KEM key.
 
 
-## Using HMAC as the MAC {#mac-hmac}
-
-Let `Hash` be a cryptographic hash function.
-Then the `MAC` parameter of ARKG may be instantiated using HMAC [RFC2104] as follows:
-
-~~~pseudocode
-MAC-Tag(k, m) -> t
-
-    t = HMAC-Hash(K=k, text=m)
-
-
-MAC-Verify(k, m, t) -> { 0, 1 }
-
-    t' = HMAC-Hash(K=k, text=m)
-    If t = t':
-        return 1
-    Else:
-        return 0
-~~~
-
-
-## Using HKDF as the KDF {#kdf-hkdf}
-
-Let `Hash` be a cryptographic hash function.
-Then the `KDF` parameter of ARKG may be instantiated using HKDF [RFC5869] as follows:
-
-~~~pseudocode
-KDF(info, ikm, L) -> okm
-
-    prk = HKDF-Extract with the arguments:
-        Hash: Hash
-        salt: not set
-        IKM: ikm
-
-    okm = HKDF-Expand with the arguments:
-        Hash: Hash
-        PRK: prk
-        info: info
-        L: L
-~~~
-
-
 # Concrete ARKG instantiations
 
 This section defines an initial set of concrete ARKG instantiations.
@@ -649,100 +701,180 @@ This section defines an initial set of concrete ARKG instantiations.
 TODO: IANA registry? COSE/JOSE?
 
 
-## ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256ADD-ECDH
 
-The identifier `ARKG-P256-ECDH-P256-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
+The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
+  - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-P256ADD-ECDH'`.
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
 
 
-## ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384
+## ARKG-P384ADD-ECDH
 
-The identifier `ARKG-P384-ECDH-P384-HMAC-SHA384-HKDF-SHA384` represents the following ARKG instance:
+The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
+  - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-P384ADD-ECDH'`.
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-384 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-384 [FIPS 180-4].
-- `L_bl`: 48
-- `L_mac`: 48
 
 
-## ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512
+## ARKG-P521ADD-ECDH
 
-The identifier `ARKG-P521-ECDH-P521-HMAC-SHA512-HKDF-SHA512` represents the following ARKG instance:
+The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
+  - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-P521ADD-ECDH'`.
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-512 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-512 [FIPS 180-4].
-- `L_bl`: 64
-- `L_mac`: 64
 
 
-## ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256
+## ARKG-P256kADD-ECDH
 
-The identifier `ARKG-P256k-ECDH-P256k-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
+The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
+  - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-P256kADD-ECDH'`.
+- `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
   - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
 
 
-## ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-curve25519ADD-X25519
 
-The identifier `ARKG-Ed25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
+The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
-  - `crv`: The curve `Ed25519` [REF?].
-- `KEM`: ECDH as described in {{kem-ecdh}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `curve25519` [RFC7748].
+  - `hash-to-crv-suite`: `curve25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-curve25519ADD-X25519'`.
+
+  WARNING: Some algorithms on curve25519, including X25519 [RFC7748],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on curve25519, including X25519 [RFC7748],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X25519 [RFC7748].
 
 
-## ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256
+## ARKG-curve448ADD-X448
 
-The identifier `ARKG-X25519-X25519-HMAC-SHA256-HKDF-SHA256` represents the following ARKG instance:
+The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
 
-- `BL`: Elliptic curve arithmetic as described in {{blinding-ec}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `KEM`: ECDH [RFC6090] as described in {{kem-ecdh}} with the parameter:
-  - `crv`: The curve `X25519` [REF?].
-- `MAC`: HMAC as described in {{mac-hmac}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `KDF`: HKDF as described in {{kdf-hkdf}} with the parameter:
-  - `Hash`: SHA-256 [FIPS 180-4].
-- `L_bl`: 32
-- `L_mac`: 32
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `curve448` [RFC7748].
+  - `hash-to-crv-suite`: `curve448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-curve448ADD-X448'`.
+
+  WARNING: Some algorithms on curve25519, including X448 [RFC7748],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on curve25519, including X448 [RFC7748],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X448 [RFC7748].
+
+
+## ARKG-edwards25519ADD-X25519
+
+The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `edwards25519` [RFC7748].
+  - `hash-to-crv-suite`: `edwards25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-edwards25519ADD-X25519'`.
+
+  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on edwards25519, including EdDSA [RFC8032],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X25519 [RFC7748].
+
+
+## ARKG-edwards448ADD-X448
+
+The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
+
+- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
+  - `crv`: The curve `edwards448` [RFC7748].
+  - `hash-to-crv-suite`: `edwards448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
+  - `hash-to-field-DST`: `'ARKG-edwards448ADD-X448'`.
+
+  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
+  construct private key scalars within a particular range
+  to enable optimizations and constant-time guarantees.
+  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
+  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
+
+  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
+  Some algorithms on edwards25519, including EdDSA [RFC8032],
+  define the private key input as a random octet string and applies some preprocessing to it
+  before interpreting the result as a private key scalar,
+  and define public keys as a particular octet string encoding of a curve point.
+  This `BL` scheme is not compatible with such preprocessing
+  since it breaks the relationship between the blinded private key and the blinded public key.
+  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
+  to the interpreted private key scalar, not the random private key octet string,
+  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
+  not an opaque octet string.
+
+- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
+  - `DH-Function`: X448 [RFC7748].
 
 
 # COSE bindings
@@ -772,36 +904,32 @@ TODO
 ## Using a MAC {#design-rationale-mac}
 
 The ARKG construction by Wilson [Wilson] omits the MAC and instead encodes application context in the PRF labels,
-arguing this leads to invalid keys/signatures in cases that would have a bad MAC.
-We choose to keep the MAC from the construction by Frymann et al. [Frymann2020] for two purposes.
+arguing that this leads to invalid keys/signatures in cases that would have a bad MAC.
+We choose to keep the MAC from the construction by Frymann et al. [Frymann2020],
+but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.
 
-The first is so that the delegating party can distinguish between key handles addressed to it
-and those addressed to other delegating parties.
-We anticipate use cases where a private key usage request may contain key handles for several delegating parties
-eligible to fulfill the request,
-and the delegate party to be used can be chosen opportunistically depending on which are available at the time.
-Without the MAC, choosing the wrong key handle would cause the `ARKG-Derive-Private-Key` procedure to silently derive the wrong key
+The reason for this is ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
+For example, applications using the W3C Web Authentication API [WebAuthn]
+do not know beforehand which authenticators are connected and available.
+Instead, authentication requests may include references to several eligible authenticators,
+and the one to use is chosen opportunistically by the WebAuthn client depending on which are available at the time.
+Consider using ARKG in such a scenario to sign some data with a derived private key:
+a user may have several authenticators and thus several ARKG seeds,
+so the signing request might include several well-formed ARKG key handles,
+but only one of them belongs to the ARKG seed of the authenticator that is currently connected.
+Without an integrity check,
+choosing the wrong key handle might cause the `ARKG-Derive-Private-Key` procedure to silently derive the wrong key
 instead of returning an explicit error, which would in turn lead to an invalid signature or similar final output.
 This would make it difficult or impossible to diagnose the root cause of the issue and present actionable user feedback.
-The MAC also allows ARKG key handles to be transmitted via heterogeneous data channels,
-possibly including a mix of ARKG key handles and similar values used for other algorithms.
-
-The second purpose is so that the delegating party can be assured that no errors should happen
-during the execution of `ARKG-Derive-Private-Key`, such as out-of-range or invalid key values.
-For example, key generation in `ARKG-Derive-Public-Key` might be done by randomly testing candidates [NIST.SP.800-56Ar3]
-and retrying `ARKG-Derive-Public-Key` until a valid candidate is found.
-A MAC enables `ARKG-Derive-Private-Key` to assume that the first candidate from a given pseudo-random seed will be successful,
-and otherwise return an explicit error rejecting the key handle as invalid.
-`ARKG-Derive-Public-Key` is likely to run on powerful general-purpose hardware, such as a laptop, smartphone or server,
-while `ARKG-Derive-Private-Key` might run on more constrained hardware such as a cryptographic smart card,
-which benefits greatly from such optimizations.
+For this reason, we require the KEM to guarantee ciphertext integrity
+so that `ARKG-Derive-Private-Key` can fail early if the key handle belongs to a different ARKG seed.
 
 It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. [Frymann2020]:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
 by instantiating `KEM` as group exponentiation
 and instantiating `BL` as group multiplication to blind public keys and modular integer addition to blind private keys.
-The `MAC` and `KDF` parameters correspond trivially to the MAC and KDF parameters in [Frymann2020],
+The use of HMAC and HKDF in {{hmac-kem}} corresponds to the MAC and KDF parameters in [Frymann2020],
 where KDF<sub>1</sub>(_k_) = KDF(_k_, _l_<sub>1</sub>) and KDF<sub>2</sub>(_k_) = KDF(_k_, _l_<sub>2</sub>)
 with fixed labels _l_<sub>1</sub> and _l_<sub>2</sub>.
 Hence if one can break PK-unlinkability or SK-security of the ARKG construction in this document,
