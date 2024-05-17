@@ -606,7 +606,8 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 - `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
-    are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1].
+    are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1],
+    without point compression.
 
   - `ECDH(pk, sk)` represents the compact output of ECDH [RFC6090]
     using public key (curve point) `pk` and private key (exponent) `sk`.
