@@ -977,7 +977,7 @@ Table of Contents
 5.1.  COSE key type: ARKG public seed
 
    An ARKG public seed is represented as a COSE_Key structure [RFC9052]
-   with kty value TBD (requested assignment 7).  This key type defines
+   with kty value TBD (placeholder value -65537).  This key type defines
    key type parameters -1 and -2 for the BL and KEM public key,
    respectively.
 
