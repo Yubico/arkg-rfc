@@ -2975,6 +2975,14 @@ modified by the inclusion of a MAC in the key handles as done in the original co
   Initial Version<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <p id="appendix-C-2">-01
   Editorial Fixes to formatting and references.<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">-02
+  - Rewritten introduction.
+  - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+  - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
+  - Eliminated top-level MAC and KDF instance parameters.
+  - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
+  - Added curve/edwards25519/448 instances.
+  - Added proposal for COSE bindings and key reference types.<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
