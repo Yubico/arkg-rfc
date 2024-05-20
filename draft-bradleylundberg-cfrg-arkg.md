@@ -37,8 +37,12 @@ author:
   email: ve7jtb@ve7jtb.com
 
 contributor:
-  fullname: Dain Nilsson
+- fullname: Dain Nilsson
   organization: Yubico
+
+- fullname: Peter Altmann
+  organization: Agency for Digital Government
+  country: SE
 
 normative:
   fully-spec-algs:
