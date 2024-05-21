@@ -1040,7 +1040,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 21 November 2024</td>
+<td class="center">Expires 22 November 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-20" class="published">20 May 2024</time>
+<time datetime="2024-05-21" class="published">21 May 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-21">21 November 2024</time></dd>
+<dd class="expires"><time datetime="2024-11-22">22 November 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1117,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2336,7 +2336,7 @@ not an opaque octet string.<a href="#section-4.8-2.1.4" class="pilcrow">¶</a></
       <h2 id="name-cose-bindings">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-cose-bindings" class="section-name selfRef">COSE bindings</a>
       </h2>
-<p id="section-5-1">This section proposes additions to COSE [RFC9052] to support ARKG use cases.
+<p id="section-5-1">This section proposes additions to COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> to support ARKG use cases.
 The novelty lies primarily in a new key type definition to represent ARKG public seeds
 and new key type definitions to represent references to private keys rather than the keys themselves.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="cose-arkg-pub-seed">
@@ -2344,15 +2344,15 @@ and new key type definitions to represent references to private keys rather than
         <h3 id="name-cose-key-type-arkg-public-s">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-cose-key-type-arkg-public-s" class="section-name selfRef">COSE key type: ARKG public seed</a>
         </h3>
-<p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure [RFC9052]
+<p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>
 with <code>kty</code> value TBD (placeholder value -65537).
 This key type defines key type parameters -1 and -2 for the <code>BL</code> and <code>KEM</code> public key, respectively.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">The following CDDL example represents an <code>ARKG-P256ADD-ECDH</code> public seed
+<p id="section-5.1-2">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
 restricted to generating derived public keys for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.1-3">
 <pre>
 {
-  1: -65537,   ; kty: ARKG-pub-seed
+  1: -65537,   ; kty: ARKG-pub
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
@@ -2398,18 +2398,29 @@ h'a50139fbb402582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-cose-key-reference-types" class="section-name selfRef">COSE key reference types</a>
         </h3>
 <p id="section-5.2-1">While keys used by many other algorithms can usually be referenced by a single atomic identifier,
-such as that used in the <code>kid</code> parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
+such as that used in the <code>kid</code> parameter in a COSE_Key structure or in the unprotected header of a COSE_Recipient,
 users of the function <code>ARKG-Derive-Secret-Key</code> need to represent
 a reference to an ARKG private seed along with a key handle for a derived private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">A COSE key reference is a COSE_Key object whose <code>kty</code> value is defined to represent a reference to a key.
-The <code>kid</code> parameter <span class="bcp14">MUST</span> be present when <code>kty</code> is a key reference type.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
-and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">A COSE key reference is a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> whose <code>kty</code> value is defined to represent a reference to a key.
+The <code>kid</code> parameter <span class="bcp14">MUST</span> be present when <code>kty</code> is a key reference type.
+The CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type <code>COSE_Key_Ref</code> encodes this additional requirement.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3"><span class="cref" id="key-ref-nint">Perhaps <code>$COSE_Key_Ref_kty</code> could just be <code>nint</code>? If COSE WG is willing to commit half the <code>kty</code> space...<span class="crefSource">Emil</span></span><a href="#section-5.2-3" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.2-4">
 <pre>
+COSE_Key_Ref = COSE_Key .within {
+  1 ^ =&gt; $COSE_Key_Ref_kty,  ; kty must be a reference type
+  2 ^ =&gt; any,                ; kid required
+  * any =&gt; any,
+}
+</pre><a href="#section-5.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-5">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
+and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-6">
+<pre>
 {
-  1: -65538,   ; kty: ARKG-derived
-               ; kid: Opaque identifier of ARKG-pub-seed
+  1: -65538,   ; kty: Ref-ARKG-derived
+               ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
   3: -65539,   ; alg: ESP256-ARKG
@@ -2426,17 +2437,17 @@ and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="
                ; info argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
 }
-</pre><a href="#section-5.2-4" class="pilcrow">¶</a>
+</pre><a href="#section-5.2-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-5">The following is the same example encoded as CBOR:<a href="#section-5.2-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2-6">
+<p id="section-5.2-7">The following is the same example encoded as CBOR:<a href="#section-5.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-8">
 <pre>
 h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
   344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25b6a6
   d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a2949
   9e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc474
   7a84'
-</pre><a href="#section-5.2-6" class="pilcrow">¶</a>
+</pre><a href="#section-5.2-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2471,7 +2482,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
 <p id="section-8.1-1">This section registers the following values in the IANA "COSE Key Types" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1">Name: ARKG-pub-seed<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.1-2.1.1">Name: ARKG-pub<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1.2.1">
                 <p id="section-8.1-2.1.2.1.1">Value: TBD (Placeholder -65537)<a href="#section-8.1-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2488,7 +2499,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
           <li class="normal" id="section-8.1-2.2">
-            <p id="section-8.1-2.2.1">Name: ARKG-derived<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-8.1-2.2.1">Name: Ref-ARKG-derived<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.2.2.1">
                 <p id="section-8.1-2.2.2.1.1">Value: TBD (Placeholder -65538)<a href="#section-8.1-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2539,6 +2550,14 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
         </ul>
+<p id="section-8.1-3">This defines the following choices for the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type socket <code>$COSE_Key_Ref_kty</code>:<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-8.1-4">
+<pre>
+$COSE_Key_Ref_kty /= -1      ; Ref-OKP (value TBD)
+$COSE_Key_Ref_kty /= -2      ; Ref-EC2 (value TBD)
+$COSE_Key_Ref_kty /= -65538  ; Ref-ARKG-derived (value TBD)
+</pre><a href="#section-8.1-4" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="cose-key-type-parameters-registrations">
@@ -2549,7 +2568,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
 <p id="section-8.2-1">This section registers the following values in the IANA "COSE Key Type Parameters" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
-            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1.2.1">
                 <p id="section-8.2-2.1.2.1.1">Name: pk_bl<a href="#section-8.2-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2569,7 +2588,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.2">
-            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.2.2.1">
                 <p id="section-8.2-2.2.2.1.1">Name: pk_kem<a href="#section-8.2-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2589,7 +2608,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.3">
-            <p id="section-8.2-2.3.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.3.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.3.2.1">
                 <p id="section-8.2-2.3.2.1.1">Name: kh<a href="#section-8.2-2.3.2.1.1" class="pilcrow">¶</a></p>
@@ -2609,7 +2628,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.4">
-            <p id="section-8.2-2.4.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.4.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.4.2.1">
                 <p id="section-8.2-2.4.2.1.1">Name: info<a href="#section-8.2-2.4.2.1.1" class="pilcrow">¶</a></p>
@@ -2890,6 +2909,10 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dt id="RFC8812">[RFC8812]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE) and JSON Object Signing and Encryption (JOSE) Registrations for Web Authentication (WebAuthn) Algorithms"</span>, <span class="seriesInfo">RFC 8812</span>, <span class="seriesInfo">DOI 10.17487/RFC8812</span>, <time datetime="2020-08" class="refDate">August 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8812">https://www.rfc-editor.org/rfc/rfc8812</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9052">[RFC9052]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9380">[RFC9380]</dt>
         <dd>
