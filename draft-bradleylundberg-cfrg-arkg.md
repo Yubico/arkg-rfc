@@ -580,7 +580,7 @@ KEM-Encaps(pk, info) -> (k, c)
         PRK: prk
         info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
-    t = HMAC-Hash-128(K=mk, text=info)
+    t = HMAC-Hash-128(K=mk, text=info_sub)
 
     k = HKDF-Expand with the arguments:
         Hash: Hash
@@ -608,7 +608,7 @@ KEM-Decaps(sk, c, info) -> k
         info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
 
-    t' = HMAC-Hash-128(K=mk, text=info)
+    t' = HMAC-Hash-128(K=mk, text=info_sub)
     If t = t':
         k = HKDF-Expand with the arguments:
             Hash: Hash
@@ -1232,3 +1232,5 @@ TODO
   - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
   - Added curve/edwards25519/448 instances.
   - Added proposal for COSE bindings and key reference types.
+
+- 03 Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without integrity protection"
