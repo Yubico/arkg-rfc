@@ -258,19 +258,23 @@ The parameters of an ARKG instance are:
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
-  - Function `BL-Blind-Public-Key(pk, tau) -> pk_tau`: Deterministically compute a blinded public key.
+  - Function `BL-Blind-Public-Key(pk, tau, info) -> pk_tau`: Deterministically compute a blinded public key.
 
-    Input consists of a blinding public key `pk` and a blinding factor `tau`.
+    Input consists of a blinding public key `pk`,
+    a blinding factor `tau`
+    and a domain separation parameter `info`.
 
     Output consists of the blinded public key `pk_tau`.
 
-  - Function `BL-Blind-Private-Key(sk, tau) -> sk_tau`: Deterministically compute a blinded private key.
+  - Function `BL-Blind-Private-Key(sk, tau, info) -> sk_tau`: Deterministically compute a blinded private key.
 
-    Input consists of a blinding private key `sk` and a blinding factor `tau`.
+    Input consists of a blinding private key `sk`,
+    a blinding factor `tau`
+    and a domain separation parameter `info`.
 
     Output consists of the blinded private key `sk_tau`.
 
-  `tau` is an opaque octet string of arbitrary length.
+  `tau` and `info` are an opaque octet strings of arbitrary length.
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
 
@@ -287,7 +291,6 @@ The parameters of an ARKG instance are:
 
     Input consists of an encapsulation public key `pk`
     and a domain separation parameter `info`.
-    `info` is an opaque octet string of arbitrary length.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
 
@@ -295,11 +298,10 @@ The parameters of an ARKG instance are:
 
     Input consists of encapsulation private key `sk`, encapsulation ciphertext `c`
     and a domain separation parameter `info`.
-    `info` is an opaque octet string of arbitrary length.
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
-  `k` and `c` are opaque octet strings.
+  `k`, `c` and `info` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
 
@@ -399,8 +401,12 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    (tau, c) = KEM-Encaps(pk_kem, info)
-    pk' = BL-Blind-Public-Key(pk_bl, tau)
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+
+    (tau, c) = KEM-Encaps(pk_kem, info_kem)
+    pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
+
     kh = c
 ~~~
 
@@ -436,11 +442,14 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
-    tau = KEM-Decaps(sk_kem, kh, info)
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+
+    tau = KEM-Decaps(sk_kem, kh, info_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau)
+    sk' = BL-Blind-Private-Key(sk_bl, tau, info_bl)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
@@ -469,7 +478,7 @@ This formula has the following parameters:
 - `crv`: An elliptic curve.
 - `hash-to-crv-suite`: A hash-to-curve suite [RFC9380]
   suitable for hashing to the scalar field of `crv`.
-- `hash-to-field-DST`: A domain separation tag satisfying the requirements stated in {{Section 3.1 of RFC9380}}.
+- `DST_ext`: A domain separation tag.
 
 Then the `BL` parameter of ARKG may be instantiated as follows:
 
@@ -486,7 +495,7 @@ BL-Generate-Keypair() -> (pk, sk)
 BL-Blind-Public-Key(pk, tau, info) -> pk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'arkg-BL-' || hash-to-field-DST || info
+        DST: 'ARKG-BL-EC.' || DST_ext || info
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -501,7 +510,7 @@ BL-Blind-Public-Key(pk, tau, info) -> pk_tau
 BL-Blind-Private-Key(sk, tau, info) -> sk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'arkg-BL-' || hash-to-field-DST || info
+        DST: 'ARKG-BL-EC.' || DST_ext || info
         F: GF(N), the scalar field
            of the prime order subgroup of crv.
         p: N
@@ -529,6 +538,7 @@ and can be successfully decapsulated using any elliptic curve private scalar.
 This formula has the following parameters:
 
 - `Hash`: A cryptographic hash function.
+- `DST_ext`: A domain separation parameter.
 - `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
   except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
   `Sub-Kem` defines the functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
@@ -556,7 +566,8 @@ KEM-Generate-Keypair() -> (pk, sk)
 
 KEM-Encaps(pk, info) -> (k, c)
 
-    (k', c') = Sub-Kem-Encaps(pk, info)
+    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+    (k', c') = Sub-Kem-Encaps(pk, info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -566,14 +577,14 @@ KEM-Encaps(pk, info) -> (k, c)
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-mac' || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
     t = HMAC-Hash-128(K=mk, text=info)
 
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-shared' || info
+        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
         L: The length of k' in octets.
     c = t || c'
 
@@ -582,7 +593,8 @@ KEM-Decaps(sk, c, info) -> k
 
     t = LEFT(c, 16)
     c' = DROP_LEFT(c, 16)
-    k' = Sub-Kem-Decaps(sk, c', info)
+    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+    k' = Sub-Kem-Decaps(sk, c', info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -592,7 +604,7 @@ KEM-Decaps(sk, c, info) -> k
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-mac' || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
 
     t' = HMAC-Hash-128(K=mk, text=info)
@@ -600,7 +612,7 @@ KEM-Decaps(sk, c, info) -> k
         k = HKDF-Expand with the arguments:
             Hash: Hash
             PRK: prk
-            info: 'arkg-KEM-shared' || info
+            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
             L: The length of k' in octets.
     Else:
         Abort with an error.
@@ -616,10 +628,12 @@ This formula has the following parameters:
 
 - `crv`: an elliptic curve valid for use with ECDH [RFC6090].
 - `Hash`: A cryptographic hash function.
+- `DST_ext`: A domain separation parameter.
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
 - `Hash`: `Hash`.
+- `DST_ext`: `'ARKG-ECDH.' || DST_ext`.
 - `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
@@ -661,11 +675,13 @@ This section defines a general formula for such instantiations of `KEM`.
 This formula has the following parameters:
 
 - `DH-Function`: the function X25519 or the function X448 [RFC7748].
+- `DST_ext`: A domain separation parameter.
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
 - `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
   or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
+- `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
 - `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Random-Bytes(N)` represents a cryptographically secure,
@@ -725,10 +741,11 @@ The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-P256ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
 
 
 ## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
@@ -738,10 +755,11 @@ The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-P384ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
+  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
 
 
 ## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
@@ -751,10 +769,11 @@ The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-P521ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `Hash`: SHA-512 [FIPS 180-4].
+  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
 
 
 ## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
@@ -764,10 +783,11 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-P256kADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
 
 
 ## ARKG-curve25519ADD-X25519 {#ARKG-curve25519ADD-X25519}
@@ -777,7 +797,7 @@ The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instanc
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The curve `curve25519` [RFC7748].
   - `hash-to-crv-suite`: `curve25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-curve25519ADD-X25519'`.
+  - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
 
   WARNING: Some algorithms on curve25519, including X25519 [RFC7748],
   construct private key scalars within a particular range
@@ -799,6 +819,7 @@ The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instanc
 
 - `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X25519 [RFC7748].
+  - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
 
 
 ## ARKG-curve448ADD-X448 {#ARKG-curve448ADD-X448}
@@ -808,7 +829,7 @@ The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The curve `curve448` [RFC7748].
   - `hash-to-crv-suite`: `curve448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-curve448ADD-X448'`.
+  - `DST_ext`: `'ARKG-curve448ADD-X448'`.
 
   WARNING: Some algorithms on curve25519, including X448 [RFC7748],
   construct private key scalars within a particular range
@@ -830,6 +851,7 @@ The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
 
 - `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X448 [RFC7748].
+  - `DST_ext`: `'ARKG-curve448ADD-X448'`.
 
 
 ## ARKG-edwards25519ADD-X25519 {#ARKG-edwards25519ADD-X25519}
@@ -839,7 +861,7 @@ The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG insta
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The curve `edwards25519` [RFC7748].
   - `hash-to-crv-suite`: `edwards25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-edwards25519ADD-X25519'`.
+  - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
 
   WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
   construct private key scalars within a particular range
@@ -861,6 +883,7 @@ The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG insta
 
 - `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X25519 [RFC7748].
+  - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
 
 
 ## ARKG-edwards448ADD-X448 {#ARKG-edwards448ADD-X448}
@@ -870,7 +893,7 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The curve `edwards448` [RFC7748].
   - `hash-to-crv-suite`: `edwards448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
-  - `hash-to-field-DST`: `'ARKG-edwards448ADD-X448'`.
+  - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
 
   WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
   construct private key scalars within a particular range
@@ -892,6 +915,7 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
 
 - `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X448 [RFC7748].
+  - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
 
 
 # COSE bindings {#cose}
@@ -1204,6 +1228,7 @@ TODO
   - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
   - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
   - Eliminated top-level MAC and KDF instance parameters.
+  - Added info parameter to instance parameter functions.
   - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
   - Added curve/edwards25519/448 instances.
   - Added proposal for COSE bindings and key reference types.
