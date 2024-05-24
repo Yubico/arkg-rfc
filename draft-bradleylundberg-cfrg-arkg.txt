@@ -569,7 +569,8 @@ Table of Contents
 
    KEM-Encaps(pk, info) -> (k, c)
 
-       (k', c') = Sub-Kem-Encaps(pk, info)
+       info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+       (k', c') = Sub-Kem-Encaps(pk, info_sub)
 
        prk = HKDF-Extract with the arguments:
            Hash: Hash
@@ -579,14 +580,14 @@ Table of Contents
        mk = HKDF-Expand with the arguments:
            Hash: Hash
            PRK: prk
-           info: 'ARKG-KEM-MAC.' || DST_ext || info
+           info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
        t = HMAC-Hash-128(K=mk, text=info)
 
        k = HKDF-Expand with the arguments:
            Hash: Hash
            PRK: prk
-           info: 'ARKG-KEM-SHARED.' || DST_ext || info
+           info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
            L: The length of k' in octets.
        c = t || c'
 
@@ -595,7 +596,8 @@ Table of Contents
 
        t = LEFT(c, 16)
        c' = DROP_LEFT(c, 16)
-       k' = Sub-Kem-Decaps(sk, c', info)
+       info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+       k' = Sub-Kem-Decaps(sk, c', info_sub)
 
        prk = HKDF-Extract with the arguments:
            Hash: Hash
@@ -605,7 +607,7 @@ Table of Contents
        mk = HKDF-Expand with the arguments:
            Hash: Hash
            PRK: prk
-           info: 'ARKG-KEM-MAC.' || DST_ext || info
+           info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
 
        t' = HMAC-Hash-128(K=mk, text=info)
@@ -613,7 +615,7 @@ Table of Contents
            k = HKDF-Expand with the arguments:
                Hash: Hash
                PRK: prk
-               info: 'ARKG-KEM-SHARED.' || DST_ext || info
+               info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
                L: The length of k' in octets.
        Else:
            Abort with an error.
