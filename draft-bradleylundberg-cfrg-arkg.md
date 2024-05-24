@@ -1161,8 +1161,8 @@ We choose to keep the MAC from the construction by Frymann et al. [Frymann2020],
 but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.
 
 The reason for this is to ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
-For example, applications using the W3C Web Authentication API [WebAuthn]
-do not know beforehand which authenticators are connected and available.
+For example, this is important for applications using the W3C Web Authentication API [WebAuthn],
+which do not know beforehand which authenticators are connected and available.
 Instead, authentication requests may include references to several eligible authenticators,
 and the one to use is chosen opportunistically by the WebAuthn client depending on which are available at the time.
 Consider using ARKG in such a scenario to sign some data with a derived private key:
@@ -1179,11 +1179,10 @@ so that `ARKG-Derive-Private-Key` can fail early if the key handle belongs to a 
 It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. [Frymann2020]:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
-by instantiating `KEM` as group exponentiation
-and instantiating `BL` as group multiplication to blind public keys and modular integer addition to blind private keys.
-The use of HMAC and HKDF in {{hmac-kem}} corresponds to the MAC and KDF parameters in [Frymann2020],
-where KDF<sub>1</sub>(_k_) = KDF(_k_, _l_<sub>1</sub>) and KDF<sub>2</sub>(_k_) = KDF(_k_, _l_<sub>2</sub>)
-with fixed labels _l_<sub>1</sub> and _l_<sub>2</sub>.
+by instantiating `BL` as described in {{blinding-ec}}
+and `KEM` as described in {{kem-ecdh}}.
+The use of hash_to_field in {{blinding-ec}} corresponds to the KDF<sub>1</sub> parameter in [Frymann2020],
+and the use of HMAC and HKDF in {{hmac-kem}} corresponds to the MAC and KDF<sub>2</sub> parameters in [Frymann2020].
 Hence if one can break PK-unlinkability or SK-security of the ARKG construction in this document,
 one can also break the same property of the construction by Frymann et al.
 
