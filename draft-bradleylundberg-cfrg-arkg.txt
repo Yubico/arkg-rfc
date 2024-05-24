@@ -398,8 +398,8 @@ Table of Contents
 
        The output (pk', kh) is calculated as follows:
 
-       info_kem = 'ARKG-Derive-Public-Key-KEM' || info
-       info_bl  = 'ARKG-Derive-Public-Key-BL'  || info
+       info_kem = 'ARKG-Derive-Key-KEM.' || info
+       info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
        (tau, c) = KEM-Encaps(pk_kem, info_kem)
        pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
@@ -438,8 +438,8 @@ Table of Contents
 
        The output sk' is calculated as follows:
 
-       info_kem = 'ARKG-Derive-Public-Key-KEM' || info
-       info_bl  = 'ARKG-Derive-Public-Key-BL'  || info
+       info_kem = 'ARKG-Derive-Key-KEM.' || info
+       info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
        tau = KEM-Decaps(sk_kem, kh, info_kem)
        If decapsulation failed:
