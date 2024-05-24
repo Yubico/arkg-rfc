@@ -1160,7 +1160,7 @@ arguing that this leads to invalid keys/signatures in cases that would have a ba
 We choose to keep the MAC from the construction by Frymann et al. [Frymann2020],
 but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.
 
-The reason for this is ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
+The reason for this is to ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
 For example, applications using the W3C Web Authentication API [WebAuthn]
 do not know beforehand which authenticators are connected and available.
 Instead, authentication requests may include references to several eligible authenticators,
