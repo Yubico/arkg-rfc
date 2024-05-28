@@ -939,7 +939,7 @@ An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
 This key type defines key type parameters -1 and -2 for the `BL` and `KEM` public key, respectively.
 
-The following CDDL example represents an `ARKG-P256ADD-ECDH` public seed
+The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
 restricted to generating derived public keys for use with the ESP256 [fully-spec-algs] signature algorithm:
 
 ~~~cddl
@@ -992,7 +992,7 @@ a reference to an ARKG private seed along with a key handle for a derived privat
 
 A COSE key reference is a COSE_Key object whose `kty` value is defined to represent a reference to a key.
 The `kid` parameter MUST be present when `kty` is a key reference type.
-These requirements are encoded in the CDDL type `COSE_Key_Ref`:
+These requirements are encoded in the CDDL [RFC8610] type `COSE_Key_Ref`:
 
 ~~~cddl
 COSE_Key_Ref = COSE_Key .within {
@@ -1078,7 +1078,7 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Capabilities: \[kty(-1), crv\]
   - Reference: {{cose-key-refs}} of this document
 
-These registrations add the following choices to the CDDL type socket `$COSE_kty_ref`:
+These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref`:
 
 ~~~cddl
 $COSE_kty_ref /= -65538   ; Placeholder value
