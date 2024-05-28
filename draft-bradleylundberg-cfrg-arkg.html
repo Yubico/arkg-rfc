@@ -2397,7 +2397,7 @@ and new key type definitions to represent references to private keys rather than
 <p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>
 with <code>kty</code> value TBD (placeholder value -65537).
 This key type defines key type parameters -1 and -2 for the <code>BL</code> and <code>KEM</code> public key, respectively.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">The following CDDL example represents an <code>ARKG-P256ADD-ECDH</code> public seed
+<p id="section-5.1-2">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
 restricted to generating derived public keys for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.1-3">
 <pre>
@@ -2453,7 +2453,7 @@ users of the function <code>ARKG-Derive-Secret-Key</code> need to represent
 a reference to an ARKG private seed along with a key handle for a derived private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">A COSE key reference is a COSE_Key object whose <code>kty</code> value is defined to represent a reference to a key.
 The <code>kid</code> parameter <span class="bcp14">MUST</span> be present when <code>kty</code> is a key reference type.
-These requirements are encoded in the CDDL type <code>COSE_Key_Ref</code>:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+These requirements are encoded in the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type <code>COSE_Key_Ref</code>:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.2-3">
 <pre>
 COSE_Key_Ref = COSE_Key .within {
@@ -2599,7 +2599,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
         </ul>
-<p id="section-8.1-3">These registrations add the following choices to the CDDL type socket <code>$COSE_kty_ref</code>:<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<p id="section-8.1-3">These registrations add the following choices to the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type socket <code>$COSE_kty_ref</code>:<a href="#section-8.1-3" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-8.1-4">
 <pre>
 $COSE_kty_ref /= -65538   ; Placeholder value
@@ -3095,7 +3095,10 @@ modified by the inclusion of a MAC in the key handles as done in the original co
               <p id="appendix-C-1.4.2.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-1.4.2.4">
-              <p id="appendix-C-1.4.2.4.1">Editorial fixes to references.<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
+              <p id="appendix-C-1.4.2.4.1">Added CDDL definition of COSE_Key_Ref<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.5">
+              <p id="appendix-C-1.4.2.5.1">Editorial fixes to references.<a href="#appendix-C-1.4.2.5.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
