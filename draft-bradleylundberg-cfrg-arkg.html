@@ -1464,7 +1464,7 @@ The representations of <code>sk</code> and <code>sk_tau</code> are an undefined 
 See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
-            <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism <span>[<a href="#Shoup" class="cite xref">Shoup</a>]</span>, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.2.2.1">
                 <p id="section-2.1-2.2.2.1.1"><code>KEM-Generate-Keypair() -&gt; (pk, sk)</code>: Generate a key encapsulation key pair.<a href="#section-2.1-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2971,7 +2971,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dd class="break"></dd>
 <dt id="Clermont">[Clermont]</dt>
         <dd>
-<span class="refAuthor">Clermont, S. A.</span> and <span class="refAuthor">Technische Universität Darmstadt</span>, <span class="refTitle">"Post Quantum Asynchronous Remote Key Generation. Master's thesis"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf">https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">Clermont, S. A.</span>, <span class="refTitle">"Post Quantum Asynchronous Remote Key Generation. Master's thesis"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf">https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Frymann2020">[Frymann2020]</dt>
         <dd>
@@ -2981,13 +2981,17 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Frymann, N.</span>, <span class="refAuthor">Gardham, D.</span>, and <span class="refAuthor">M. Manulis</span>, <span class="refTitle">"Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/419">https://eprint.iacr.org/2023/419</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="Shoup">[Shoup]</dt>
+        <dd>
+<span class="refAuthor">Shoup, V.</span>, <span class="refTitle">"A Proposal for an ISO Standard for Public Key Encryption (version 2.0)"</span>, <time datetime="2001" class="refDate">2001</time>, <span>&lt;<a href="https://www.shoup.net/papers/iso-2.pdf">https://www.shoup.net/papers/iso-2.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="WebAuthn-Recovery">[WebAuthn-Recovery]</dt>
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">D. Nilsson</span>, <span class="refTitle">"WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://github.com/Yubico/webauthn-recovery-extension">https://github.com/Yubico/webauthn-recovery-extension</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Wilson">[Wilson]</dt>
       <dd>
-<span class="refAuthor">Wilson, S. M.</span> and <span class="refAuthor">University of Waterloo,</span>, <span class="refTitle">"Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="http://hdl.handle.net/10012/19316">http://hdl.handle.net/10012/19316</a>&gt;</span>. </dd>
+<span class="refAuthor">Wilson, S. M.</span>, <span class="refTitle">"Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="http://hdl.handle.net/10012/19316">http://hdl.handle.net/10012/19316</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -3064,10 +3068,16 @@ modified by the inclusion of a MAC in the key handles as done in the original co
           <p id="appendix-C-1.4.1">03<a href="#appendix-C-1.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-1.4.2.1">
-              <p id="appendix-C-1.4.2.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}"<a href="#appendix-C-1.4.2.1.1" class="pilcrow">¶</a></p>
+              <p id="appendix-C-1.4.2.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-1.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-1.4.2.2">
-              <p id="appendix-C-1.4.2.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity"<a href="#appendix-C-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <p id="appendix-C-1.4.2.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-1.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.3">
+              <p id="appendix-C-1.4.2.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-1.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.4">
+              <p id="appendix-C-1.4.2.4.1">Editorial fixes to references.<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>

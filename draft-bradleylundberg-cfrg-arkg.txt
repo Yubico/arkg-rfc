@@ -266,7 +266,8 @@ Table of Contents
       See [Wilson] for definitions of security properties required of
       the key blinding scheme BL.
 
-   *  KEM: A key encapsulation mechanism, consisting of the functions:
+   *  KEM: A key encapsulation mechanism [Shoup], consisting of the
+      functions:
 
       -  KEM-Generate-Keypair() -> (pk, sk): Generate a key
          encapsulation key pair.
@@ -1432,9 +1433,9 @@ Table of Contents
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
               0032.mediawiki>.
 
-   [Clermont] Clermont, S. A. and Technische Universität Darmstadt,
-              "Post Quantum Asynchronous Remote Key Generation. Master's
-              thesis", 2022, <https://www.cryptoplexity.informatik.tu-
+   [Clermont] Clermont, S. A., "Post Quantum Asynchronous Remote Key
+              Generation. Master's thesis", 2022,
+              <https://www.cryptoplexity.informatik.tu-
               darmstadt.de/media/crypt/teaching_1/theses_1/
               Sebastian_Clermont_Thesis.pdf>.
 
@@ -1452,15 +1453,19 @@ Table of Contents
               Lattices. 2023 IEEE 8th European Symposium on Security and
               Privacy", 2023, <https://eprint.iacr.org/2023/419>.
 
+   [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
+              Encryption (version 2.0)", 2001,
+              <https://www.shoup.net/papers/iso-2.pdf>.
+
    [WebAuthn-Recovery]
               Lundberg, E. and D. Nilsson, "WebAuthn recovery extension:
               Asynchronous delegated key generation without shared
               secrets. GitHub", 2019,
               <https://github.com/Yubico/webauthn-recovery-extension>.
 
-   [Wilson]   Wilson, S. M. and University of Waterloo,, "Post-Quantum
-              Account Recovery for Passwordless Authentication. Master's
-              thesis", 2023, <http://hdl.handle.net/10012/19316>.
+   [Wilson]   Wilson, S. M., "Post-Quantum Account Recovery for
+              Passwordless Authentication. Master's thesis", 2023,
+              <http://hdl.handle.net/10012/19316>.
 
 Appendix A.  Acknowledgements
 
@@ -1517,10 +1522,15 @@ Appendix C.  Document History
    *  03
 
       -  Renamed section "Using HMAC to adapt a KEM without {integrity
-         protection => ciphertext integrity}"
+         protection => ciphertext integrity}".
 
       -  Fixed info argument to HMAC in section "Using HMAC to adapt a
-         KEM without ciphertext integrity"
+         KEM without ciphertext integrity".
+
+      -  Added reference to Shoup for definition of key encapsulation
+         mechanism.
+
+      -  Editorial fixes to references.
 
 Contributors
 
