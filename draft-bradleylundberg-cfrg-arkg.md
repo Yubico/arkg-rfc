@@ -120,6 +120,13 @@ informative:
     title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy
     date: 2023
     target: https://eprint.iacr.org/2023/419
+  Shoup:
+    author:
+    - name: Victor Shoup
+    - org: IBM Zurich Research Lab
+    title: A Proposal for an ISO Standard for Public Key Encryption (version 2.0)
+    date: 2001
+    target: https://www.shoup.net/papers/iso-2.pdf
   Wilson:
     author:
     - name: Spencer MacLaren Wilson
@@ -281,7 +288,7 @@ The parameters of an ARKG instance are:
 
   See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
 
-- `KEM`: A key encapsulation mechanism, consisting of the functions:
+- `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
   - `KEM-Generate-Keypair() -> (pk, sk)`: Generate a key encapsulation key pair.
 
     No input.
@@ -1234,5 +1241,6 @@ TODO
   - Added proposal for COSE bindings and key reference types.
 
 - 03
-  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}"
-  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity"
+  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
+  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
+  - Added reference to Shoup for definition of key encapsulation mechanism.
