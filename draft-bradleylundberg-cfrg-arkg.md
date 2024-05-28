@@ -65,6 +65,7 @@ normative:
   RFC8032:
   RFC8610:
   RFC8812:
+  RFC9052:
   RFC9380:
   SEC1:
     target: http://www.secg.org/sec1-v2.pdf
