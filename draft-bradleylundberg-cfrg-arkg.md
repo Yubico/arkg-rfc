@@ -91,7 +91,7 @@ informative:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
     - name: Sebastian A. Clermont
-    - org: "Technische Universität Darmstadt"
+      org: "Technische Universität Darmstadt"
     date: 2022
     title: "Post Quantum Asynchronous Remote Key Generation. Master's thesis"
   WebAuthn-Recovery:
@@ -123,14 +123,14 @@ informative:
   Shoup:
     author:
     - name: Victor Shoup
-    - org: IBM Zurich Research Lab
+      org: IBM Zurich Research Lab
     title: A Proposal for an ISO Standard for Public Key Encryption (version 2.0)
     date: 2001
     target: https://www.shoup.net/papers/iso-2.pdf
   Wilson:
     author:
     - name: Spencer MacLaren Wilson
-    - org: University of Waterloo,
+      org: University of Waterloo,
     title: "Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"
     date: 2023
     target: http://hdl.handle.net/10012/19316
@@ -1244,3 +1244,4 @@ TODO
   - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
   - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
   - Added reference to Shoup for definition of key encapsulation mechanism.
+  - Editorial fixes to references.
