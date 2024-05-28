@@ -83,7 +83,7 @@ Table of Contents
      2.4.  The function ARKG-Derive-Private-Key
    3.  Generic ARKG instantiations
      3.1.  Using elliptic curve addition for key blinding
-     3.2.  Using HMAC to adapt a KEM without ciphertect integrity
+     3.2.  Using HMAC to adapt a KEM without ciphertext integrity
      3.3.  Using ECDH as the KEM
      3.4.  Using X25519 or X448 as the KEM
      3.5.  Using the same key for both key blinding and KEM
@@ -523,7 +523,7 @@ Table of Contents
        If sk_tau_tmp = 0, abort with an error.
        sk_tau = sk_tau_tmp
 
-3.2.  Using HMAC to adapt a KEM without ciphertect integrity
+3.2.  Using HMAC to adapt a KEM without ciphertext integrity
 
    Not all key encapsulation mechanisms guarantee ciphertext integrity,
    meaning that a valid KEM ciphertext can be created only with
