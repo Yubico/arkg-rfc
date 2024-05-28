@@ -992,6 +992,15 @@ a reference to an ARKG private seed along with a key handle for a derived privat
 
 A COSE key reference is a COSE_Key object whose `kty` value is defined to represent a reference to a key.
 The `kid` parameter MUST be present when `kty` is a key reference type.
+These requirements are encoded in the CDDL type `COSE_Key_Ref`:
+
+~~~cddl
+COSE_Key_Ref = COSE_Key .within {
+  1 ^ => $COSE_kty_ref   ; kty: Any reference type
+  2 ^ => any,            ; kid is required
+  any => any,            ; Any other entries allowed by COSE_Key
+}
+~~~
 
 The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
 and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
@@ -1068,6 +1077,14 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Description: Reference to a key pair of key type "EC2"
   - Capabilities: \[kty(-1), crv\]
   - Reference: {{cose-key-refs}} of this document
+
+These registrations add the following choices to the CDDL type socket `$COSE_kty_ref`:
+
+~~~cddl
+$COSE_kty_ref /= -65538   ; Placeholder value
+$COSE_kty_ref /= -1       ; Value TBD
+$COSE_kty_ref /= -2       ; Value TBD
+~~~
 
 
 ## COSE Key Type Parameters Registrations
@@ -1244,4 +1261,5 @@ TODO
   - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
   - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
   - Added reference to Shoup for definition of key encapsulation mechanism.
+  - Added CDDL definition of COSE_Key_Ref
   - Editorial fixes to references.
