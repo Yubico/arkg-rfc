@@ -526,11 +526,11 @@ BL-Blind-Private-Key(sk, tau, info) -> sk_tau
 ~~~
 
 
-## Using HMAC to adapt a KEM without integrity protection {#hmac-kem}
+## Using HMAC to adapt a KEM without ciphertext integrity {#hmac-kem}
 
 Not all key encapsulation mechanisms guarantee ciphertext integrity,
 meaning that a valid KEM ciphertext can be created only with knowledge of the KEM public key.
-This section defines a general formula for adapting any KEM to include integrity protection
+This section defines a general formula for adapting any KEM to guarantee ciphertext integrity
 by prepending a MAC to the KEM ciphertext.
 
 For example, ECDH does not guarantee ciphertext integrity - any elliptic curve point is a valid ECDH ciphertext
@@ -1233,4 +1233,6 @@ TODO
   - Added curve/edwards25519/448 instances.
   - Added proposal for COSE bindings and key reference types.
 
-- 03 Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without integrity protection"
+- 03
+  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}"
+  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity"
