@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 29 November 2024                                    28 May 2024
+Expires: 2 March 2025                                     29 August 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 November 2024.
+   This Internet-Draft will expire on 2 March 2025.
 
 Copyright Notice
 
@@ -83,7 +83,7 @@ Table of Contents
      2.4.  The function ARKG-Derive-Private-Key
    3.  Generic ARKG instantiations
      3.1.  Using elliptic curve addition for key blinding
-     3.2.  Using HMAC to adapt a KEM without integrity protection
+     3.2.  Using HMAC to adapt a KEM without ciphertext integrity
      3.3.  Using ECDH as the KEM
      3.4.  Using X25519 or X448 as the KEM
      3.5.  Using the same key for both key blinding and KEM
@@ -266,7 +266,8 @@ Table of Contents
       See [Wilson] for definitions of security properties required of
       the key blinding scheme BL.
 
-   *  KEM: A key encapsulation mechanism, consisting of the functions:
+   *  KEM: A key encapsulation mechanism [Shoup], consisting of the
+      functions:
 
       -  KEM-Generate-Keypair() -> (pk, sk): Generate a key
          encapsulation key pair.
@@ -522,12 +523,12 @@ Table of Contents
        If sk_tau_tmp = 0, abort with an error.
        sk_tau = sk_tau_tmp
 
-3.2.  Using HMAC to adapt a KEM without integrity protection
+3.2.  Using HMAC to adapt a KEM without ciphertext integrity
 
    Not all key encapsulation mechanisms guarantee ciphertext integrity,
    meaning that a valid KEM ciphertext can be created only with
    knowledge of the KEM public key.  This section defines a general
-   formula for adapting any KEM to include integrity protection by
+   formula for adapting any KEM to guarantee ciphertext integrity by
    prepending a MAC to the KEM ciphertext.
 
    For example, ECDH does not guarantee ciphertext integrity - any
@@ -582,7 +583,7 @@ Table of Contents
            PRK: prk
            info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
-       t = HMAC-Hash-128(K=mk, text=info)
+       t = HMAC-Hash-128(K=mk, text=c')
 
        k = HKDF-Expand with the arguments:
            Hash: Hash
@@ -610,7 +611,7 @@ Table of Contents
            info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
 
-       t' = HMAC-Hash-128(K=mk, text=info)
+       t' = HMAC-Hash-128(K=mk, text=c')
        If t = t':
            k = HKDF-Expand with the arguments:
                Hash: Hash
@@ -1013,9 +1014,9 @@ Table of Contents
    key type parameters -1 and -2 for the BL and KEM public key,
    respectively.
 
-   The following CDDL example represents an ARKG-P256ADD-ECDH public
-   seed restricted to generating derived public keys for use with the
-   ESP256 [fully-spec-algs] signature algorithm:
+   The following CDDL [RFC8610] example represents an ARKG-P256ADD-ECDH
+   public seed restricted to generating derived public keys for use with
+   the ESP256 [fully-spec-algs] signature algorithm:
 
    {
      1: -65537,   ; kty: ARKG-pub-seed
@@ -1064,7 +1065,14 @@ Table of Contents
 
    A COSE key reference is a COSE_Key object whose kty value is defined
    to represent a reference to a key.  The kid parameter MUST be present
-   when kty is a key reference type.
+   when kty is a key reference type.  These requirements are encoded in
+   the CDDL [RFC8610] type COSE_Key_Ref:
+
+   COSE_Key_Ref = COSE_Key .within {
+     1 ^ => $COSE_kty_ref   ; kty: Any reference type
+     2 ^ => any,            ; kid is required
+     any => any,            ; Any other entries allowed by COSE_Key
+   }
 
    The following CDDL example represents a reference to a key derived by
    ARKG-P256ADD-ECDH and restricted for use with the ESP256
@@ -1152,6 +1160,13 @@ Table of Contents
       -  Capabilities: [kty(-1), crv]
 
       -  Reference: Section 5.2 of this document
+
+   These registrations add the following choices to the CDDL [RFC8610]
+   type socket $COSE_kty_ref:
+
+   $COSE_kty_ref /= -65538   ; Placeholder value
+   $COSE_kty_ref /= -1       ; Value TBD
+   $COSE_kty_ref /= -2       ; Value TBD
 
 8.2.  COSE Key Type Parameters Registrations
 
@@ -1358,7 +1373,7 @@ Table of Contents
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
@@ -1432,9 +1447,9 @@ Table of Contents
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
               0032.mediawiki>.
 
-   [Clermont] Clermont, S. A. and Technische Universität Darmstadt,
-              "Post Quantum Asynchronous Remote Key Generation. Master's
-              thesis", 2022, <https://www.cryptoplexity.informatik.tu-
+   [Clermont] Clermont, S. A., "Post Quantum Asynchronous Remote Key
+              Generation. Master's thesis", 2022,
+              <https://www.cryptoplexity.informatik.tu-
               darmstadt.de/media/crypt/teaching_1/theses_1/
               Sebastian_Clermont_Thesis.pdf>.
 
@@ -1452,15 +1467,19 @@ Table of Contents
               Lattices. 2023 IEEE 8th European Symposium on Security and
               Privacy", 2023, <https://eprint.iacr.org/2023/419>.
 
+   [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
+              Encryption (version 2.0)", 2001,
+              <https://www.shoup.net/papers/iso-2.pdf>.
+
    [WebAuthn-Recovery]
               Lundberg, E. and D. Nilsson, "WebAuthn recovery extension:
               Asynchronous delegated key generation without shared
               secrets. GitHub", 2019,
               <https://github.com/Yubico/webauthn-recovery-extension>.
 
-   [Wilson]   Wilson, S. M. and University of Waterloo,, "Post-Quantum
-              Account Recovery for Passwordless Authentication. Master's
-              thesis", 2023, <http://hdl.handle.net/10012/19316>.
+   [Wilson]   Wilson, S. M., "Post-Quantum Account Recovery for
+              Passwordless Authentication. Master's thesis", 2023,
+              <http://hdl.handle.net/10012/19316>.
 
 Appendix A.  Acknowledgements
 
@@ -1513,6 +1532,21 @@ Appendix C.  Document History
       -  Added curve/edwards25519/448 instances.
 
       -  Added proposal for COSE bindings and key reference types.
+
+   *  03
+
+      -  Renamed section "Using HMAC to adapt a KEM without {integrity
+         protection => ciphertext integrity}".
+
+      -  Fixed info argument to HMAC in section "Using HMAC to adapt a
+         KEM without ciphertext integrity".
+
+      -  Added reference to Shoup for definition of key encapsulation
+         mechanism.
+
+      -  Added CDDL definition of COSE_Key_Ref
+
+      -  Editorial fixes to references.
 
 Contributors
 

@@ -20,23 +20,22 @@ a set of formulae for instantiating the abstract primitives using concrete primi
 and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future. 
     " name="description">
-<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="xml2rfc 3.23.0" name="generator">
 <meta content="KDF" name="keyword">
 <meta content="draft-bradleylundberg-cfrg-arkg-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.21.0
-    Python 3.11.9
+  xml2rfc 3.23.0
+    Python 3.12.3
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 4.2.1
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
     pycountry 22.3.5
     PyYAML 6.0.1
-    requests 2.31.0
-    setuptools 68.2.2
-    six 1.16.0
+    requests 2.32.3
+    setuptools 70.3.0
     wcwidth 0.2.13
 -->
 <link href="draft-bradleylundberg-cfrg-arkg.xml" rel="alternate" type="application/rfc+xml">
@@ -1036,11 +1035,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ARKG</td>
-<td class="right">May 2024</td>
+<td class="right">August 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 9 November 2024</td>
+<td class="center">Expires 2 March 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1052,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-05-08" class="published">8 May 2024</time>
+<time datetime="2024-08-29" class="published">29 August 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-11-09">9 November 2024</time></dd>
+<dd class="expires"><time datetime="2025-03-02">2 March 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1117,7 +1116,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 November 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 March 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1186,7 +1185,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-using-elliptic-curve-additi" class="internal xref">Using elliptic curve addition for key blinding</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-using-hmac-to-adapt-a-kem-w" class="internal xref">Using HMAC to adapt a KEM without integrity protection</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-using-hmac-to-adapt-a-kem-w" class="internal xref">Using HMAC to adapt a KEM without ciphertext integrity</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-using-ecdh-as-the-kem" class="internal xref">Using ECDH as the KEM</a></p>
@@ -1203,27 +1202,41 @@ We expect that additional instances will be defined in the future.<a href="#sect
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-concrete-arkg-instantiation" class="internal xref">Concrete ARKG instantiations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-arkg-p256add-ecdh-p256-sha2" class="internal xref">ARKG-P256ADD-ECDH-P256-SHA256</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-arkg-p256add-ecdh" class="internal xref">ARKG-P256ADD-ECDH</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-arkg-p384add-ecdh-p384-sha3" class="internal xref">ARKG-P384ADD-ECDH-P384-SHA384</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-arkg-p384add-ecdh" class="internal xref">ARKG-P384ADD-ECDH</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-arkg-p521add-ecdh-p521-sha5" class="internal xref">ARKG-P521ADD-ECDH-P521-SHA512</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-arkg-p521add-ecdh" class="internal xref">ARKG-P521ADD-ECDH</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-arkg-p256kadd-ecdh-p256k-sh" class="internal xref">ARKG-P256kADD-ECDH-P256k-SHA256</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-arkg-p256kadd-ecdh" class="internal xref">ARKG-P256kADD-ECDH</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-arkg-ed25519add-x25519-hmac" class="internal xref">ARKG-Ed25519ADD-X25519-HMAC-SHA256</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-arkg-curve25519add-x25519" class="internal xref">ARKG-curve25519ADD-X25519</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-arkg-ed448add-x448-hmac-sha" class="internal xref">ARKG-Ed448ADD-X448-HMAC-SHA256</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-arkg-curve448add-x448" class="internal xref">ARKG-curve448ADD-X448</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-arkg-edwards25519add-x25519" class="internal xref">ARKG-edwards25519ADD-X25519</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-arkg-edwards448add-x448" class="internal xref">ARKG-edwards448ADD-X448</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-cose-bindings" class="internal xref">COSE bindings</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-cose-key-type-arkg-public-s" class="internal xref">COSE key type: ARKG public seed</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-cose-key-reference-types" class="internal xref">COSE key reference types</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1233,6 +1246,17 @@ We expect that additional instances will be defined in the future.<a href="#sect
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-cose-key-types-registration" class="internal xref">COSE Key Types Registrations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-cose-key-type-parameters-re" class="internal xref">COSE Key Type Parameters Registrations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-cose-algorithms-registratio" class="internal xref">COSE Algorithms Registrations</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-design-rationale" class="internal xref">Design rationale</a></p>
@@ -1413,29 +1437,33 @@ No input.<a href="#section-2.1-2.1.2.1.2" class="pilcrow">¶</a></p>
 Output consists of a blinding public key <code>pk</code> and a blinding private key <code>sk</code>.<a href="#section-2.1-2.1.2.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-2.1.2.2">
-                <p id="section-2.1-2.1.2.2.1">Function <code>BL-Blind-Public-Key(pk, tau) -&gt; pk_tau</code>: Deterministically compute a blinded public key.<a href="#section-2.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.2.1">Function <code>BL-Blind-Public-Key(pk, tau, info) -&gt; pk_tau</code>: Deterministically compute a blinded public key.<a href="#section-2.1-2.1.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.2.2">
-Input consists of a blinding public key <code>pk</code> and a blinding factor <code>tau</code>.<a href="#section-2.1-2.1.2.2.2" class="pilcrow">¶</a></p>
+Input consists of a blinding public key <code>pk</code>,
+a blinding factor <code>tau</code>
+and a domain separation parameter <code>info</code>.<a href="#section-2.1-2.1.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.2.3">
 Output consists of the blinded public key <code>pk_tau</code>.<a href="#section-2.1-2.1.2.2.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-2.1.2.3">
-                <p id="section-2.1-2.1.2.3.1">Function <code>BL-Blind-Private-Key(sk, tau) -&gt; sk_tau</code>: Deterministically compute a blinded private key.<a href="#section-2.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.3.1">Function <code>BL-Blind-Private-Key(sk, tau, info) -&gt; sk_tau</code>: Deterministically compute a blinded private key.<a href="#section-2.1-2.1.2.3.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.3.2">
-Input consists of a blinding private key <code>sk</code> and a blinding factor <code>tau</code>.<a href="#section-2.1-2.1.2.3.2" class="pilcrow">¶</a></p>
+Input consists of a blinding private key <code>sk</code>,
+a blinding factor <code>tau</code>
+and a domain separation parameter <code>info</code>.<a href="#section-2.1-2.1.2.3.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.3.3">
 Output consists of the blinded private key <code>sk_tau</code>.<a href="#section-2.1-2.1.2.3.3" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-2.1-2.1.3">
-<code>tau</code> is an opaque octet string of arbitrary length.
+<code>tau</code> and <code>info</code> are an opaque octet strings of arbitrary length.
 The representations of <code>pk</code> and <code>pk_tau</code> are defined by the protocol that invokes ARKG.
 The representations of <code>sk</code> and <code>sk_tau</code> are an undefined implementation detail.<a href="#section-2.1-2.1.3" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.4">
 See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
-            <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism <span>[<a href="#Shoup" class="cite xref">Shoup</a>]</span>, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.2.2.1">
                 <p id="section-2.1-2.2.2.1.1"><code>KEM-Generate-Keypair() -&gt; (pk, sk)</code>: Generate a key encapsulation key pair.<a href="#section-2.1-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -1448,8 +1476,7 @@ Output consists of public key <code>pk</code> and private key <code>sk</code>.<a
                 <p id="section-2.1-2.2.2.2.1"><code>KEM-Encaps(pk, info) -&gt; (k, c)</code>: Generate a key encapsulation.<a href="#section-2.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.2.2">
 Input consists of an encapsulation public key <code>pk</code>
-and a domain separation parameter <code>info</code>.
-<code>info</code> is an opaque octet string of arbitrary length.<a href="#section-2.1-2.2.2.2.2" class="pilcrow">¶</a></p>
+and a domain separation parameter <code>info</code>.<a href="#section-2.1-2.2.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.2.3">
 Output consists of a shared secret <code>k</code> and an encapsulation ciphertext <code>c</code>.<a href="#section-2.1-2.2.2.2.3" class="pilcrow">¶</a></p>
 </li>
@@ -1457,21 +1484,21 @@ Output consists of a shared secret <code>k</code> and an encapsulation ciphertex
                 <p id="section-2.1-2.2.2.3.1"><code>KEM-Decaps(sk, c, info) -&gt; k</code>: Decapsulate a shared secret.<a href="#section-2.1-2.2.2.3.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.3.2">
 Input consists of encapsulation private key <code>sk</code>, encapsulation ciphertext <code>c</code>
-and a domain separation parameter <code>info</code>.
-<code>info</code> is an opaque octet string of arbitrary length.<a href="#section-2.1-2.2.2.3.2" class="pilcrow">¶</a></p>
+and a domain separation parameter <code>info</code>.<a href="#section-2.1-2.2.2.3.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.3.3">
 Output consists of the shared secret <code>k</code> on success, or an error otherwise.<a href="#section-2.1-2.2.2.3.3" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-2.1-2.2.3">
-<code>k</code> and <code>c</code> are opaque octet strings.
+<code>k</code>, <code>c</code> and <code>info</code> are opaque octet strings of arbitrary length.
 The representation of <code>pk</code> is defined by the protocol that invokes ARKG.
 The representation of <code>sk</code> is an undefined implementation detail.<a href="#section-2.1-2.2.3" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.4">
 The KEM <span class="bcp14">MUST</span> guarantee integrity of the ciphertext,
 meaning that knowledge of the public key <code>pk</code> and the domain separation parameter <code>info</code>
-is required in order to create any ciphertext <code>c</code> that can be successfully decapsulated by the corresponding secret key <code>sk</code>.
-Section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> describes a general formula for how any KEM can be adapted to include this guarantee.<a href="#section-2.1-2.2.4" class="pilcrow">¶</a></p>
+is required in order to create any ciphertext <code>c</code> that can be successfully decapsulated by the corresponding private key <code>sk</code>.
+<a href="#hmac-kem" class="auto internal xref">Section 3.2</a> describes a general formula for how any KEM can be adapted to include this guarantee.
+<a href="#design-rationale-mac" class="auto internal xref">Section 9.1</a> discusses the reasons for this requirement.<a href="#section-2.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.5">
 See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of additional security properties required of the key encapsulation mechanism <code>KEM</code>.<a href="#section-2.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
@@ -1571,8 +1598,12 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    (tau, c) = KEM-Encaps(pk_kem, info)
-    pk' = BL-Blind-Public-Key(pk_bl, tau)
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+
+    (tau, c) = KEM-Encaps(pk_kem, info_kem)
+    pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
+
     kh = c
 </pre><a href="#section-2.3-3" class="pilcrow">¶</a>
 </div>
@@ -1610,11 +1641,14 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -&gt; sk'
 
     The output sk' is calculated as follows:
 
-    tau = KEM-Decaps(sk_kem, kh, info)
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+
+    tau = KEM-Decaps(sk_kem, kh, info_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau)
+    sk' = BL-Blind-Private-Key(sk_bl, tau, info_bl)
 </pre><a href="#section-2.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-2.4-4">Errors in this procedure are typically unrecoverable.
@@ -1641,7 +1675,7 @@ which can be used to define concrete ARKG instantiations.<a href="#section-3-1" 
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-using-elliptic-curve-additi" class="section-name selfRef">Using elliptic curve addition for key blinding</a>
         </h3>
 <p id="section-3.1-1">Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve addition as the key blinding scheme <code>BL</code> <span><a href="#Wilson" class="internal xref">Frymann2020</a> [<a href="#Wilson" class="cite xref">Wilson</a>]</span>.
+can use elliptic curve addition as the key blinding scheme <code>BL</code> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>.
 This section defines a general formula for such instantiations of <code>BL</code>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">This formula has the following parameters:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1653,7 +1687,7 @@ This section defines a general formula for such instantiations of <code>BL</code
 suitable for hashing to the scalar field of <code>crv</code>.<a href="#section-3.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-3.3">
-            <p id="section-3.1-3.3.1"><code>hash-to-field-DST</code>: A domain separation tag satisfying the requirements stated in <span><a href="https://rfc-editor.org/rfc/rfc9380#section-3.1" class="relref">Section 3.1</a> of [<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-3.3.1"><code>DST_ext</code>: A domain separation tag.<a href="#section-3.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.1-4">Then the <code>BL</code> parameter of ARKG may be instantiated as follows:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
@@ -1678,7 +1712,7 @@ BL-Generate-Keypair() -&gt; (pk, sk)
 BL-Blind-Public-Key(pk, tau, info) -&gt; pk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'arkg-BL-' || hash-to-field-DST || info
+        DST: 'ARKG-BL-EC.' || DST_ext || info
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -1693,7 +1727,7 @@ BL-Blind-Public-Key(pk, tau, info) -&gt; pk_tau
 BL-Blind-Private-Key(sk, tau, info) -&gt; sk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'arkg-BL-' || hash-to-field-DST || info
+        DST: 'ARKG-BL-EC.' || DST_ext || info
         F: GF(N), the scalar field
            of the prime order subgroup of crv.
         p: N
@@ -1712,11 +1746,11 @@ BL-Blind-Private-Key(sk, tau, info) -&gt; sk_tau
 <div id="hmac-kem">
 <section id="section-3.2">
         <h3 id="name-using-hmac-to-adapt-a-kem-w">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-using-hmac-to-adapt-a-kem-w" class="section-name selfRef">Using HMAC to adapt a KEM without integrity protection</a>
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-using-hmac-to-adapt-a-kem-w" class="section-name selfRef">Using HMAC to adapt a KEM without ciphertext integrity</a>
         </h3>
 <p id="section-3.2-1">Not all key encapsulation mechanisms guarantee ciphertext integrity,
 meaning that a valid KEM ciphertext can be created only with knowledge of the KEM public key.
-This section defines a general formula for adapting any KEM to include integrity protection
+This section defines a general formula for adapting any KEM to guarantee ciphertext integrity
 by prepending a MAC to the KEM ciphertext.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">For example, ECDH does not guarantee ciphertext integrity - any elliptic curve point is a valid ECDH ciphertext
 and can be successfully decapsulated using any elliptic curve private scalar.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
@@ -1726,9 +1760,12 @@ and can be successfully decapsulated using any elliptic curve private scalar.<a 
             <p id="section-3.2-4.1.1"><code>Hash</code>: A cryptographic hash function.<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-4.2">
-            <p id="section-3.2-4.2.1"><code>Sub-Kem</code>: A key encapsulation mechanism as described for the <code>KEM</code> parameter in <a href="#arkg-params" class="auto internal xref">Section 2.1</a>,
+            <p id="section-3.2-4.2.1"><code>DST_ext</code>: A domain separation parameter.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-4.3">
+            <p id="section-3.2-4.3.1"><code>Sub-Kem</code>: A key encapsulation mechanism as described for the <code>KEM</code> parameter in <a href="#arkg-params" class="auto internal xref">Section 2.1</a>,
 except <code>Sub-Kem</code> <span class="bcp14">MAY</span> ignore the <code>info</code> parameter and <span class="bcp14">MAY</span> not guarantee ciphertext integrity.
-<code>Sub-Kem</code> defines the functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
+<code>Sub-Kem</code> defines the functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.2-5">The <code>KEM</code> parameter of ARKG may be instantiated using <code>Sub-Kem</code>,
@@ -1744,7 +1781,13 @@ HMAC <span>[<a href="#RFC2104" class="cite xref">RFC2104</a>]</span> and HKDF <s
             <p id="section-3.2-6.3.1"><code>DROP_LEFT(X, n)</code> is the byte array <code>X</code> without the first <code>n</code> bytes.<a href="#section-3.2-6.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<div class="breakable lang-pseudocode sourcecode" id="section-3.2-7">
+<p id="section-3.2-7">We truncate the HMAC output to 128 bits (16 octets)
+because as described in <a href="#design-rationale-mac" class="auto internal xref">Section 9.1</a>,
+ARKG needs ciphertext integrity only to ensure correctness, not for security.
+Extendable-output functions used as the <code>Hash</code> parameter <span class="bcp14">SHOULD</span> still be instantiated
+with an output length appropriate for the desired security level,
+in order to not leak information about the <code>Sub-KEM</code> shared secret key.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<div class="breakable lang-pseudocode sourcecode" id="section-3.2-8">
 <pre>
 KEM-Generate-Keypair() -&gt; (pk, sk)
 
@@ -1753,7 +1796,8 @@ KEM-Generate-Keypair() -&gt; (pk, sk)
 
 KEM-Encaps(pk, info) -&gt; (k, c)
 
-    (k', c') = Sub-Kem-Encaps(pk, info)
+    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+    (k', c') = Sub-Kem-Encaps(pk, info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -1763,23 +1807,24 @@ KEM-Encaps(pk, info) -&gt; (k, c)
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-mac' || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
-    t = HMAC-Hash(K=mk, text=info)
+    t = HMAC-Hash-128(K=mk, text=c')
 
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-shared' || info
+        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
         L: The length of k' in octets.
     c = t || c'
 
 
 KEM-Decaps(sk, c, info) -&gt; k
 
-    t = LEFT(c, L)
-    c' = DROP_LEFT(c, L)
-    k' = Sub-Kem-Decaps(sk, c', info)
+    t = LEFT(c, 16)
+    c' = DROP_LEFT(c, 16)
+    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
+    k' = Sub-Kem-Decaps(sk, c', info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -1789,19 +1834,19 @@ KEM-Decaps(sk, c, info) -&gt; k
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'arkg-KEM-mac' || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
 
-    t' = HMAC-Hash(K=mk, text=info)
+    t' = HMAC-Hash-128(K=mk, text=c')
     If t = t':
         k = HKDF-Expand with the arguments:
             Hash: Hash
             PRK: prk
-            info: 'arkg-KEM-shared' || info
+            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
             L: The length of k' in octets.
     Else:
         Abort with an error.
-</pre><a href="#section-3.2-7" class="pilcrow">¶</a>
+</pre><a href="#section-3.2-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1810,7 +1855,7 @@ KEM-Decaps(sk, c, info) -&gt; k
         <h3 id="name-using-ecdh-as-the-kem">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-using-ecdh-as-the-kem" class="section-name selfRef">Using ECDH as the KEM</a>
         </h3>
-<p id="section-3.3-1">Instantiations of ARKG can use ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span> as the key encapsulation mechanism <code>KEM</code> <span><a href="#Wilson" class="internal xref">Frymann2020</a> [<a href="#Wilson" class="cite xref">Wilson</a>]</span>,
+<p id="section-3.3-1">Instantiations of ARKG can use ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span> as the key encapsulation mechanism <code>KEM</code> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>.
 This section defines a general formula for such instantiations of <code>KEM</code>.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">This formula has the following parameters:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1820,29 +1865,42 @@ This section defines a general formula for such instantiations of <code>KEM</cod
           <li class="normal" id="section-3.3-3.2">
             <p id="section-3.3-3.2.1"><code>Hash</code>: A cryptographic hash function.<a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
+          <li class="normal" id="section-3.3-3.3">
+            <p id="section-3.3-3.3.1"><code>DST_ext</code>: A domain separation parameter.<a href="#section-3.3-3.3.1" class="pilcrow">¶</a></p>
+</li>
         </ul>
-<p id="section-3.3-4">The <code>Sub-Kem</code> parameter described in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> may be instantiated as follows:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">The <code>KEM</code> parameter of ARKG may be instantiated as described in section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> with the parameters:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-5.1">
-            <p id="section-3.3-5.1.1"><code>Elliptic-Curve-Point-to-Octet-String</code> and <code>Octet-String-to-Elliptic-Curve-Point</code>
-are the conversion routines defined in sections 2.3.3 and 2.3.4 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>.<a href="#section-3.3-5.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.1.1"><code>Hash</code>: <code>Hash</code>.<a href="#section-3.3-5.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-5.2">
-            <p id="section-3.3-5.2.1"><code>ECDH(pk, sk)</code> represents the compact output of ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span>
-using public key (curve point) <code>pk</code> and private key (exponent) <code>sk</code>.<a href="#section-3.3-5.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.2.1"><code>DST_ext</code>: <code>'ARKG-ECDH.' || DST_ext</code>.<a href="#section-3.3-5.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-5.3">
-            <p id="section-3.3-5.3.1"><code>G</code> is the generator of the prime order subgroup of <code>crv</code>.<a href="#section-3.3-5.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.3-5.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-5.3.2.1">
+                <p id="section-3.3-5.3.2.1.1"><code>Elliptic-Curve-Point-to-Octet-String</code> and <code>Octet-String-to-Elliptic-Curve-Point</code>
+are the conversion routines defined in sections 2.3.3 and 2.3.4 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>,
+without point compression.<a href="#section-3.3-5.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.3-5.4">
-            <p id="section-3.3-5.4.1"><code>N</code> is the order of <code>G</code>.<a href="#section-3.3-5.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.3-5.3.2.2">
+                <p id="section-3.3-5.3.2.2.1"><code>ECDH(pk, sk)</code> represents the compact output of ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span>
+using public key (curve point) <code>pk</code> and private key (exponent) <code>sk</code>.<a href="#section-3.3-5.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
-        </ul>
-<div class="lang-pseudocode sourcecode" id="section-3.3-6">
+              <li class="normal" id="section-3.3-5.3.2.3">
+                <p id="section-3.3-5.3.2.3.1"><code>G</code> is the generator of the prime order subgroup of <code>crv</code>.<a href="#section-3.3-5.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.3-5.3.2.4">
+                <p id="section-3.3-5.3.2.4.1"><code>N</code> is the order of <code>G</code>.<a href="#section-3.3-5.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<div class="lang-pseudocode sourcecode" id="section-3.3-5.3.3">
 <pre>
 Sub-Kem-Generate-Keypair() -&gt; (pk, sk)
 
-    Generate (pk, sk) using some procedure defined for the curve crv.
+    Generate (pk, sk) using some procedure defined for crv.
 
 
 Sub-Kem-Encaps(pk, info) -&gt; (k, c)
@@ -1857,16 +1915,8 @@ Sub-Kem-Decaps(sk, c, info) -&gt; k
 
     pk' = Octet-String-to-Elliptic-Curve-Point(c)
     k = ECDH(pk', sk)
-</pre><a href="#section-3.3-6" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-5.3.3" class="pilcrow">¶</a>
 </div>
-<p id="section-3.3-7">With the above definitions,
-the <code>KEM</code> parameter of ARKG may be instantiated as described in section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> with the parameters:<a href="#section-3.3-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3-8.1">
-            <p id="section-3.3-8.1.1"><code>Hash</code>: <code>Hash</code>.<a href="#section-3.3-8.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.3-8.2">
-            <p id="section-3.3-8.2.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined above.<a href="#section-3.3-8.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1884,54 +1934,59 @@ This section defines a general formula for such instantiations of <code>KEM</cod
             <p id="section-3.4-3.1.1"><code>DH-Function</code>: the function X25519 or the function X448 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-3.4-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-3.2">
-            <p id="section-3.4-3.2.1"><code>Hash</code>: A cryptographic hash function.<a href="#section-3.4-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-3.2.1"><code>DST_ext</code>: A domain separation parameter.<a href="#section-3.4-3.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.4-4">The <code>Sub-Kem</code> parameter described in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> may be instantiated as follows:<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">The <code>KEM</code> parameter of ARKG may be instantiated as described in section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> with the parameters:<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-5.1">
-            <p id="section-3.4-5.1.1"><code>Random-Bytes(N)</code> represents a cryptographically secure,
-uniformly distributed random octet string of length <code>N</code>.<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-5.1.1"><code>Hash</code>: SHA-512 [FIPS 180-4] if <code>DH-Function</code> is X25519,
+or SHAKE256 [FIPS 202] with output length 64 octets if <code>DH-Function</code> is X448.<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-5.2">
-            <p id="section-3.4-5.2.1"><code>L</code> is 32 if <code>DH-Function</code> is X25519, or 56 if <code>DH-Function</code> is X448.<a href="#section-3.4-5.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-5.2.1"><code>DST_ext</code>: <code>'ARKG-ECDHX.' || DST_ext</code>.<a href="#section-3.4-5.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-5.3">
-            <p id="section-3.4-5.3.1"><code>G</code> is the octet string <code>h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
+            <p id="section-3.4-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.4-5.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.4-5.3.2.1">
+                <p id="section-3.4-5.3.2.1.1"><code>Random-Bytes(N)</code> represents a cryptographically secure,
+uniformly distributed random octet string of length <code>N</code>.<a href="#section-3.4-5.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.4-5.3.2.2">
+                <p id="section-3.4-5.3.2.2.1"><code>L</code> is 32 if <code>DH-Function</code> is X25519, or 56 if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-3.4-5.3.2.3">
+                <p id="section-3.4-5.3.2.3.1"><code>G</code> is the octet string <code>h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
 if <code>DH-Function</code> is X25519,
 or the octet string <code>h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
-if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.1" class="pilcrow">¶</a></p>
+if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.2.3.1" class="pilcrow">¶</a></p>
+<p id="section-3.4-5.3.2.3.2">
+These are the little-endian encodings of the integers 9 and 5,
+which is the u-coordinate of the generator point of the respective curve group.<a href="#section-3.4-5.3.2.3.2" class="pilcrow">¶</a></p>
 </li>
-        </ul>
-<div class="lang-pseudocode sourcecode" id="section-3.4-6">
+            </ul>
+<div class="lang-pseudocode sourcecode" id="section-3.4-5.3.3">
 <pre>
 Sub-Kem-Generate-Keypair() -&gt; (pk, sk)
 
     sk = Random-Bytes(L)
-    pk = X25519(sk, G)
+    pk = DH-Function(sk, G)
 
 
 Sub-Kem-Encaps(pk, info) -&gt; (k, c)
 
     (pk', sk') = Sub-Kem-Generate-Keypair()
 
-    k = X25519(sk', pk)
+    k = DH-Function(sk', pk)
     c = pk'
 
 
 Sub-Kem-Decaps(sk, c, info) -&gt; k
 
-    k = X25519(sk, c)
-</pre><a href="#section-3.4-6" class="pilcrow">¶</a>
+    k = DH-Function(sk, c)
+</pre><a href="#section-3.4-5.3.3" class="pilcrow">¶</a>
 </div>
-<p id="section-3.4-7">With the above definitions,
-the <code>KEM</code> parameter of ARKG may be instantiated as described in section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> with the parameters:<a href="#section-3.4-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.4-8.1">
-            <p id="section-3.4-8.1.1"><code>Hash</code>: <code>Hash</code>.<a href="#section-3.4-8.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-8.2">
-            <p id="section-3.4-8.2.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined above.<a href="#section-3.4-8.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1959,12 +2014,12 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
       </h2>
 <p id="section-4-1">This section defines an initial set of concrete ARKG instantiations.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">TODO: IANA registry? COSE/JOSE?<a href="#section-4-2" class="pilcrow">¶</a></p>
-<div id="arkg-p256add-ecdh-p256-sha256">
+<div id="ARKG-P256ADD-ECDH">
 <section id="section-4.1">
-        <h3 id="name-arkg-p256add-ecdh-p256-sha2">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-arkg-p256add-ecdh-p256-sha2" class="section-name selfRef">ARKG-P256ADD-ECDH-P256-SHA256</a>
+        <h3 id="name-arkg-p256add-ecdh">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-arkg-p256add-ecdh" class="section-name selfRef">ARKG-P256ADD-ECDH</a>
         </h3>
-<p id="section-4.1-1">The identifier <code>ARKG-P256ADD-ECDH-P256-SHA256</code> represents the following ARKG instance:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">The identifier <code>ARKG-P256ADD-ECDH</code> represents the following ARKG instance:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1">
             <p id="section-4.1-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
@@ -1976,7 +2031,7 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.1-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>P256_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.1-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-2.1.2.3">
-                <p id="section-4.1-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-P256ADD-ECDH-P256-SHA256'</code>.<a href="#section-4.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1989,17 +2044,20 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
               <li class="normal" id="section-4.1-2.2.2.2">
                 <p id="section-4.1-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
+              <li class="normal" id="section-4.1-2.2.2.3">
+                <p id="section-4.1-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
             </ul>
 </li>
         </ul>
 </section>
 </div>
-<div id="arkg-p384add-ecdh-p384-sha384">
+<div id="ARKG-P384ADD-ECDH">
 <section id="section-4.2">
-        <h3 id="name-arkg-p384add-ecdh-p384-sha3">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-arkg-p384add-ecdh-p384-sha3" class="section-name selfRef">ARKG-P384ADD-ECDH-P384-SHA384</a>
+        <h3 id="name-arkg-p384add-ecdh">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-arkg-p384add-ecdh" class="section-name selfRef">ARKG-P384ADD-ECDH</a>
         </h3>
-<p id="section-4.2-1">The identifier <code>ARKG-P384ADD-ECDH-P384-SHA384</code> represents the following ARKG instance:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The identifier <code>ARKG-P384ADD-ECDH</code> represents the following ARKG instance:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-2.1">
             <p id="section-4.2-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2011,7 +2069,7 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.2-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>P384_XMD:SHA-384_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.2-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.2-2.1.2.3">
-                <p id="section-4.2-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-P384ADD-ECDH-P384-SHA384'</code>.<a href="#section-4.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2024,17 +2082,20 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
               <li class="normal" id="section-4.2-2.2.2.2">
                 <p id="section-4.2-2.2.2.2.1"><code>Hash</code>: SHA-384 [FIPS 180-4].<a href="#section-4.2-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
+              <li class="normal" id="section-4.2-2.2.2.3">
+                <p id="section-4.2-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
             </ul>
 </li>
         </ul>
 </section>
 </div>
-<div id="arkg-p521add-ecdh-p521-sha512">
+<div id="ARKG-P521ADD-ECDH">
 <section id="section-4.3">
-        <h3 id="name-arkg-p521add-ecdh-p521-sha5">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-arkg-p521add-ecdh-p521-sha5" class="section-name selfRef">ARKG-P521ADD-ECDH-P521-SHA512</a>
+        <h3 id="name-arkg-p521add-ecdh">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-arkg-p521add-ecdh" class="section-name selfRef">ARKG-P521ADD-ECDH</a>
         </h3>
-<p id="section-4.3-1">The identifier <code>ARKG-P521ADD-ECDH-P521-SHA512</code> represents the following ARKG instance:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">The identifier <code>ARKG-P521ADD-ECDH</code> represents the following ARKG instance:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3-2.1">
             <p id="section-4.3-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.3-2.1.1" class="pilcrow">¶</a></p>
@@ -2046,7 +2107,7 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.3-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>P521_XMD:SHA-512_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.3-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.3-2.1.2.3">
-                <p id="section-4.3-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-P521ADD-ECDH-P521-SHA512'</code>.<a href="#section-4.3-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.3-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2059,17 +2120,20 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
               <li class="normal" id="section-4.3-2.2.2.2">
                 <p id="section-4.3-2.2.2.2.1"><code>Hash</code>: SHA-512 [FIPS 180-4].<a href="#section-4.3-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
+              <li class="normal" id="section-4.3-2.2.2.3">
+                <p id="section-4.3-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
             </ul>
 </li>
         </ul>
 </section>
 </div>
-<div id="arkg-p256kadd-ecdh-p256k-sha256">
+<div id="ARKG-P256kADD-ECDH">
 <section id="section-4.4">
-        <h3 id="name-arkg-p256kadd-ecdh-p256k-sh">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-arkg-p256kadd-ecdh-p256k-sh" class="section-name selfRef">ARKG-P256kADD-ECDH-P256k-SHA256</a>
+        <h3 id="name-arkg-p256kadd-ecdh">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-arkg-p256kadd-ecdh" class="section-name selfRef">ARKG-P256kADD-ECDH</a>
         </h3>
-<p id="section-4.4-1">The identifier <code>ARKG-P256kADD-ECDH-P256k-SHA256</code> represents the following ARKG instance:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">The identifier <code>ARKG-P256kADD-ECDH</code> represents the following ARKG instance:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-2.1">
             <p id="section-4.4-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.4-2.1.1" class="pilcrow">¶</a></p>
@@ -2081,7 +2145,7 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.4-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>secp256k1_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.4-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.4-2.1.2.3">
-                <p id="section-4.4-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-P256kADD-ECDH-P256k-SHA256'</code>.<a href="#section-4.4-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.4-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2094,33 +2158,52 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
               <li class="normal" id="section-4.4-2.2.2.2">
                 <p id="section-4.4-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.4-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
+              <li class="normal" id="section-4.4-2.2.2.3">
+                <p id="section-4.4-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
             </ul>
 </li>
         </ul>
 </section>
 </div>
-<div id="arkg-ed25519add-x25519-hmac-sha256">
+<div id="ARKG-curve25519ADD-X25519">
 <section id="section-4.5">
-        <h3 id="name-arkg-ed25519add-x25519-hmac">
-<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-arkg-ed25519add-x25519-hmac" class="section-name selfRef">ARKG-Ed25519ADD-X25519-HMAC-SHA256</a>
+        <h3 id="name-arkg-curve25519add-x25519">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-arkg-curve25519add-x25519" class="section-name selfRef">ARKG-curve25519ADD-X25519</a>
         </h3>
-<p id="section-4.5-1">The identifier <code>ARKG-Ed25519ADD-ECDH-X25519-HMAC-SHA256</code> represents the following ARKG instance:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">The identifier <code>ARKG-curve25519ADD-X25519</code> represents the following ARKG instance:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.5-2.1">
             <p id="section-4.5-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.5-2.1.2.1">
-                <p id="section-4.5-2.1.2.1.1"><code>crv</code>: The curve <code>edwards25519</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.5-2.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.5-2.1.2.1.1"><code>crv</code>: The curve <code>curve25519</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.5-2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.5-2.1.2.2">
-                <p id="section-4.5-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>edwards25519_XMD:SHA-512_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.5-2.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.5-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>curve25519_XMD:SHA-512_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.5-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.5-2.1.2.3">
-                <p id="section-4.5-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-Ed25519ADD-ECDH-X25519-SHA256'</code>.<a href="#section-4.5-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.5-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-curve25519ADD-X25519'</code>.<a href="#section-4.5-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-4.5-2.1.3">
-Note: This blinding scheme does not preserve the original guarantees about the highest bit of the signing secret key. TODO: Finish this<a href="#section-4.5-2.1.3" class="pilcrow">¶</a></p>
+WARNING: Some algorithms on curve25519, including X25519 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>,
+construct private key scalars within a particular range
+to enable optimizations and constant-time guarantees.
+This <code>BL</code> scheme does not guarantee that blinded private scalars remain in that range,
+so implementations using this ARKG instance <span class="bcp14">MUST NOT</span> rely on such a guarantee.<a href="#section-4.5-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.5-2.1.4">
+Note: Input and output keys of this <code>BL</code> scheme are curve scalars and curve points.
+Some algorithms on curve25519, including X25519 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>,
+define the private key input as a random octet string and applies some preprocessing to it
+before interpreting the result as a private key scalar,
+and define public keys as a particular octet string encoding of a curve point.
+This <code>BL</code> scheme is not compatible with such preprocessing
+since it breaks the relationship between the blinded private key and the blinded public key.
+Implementations using this ARKG instance <span class="bcp14">MUST</span> apply <code>BL-Blind-Private-Key</code>
+to the interpreted private key scalar, not the random private key octet string,
+and implementations of <code>BL-Blind-Public-Key</code> <span class="bcp14">MUST</span> interpret the public key input as a curve point,
+not an opaque octet string.<a href="#section-4.5-2.1.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.5-2.2">
             <p id="section-4.5-2.2.1"><code>KEM</code>: X25519 as described in <a href="#kem-x25519-x448" class="auto internal xref">Section 3.4</a> with the parameters:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
@@ -2129,35 +2212,51 @@ Note: This blinding scheme does not preserve the original guarantees about the h
                 <p id="section-4.5-2.2.2.1.1"><code>DH-Function</code>: X25519 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.5-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.5-2.2.2.2">
-                <p id="section-4.5-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.5-2.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.5-2.2.2.2.1"><code>DST_ext</code>: <code>'ARKG-curve25519ADD-X25519'</code>.<a href="#section-4.5-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
 </section>
 </div>
-<div id="arkg-ed448add-x448-hmac-sha256">
+<div id="ARKG-curve448ADD-X448">
 <section id="section-4.6">
-        <h3 id="name-arkg-ed448add-x448-hmac-sha">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-arkg-ed448add-x448-hmac-sha" class="section-name selfRef">ARKG-Ed448ADD-X448-HMAC-SHA256</a>
+        <h3 id="name-arkg-curve448add-x448">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-arkg-curve448add-x448" class="section-name selfRef">ARKG-curve448ADD-X448</a>
         </h3>
-<p id="section-4.6-1">The identifier <code>ARKG-Ed448ADD-X448-HMAC-SHA256</code> represents the following ARKG instance:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-1">The identifier <code>ARKG-curve448ADD-X448</code> represents the following ARKG instance:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.6-2.1">
             <p id="section-4.6-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.6-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.6-2.1.2.1">
-                <p id="section-4.6-2.1.2.1.1"><code>crv</code>: The curve <code>edwards448</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.6-2.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.6-2.1.2.1.1"><code>crv</code>: The curve <code>curve448</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.6-2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.6-2.1.2.2">
-                <p id="section-4.6-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>edwards448_XOF:SHAKE256_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.6-2.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.6-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>curve448_XOF:SHAKE256_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.6-2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.6-2.1.2.3">
-                <p id="section-4.6-2.1.2.3.1"><code>hash-to-field-DST</code>: <code>'ARKG-Ed448ADD-X448-HMAC-SHA256'</code>.<a href="#section-4.6-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.6-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-curve448ADD-X448'</code>.<a href="#section-4.6-2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-4.6-2.1.3">
-Note: This blinding scheme does not preserve the original guarantees about the highest bit of the signing secret key. TODO: Finish this<a href="#section-4.6-2.1.3" class="pilcrow">¶</a></p>
+WARNING: Some algorithms on curve25519, including X448 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>,
+construct private key scalars within a particular range
+to enable optimizations and constant-time guarantees.
+This <code>BL</code> scheme does not guarantee that blinded private scalars remain in that range,
+so implementations using this ARKG instance <span class="bcp14">MUST NOT</span> rely on such a guarantee.<a href="#section-4.6-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.6-2.1.4">
+Note: Input and output keys of this <code>BL</code> scheme are curve scalars and curve points.
+Some algorithms on curve25519, including X448 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>,
+define the private key input as a random octet string and applies some preprocessing to it
+before interpreting the result as a private key scalar,
+and define public keys as a particular octet string encoding of a curve point.
+This <code>BL</code> scheme is not compatible with such preprocessing
+since it breaks the relationship between the blinded private key and the blinded public key.
+Implementations using this ARKG instance <span class="bcp14">MUST</span> apply <code>BL-Blind-Private-Key</code>
+to the interpreted private key scalar, not the random private key octet string,
+and implementations of <code>BL-Blind-Public-Key</code> <span class="bcp14">MUST</span> interpret the public key input as a curve point,
+not an opaque octet string.<a href="#section-4.6-2.1.4" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.6-2.2">
             <p id="section-4.6-2.2.1"><code>KEM</code>: X448 as described in <a href="#kem-x25519-x448" class="auto internal xref">Section 3.4</a> with the parameters:<a href="#section-4.6-2.2.1" class="pilcrow">¶</a></p>
@@ -2166,7 +2265,113 @@ Note: This blinding scheme does not preserve the original guarantees about the h
                 <p id="section-4.6-2.2.2.1.1"><code>DH-Function</code>: X448 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.6-2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.6-2.2.2.2">
-                <p id="section-4.6-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.6-2.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.6-2.2.2.2.1"><code>DST_ext</code>: <code>'ARKG-curve448ADD-X448'</code>.<a href="#section-4.6-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+</section>
+</div>
+<div id="ARKG-edwards25519ADD-X25519">
+<section id="section-4.7">
+        <h3 id="name-arkg-edwards25519add-x25519">
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-arkg-edwards25519add-x25519" class="section-name selfRef">ARKG-edwards25519ADD-X25519</a>
+        </h3>
+<p id="section-4.7-1">The identifier <code>ARKG-edwards25519ADD-X25519</code> represents the following ARKG instance:<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.7-2.1">
+            <p id="section-4.7-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.7-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.7-2.1.2.1">
+                <p id="section-4.7-2.1.2.1.1"><code>crv</code>: The curve <code>edwards25519</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.7-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.7-2.1.2.2">
+                <p id="section-4.7-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>edwards25519_XMD:SHA-512_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.7-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.7-2.1.2.3">
+                <p id="section-4.7-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-edwards25519ADD-X25519'</code>.<a href="#section-4.7-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-4.7-2.1.3">
+WARNING: Some algorithms on edwards25519, including EdDSA <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span>,
+construct private key scalars within a particular range
+to enable optimizations and constant-time guarantees.
+This <code>BL</code> scheme does not guarantee that blinded private scalars remain in that range,
+so implementations using this ARKG instance <span class="bcp14">MUST NOT</span> rely on such a guarantee.<a href="#section-4.7-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.7-2.1.4">
+Note: Input and output keys of this <code>BL</code> scheme are curve scalars and curve points.
+Some algorithms on edwards25519, including EdDSA <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span>,
+define the private key input as a random octet string and applies some preprocessing to it
+before interpreting the result as a private key scalar,
+and define public keys as a particular octet string encoding of a curve point.
+This <code>BL</code> scheme is not compatible with such preprocessing
+since it breaks the relationship between the blinded private key and the blinded public key.
+Implementations using this ARKG instance <span class="bcp14">MUST</span> apply <code>BL-Blind-Private-Key</code>
+to the interpreted private key scalar, not the random private key octet string,
+and implementations of <code>BL-Blind-Public-Key</code> <span class="bcp14">MUST</span> interpret the public key input as a curve point,
+not an opaque octet string.<a href="#section-4.7-2.1.4" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.7-2.2">
+            <p id="section-4.7-2.2.1"><code>KEM</code>: X25519 as described in <a href="#kem-x25519-x448" class="auto internal xref">Section 3.4</a> with the parameters:<a href="#section-4.7-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.7-2.2.2.1">
+                <p id="section-4.7-2.2.2.1.1"><code>DH-Function</code>: X25519 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.7-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.7-2.2.2.2">
+                <p id="section-4.7-2.2.2.2.1"><code>DST_ext</code>: <code>'ARKG-edwards25519ADD-X25519'</code>.<a href="#section-4.7-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+</section>
+</div>
+<div id="ARKG-edwards448ADD-X448">
+<section id="section-4.8">
+        <h3 id="name-arkg-edwards448add-x448">
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-arkg-edwards448add-x448" class="section-name selfRef">ARKG-edwards448ADD-X448</a>
+        </h3>
+<p id="section-4.8-1">The identifier <code>ARKG-edwards448ADD-X448</code> represents the following ARKG instance:<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.8-2.1">
+            <p id="section-4.8-2.1.1"><code>BL</code>: Elliptic curve addition as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> with the parameters:<a href="#section-4.8-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.8-2.1.2.1">
+                <p id="section-4.8-2.1.2.1.1"><code>crv</code>: The curve <code>edwards448</code> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.8-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.8-2.1.2.2">
+                <p id="section-4.8-2.1.2.2.1"><code>hash-to-crv-suite</code>: <code>edwards448_XOF:SHAKE256_ELL2_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.8-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.8-2.1.2.3">
+                <p id="section-4.8-2.1.2.3.1"><code>DST_ext</code>: <code>'ARKG-edwards448ADD-X448'</code>.<a href="#section-4.8-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+<p id="section-4.8-2.1.3">
+WARNING: Some algorithms on edwards25519, including EdDSA <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span>,
+construct private key scalars within a particular range
+to enable optimizations and constant-time guarantees.
+This <code>BL</code> scheme does not guarantee that blinded private scalars remain in that range,
+so implementations using this ARKG instance <span class="bcp14">MUST NOT</span> rely on such a guarantee.<a href="#section-4.8-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.8-2.1.4">
+Note: Input and output keys of this <code>BL</code> scheme are curve scalars and curve points.
+Some algorithms on edwards25519, including EdDSA <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span>,
+define the private key input as a random octet string and applies some preprocessing to it
+before interpreting the result as a private key scalar,
+and define public keys as a particular octet string encoding of a curve point.
+This <code>BL</code> scheme is not compatible with such preprocessing
+since it breaks the relationship between the blinded private key and the blinded public key.
+Implementations using this ARKG instance <span class="bcp14">MUST</span> apply <code>BL-Blind-Private-Key</code>
+to the interpreted private key scalar, not the random private key octet string,
+and implementations of <code>BL-Blind-Public-Key</code> <span class="bcp14">MUST</span> interpret the public key input as a curve point,
+not an opaque octet string.<a href="#section-4.8-2.1.4" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.8-2.2">
+            <p id="section-4.8-2.2.1"><code>KEM</code>: X448 as described in <a href="#kem-x25519-x448" class="auto internal xref">Section 3.4</a> with the parameters:<a href="#section-4.8-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.8-2.2.2.1">
+                <p id="section-4.8-2.2.2.1.1"><code>DH-Function</code>: X448 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>.<a href="#section-4.8-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.8-2.2.2.2">
+                <p id="section-4.8-2.2.2.2.1"><code>DST_ext</code>: <code>'ARKG-edwards448ADD-X448'</code>.<a href="#section-4.8-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2175,14 +2380,125 @@ Note: This blinding scheme does not preserve the original guarantees about the h
 </div>
 </section>
 </div>
-<div id="cose-bindings">
+<div id="cose">
 <section id="section-5">
       <h2 id="name-cose-bindings">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-cose-bindings" class="section-name selfRef">COSE bindings</a>
       </h2>
-<p id="section-5-1">TODO?: Define COSE representations for interoperability:
-- ARKG public seed (for interoperability between different implementers of <code>ARKG-Generate-Seed</code> and <code>ARKG-Derive-Public-Key</code>)
-- ARKG key handle (for interoperability between different implementers of <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code>)<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">This section proposes additions to COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> to support ARKG use cases.
+The novelty lies primarily in a new key type definition to represent ARKG public seeds
+and new key type definitions to represent references to private keys rather than the keys themselves.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="cose-arkg-pub-seed">
+<section id="section-5.1">
+        <h3 id="name-cose-key-type-arkg-public-s">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-cose-key-type-arkg-public-s" class="section-name selfRef">COSE key type: ARKG public seed</a>
+        </h3>
+<p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>
+with <code>kty</code> value TBD (placeholder value -65537).
+This key type defines key type parameters -1 and -2 for the <code>BL</code> and <code>KEM</code> public key, respectively.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
+restricted to generating derived public keys for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.1-3">
+<pre>
+{
+  1: -65537,   ; kty: ARKG-pub-seed
+               ; kid: Opaque identifier
+  2: h'60b6dfddd31659598ae5de49acb220d8
+       704949e84d484b68344340e2565337d2',
+  3: -65539,   ; alg: ESP256-ARKG
+
+  -1: {        ; BL public key
+    1: 2,      ; kty: EC2
+    -1: 1,     ; crv: P256
+    -2: h'69380FC1C3B09652134FEEFBA61776F9
+          7AF875CE46CA20252C4165102966EBC5',
+    -3: h'8B515831462CCB0BD55CBA04BFD50DA6
+          3FAF18BD845433622DAF97C06A10D0F1',
+  },
+
+  -2: {        ; KEM public key
+    1: 2,      ; kty: EC2
+    -1: 1,     ; crv: P256
+    -2: h'5C099BEC31FAA581D14E208250D3FFDA
+          9EC7F543043008BC84967A8D875B5D78',
+    -3: h'539D57429FCB1C138DA29010A155DCA1
+          4566A8F55AC2F1780810C49D4ED72D58',
+  }
+}
+</pre><a href="#section-5.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-4">The following is the same example encoded as CBOR:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.1-5">
+<pre>
+h'a50139fbb402582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
+  344340e2565337d2033a0001000220a40102200121582069380fc1c3b0965213
+  4feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831462c
+  cb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a401022001
+  2158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d87
+  5b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810
+  c49d4ed72d58'
+</pre><a href="#section-5.1-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="cose-key-refs">
+<section id="section-5.2">
+        <h3 id="name-cose-key-reference-types">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-cose-key-reference-types" class="section-name selfRef">COSE key reference types</a>
+        </h3>
+<p id="section-5.2-1">While keys used by many other algorithms can usually be referenced by a single atomic identifier,
+such as that used in the <code>kid</code> parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
+users of the function <code>ARKG-Derive-Secret-Key</code> need to represent
+a reference to an ARKG private seed along with a key handle for a derived private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">A COSE key reference is a COSE_Key object whose <code>kty</code> value is defined to represent a reference to a key.
+The <code>kid</code> parameter <span class="bcp14">MUST</span> be present when <code>kty</code> is a key reference type.
+These requirements are encoded in the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type <code>COSE_Key_Ref</code>:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-3">
+<pre>
+COSE_Key_Ref = COSE_Key .within {
+  1 ^ =&gt; $COSE_kty_ref   ; kty: Any reference type
+  2 ^ =&gt; any,            ; kid is required
+  any =&gt; any,            ; Any other entries allowed by COSE_Key
+}
+</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-4">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
+and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-5">
+<pre>
+{
+  1: -65538,   ; kty: ARKG-derived
+               ; kid: Opaque identifier of ARKG-pub-seed
+  2: h'60b6dfddd31659598ae5de49acb220d8
+       704949e84d484b68344340e2565337d2',
+  3: -65539,   ; alg: ESP256-ARKG
+
+               ; ARKG-P256ADD-ECDH key handle
+               ; (truncated HMAC-SHA-256 followed by
+                  SEC1 uncompressed ECDH public key)
+  -1: h'ae079e9c52212860678a7cee25b6a6d4
+        048219d973768f8e1adb8eb84b220b0ee3
+          a2532828b9aa65254fe3717a29499e9b
+          aee70cea75b5c8a2ec2eb737834f7467
+          e37b3254776f65f4cfc81e2bc4747a84',
+
+               ; info argument to ARKG-Derive-Private-Key
+  -2: 'Example application info',
+}
+</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-6">The following is the same example encoded as CBOR:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-7">
+<pre>
+h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
+  344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25b6a6
+  d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a2949
+  9e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc474
+  7a84'
+</pre><a href="#section-5.2-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="Security">
@@ -2206,7 +2522,331 @@ Note: This blinding scheme does not preserve the original guarantees about the h
       <h2 id="name-iana-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-8-1">TODO<a href="#section-8-1" class="pilcrow">¶</a></p>
+<div id="cose-key-types-registrations">
+<section id="section-8.1">
+        <h3 id="name-cose-key-types-registration">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-cose-key-types-registration" class="section-name selfRef">COSE Key Types Registrations</a>
+        </h3>
+<p id="section-8.1-1">This section registers the following values in the IANA "COSE Key Types" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.1">
+            <p id="section-8.1-2.1.1">Name: ARKG-pub-seed<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.1.2.1">
+                <p id="section-8.1-2.1.2.1.1">Value: TBD (Placeholder -65537)<a href="#section-8.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.1.2.2">
+                <p id="section-8.1-2.1.2.2.1">Description: ARKG public seed<a href="#section-8.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.1.2.3">
+                <p id="section-8.1-2.1.2.3.1">Capabilities: [kty(-65537), pk_bl, pk_kem]<a href="#section-8.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.1.2.4">
+                <p id="section-8.1-2.1.2.4.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.1-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.1-2.2">
+            <p id="section-8.1-2.2.1">Name: ARKG-derived<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.2.2.1">
+                <p id="section-8.1-2.2.2.1.1">Value: TBD (Placeholder -65538)<a href="#section-8.1-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.2.2.2">
+                <p id="section-8.1-2.2.2.2.1">Description: Reference to private key derived by ARKG<a href="#section-8.1-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.2.2.3">
+                <p id="section-8.1-2.2.2.3.1">Capabilities: [kty(-65538), kh]<a href="#section-8.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.2.2.4">
+                <p id="section-8.1-2.2.2.4.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.1-2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.1-2.3">
+            <p id="section-8.1-2.3.1">Name: Ref-OKP<a href="#section-8.1-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.3.2.1">
+                <p id="section-8.1-2.3.2.1.1">Value: TBD (Requested assignment -1)<a href="#section-8.1-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.3.2.2">
+                <p id="section-8.1-2.3.2.2.1">Description: Reference to a key pair of key type "OKP"<a href="#section-8.1-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.3.2.3">
+                <p id="section-8.1-2.3.2.3.1">Capabilities: [kty(-1), crv]<a href="#section-8.1-2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.3.2.4">
+                <p id="section-8.1-2.3.2.4.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.1-2.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.1-2.4">
+            <p id="section-8.1-2.4.1">Name: Ref-EC2<a href="#section-8.1-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.4.2.1">
+                <p id="section-8.1-2.4.2.1.1">Value: TBD (Requested assignment -2)<a href="#section-8.1-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.4.2.2">
+                <p id="section-8.1-2.4.2.2.1">Description: Reference to a key pair of key type "EC2"<a href="#section-8.1-2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.4.2.3">
+                <p id="section-8.1-2.4.2.3.1">Capabilities: [kty(-1), crv]<a href="#section-8.1-2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.1-2.4.2.4">
+                <p id="section-8.1-2.4.2.4.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.1-2.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-8.1-3">These registrations add the following choices to the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type socket <code>$COSE_kty_ref</code>:<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-8.1-4">
+<pre>
+$COSE_kty_ref /= -65538   ; Placeholder value
+$COSE_kty_ref /= -1       ; Value TBD
+$COSE_kty_ref /= -2       ; Value TBD
+</pre><a href="#section-8.1-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="cose-key-type-parameters-registrations">
+<section id="section-8.2">
+        <h3 id="name-cose-key-type-parameters-re">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-cose-key-type-parameters-re" class="section-name selfRef">COSE Key Type Parameters Registrations</a>
+        </h3>
+<p id="section-8.2-1">This section registers the following values in the IANA "COSE Key Type Parameters" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.1">
+            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.1.2.1">
+                <p id="section-8.2-2.1.2.1.1">Name: pk_bl<a href="#section-8.2-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.1.2.2">
+                <p id="section-8.2-2.1.2.2.1">Label: -1<a href="#section-8.2-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.1.2.3">
+                <p id="section-8.2-2.1.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.1.2.4">
+                <p id="section-8.2-2.1.2.4.1">Description: ARKG key blinding public key<a href="#section-8.2-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.1.2.5">
+                <p id="section-8.2-2.1.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-2.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.2-2.2">
+            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.2.2.1">
+                <p id="section-8.2-2.2.2.1.1">Name: pk_kem<a href="#section-8.2-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.2.2.2">
+                <p id="section-8.2-2.2.2.2.1">Label: -2<a href="#section-8.2-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.2.2.3">
+                <p id="section-8.2-2.2.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.2.2.4">
+                <p id="section-8.2-2.2.2.4.1">Description: ARKG key encapsulation public key<a href="#section-8.2-2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.2.2.5">
+                <p id="section-8.2-2.2.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-2.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.2-2.3">
+            <p id="section-8.2-2.3.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.3.2.1">
+                <p id="section-8.2-2.3.2.1.1">Name: kh<a href="#section-8.2-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.3.2.2">
+                <p id="section-8.2-2.3.2.2.1">Label: -1<a href="#section-8.2-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.3.2.3">
+                <p id="section-8.2-2.3.2.3.1">CBOR Type: bstr<a href="#section-8.2-2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.3.2.4">
+                <p id="section-8.2-2.3.2.4.1">Description: kh argument to ARKG-Derive-Private-Key<a href="#section-8.2-2.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.3.2.5">
+                <p id="section-8.2-2.3.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-2.3.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.2-2.4">
+            <p id="section-8.2-2.4.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.4.2.1">
+                <p id="section-8.2-2.4.2.1.1">Name: info<a href="#section-8.2-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.4.2.2">
+                <p id="section-8.2-2.4.2.2.1">Label: -2<a href="#section-8.2-2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.4.2.3">
+                <p id="section-8.2-2.4.2.3.1">CBOR Type: bstr<a href="#section-8.2-2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.4.2.4">
+                <p id="section-8.2-2.4.2.4.1">Description: info argument to ARKG-Derive-Private-Key<a href="#section-8.2-2.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.2-2.4.2.5">
+                <p id="section-8.2-2.4.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-2.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+</section>
+</div>
+<div id="cose-algorithms-registrations">
+<section id="section-8.3">
+        <h3 id="name-cose-algorithms-registratio">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-cose-algorithms-registratio" class="section-name selfRef">COSE Algorithms Registrations</a>
+        </h3>
+<p id="section-8.3-1">This section registers the following values in the IANA "COSE Algorithms" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.1">
+            <p id="section-8.3-2.1.1">Name: ESP256-ARKG<a href="#section-8.3-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.1.2.1">
+                <p id="section-8.3-2.1.2.1.1">Value: TBD (Placeholder -65539)<a href="#section-8.3-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.2">
+                <p id="section-8.3-2.1.2.2.1">Description: ESP256 with key derived by ARKG-P256ADD-ECDH<a href="#section-8.3-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.3">
+                <p id="section-8.3-2.1.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.4">
+                <p id="section-8.3-2.1.2.4.1">Change Controller: TBD<a href="#section-8.3-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.5">
+                <p id="section-8.3-2.1.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P256ADD-ECDH" class="auto internal xref">Section 4.1</a> of this document<a href="#section-8.3-2.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.6">
+                <p id="section-8.3-2.1.2.6.1">Recommended: Yes<a href="#section-8.3-2.1.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.2">
+            <p id="section-8.3-2.2.1">Name: ESP384-ARKG<a href="#section-8.3-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.2.2.1">
+                <p id="section-8.3-2.2.2.1.1">Value: TBD (Placeholder -65540)<a href="#section-8.3-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.2">
+                <p id="section-8.3-2.2.2.2.1">Description: ESP384 with key derived by ARKG-P384ADD-ECDH<a href="#section-8.3-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.3">
+                <p id="section-8.3-2.2.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.4">
+                <p id="section-8.3-2.2.2.4.1">Change Controller: TBD<a href="#section-8.3-2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.5">
+                <p id="section-8.3-2.2.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P384ADD-ECDH" class="auto internal xref">Section 4.2</a> of this document<a href="#section-8.3-2.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.6">
+                <p id="section-8.3-2.2.2.6.1">Recommended: Yes<a href="#section-8.3-2.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.3">
+            <p id="section-8.3-2.3.1">Name: ESP512-ARKG<a href="#section-8.3-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.3.2.1">
+                <p id="section-8.3-2.3.2.1.1">Value: TBD (Placeholder -65541)<a href="#section-8.3-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.2">
+                <p id="section-8.3-2.3.2.2.1">Description: ESP512 with key derived by ARKG-P521ADD-ECDH<a href="#section-8.3-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.3">
+                <p id="section-8.3-2.3.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.4">
+                <p id="section-8.3-2.3.2.4.1">Change Controller: TBD<a href="#section-8.3-2.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.5">
+                <p id="section-8.3-2.3.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P521ADD-ECDH" class="auto internal xref">Section 4.3</a> of this document<a href="#section-8.3-2.3.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.6">
+                <p id="section-8.3-2.3.2.6.1">Recommended: Yes<a href="#section-8.3-2.3.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.4">
+            <p id="section-8.3-2.4.1">Name: ES256K-ARKG<a href="#section-8.3-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.4.2.1">
+                <p id="section-8.3-2.4.2.1.1">Value: TBD (Placeholder -65542)<a href="#section-8.3-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.2">
+                <p id="section-8.3-2.4.2.2.1">Description: ES256K with key derived by ARKG-P256kADD-ECDH<a href="#section-8.3-2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.3">
+                <p id="section-8.3-2.4.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.4">
+                <p id="section-8.3-2.4.2.4.1">Change Controller: TBD<a href="#section-8.3-2.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.5">
+                <p id="section-8.3-2.4.2.5.1">Reference: <span>[<a href="#RFC8812" class="cite xref">RFC8812</a>]</span>, <a href="#ARKG-P256kADD-ECDH" class="auto internal xref">Section 4.4</a> of this document<a href="#section-8.3-2.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.6">
+                <p id="section-8.3-2.4.2.6.1">Recommended: Yes<a href="#section-8.3-2.4.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.5">
+            <p id="section-8.3-2.5.1">Name: Ed25519-ARKG<a href="#section-8.3-2.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.5.2.1">
+                <p id="section-8.3-2.5.2.1.1">Value: TBD (Placeholder -65543)<a href="#section-8.3-2.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.2">
+                <p id="section-8.3-2.5.2.2.1">Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519<a href="#section-8.3-2.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.3">
+                <p id="section-8.3-2.5.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.4">
+                <p id="section-8.3-2.5.2.4.1">Change Controller: TBD<a href="#section-8.3-2.5.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.5">
+                <p id="section-8.3-2.5.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-edwards25519ADD-X25519" class="auto internal xref">Section 4.7</a> of this document<a href="#section-8.3-2.5.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.6">
+                <p id="section-8.3-2.5.2.6.1">Recommended: Yes<a href="#section-8.3-2.5.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.6">
+            <p id="section-8.3-2.6.1">Name: Ed448-ARKG<a href="#section-8.3-2.6.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.6.2.1">
+                <p id="section-8.3-2.6.2.1.1">Value: TBD (Placeholder -65544)<a href="#section-8.3-2.6.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.2">
+                <p id="section-8.3-2.6.2.2.1">Description: Ed448 with key derived by ARKG-edwards448ADD-X448<a href="#section-8.3-2.6.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.3">
+                <p id="section-8.3-2.6.2.3.1">Capabilities: [kty]<a href="#section-8.3-2.6.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.4">
+                <p id="section-8.3-2.6.2.4.1">Change Controller: TBD<a href="#section-8.3-2.6.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.5">
+                <p id="section-8.3-2.6.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-edwards448ADD-X448" class="auto internal xref">Section 4.8</a> of this document<a href="#section-8.3-2.6.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.6">
+                <p id="section-8.3-2.6.2.6.1">Recommended: Yes<a href="#section-8.3-2.6.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+<p id="section-8.3-3">TODO: Add the rest<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="design-rationale">
@@ -2223,9 +2863,9 @@ Note: This blinding scheme does not preserve the original guarantees about the h
 arguing that this leads to invalid keys/signatures in cases that would have a bad MAC.
 We choose to keep the MAC from the construction by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
 but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
-<p id="section-9.1-2">The reason for this is ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
-For example, applications using the W3C Web Authentication API [WebAuthn]
-do not know beforehand which authenticators are connected and available.
+<p id="section-9.1-2">The reason for this is to ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
+For example, this is important for applications using the W3C Web Authentication API [WebAuthn],
+which do not know beforehand which authenticators are connected and available.
 Instead, authentication requests may include references to several eligible authenticators,
 and the one to use is chosen opportunistically by the WebAuthn client depending on which are available at the time.
 Consider using ARKG in such a scenario to sign some data with a derived private key:
@@ -2241,11 +2881,10 @@ so that <code>ARKG-Derive-Private-Key</code> can fail early if the key handle be
 <p id="section-9.1-3">It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
-by instantiating <code>KEM</code> as group exponentiation
-and instantiating <code>BL</code> as group multiplication to blind public keys and modular integer addition to blind private keys.
-The use of HMAC and HKDF in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> corresponds to the MAC and KDF parameters in <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
-where KDF<sub>1</sub>(<em>k</em>) = KDF(<em>k</em>, <em>l</em><sub>1</sub>) and KDF<sub>2</sub>(<em>k</em>) = KDF(<em>k</em>, <em>l</em><sub>2</sub>)
-with fixed labels <em>l</em><sub>1</sub> and <em>l</em><sub>2</sub>.
+by instantiating <code>BL</code> as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a>
+and <code>KEM</code> as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.3</a>.
+The use of hash_to_field in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> corresponds to the KDF<sub>1</sub> parameter in <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
+and the use of HMAC and HKDF in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> corresponds to the MAC and KDF<sub>2</sub> parameters in <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>.
 Hence if one can break PK-unlinkability or SK-security of the ARKG construction in this document,
 one can also break the same property of the construction by Frymann et al.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -2260,6 +2899,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
 </div>
 </section>
 </div>
+<div id="sec-combined-references">
 <section id="section-10">
       <h2 id="name-references">
 <a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
@@ -2270,6 +2910,14 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="fully-spec-algs">[fully-spec-algs]</dt>
+        <dd>
+<span class="refAuthor">Jones, M. B.</span>, <span class="refTitle">"Fully-Specified Algorithms for JOSE and COSE"</span>, <time datetime="2024" class="refDate">2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-ietf-jose-fully-specified-algorithms/">https://datatracker.ietf.org/doc/draft-ietf-jose-fully-specified-algorithms/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA.cose">[IANA.cose]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2104">[RFC2104]</dt>
         <dd>
 <span class="refAuthor">Krawczyk, H.</span>, <span class="refAuthor">Bellare, M.</span>, and <span class="refAuthor">R. Canetti</span>, <span class="refTitle">"HMAC: Keyed-Hashing for Message Authentication"</span>, <span class="seriesInfo">RFC 2104</span>, <span class="seriesInfo">DOI 10.17487/RFC2104</span>, <time datetime="1997-02" class="refDate">February 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2104">https://www.rfc-editor.org/rfc/rfc2104</a>&gt;</span>. </dd>
@@ -2294,9 +2942,9 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Langley, A.</span>, <span class="refAuthor">Hamburg, M.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Elliptic Curves for Security"</span>, <span class="seriesInfo">RFC 7748</span>, <span class="seriesInfo">DOI 10.17487/RFC7748</span>, <time datetime="2016-01" class="refDate">January 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7748">https://www.rfc-editor.org/rfc/rfc7748</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8017">[RFC8017]</dt>
+<dt id="RFC8032">[RFC8032]</dt>
         <dd>
-<span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8017">https://www.rfc-editor.org/rfc/rfc8017</a>&gt;</span>. </dd>
+<span class="refAuthor">Josefsson, S.</span> and <span class="refAuthor">I. Liusvaara</span>, <span class="refTitle">"Edwards-Curve Digital Signature Algorithm (EdDSA)"</span>, <span class="seriesInfo">RFC 8032</span>, <span class="seriesInfo">DOI 10.17487/RFC8032</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8032">https://www.rfc-editor.org/rfc/rfc8032</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
@@ -2305,6 +2953,14 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dt id="RFC8610">[RFC8610]</dt>
         <dd>
 <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Vigano, C.</span>, and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8610">https://www.rfc-editor.org/rfc/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8812">[RFC8812]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE) and JSON Object Signing and Encryption (JOSE) Registrations for Web Authentication (WebAuthn) Algorithms"</span>, <span class="seriesInfo">RFC 8812</span>, <span class="seriesInfo">DOI 10.17487/RFC8812</span>, <time datetime="2020-08" class="refDate">August 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8812">https://www.rfc-editor.org/rfc/rfc8812</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9052">[RFC9052]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE): Structures and Process"</span>, <span class="seriesInfo">STD 96</span>, <span class="seriesInfo">RFC 9052</span>, <span class="seriesInfo">DOI 10.17487/RFC9052</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9052">https://www.rfc-editor.org/rfc/rfc9052</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9380">[RFC9380]</dt>
         <dd>
@@ -2333,7 +2989,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dd class="break"></dd>
 <dt id="Clermont">[Clermont]</dt>
         <dd>
-<span class="refAuthor">Clermont, S. A.</span> and <span class="refAuthor">Technische Universität Darmstadt</span>, <span class="refTitle">"Post Quantum Asynchronous Remote Key Generation. Master's thesis"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf">https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">Clermont, S. A.</span>, <span class="refTitle">"Post Quantum Asynchronous Remote Key Generation. Master's thesis"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf">https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Frymann2020">[Frymann2020]</dt>
         <dd>
@@ -2343,18 +2999,23 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Frymann, N.</span>, <span class="refAuthor">Gardham, D.</span>, and <span class="refAuthor">M. Manulis</span>, <span class="refTitle">"Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/419">https://eprint.iacr.org/2023/419</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="Shoup">[Shoup]</dt>
+        <dd>
+<span class="refAuthor">Shoup, V.</span>, <span class="refTitle">"A Proposal for an ISO Standard for Public Key Encryption (version 2.0)"</span>, <time datetime="2001" class="refDate">2001</time>, <span>&lt;<a href="https://www.shoup.net/papers/iso-2.pdf">https://www.shoup.net/papers/iso-2.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="WebAuthn-Recovery">[WebAuthn-Recovery]</dt>
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">D. Nilsson</span>, <span class="refTitle">"WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://github.com/Yubico/webauthn-recovery-extension">https://github.com/Yubico/webauthn-recovery-extension</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Wilson">[Wilson]</dt>
       <dd>
-<span class="refAuthor">Wilson, S. M.</span> and <span class="refAuthor">University of Waterloo,</span>, <span class="refTitle">"Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="http://hdl.handle.net/10012/19316">http://hdl.handle.net/10012/19316</a>&gt;</span>. </dd>
+<span class="refAuthor">Wilson, S. M.</span>, <span class="refTitle">"Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="http://hdl.handle.net/10012/19316">http://hdl.handle.net/10012/19316</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
 </div>
 </section>
+</div>
 <div id="acknowledgements">
 <section id="appendix-A">
       <h2 id="name-acknowledgements">
@@ -2386,10 +3047,63 @@ modified by the inclusion of a MAC in the key handles as done in the original co
       <h2 id="name-document-history">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
-<p id="appendix-C-1">-00
-  Initial Version<a href="#appendix-C-1" class="pilcrow">¶</a></p>
-<p id="appendix-C-2">-01
-  Editorial Fixes to formatting and references.<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-1.1">
+          <p id="appendix-C-1.1.1">00 Initial Version<a href="#appendix-C-1.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-1.2">
+          <p id="appendix-C-1.2.1">01 Editorial Fixes to formatting and references.<a href="#appendix-C-1.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-1.3">
+          <p id="appendix-C-1.3.1">02<a href="#appendix-C-1.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-1.3.2.1">
+              <p id="appendix-C-1.3.2.1.1">Rewritten introduction.<a href="#appendix-C-1.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.2">
+              <p id="appendix-C-1.3.2.2.1">Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.<a href="#appendix-C-1.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.3">
+              <p id="appendix-C-1.3.2.3.1">Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.<a href="#appendix-C-1.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.4">
+              <p id="appendix-C-1.3.2.4.1">Eliminated top-level MAC and KDF instance parameters.<a href="#appendix-C-1.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.5">
+              <p id="appendix-C-1.3.2.5.1">Added info parameter to instance parameter functions.<a href="#appendix-C-1.3.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.6">
+              <p id="appendix-C-1.3.2.6.1">Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.<a href="#appendix-C-1.3.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.7">
+              <p id="appendix-C-1.3.2.7.1">Added curve/edwards25519/448 instances.<a href="#appendix-C-1.3.2.7.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.3.2.8">
+              <p id="appendix-C-1.3.2.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-1.3.2.8.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="appendix-C-1.4">
+          <p id="appendix-C-1.4.1">03<a href="#appendix-C-1.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-1.4.2.1">
+              <p id="appendix-C-1.4.2.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-1.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.2">
+              <p id="appendix-C-1.4.2.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-1.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.3">
+              <p id="appendix-C-1.4.2.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-1.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.4">
+              <p id="appendix-C-1.4.2.4.1">Added CDDL definition of COSE_Key_Ref<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-1.4.2.5">
+              <p id="appendix-C-1.4.2.5.1">Editorial fixes to references.<a href="#appendix-C-1.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+      </ul>
 </section>
 </div>
 <div id="contributors">
@@ -2400,6 +3114,11 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Dain Nilsson</span></div>
 <div dir="auto" class="left"><span class="org">Yubico</span></div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Peter Altmann</span></div>
+<div dir="auto" class="left"><span class="org">Agency for Digital Government</span></div>
+<div dir="auto" class="left"><span class="country-name">Sweden</span></div>
 </address>
 </section>
 </div>
