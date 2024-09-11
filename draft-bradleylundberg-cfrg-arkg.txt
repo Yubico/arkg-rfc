@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 29 November 2024                                    28 May 2024
+Expires: 15 March 2025                                 11 September 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 November 2024.
+   This Internet-Draft will expire on 15 March 2025.
 
 Copyright Notice
 
@@ -1086,7 +1086,7 @@ Table of Contents
      3: -65539,   ; alg: ESP256-ARKG
 
                   ; ARKG-P256ADD-ECDH key handle
-                  ; (truncated HMAC-SHA-256 followed by
+                  ; (HMAC-SHA-256-128 followed by
                      SEC1 uncompressed ECDH public key)
      -1: h'ae079e9c52212860678a7cee25b6a6d4
            048219d973768f8e1adb8eb84b220b0ee3
@@ -1373,7 +1373,7 @@ Table of Contents
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
-              <http://www.iana.org/assignments/cose>.
+              <https://www.iana.org/assignments/cose>.
 
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
