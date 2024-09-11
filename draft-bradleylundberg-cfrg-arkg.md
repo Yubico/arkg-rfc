@@ -1014,7 +1014,7 @@ and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
   3: -65539,   ; alg: ESP256-ARKG
 
                ; ARKG-P256ADD-ECDH key handle
-               ; (truncated HMAC-SHA-256 followed by
+               ; (HMAC-SHA-256-128 followed by
                   SEC1 uncompressed ECDH public key)
   -1: h'ae079e9c52212860678a7cee25b6a6d4
         048219d973768f8e1adb8eb84b220b0ee3
