@@ -939,6 +939,8 @@ An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
 This key type defines key type parameters -1 and -2 for the `BL` and `KEM` public key, respectively.
 
+The `alg` parameter defines the `alg` parameter of ARKG derived public keys derived from this ARKG public seed.
+
 The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
 restricted to generating derived public keys for use with the ESP256 [fully-spec-algs] signature algorithm:
 
@@ -948,7 +950,7 @@ restricted to generating derived public keys for use with the ESP256 [fully-spec
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -9,       ; alg: ESP256
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -974,12 +976,12 @@ The following is the same example encoded as CBOR:
 
 ~~~
 h'a50139fbb402582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
-  344340e2565337d2033a0001000220a40102200121582069380fc1c3b0965213
-  4feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831462c
-  cb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a401022001
-  2158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d87
-  5b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810
-  c49d4ed72d58'
+  344340e2565337d2032820a40102200121582069380fc1c3b09652134feefba6
+  1776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0bd55c
+  ba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158205c
+  099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d7822
+  5820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d4ed7
+  2d58'
 ~~~
 
 
@@ -1011,7 +1013,7 @@ and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
                ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -9,       ; alg: ESP256
 
                ; ARKG-P256ADD-ECDH key handle
                ; (truncated HMAC-SHA-256 followed by
@@ -1031,10 +1033,9 @@ The following is the same example encoded as CBOR:
 
 ~~~
 h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
-  344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25b6a6
-  d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a2949
-  9e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc474
-  7a84'
+  344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d4048219
+  d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9baee7
+  0cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84'
 ~~~
 
 
@@ -1118,62 +1119,6 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
   - Reference: {{cose-key-refs}} of this document
-
-
-## COSE Algorithms Registrations
-
-This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
-
-- Name: ESP256-ARKG
-  - Value: TBD (Placeholder -65539)
-  - Description: ESP256 with key derived by ARKG-P256ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ESP384-ARKG
-  - Value: TBD (Placeholder -65540)
-  - Description: ESP384 with key derived by ARKG-P384ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ESP512-ARKG
-  - Value: TBD (Placeholder -65541)
-  - Description: ESP512 with key derived by ARKG-P521ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ES256K-ARKG
-  - Value: TBD (Placeholder -65542)
-  - Description: ES256K with key derived by ARKG-P256kADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [RFC8812], {{ARKG-P256kADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: Ed25519-ARKG
-  - Value: TBD (Placeholder -65543)
-  - Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
-  - Recommended: Yes
-
-- Name: Ed448-ARKG
-  - Value: TBD (Placeholder -65544)
-  - Description: Ed448 with key derived by ARKG-edwards448ADD-X448
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
-  - Recommended: Yes
-
-
-TODO: Add the rest
 
 
 # Design rationale
@@ -1261,5 +1206,6 @@ TODO
   - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
   - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
   - Added reference to Shoup for definition of key encapsulation mechanism.
-  - Added CDDL definition of COSE_Key_Ref
+  - Added CDDL definition of COSE_Key_Ref.
   - Editorial fixes to references.
+  - Removed proposed COSE Algorithms registrations.
