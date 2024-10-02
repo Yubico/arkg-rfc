@@ -2401,7 +2401,7 @@ restricted to generating derived public keys for use with the ESP256 <span>[<a h
 <div class="lang-cddl sourcecode" id="section-5.1-3">
 <pre>
 {
-  1: -65537,   ; kty: ARKG-pub-seed
+  1: -65537,   ; kty: ARKG-pub
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
@@ -2467,8 +2467,8 @@ and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="
 <div class="lang-cddl sourcecode" id="section-5.2-5">
 <pre>
 {
-  1: -65538,   ; kty: ARKG-derived
-               ; kid: Opaque identifier of ARKG-pub-seed
+  1: -65538,   ; kty: Ref-ARKG-derived
+               ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
   3: -65539,   ; alg: ESP256-ARKG
@@ -2530,7 +2530,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
 <p id="section-8.1-1">This section registers the following values in the IANA "COSE Key Types" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1">
-            <p id="section-8.1-2.1.1">Name: ARKG-pub-seed<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.1-2.1.1">Name: ARKG-pub<a href="#section-8.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.1.2.1">
                 <p id="section-8.1-2.1.2.1.1">Value: TBD (Placeholder -65537)<a href="#section-8.1-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2547,7 +2547,7 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
             </ul>
 </li>
           <li class="normal" id="section-8.1-2.2">
-            <p id="section-8.1-2.2.1">Name: ARKG-derived<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-8.1-2.2.1">Name: Ref-ARKG-derived<a href="#section-8.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.1-2.2.2.1">
                 <p id="section-8.1-2.2.2.1.1">Value: TBD (Placeholder -65538)<a href="#section-8.1-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2616,7 +2616,7 @@ $COSE_kty_ref /= -2       ; Value TBD
 <p id="section-8.2-1">This section registers the following values in the IANA "COSE Key Type Parameters" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1">
-            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.1.2.1">
                 <p id="section-8.2-2.1.2.1.1">Name: pk_bl<a href="#section-8.2-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2636,7 +2636,7 @@ $COSE_kty_ref /= -2       ; Value TBD
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.2">
-            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub-seed, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.2.2.1">
                 <p id="section-8.2-2.2.2.1.1">Name: pk_kem<a href="#section-8.2-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2656,7 +2656,7 @@ $COSE_kty_ref /= -2       ; Value TBD
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.3">
-            <p id="section-8.2-2.3.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.3.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.3.2.1">
                 <p id="section-8.2-2.3.2.1.1">Name: kh<a href="#section-8.2-2.3.2.1.1" class="pilcrow">¶</a></p>
@@ -2676,7 +2676,7 @@ $COSE_kty_ref /= -2       ; Value TBD
             </ul>
 </li>
           <li class="normal" id="section-8.2-2.4">
-            <p id="section-8.2-2.4.1">Key Type: TBD (ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-8.2-2.4.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.2-2.4.2.1">
                 <p id="section-8.2-2.4.2.1.1">Name: info<a href="#section-8.2-2.4.2.1.1" class="pilcrow">¶</a></p>

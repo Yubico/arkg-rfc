@@ -1019,7 +1019,7 @@ Table of Contents
    the ESP256 [fully-spec-algs] signature algorithm:
 
    {
-     1: -65537,   ; kty: ARKG-pub-seed
+     1: -65537,   ; kty: ARKG-pub
                   ; kid: Opaque identifier
      2: h'60b6dfddd31659598ae5de49acb220d8
           704949e84d484b68344340e2565337d2',
@@ -1079,8 +1079,8 @@ Table of Contents
    [fully-spec-algs] signature algorithm:
 
    {
-     1: -65538,   ; kty: ARKG-derived
-                  ; kid: Opaque identifier of ARKG-pub-seed
+     1: -65538,   ; kty: Ref-ARKG-derived
+                  ; kid: Opaque identifier of ARKG-pub
      2: h'60b6dfddd31659598ae5de49acb220d8
           704949e84d484b68344340e2565337d2',
      3: -65539,   ; alg: ESP256-ARKG
@@ -1121,7 +1121,7 @@ Table of Contents
    This section registers the following values in the IANA "COSE Key
    Types" registry [IANA.cose].
 
-   *  Name: ARKG-pub-seed
+   *  Name: ARKG-pub
 
       -  Value: TBD (Placeholder -65537)
 
@@ -1131,7 +1131,7 @@ Table of Contents
 
       -  Reference: Section 5.1 of this document
 
-   *  Name: ARKG-derived
+   *  Name: Ref-ARKG-derived
 
       -  Value: TBD (Placeholder -65538)
 
@@ -1173,7 +1173,7 @@ Table of Contents
    This section registers the following values in the IANA "COSE Key
    Type Parameters" registry [IANA.cose].
 
-   *  Key Type: TBD (ARKG-pub-seed, placeholder -65537)
+   *  Key Type: TBD (ARKG-pub, placeholder -65537)
 
       -  Name: pk_bl
 
@@ -1185,7 +1185,7 @@ Table of Contents
 
       -  Reference: Section 5.1 of this document
 
-   *  Key Type: TBD (ARKG-pub-seed, placeholder -65537)
+   *  Key Type: TBD (ARKG-pub, placeholder -65537)
 
       -  Name: pk_kem
 
@@ -1197,7 +1197,7 @@ Table of Contents
 
       -  Reference: Section 5.1 of this document
 
-   *  Key Type: TBD (ARKG-derived, placeholder -65538)
+   *  Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
 
       -  Name: kh
 
@@ -1209,7 +1209,7 @@ Table of Contents
 
       -  Reference: Section 5.2 of this document
 
-   *  Key Type: TBD (ARKG-derived, placeholder -65538)
+   *  Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
 
       -  Name: info
 
