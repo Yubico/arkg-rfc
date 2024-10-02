@@ -587,7 +587,7 @@ KEM-Encaps(pk, info) -> (k, c)
         PRK: prk
         info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
-    t = HMAC-Hash-128(K=mk, text=info_sub)
+    t = HMAC-Hash-128(K=mk, text=c')
 
     k = HKDF-Expand with the arguments:
         Hash: Hash
@@ -615,7 +615,7 @@ KEM-Decaps(sk, c, info) -> k
         info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
         L: L
 
-    t' = HMAC-Hash-128(K=mk, text=info_sub)
+    t' = HMAC-Hash-128(K=mk, text=c')
     If t = t':
         k = HKDF-Expand with the arguments:
             Hash: Hash
