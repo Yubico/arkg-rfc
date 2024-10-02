@@ -1208,4 +1208,5 @@ TODO
   - Added reference to Shoup for definition of key encapsulation mechanism.
   - Added CDDL definition of COSE_Key_Ref.
   - Editorial fixes to references.
+  - Renamed proposed COSE Key Types.
   - Removed proposed COSE Algorithms registrations.
