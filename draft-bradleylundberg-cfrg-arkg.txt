@@ -1457,6 +1457,8 @@ Appendix C.  Document History
 
       -  Editorial fixes to references.
 
+      -  Renamed proposed COSE Key Types.
+
       -  Removed proposed COSE Algorithms registrations.
 
 Contributors
