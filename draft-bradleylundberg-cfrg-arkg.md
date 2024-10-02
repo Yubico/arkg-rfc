@@ -944,7 +944,7 @@ restricted to generating derived public keys for use with the ESP256 [fully-spec
 
 ~~~cddl
 {
-  1: -65537,   ; kty: ARKG-pub-seed
+  1: -65537,   ; kty: ARKG-pub
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
@@ -1007,8 +1007,8 @@ and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
-  1: -65538,   ; kty: ARKG-derived
-               ; kid: Opaque identifier of ARKG-pub-seed
+  1: -65538,   ; kty: Ref-ARKG-derived
+               ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
   3: -65539,   ; alg: ESP256-ARKG
@@ -1054,13 +1054,13 @@ TODO
 
 This section registers the following values in the IANA "COSE Key Types" registry [IANA.COSE].
 
-- Name: ARKG-pub-seed
+- Name: ARKG-pub
   - Value: TBD (Placeholder -65537)
   - Description: ARKG public seed
   - Capabilities: \[kty(-65537), pk_bl, pk_kem\]
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Name: ARKG-derived
+- Name: Ref-ARKG-derived
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
   - Capabilities: \[kty(-65538), kh\]
@@ -1091,28 +1091,28 @@ $COSE_kty_ref /= -2       ; Value TBD
 
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
-- Key Type: TBD (ARKG-pub-seed, placeholder -65537)
+- Key Type: TBD (ARKG-pub, placeholder -65537)
   - Name: pk_bl
   - Label: -1
   - CBOR Type: COSE_Key
   - Description: ARKG key blinding public key
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Key Type: TBD (ARKG-pub-seed, placeholder -65537)
+- Key Type: TBD (ARKG-pub, placeholder -65537)
   - Name: pk_kem
   - Label: -2
   - CBOR Type: COSE_Key
   - Description: ARKG key encapsulation public key
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Key Type: TBD (ARKG-derived, placeholder -65538)
+- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
   - Name: kh
   - Label: -1
   - CBOR Type: bstr
   - Description: kh argument to ARKG-Derive-Private-Key
   - Reference: {{cose-key-refs}} of this document
 
-- Key Type: TBD (ARKG-derived, placeholder -65538)
+- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
   - Name: info
   - Label: -2
   - CBOR Type: bstr
