@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 15 March 2025                                 11 September 2024
+Expires: 5 April 2025                                     2 October 2024
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 March 2025.
+   This Internet-Draft will expire on 5 April 2025.
 
 Copyright Notice
 
@@ -583,7 +583,7 @@ Table of Contents
            PRK: prk
            info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
-       t = HMAC-Hash-128(K=mk, text=info_sub)
+       t = HMAC-Hash-128(K=mk, text=c')
 
        k = HKDF-Expand with the arguments:
            Hash: Hash
@@ -611,7 +611,7 @@ Table of Contents
            info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
            L: L
 
-       t' = HMAC-Hash-128(K=mk, text=info_sub)
+       t' = HMAC-Hash-128(K=mk, text=c')
        If t = t':
            k = HKDF-Expand with the arguments:
                Hash: Hash
