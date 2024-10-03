@@ -87,6 +87,21 @@ informative:
     author:
     - name: Pieter Wuille
     date: 2012
+  COSE-Hash-Envelope:
+    title: COSE Hash Envelope
+    target: https://datatracker.ietf.org/doc/draft-ietf-cose-hash-envelope/
+    author:
+    - name: Orie Steele
+      ins: O. Steele
+      org: Transmute
+      email: orie@transmute.industries
+    - name: Steve Lasker
+      org: DataTrails
+      email: steve.lasker@datatrails.ai
+    - name: Henk Birkholz
+      org: Fraunhofer SIT
+      email: henk.birkholz@ietf.contact
+    date: 2024
   Clermont:
     target: https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf
     author:
@@ -1039,6 +1054,131 @@ h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
 ~~~
 
 
+## TEMPORARY: COSE algorithms for two-party signing {#cose-2p-sign-algs}
+
+_THIS SECTION IS A TEMPORARY PROTOTYPE AREA.
+THESE IDEAS ARE PLANNED TO MOVE TO A DIFFERENT DOCUMENT WHEN MORE MATURE._
+
+### Introduction
+
+Most COSE algorithm identifiers are meant for annotating a cryptogram
+with how a consumer may interpret it,
+but do not record all details of how the cryptogram was created since that is usually irrelevant for the consumer.
+The algorithm identifiers defined in this section are the opposite -
+they define interfaces between two parties co-operating to create a cryptogram together.
+
+A primary use case for this is executing a signature algorithm split between two parties,
+such as a client application and a discrete hardware security module (HSM) holding the private key.
+In particular, since the data link between them may have limited bandwidth,
+it may not be practical to send the entire original message to the HSM.
+Instead, since most signature algorithms begin with digesting the message
+into a fixed-length intermediate input, this initial digest can be computed by the client application
+while the HSM computes the rest of the signature algorithm on the digest.
+
+Since different signature algorithms digest the message in different ways
+and at different stages of the algorithm,
+there is no unambiguous way to define a division point generically for every possible signature algorithm.
+Therefore, this document defines algorithm identifiers encoding, for each concrete signature algorithm,
+which steps of the signature algorithm are performed by the _digester_ (e.g., client application)
+and which are performed by the _signer_ (e.g., HSM).
+
+Note that these algorithm identifiers do not define new "pre-hashed" variants of the base signature algorithm,
+nor an intermediate "hash envelope" data structure such as that defined in [COSE-Hash-Envelope].
+Rather these are the same signature algorithms that would typically be executed by a single party,
+but split into two stages.
+The resulting signatures are identical in structure to those computed by a single party,
+and can be verified using the same verification procedure
+without additional steps to preprocess the signed data.
+However some signature algorithms, for example PureEdDSA [RFC8032] or ML-DSA [FIPS-204],
+cannot be split in this way and therefore cannot be assigned a two-party signing algorithm identifier.
+If such a signature algorithm defines a "pre-hashed" variant, such as Ed25519ph [RFC8032] or HashML-DSA [FIPS-204],
+that algorithm may be assigned a two-party signing algorithm identifier instead.
+
+The algorithm identifiers defined in this document SHALL NOT appear in COSE structures.
+They are meant only for coordination between _digester_ and _signer_ in a two-party signing operation.
+Representations of used keys and resulting signatures
+SHALL use the corresponding conventional algorithm identifiers instead.
+These are listed in the "Base algorithm" column in the tables defining two-party signing algorithm identifiers.
+
+
+### Two-party signing algorithms
+
+#### ECDSA {#ecdsa-2p}
+
+Two-party ECDSA [FIPS-186-5] uses the following division between _digester_ and _signer_
+of the steps of the ECDSA signature generation algorithm [FIPS-186-5]:
+
+- The signing procedure is defined in [Section 6.4.1 of FIPS-186-5].
+- The _digester_ performs step 1 of the signing procedure.
+- The message input to the _signer_ is the value _H_ defined in the signing procedure.
+- The _signer_ resumes the signing procedure from step 2.
+
+The following algorithm identifiers are defined:
+
+| Name      | COSE Value | Base algorithm | Description |
+| --------- | ---------- | -------------- | ----------- |
+| ESP256-2p | TBD        | ESP256         | ESP256 [fully-spec-algs] divided as defined in {{ecdsa-2p}} of this document |
+| ESP384-2p | TBD        | ESP384         | ESP384 [fully-spec-algs] divided as defined in {{ecdsa-2p}} of this document |
+| ESP512-2p | TBD        | ESP512         | ESP512 [fully-spec-algs] divided as defined in {{ecdsa-2p}} of this document |
+
+
+#### HashEdDSA {#eddsa-2p}
+
+Two-party HashEdDSA [RFC8032] uses the following division between _digester_ and _signer_
+of the steps of the HashEdDSA signing algorithm [RFC8032]:
+
+- HashEdDSA is a combination of the EdDSA signing procedure and the PureEdDSA signing procedure.
+  The EdDSA signing procedure is defined in the first paragraph of {{Section 3.3 of RFC8032}}.
+  The PureEdDSA signing procedure is defined in the second paragraph of {{Section 3.3 of RFC8032}}.
+- The _digester_ computes the value `PH(M)` defined in the EdDSA signing procedure.
+- The message input to the _signer_ is the value `PH(M)` defined in the EdDSA signing procedure.
+  This value is represented as `M` in the PureEdDSA signing procedure.
+- The _signer_ executes the PureEdDSA signing procedure,
+  where the value denoted `M` in the PureEdDSA signing procedure
+  takes the value denoted `PH(M)` in the EdDSA signing procedure.
+
+PureEdDSA [RFC8032] cannot be divided in this way.
+
+The following algorithm identifiers are defined:
+
+| Name         | COSE Value | Base algorithm | Description |
+| ------------ | ---------- | -------------- | ----------- |
+| Ed25519ph-2p | TBD        | Ed25519ph      | Ed25519ph [fully-spec-algs] divided as defined in {{eddsa-2p}} of this document (NOTE: Ed25519ph not yet defined) |
+| Ed448ph-2p   | TBD        | Ed448ph        | Ed448ph [fully-spec-algs] divided as defined in {{eddsa-2p}} of this document (NOTE: Ed448ph not yet defined) |
+
+
+#### HashML-DSA {#ml-dsa-2p}
+
+Two-party HashML-DSA [FIPS-204] uses the following division between _digester_ and _signer_
+of the steps of the HashML-DSA.Sign algorithm:
+
+- The signing procedure is defined in [Section 5.4.1 of FIPS-204].
+- The _digester_ computes the value PH<sub>_M_</sub> defined in steps 10 to 22 of the signing procedure.
+- The message input to the _signer_ is the value PH<sub>_M_</sub> defined in the signing procedure.
+  The additional _ctx_ input must also be transmitted to the _signer_.
+  This may for example be done using the `ctx (-1)` parameter of a `COSE_Key_Ref` with `kty (1): Ref-ML-DSA (TBD)`
+  (see {{cose-key-types-reg}} and {{cose-key-type-params-reg}}).
+- The _signer_ executes all steps of the signing procedure
+  except the steps 13, 16, 19 or similar that compute the value PH<sub>_M_</sub>.
+  Note in particular that the _signer_ generates the value _rnd_ in steps 5-8
+  and constructs the value _M'_ in step 23.
+
+The "pure" ML-DSA version [FIPS-204] cannot be divided in this way
+because of how the embedding of the _ctx_ and _tr_ values is constructed
+in `ML-DSA.Sign` and `ML-DSA.Sign_Internal`.
+A division like the above for HashML-DSA would move control of this embedding from the _signer_ to the _digester_.
+This would break the domain separation enforced by the embedding
+and possibly enable signature malleability attacks or protocol confusion attacks.
+
+The following algorithm identifiers are defined:
+
+| Name             | COSE Value | Base algorithm | Description |
+| ---------------- | ---------- | -------------- | ----------- |
+| HashML-DSA-44-2p | TBD        | HashML-DSA-44  | HashML-DSA-44 [TODO] divided as defined in {{ml-dsa-2p}} of this document (NOTE: HashML-DSA-44 not yet defined) |
+| HashML-DSA-65-2p | TBD        | HashML-DSA-65  | HashML-DSA-65 [TODO] divided as defined in {{ml-dsa-2p}} of this document (NOTE: HashML-DSA-65 not yet defined) |
+| HashML-DSA-87-2p | TBD        | HashML-DSA-87  | HashML-DSA-87 [TODO] divided as defined in {{ml-dsa-2p}} of this document (NOTE: HashML-DSA-87 not yet defined) |
+
+
 # Security Considerations {#Security}
 
 TODO
@@ -1051,7 +1191,7 @@ TODO
 
 # IANA Considerations {#IANA}
 
-## COSE Key Types Registrations
+## COSE Key Types Registrations {#cose-key-types-reg}
 
 This section registers the following values in the IANA "COSE Key Types" registry [IANA.COSE].
 
@@ -1079,6 +1219,12 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Capabilities: \[kty(-1), crv\]
   - Reference: {{cose-key-refs}} of this document
 
+- Name: Ref-ML-DSA
+  - Value: TBD
+  - Description: Reference to a key pair of key type "ML-DSA"
+  - Capabilities: \[kty(TBD), ctx\]
+  - Reference: TBD
+
 These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref`:
 
 ~~~cddl
@@ -1088,7 +1234,7 @@ $COSE_kty_ref /= -2       ; Value TBD
 ~~~
 
 
-## COSE Key Type Parameters Registrations
+## COSE Key Type Parameters Registrations {#cose-key-type-params-reg}
 
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
@@ -1119,6 +1265,13 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
   - Reference: {{cose-key-refs}} of this document
+
+- Key Type: TBD (Ref-ML-DSA)
+  - Name: ctx
+  - Label: -1
+  - CBOR Type: bstr
+  - Description: ctx argument to ML-DSA.Sign or HashML-DSA.Sign
+  - Reference: TBD
 
 
 # Design rationale
