@@ -1137,7 +1137,8 @@ of the steps of the HashEdDSA signing algorithm [RFC8032]:
   where the value denoted `M` in the PureEdDSA signing procedure
   takes the value denoted `PH(M)` in the EdDSA signing procedure.
 
-PureEdDSA [RFC8032] cannot be divided in this way.
+PureEdDSA [RFC8032] cannot be divided in this way
+since such a division would require that the _digester_ has access to the private key.
 
 The following algorithm identifiers are defined:
 
