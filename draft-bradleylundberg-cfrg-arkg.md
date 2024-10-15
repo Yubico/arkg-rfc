@@ -988,6 +988,8 @@ h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
 
 ## COSE key reference types {#cose-key-refs}
 
+TODO: This should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
+
 While keys used by many other algorithms can usually be referenced by a single atomic identifier,
 such as that used in the `kid` parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
 users of the function `ARKG-Derive-Secret-Key` need to represent
@@ -1092,6 +1094,8 @@ $COSE_kty_ref /= -2       ; Value TBD
 
 ## COSE Key Type Parameters Registrations
 
+TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
+
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
 - Key Type: TBD (ARKG-pub, placeholder -65537)
@@ -1124,6 +1128,8 @@ This section registers the following values in the IANA "COSE Key Type Parameter
 
 
 ## COSE Algorithms Registrations
+
+TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
 
 This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
 
