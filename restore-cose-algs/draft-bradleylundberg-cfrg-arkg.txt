@@ -1059,6 +1059,11 @@ Table of Contents
 
 5.2.  COSE key reference types
 
+   TODO: This should eventually move to a separate "algoritm IDs for
+   two-party signing" spec, see:
+   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
+   Z88GpFY/
+
    While keys used by many other algorithms can usually be referenced by
    a single atomic identifier, such as that used in the kid parameter in
    a COSE_Key object or in the unprotected header of a COSE_Recipient,
@@ -1173,6 +1178,11 @@ Table of Contents
 
 8.2.  COSE Key Type Parameters Registrations
 
+   TODO: These should eventually move to a separate "algoritm IDs for
+   two-party signing" spec, see:
+   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
+   Z88GpFY/
+
    This section registers the following values in the IANA "COSE Key
    Type Parameters" registry [IANA.cose].
 
@@ -1225,6 +1235,11 @@ Table of Contents
       -  Reference: Section 5.2 of this document
 
 8.3.  COSE Algorithms Registrations
+
+   TODO: These should eventually move to a separate "algoritm IDs for
+   two-party signing" spec, see:
+   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
+   Z88GpFY/
 
    This section registers the following values in the IANA "COSE
    Algorithms" registry [IANA.cose].
