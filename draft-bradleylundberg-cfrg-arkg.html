@@ -20,12 +20,12 @@ a set of formulae for instantiating the abstract primitives using concrete primi
 and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future. 
     " name="description">
-<meta content="xml2rfc 3.23.1" name="generator">
+<meta content="xml2rfc 3.23.2" name="generator">
 <meta content="KDF" name="keyword">
 <meta content="draft-bradleylundberg-cfrg-arkg-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.23.1
-    Python 3.12.6
+  xml2rfc 3.23.2
+    Python 3.12.7
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -1039,7 +1039,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 5 April 2025</td>
+<td class="center">Expires 18 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1052,12 +1052,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-10-02" class="published">2 October 2024</time>
+<time datetime="2024-10-15" class="published">15 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-04-05">5 April 2025</time></dd>
+<dd class="expires"><time datetime="2025-04-18">18 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 18 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1252,6 +1252,9 @@ We expect that additional instances will be defined in the future.<a href="#sect
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-cose-key-type-parameters-re" class="internal xref">COSE Key Type Parameters Registrations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-cose-algorithms-registratio" class="internal xref">COSE Algorithms Registrations</a></p>
 </li>
             </ul>
 </li>
@@ -2393,7 +2396,8 @@ and new key type definitions to represent references to private keys rather than
 <p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>
 with <code>kty</code> value TBD (placeholder value -65537).
 This key type defines key type parameters -1 and -2 for the <code>BL</code> and <code>KEM</code> public key, respectively.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">The <code>alg</code> parameter defines the <code>alg</code> parameter of ARKG derived public keys derived from this ARKG public seed.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The <code>alg</code> parameter, when present,
+defines the <code>alg</code> parameter of ARKG derived public keys derived from this ARKG public seed.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
 restricted to generating derived public keys for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.1-4">
@@ -2428,13 +2432,13 @@ restricted to generating derived public keys for use with the ESP256 <span>[<a h
 <p id="section-5.1-5">The following is the same example encoded as CBOR:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.1-6">
 <pre>
-h'a50139fbb402582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
-  344340e2565337d2032820a40102200121582069380fc1c3b09652134feefba6
-  1776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0bd55c
-  ba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158205c
-  099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d7822
-  5820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d4ed7
-  2d58'
+h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d2032820a40102200121582069380fc1c3b09652134fee
+  fba61776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0b
+  d55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158
+  205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d
+  78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
+  4ed72d588'
 </pre><a href="#section-5.1-6" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2444,32 +2448,33 @@ h'a50139fbb402582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
         <h3 id="name-cose-key-reference-types">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-cose-key-reference-types" class="section-name selfRef">COSE key reference types</a>
         </h3>
-<p id="section-5.2-1">While keys used by many other algorithms can usually be referenced by a single atomic identifier,
+<p id="section-5.2-1">TODO: This should eventually move to a separate "algoritm IDs for two-party signing" spec, see: <span><a href="https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/">https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/</a></span><a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">While keys used by many other algorithms can usually be referenced by a single atomic identifier,
 such as that used in the <code>kid</code> parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
 users of the function <code>ARKG-Derive-Secret-Key</code> need to represent
-a reference to an ARKG private seed along with a key handle for a derived private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">A COSE key reference is a COSE_Key object whose <code>kty</code> value is defined to represent a reference to a key.
+a reference to an ARKG private seed along with a key handle for a derived private key.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">A COSE key reference is a COSE_Key object whose <code>kty</code> value is defined to represent a reference to a key.
 The <code>kid</code> parameter <span class="bcp14">MUST</span> be present when <code>kty</code> is a key reference type.
-These requirements are encoded in the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type <code>COSE_Key_Ref</code>:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-5.2-3">
+These requirements are encoded in the CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> type <code>COSE_Key_Ref</code>:<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-4">
 <pre>
 COSE_Key_Ref = COSE_Key .within {
   1 ^ =&gt; $COSE_kty_ref   ; kty: Any reference type
   2 ^ =&gt; any,            ; kid is required
   any =&gt; any,            ; Any other entries allowed by COSE_Key
 }
-</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
+</pre><a href="#section-5.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-4">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
-and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-5.2-5">
+<p id="section-5.2-5">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
+and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-6">
 <pre>
 {
   1: -65538,   ; kty: Ref-ARKG-derived
                ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65539,   ; alg: ESP256-ARKG
 
                ; ARKG-P256ADD-ECDH key handle
                ; (HMAC-SHA-256-128 followed by
@@ -2483,16 +2488,17 @@ and restricted for use with the ESP256 <span>[<a href="#fully-spec-algs" class="
                ; info argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
 }
-</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.2-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-6">The following is the same example encoded as CBOR:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2-7">
+<p id="section-5.2-7">The following is the same example encoded as CBOR:<a href="#section-5.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-8">
 <pre>
-h'a40139fbb502582060b6dfddd31659598ae5de49acb220d8704949e84d484b68
-  344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d4048219
-  d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9baee7
-  0cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84'
-</pre><a href="#section-5.2-7" class="pilcrow">¶</a>
+h'a5013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25
+  b6a6d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a
+  29499e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2b
+  c4747a842158184578616d706c65206170706c69636174696f6e20696e666f'
+</pre><a href="#section-5.2-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2610,85 +2616,235 @@ $COSE_kty_ref /= -2       ; Value TBD
         <h3 id="name-cose-key-type-parameters-re">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-cose-key-type-parameters-re" class="section-name selfRef">COSE Key Type Parameters Registrations</a>
         </h3>
-<p id="section-8.2-1">This section registers the following values in the IANA "COSE Key Type Parameters" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1">TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: <span><a href="https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/">https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/</a></span><a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">This section registers the following values in the IANA "COSE Key Type Parameters" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.2-2.1">
-            <p id="section-8.2-2.1.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8.2-3.1">
+            <p id="section-8.2-3.1.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-3.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.2-2.1.2.1">
-                <p id="section-8.2-2.1.2.1.1">Name: pk_bl<a href="#section-8.2-2.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8.2-3.1.2.1">
+                <p id="section-8.2-3.1.2.1.1">Name: pk_bl<a href="#section-8.2-3.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.1.2.2">
-                <p id="section-8.2-2.1.2.2.1">Label: -1<a href="#section-8.2-2.1.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.1.2.2">
+                <p id="section-8.2-3.1.2.2.1">Label: -1<a href="#section-8.2-3.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.1.2.3">
-                <p id="section-8.2-2.1.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-2.1.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.1.2.3">
+                <p id="section-8.2-3.1.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-3.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.1.2.4">
-                <p id="section-8.2-2.1.2.4.1">Description: ARKG key blinding public key<a href="#section-8.2-2.1.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.1.2.4">
+                <p id="section-8.2-3.1.2.4.1">Description: ARKG key blinding public key<a href="#section-8.2-3.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.1.2.5">
-                <p id="section-8.2-2.1.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-2.1.2.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.1.2.5">
+                <p id="section-8.2-3.1.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-3.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-8.2-2.2">
-            <p id="section-8.2-2.2.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-8.2-3.2">
+            <p id="section-8.2-3.2.1">Key Type: TBD (ARKG-pub, placeholder -65537)<a href="#section-8.2-3.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.2-2.2.2.1">
-                <p id="section-8.2-2.2.2.1.1">Name: pk_kem<a href="#section-8.2-2.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8.2-3.2.2.1">
+                <p id="section-8.2-3.2.2.1.1">Name: pk_kem<a href="#section-8.2-3.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.2.2.2">
-                <p id="section-8.2-2.2.2.2.1">Label: -2<a href="#section-8.2-2.2.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.2.2.2">
+                <p id="section-8.2-3.2.2.2.1">Label: -2<a href="#section-8.2-3.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.2.2.3">
-                <p id="section-8.2-2.2.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.2.2.3">
+                <p id="section-8.2-3.2.2.3.1">CBOR Type: COSE_Key<a href="#section-8.2-3.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.2.2.4">
-                <p id="section-8.2-2.2.2.4.1">Description: ARKG key encapsulation public key<a href="#section-8.2-2.2.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.2.2.4">
+                <p id="section-8.2-3.2.2.4.1">Description: ARKG key encapsulation public key<a href="#section-8.2-3.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.2.2.5">
-                <p id="section-8.2-2.2.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-2.2.2.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.2.2.5">
+                <p id="section-8.2-3.2.2.5.1">Reference: <a href="#cose-arkg-pub-seed" class="auto internal xref">Section 5.1</a> of this document<a href="#section-8.2-3.2.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-8.2-2.3">
-            <p id="section-8.2-2.3.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-8.2-3.3">
+            <p id="section-8.2-3.3.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-3.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.2-2.3.2.1">
-                <p id="section-8.2-2.3.2.1.1">Name: kh<a href="#section-8.2-2.3.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8.2-3.3.2.1">
+                <p id="section-8.2-3.3.2.1.1">Name: kh<a href="#section-8.2-3.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.3.2.2">
-                <p id="section-8.2-2.3.2.2.1">Label: -1<a href="#section-8.2-2.3.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.3.2.2">
+                <p id="section-8.2-3.3.2.2.1">Label: -1<a href="#section-8.2-3.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.3.2.3">
-                <p id="section-8.2-2.3.2.3.1">CBOR Type: bstr<a href="#section-8.2-2.3.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.3.2.3">
+                <p id="section-8.2-3.3.2.3.1">CBOR Type: bstr<a href="#section-8.2-3.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.3.2.4">
-                <p id="section-8.2-2.3.2.4.1">Description: kh argument to ARKG-Derive-Private-Key<a href="#section-8.2-2.3.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.3.2.4">
+                <p id="section-8.2-3.3.2.4.1">Description: kh argument to ARKG-Derive-Private-Key<a href="#section-8.2-3.3.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.3.2.5">
-                <p id="section-8.2-2.3.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-2.3.2.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.3.2.5">
+                <p id="section-8.2-3.3.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-3.3.2.5.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-8.2-2.4">
-            <p id="section-8.2-2.4.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-8.2-3.4">
+            <p id="section-8.2-3.4.1">Key Type: TBD (Ref-ARKG-derived, placeholder -65538)<a href="#section-8.2-3.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8.2-2.4.2.1">
-                <p id="section-8.2-2.4.2.1.1">Name: info<a href="#section-8.2-2.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8.2-3.4.2.1">
+                <p id="section-8.2-3.4.2.1.1">Name: info<a href="#section-8.2-3.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.4.2.2">
-                <p id="section-8.2-2.4.2.2.1">Label: -2<a href="#section-8.2-2.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.4.2.2">
+                <p id="section-8.2-3.4.2.2.1">Label: -2<a href="#section-8.2-3.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.4.2.3">
-                <p id="section-8.2-2.4.2.3.1">CBOR Type: bstr<a href="#section-8.2-2.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.4.2.3">
+                <p id="section-8.2-3.4.2.3.1">CBOR Type: bstr<a href="#section-8.2-3.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.4.2.4">
-                <p id="section-8.2-2.4.2.4.1">Description: info argument to ARKG-Derive-Private-Key<a href="#section-8.2-2.4.2.4.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.4.2.4">
+                <p id="section-8.2-3.4.2.4.1">Description: info argument to ARKG-Derive-Private-Key<a href="#section-8.2-3.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-8.2-2.4.2.5">
-                <p id="section-8.2-2.4.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-2.4.2.5.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-8.2-3.4.2.5">
+                <p id="section-8.2-3.4.2.5.1">Reference: <a href="#cose-key-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-3.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+</section>
+</div>
+<div id="cose-algorithms-registrations">
+<section id="section-8.3">
+        <h3 id="name-cose-algorithms-registratio">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-cose-algorithms-registratio" class="section-name selfRef">COSE Algorithms Registrations</a>
+        </h3>
+<p id="section-8.3-1">TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: <span><a href="https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/">https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/</a></span><a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-2">This section registers the following values in the IANA "COSE Algorithms" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.1">
+            <p id="section-8.3-3.1.1">Name: ESP256-ARKG<a href="#section-8.3-3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.1.2.1">
+                <p id="section-8.3-3.1.2.1.1">Value: TBD (Placeholder -65539)<a href="#section-8.3-3.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.1.2.2">
+                <p id="section-8.3-3.1.2.2.1">Description: ESP256 with key derived by ARKG-P256ADD-ECDH<a href="#section-8.3-3.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.1.2.3">
+                <p id="section-8.3-3.1.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.1.2.4">
+                <p id="section-8.3-3.1.2.4.1">Change Controller: TBD<a href="#section-8.3-3.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.1.2.5">
+                <p id="section-8.3-3.1.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P256ADD-ECDH" class="auto internal xref">Section 4.1</a> of this document<a href="#section-8.3-3.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.1.2.6">
+                <p id="section-8.3-3.1.2.6.1">Recommended: Yes<a href="#section-8.3-3.1.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-3.2">
+            <p id="section-8.3-3.2.1">Name: ESP384-ARKG<a href="#section-8.3-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.2.2.1">
+                <p id="section-8.3-3.2.2.1.1">Value: TBD (Placeholder -65540)<a href="#section-8.3-3.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.2.2.2">
+                <p id="section-8.3-3.2.2.2.1">Description: ESP384 with key derived by ARKG-P384ADD-ECDH<a href="#section-8.3-3.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.2.2.3">
+                <p id="section-8.3-3.2.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.2.2.4">
+                <p id="section-8.3-3.2.2.4.1">Change Controller: TBD<a href="#section-8.3-3.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.2.2.5">
+                <p id="section-8.3-3.2.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P384ADD-ECDH" class="auto internal xref">Section 4.2</a> of this document<a href="#section-8.3-3.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.2.2.6">
+                <p id="section-8.3-3.2.2.6.1">Recommended: Yes<a href="#section-8.3-3.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-3.3">
+            <p id="section-8.3-3.3.1">Name: ESP512-ARKG<a href="#section-8.3-3.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.3.2.1">
+                <p id="section-8.3-3.3.2.1.1">Value: TBD (Placeholder -65541)<a href="#section-8.3-3.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.3.2.2">
+                <p id="section-8.3-3.3.2.2.1">Description: ESP512 with key derived by ARKG-P521ADD-ECDH<a href="#section-8.3-3.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.3.2.3">
+                <p id="section-8.3-3.3.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.3.2.4">
+                <p id="section-8.3-3.3.2.4.1">Change Controller: TBD<a href="#section-8.3-3.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.3.2.5">
+                <p id="section-8.3-3.3.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-P521ADD-ECDH" class="auto internal xref">Section 4.3</a> of this document<a href="#section-8.3-3.3.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.3.2.6">
+                <p id="section-8.3-3.3.2.6.1">Recommended: Yes<a href="#section-8.3-3.3.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-3.4">
+            <p id="section-8.3-3.4.1">Name: ES256K-ARKG<a href="#section-8.3-3.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.4.2.1">
+                <p id="section-8.3-3.4.2.1.1">Value: TBD (Placeholder -65542)<a href="#section-8.3-3.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.4.2.2">
+                <p id="section-8.3-3.4.2.2.1">Description: ES256K with key derived by ARKG-P256kADD-ECDH<a href="#section-8.3-3.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.4.2.3">
+                <p id="section-8.3-3.4.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.4.2.4">
+                <p id="section-8.3-3.4.2.4.1">Change Controller: TBD<a href="#section-8.3-3.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.4.2.5">
+                <p id="section-8.3-3.4.2.5.1">Reference: <span>[<a href="#RFC8812" class="cite xref">RFC8812</a>]</span>, <a href="#ARKG-P256kADD-ECDH" class="auto internal xref">Section 4.4</a> of this document<a href="#section-8.3-3.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.4.2.6">
+                <p id="section-8.3-3.4.2.6.1">Recommended: Yes<a href="#section-8.3-3.4.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-3.5">
+            <p id="section-8.3-3.5.1">Name: Ed25519-ARKG<a href="#section-8.3-3.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.5.2.1">
+                <p id="section-8.3-3.5.2.1.1">Value: TBD (Placeholder -65543)<a href="#section-8.3-3.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.5.2.2">
+                <p id="section-8.3-3.5.2.2.1">Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519<a href="#section-8.3-3.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.5.2.3">
+                <p id="section-8.3-3.5.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.5.2.4">
+                <p id="section-8.3-3.5.2.4.1">Change Controller: TBD<a href="#section-8.3-3.5.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.5.2.5">
+                <p id="section-8.3-3.5.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-edwards25519ADD-X25519" class="auto internal xref">Section 4.7</a> of this document<a href="#section-8.3-3.5.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.5.2.6">
+                <p id="section-8.3-3.5.2.6.1">Recommended: Yes<a href="#section-8.3-3.5.2.6.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-3.6">
+            <p id="section-8.3-3.6.1">Name: Ed448-ARKG<a href="#section-8.3-3.6.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-3.6.2.1">
+                <p id="section-8.3-3.6.2.1.1">Value: TBD (Placeholder -65544)<a href="#section-8.3-3.6.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.6.2.2">
+                <p id="section-8.3-3.6.2.2.1">Description: Ed448 with key derived by ARKG-edwards448ADD-X448<a href="#section-8.3-3.6.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.6.2.3">
+                <p id="section-8.3-3.6.2.3.1">Capabilities: [kty]<a href="#section-8.3-3.6.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.6.2.4">
+                <p id="section-8.3-3.6.2.4.1">Change Controller: TBD<a href="#section-8.3-3.6.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.6.2.5">
+                <p id="section-8.3-3.6.2.5.1">Reference: <span>[<a href="#fully-spec-algs" class="cite xref">fully-spec-algs</a>]</span>, <a href="#ARKG-edwards448ADD-X448" class="auto internal xref">Section 4.8</a> of this document<a href="#section-8.3-3.6.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-3.6.2.6">
+                <p id="section-8.3-3.6.2.6.1">Recommended: Yes<a href="#section-8.3-3.6.2.6.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2944,16 +3100,13 @@ modified by the inclusion of a MAC in the key handles as done in the original co
               <p id="appendix-C-1.4.2.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-1.4.2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-1.4.2.4">
-              <p id="appendix-C-1.4.2.4.1">Added CDDL definition of COSE_Key_Ref.<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
+              <p id="appendix-C-1.4.2.4.1">Added CDDL definition of COSE_Key_Ref<a href="#appendix-C-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-1.4.2.5">
               <p id="appendix-C-1.4.2.5.1">Editorial fixes to references.<a href="#appendix-C-1.4.2.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-1.4.2.6">
               <p id="appendix-C-1.4.2.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-1.4.2.6.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-1.4.2.7">
-              <p id="appendix-C-1.4.2.7.1">Removed proposed COSE Algorithms registrations.<a href="#appendix-C-1.4.2.7.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
