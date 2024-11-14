@@ -87,7 +87,7 @@ informative:
     author:
     - name: Pieter Wuille
     date: 2012
-  AC:BCF24:
+  AC:BreCleFis24:
     target: https://eprint.iacr.org/2023/1275
     author:
     - name: Jacqueline Brendel
@@ -114,7 +114,7 @@ informative:
     title: "Asynchronous Remote Key Generation: An Analysis of Yubico's Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security"
     date: 2020
     target: https://eprint.iacr.org/2020/1004
-  Frymann2023:
+  EUROSP:FryGarMan23:
     author:
     - name: Nick Frymann
     - name: Daniel Gardham
@@ -1236,7 +1236,7 @@ Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. [AC:BCF24], Frymann et al. [Frymann2023] and Wilson [Wilson].
+were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Wilson [Wilson].
 
 This document adopts the construction proposed by Wilson [Wilson],
 modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
