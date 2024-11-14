@@ -129,13 +129,14 @@ informative:
     title: A Proposal for an ISO Standard for Public Key Encryption (version 2.0)
     date: 2001
     target: https://www.shoup.net/papers/iso-2.pdf
-  Wilson:
+  ASIACCS:SteWil24:
     author:
+    - name: Douglas Stebila
     - name: Spencer MacLaren Wilson
       org: University of Waterloo,
-    title: "Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"
+    title: "Quantum-Safe Account Recovery for WebAuthn. ASIACCS '24"
     date: 2023
-    target: http://hdl.handle.net/10012/19316
+    target: https://eprint.iacr.org/2024/678
 
 
 
@@ -216,7 +217,7 @@ ARKG consists of three procedures:
 Notably, ARKG can be built entirely using established cryptographic primitives.
 The required primitives are a public key blinding scheme and a key encapsulation mechanism (KEM),
 which may in turn use a key derivation function (KDF) and a message authentication code (MAC) scheme.
-Both conventional primitives and quantum-resistant alternatives exist that meet these requirements. [Wilson]
+Both conventional primitives and quantum-resistant alternatives exist that meet these requirements. [ASIACCS:SteWil24]
 
 
 [rfc9052-direct-key-agreement]: https://www.rfc-editor.org/rfc/rfc9052.html#name-direct-key-agreement
@@ -261,7 +262,7 @@ followed by the definitions of the three ARKG functions.
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
 
-- `BL`: An asymmetric key blinding scheme [Wilson], consisting of:
+- `BL`: An asymmetric key blinding scheme [ASIACCS:SteWil24], consisting of:
   - Function `BL-Generate-Keypair() -> (pk, sk)`: Generate a blinding key pair.
 
     No input.
@@ -288,7 +289,7 @@ The parameters of an ARKG instance are:
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
 
-  See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
+  See [ASIACCS:SteWil24] for definitions of security properties required of the key blinding scheme `BL`.
 
 - `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
   - `KEM-Generate-Keypair() -> (pk, sk)`: Generate a key encapsulation key pair.
@@ -321,7 +322,7 @@ The parameters of an ARKG instance are:
   {{hmac-kem}} describes a general formula for how any KEM can be adapted to include this guarantee.
   {{design-rationale-mac}} discusses the reasons for this requirement.
 
-  See [Wilson] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
+  See [ASIACCS:SteWil24] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
 
 A concrete ARKG instantiation MUST specify the instantiation
 of each of the above functions and values.
@@ -480,7 +481,7 @@ which can be used to define concrete ARKG instantiations.
 ## Using elliptic curve addition for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve addition as the key blinding scheme `BL` [CCS:FGKLMN20]&nbsp;[Wilson].
+can use elliptic curve addition as the key blinding scheme `BL` [CCS:FGKLMN20]&nbsp;[ASIACCS:SteWil24].
 This section defines a general formula for such instantiations of `BL`.
 
 This formula has the following parameters:
@@ -631,7 +632,7 @@ KEM-Decaps(sk, c, info) -> k
 
 ## Using ECDH as the KEM {#kem-ecdh}
 
-Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [CCS:FGKLMN20]&nbsp;[Wilson].
+Instantiations of ARKG can use ECDH [RFC6090] as the key encapsulation mechanism `KEM` [CCS:FGKLMN20]&nbsp;[ASIACCS:SteWil24].
 This section defines a general formula for such instantiations of `KEM`.
 
 This formula has the following parameters:
@@ -1188,7 +1189,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 
 ## Using a MAC {#design-rationale-mac}
 
-The ARKG construction by Wilson [Wilson] omits the MAC and instead encodes application context in the PRF labels,
+The ARKG construction by Stebila et al. [ASIACCS:SteWil24] omits the MAC and instead encodes application context in the PRF labels,
 arguing that this leads to invalid keys/signatures in cases that would have a bad MAC.
 We choose to keep the MAC from the construction by Frymann et al. [CCS:FGKLMN20],
 but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.
@@ -1209,7 +1210,7 @@ This would make it difficult or impossible to diagnose the root cause of the iss
 For this reason, we require the KEM to guarantee ciphertext integrity
 so that `ARKG-Derive-Private-Key` can fail early if the key handle belongs to a different ARKG seed.
 
-It is straightforward to see that adding the MAC to the construction by Wilson
+It is straightforward to see that adding the MAC to the construction by Stebila et al.
 does not weaken the security properties defined by Frymann et al. [CCS:FGKLMN20]:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
 by instantiating `BL` as described in {{blinding-ec}}
@@ -1236,9 +1237,9 @@ Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Wilson [Wilson].
+were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Stebila et al. [ASIACCS:SteWil24].
 
-This document adopts the construction proposed by Wilson [Wilson],
+This document adopts the construction proposed by Stebila et al. [ASIACCS:SteWil24],
 modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
 
 The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
