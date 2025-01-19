@@ -502,8 +502,8 @@ BL-Generate-Keypair() -> (pk, sk)
 
 BL-Blind-Public-Key(pk, tau, info) -> pk_tau
 
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+    tau' = hash_to_field(tau || 0x00 || info, 1) with the parameters:
+        DST: 'ARKG-BL-EC.' || DST_ext
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -517,8 +517,8 @@ BL-Blind-Public-Key(pk, tau, info) -> pk_tau
 
 BL-Blind-Private-Key(sk, tau, info) -> sk_tau
 
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+    tau' = hash_to_field(tau || 0x00 || info, 1) with the parameters:
+        DST: 'ARKG-BL-EC.' || DST_ext
         F: GF(N), the scalar field
            of the prime order subgroup of crv.
         p: N
