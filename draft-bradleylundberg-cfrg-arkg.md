@@ -432,7 +432,7 @@ This function may be invoked any number of times with the same private seed,
 in order to derive the same or different private keys any number of times.
 
 ~~~pseudocode
-ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
+ARKG-Derive-Private-Key((sk_kem, sk_bl), bf, kh, info) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -440,6 +440,7 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
     Inputs:
         sk_kem    A key encapsulation private key.
         sk_bl     A key blinding private key.
+        bf        An initial blinding factor to apply.
         kh        A key handle output from ARKG-Derive-Public-Key.
         info      An octet string containing optional context
                     and application specific information
@@ -450,14 +451,19 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
+    sk_bl' = BL-Combine(sk_bl, bf)
+    pk_bl' = pk(sk_bl')
+
+    info_pk = BL-Serialize-Public-Key(pk_bl')
+
     info_kem = 'ARKG-Derive-Key-KEM.' || info
-    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+    info_bl  = info_pk || 'ARKG-Derive-Key-BL.'  || info
 
     tau = KEM-Decaps(sk_kem, kh, info_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau, info_bl)
+    sk' = BL-Blind-Private-Key(sk_bl', tau, info_bl)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
