@@ -1,0 +1,554 @@
+
+
+
+
+TBD                                                     E. Lundberg, Ed.
+Internet-Draft                                                    Yubico
+Intended status: Informational                           29 January 2025
+Expires: 2 August 2025
+
+
+            TEMPORARY: COSE algorithms for two-party signing
+                 draft-bradleylundberg-cfrg-arkg-latest
+
+Abstract
+
+   TODO
+
+   THIS DOCUMENT IS A TEMPORARY PROTOTYPE AREA FOR ILLUSTRATING SOME
+   IDEAS FOR DISCUSSION.  THESE IDEAS ARE PLANNED TO MOVE TO A DIFFERENT
+   DOCUMENT WHEN MORE MATURE.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-bradleylundberg-cfrg-arkg/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/Yubico/arkg-rfc.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 2 August 2025.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Two-party signing algorithms
+     2.1.  ECDSA
+     2.2.  HashEdDSA
+     2.3.  HashML-DSA
+   3.  COSE key reference types
+   4.  IANA Considerations
+     4.1.  COSE Key Types Registrations
+     4.2.  COSE Key Type Parameters Registrations
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
+   Appendix A.  Document History
+   Author's Address
+
+1.  Introduction
+
+   Most COSE algorithm identifiers are meant for annotating a cryptogram
+   with how a consumer may interpret it, but do not record all details
+   of how the cryptogram was created since that is usually irrelevant
+   for the consumer.  The algorithm identifiers defined in this document
+   are the opposite - they define interfaces between two parties co-
+   operating to create a cryptogram together, but are unsuitable for
+   annotating the resulting cryptogram with how the consumer should
+   interpret it.
+
+   A primary use case for this is executing a signature algorithm split
+   between two parties, such as a software application and a discrete
+   hardware security module (HSM) holding the private key.  In
+   particular, since the data link between them may have limited
+   bandwidth, it may not be practical to send the entire original
+   message to the HSM.  Instead, since most signature algorithms begin
+   with digesting the message into a fixed-length intermediate input,
+   this initial digest can be computed by the software application while
+   the HSM computes the rest of the signature algorithm on the digest.
+
+   Since different signature algorithms digest the message in different
+   ways and at different stages of the algorithm, there is no
+   unambiguous way to define a division point generically for every
+   possible signature algorithm.  Therefore, this document defines
+   algorithm identifiers encoding, for each concrete signature
+   algorithm, which steps of the signature algorithm are performed by
+   the _digester_ (e.g., software application) and which are performed
+   by the _signer_ (e.g., HSM).  In general, the _signer_ holds
+   exclusive control of the signing private key.
+
+   Note that these algorithm identifiers do not define new "pre-hashed"
+   variants of the base signature algorithm, nor an intermediate "hash
+   envelope" data structure such as that defined in
+   [COSE-Hash-Envelope].  Rather these are the same signature algorithms
+   that would typically be executed by a single party, but split into
+   two stages.  The resulting signatures are identical in structure to
+   those computed by a single party, and can be verified using the same
+   verification procedure without additional steps to preprocess the
+   signed data.  However some signature algorithms, for example
+   PureEdDSA [RFC8032] or ML-DSA [FIPS-204], cannot be split in this way
+   and therefore cannot be assigned a two-party signing algorithm
+   identifier.  If such a signature algorithm defines a "pre-hashed"
+   variant, such as Ed25519ph [RFC8032] or HashML-DSA [FIPS-204], that
+   algorithm may be assigned a two-party signing algorithm identifier
+   instead.
+
+2.  Two-party signing algorithms
+
+   This section defines divisions of signing algorithm steps between a
+   _digester_ and a _signer_ in a two-party signing protocol, and
+   assigns algorithm identifiers to these algorithm divisions.  The
+   _digester_ performs the first part of the divided algorithm and does
+   not have access to the signing private key, while the _signer_
+   performs the second part of the divided algorithm and has access to
+   the signing private key.  For signing algorithms that format the
+   message to insert domain separation tags, this message formatting is
+   also performed by the _signer_.
+
+   The algorithm identifiers defined in this document SHALL NOT appear
+   in COSE structures other than COSE_Key_Ref (see Section 3).  They are
+   meant only for coordination between _digester_ and _signer_ in a two-
+   party signing protocol.  External representations of used keys and
+   resulting signatures SHALL use the corresponding conventional
+   algorithm identifiers instead.  These are listed in the "Base
+   algorithm" column in the tables defining two-party signing algorithm
+   identifiers.
+
+2.1.  ECDSA
+
+   Two-party ECDSA [FIPS-186-5] uses the following division between
+   _digester_ and _signer_ of the steps of the ECDSA signature
+   generation algorithm [FIPS-186-5]:
+
+   *  The signing procedure is defined in [Section 6.4.1 of FIPS-186-5].
+
+   *  The _digester_ performs step 1 of the signing procedure.
+
+   *  The message input to the _signer_ is the value _H_ defined in the
+      signing procedure.
+
+   *  The _signer_ resumes the signing procedure from step 2.
+
+   The following algorithm identifiers are defined:
+
+     +===========+=======+===========+==============================+
+     | Name      | COSE  | Base      | Description                  |
+     |           | Value | algorithm |                              |
+     +===========+=======+===========+==============================+
+     | ESP256-2p | TBD   | ESP256    | ESP256 [fully-spec-algs]     |
+     |           |       |           | divided as defined in        |
+     |           |       |           | Section 2.1 of this document |
+     +-----------+-------+-----------+------------------------------+
+     | ESP384-2p | TBD   | ESP384    | ESP384 [fully-spec-algs]     |
+     |           |       |           | divided as defined in        |
+     |           |       |           | Section 2.1 of this document |
+     +-----------+-------+-----------+------------------------------+
+     | ESP512-2p | TBD   | ESP512    | ESP512 [fully-spec-algs]     |
+     |           |       |           | divided as defined in        |
+     |           |       |           | Section 2.1 of this document |
+     +-----------+-------+-----------+------------------------------+
+
+                                 Table 1
+
+2.2.  HashEdDSA
+
+   Two-party HashEdDSA [RFC8032] uses the following division between
+   _digester_ and _signer_ of the steps of the HashEdDSA signing
+   algorithm [RFC8032]:
+
+   *  HashEdDSA is a combination of the EdDSA signing procedure and the
+      PureEdDSA signing procedure.  The EdDSA signing procedure is
+      defined in the first paragraph of Section 3.3 of [RFC8032].  The
+      PureEdDSA signing procedure is defined in the second paragraph of
+      Section 3.3 of [RFC8032].
+
+   *  The _digester_ computes the value PH(M) defined in the EdDSA
+      signing procedure.
+
+   *  The message input to the _signer_ is the value PH(M) defined in
+      the EdDSA signing procedure.  This value is represented as M in
+      the PureEdDSA signing procedure.
+
+   *  The _signer_ executes the PureEdDSA signing procedure, where the
+      value denoted M in the PureEdDSA signing procedure takes the value
+      denoted PH(M) in the EdDSA signing procedure.
+
+   PureEdDSA [RFC8032] cannot be divided in this way since such a
+   division would require that the _digester_ has access to the private
+   key.
+
+   The following algorithm identifiers are defined:
+
+     +==============+=======+===========+============================+
+     | Name         | COSE  | Base      | Description                |
+     |              | Value | algorithm |                            |
+     +==============+=======+===========+============================+
+     | Ed25519ph-2p | TBD   | Ed25519ph | Ed25519ph                  |
+     |              |       |           | [fully-spec-algs] divided  |
+     |              |       |           | as defined in Section 2.2  |
+     |              |       |           | of this document (NOTE:    |
+     |              |       |           | Ed25519ph not yet defined) |
+     +--------------+-------+-----------+----------------------------+
+     | Ed448ph-2p   | TBD   | Ed448ph   | Ed448ph [fully-spec-algs]  |
+     |              |       |           | divided as defined in      |
+     |              |       |           | Section 2.2 of this        |
+     |              |       |           | document (NOTE: Ed448ph    |
+     |              |       |           | not yet defined)           |
+     +--------------+-------+-----------+----------------------------+
+
+                                  Table 2
+
+2.3.  HashML-DSA
+
+   Two-party HashML-DSA [FIPS-204] uses the following division between
+   _digester_ and _signer_ of the steps of the HashML-DSA.Sign
+   algorithm:
+
+   *  The signing procedure is defined in [Section 5.4.1 of FIPS-204].
+
+   *  The _digester_ computes the value PH_(_M_) defined in steps 10 to
+      22 of the signing procedure.
+
+   *  The message input to the _signer_ is the value PH_(_M_) defined in
+      the signing procedure.  The additional _ctx_ input must also be
+      transmitted to the _signer_. This may for example be done using
+      the ctx (-1) parameter of a COSE_Key_Ref with kty (1): Ref-ML-DSA
+      (TBD) (see Section 4.1 and Section 4.2).
+
+   *  The _signer_ executes all steps of the signing procedure except
+      the steps 13, 16, 19 or similar that compute the value PH_(_M_).
+      Note in particular that the _signer_ generates the value _rnd_ in
+      steps 5-8 and constructs the value _M'_ in step 23.
+
+   The "pure" ML-DSA version [FIPS-204] cannot be divided in this way
+   because of how the embedding of the _ctx_ and _tr_ values is
+   constructed in ML-DSA.Sign and ML-DSA.Sign_Internal.  A division like
+   the above for HashML-DSA would move control of this embedding from
+   the _signer_ to the _digester_. This would break the domain
+   separation enforced by the embedding and possibly enable signature
+   malleability attacks or protocol confusion attacks.
+
+   The following algorithm identifiers are defined:
+
+    +==================+=======+===============+======================+
+    | Name             | COSE  | Base          | Description          |
+    |                  | Value | algorithm     |                      |
+    +==================+=======+===============+======================+
+    | HashML-DSA-44-2p | TBD   | HashML-DSA-44 | HashML-DSA-44 [TODO] |
+    |                  |       |               | divided as defined   |
+    |                  |       |               | in Section 2.3 of    |
+    |                  |       |               | this document (NOTE: |
+    |                  |       |               | HashML-DSA-44 not    |
+    |                  |       |               | yet defined)         |
+    +------------------+-------+---------------+----------------------+
+    | HashML-DSA-65-2p | TBD   | HashML-DSA-65 | HashML-DSA-65 [TODO] |
+    |                  |       |               | divided as defined   |
+    |                  |       |               | in Section 2.3 of    |
+    |                  |       |               | this document (NOTE: |
+    |                  |       |               | HashML-DSA-65 not    |
+    |                  |       |               | yet defined)         |
+    +------------------+-------+---------------+----------------------+
+    | HashML-DSA-87-2p | TBD   | HashML-DSA-87 | HashML-DSA-87 [TODO] |
+    |                  |       |               | divided as defined   |
+    |                  |       |               | in Section 2.3 of    |
+    |                  |       |               | this document (NOTE: |
+    |                  |       |               | HashML-DSA-87 not    |
+    |                  |       |               | yet defined)         |
+    +------------------+-------+---------------+----------------------+
+
+                                  Table 3
+
+3.  COSE key reference types
+
+   While keys used by many other algorithms can usually be referenced by
+   a single atomic identifier, such as that used in the kid parameter in
+   a COSE_Key object or in the unprotected header of a COSE_Recipient,
+   some signature algorithms use additional parameters to the signature
+   generation beyond the signing private key and message to be signed.
+   For example, ML-DSA [FIPS-204] has the additional parameter _ctx_ and
+   ARKG-Derive-Secret-Key [ARKG] has the parameters kh and info in
+   addition to the private key.
+
+   While these additional parameters are simple to provide to the API of
+   the signing procedure in a single-party context, in a two-party
+   context these additional parameters also need to be conveyed from
+   _digester_ to _signer_. For this purpose we define new COSE key
+   types, collectively called "COSE key reference types".  This enables
+   defining a unified, algorithm-agnostic protocol between _digester_
+   and _signer_, rather than requiring a distinct protocol for each
+   signature algorithm for the sake of conveying algorithm-specific
+   parameters.
+
+   A COSE key reference is a COSE_Key object whose kty value is defined
+   to represent a reference to a key.  The kid parameter MUST be present
+   when kty is a key reference type.  These requirements are encoded in
+   the CDDL [RFC8610] type COSE_Key_Ref:
+
+   COSE_Key_Ref = COSE_Key .within {
+     1 ^ => $COSE_kty_ref   ; kty: Any reference type
+     2 ^ => any,            ; kid is required
+     any => any,            ; Any other entries allowed by COSE_Key
+   }
+
+   The following CDDL example represents a reference to an ML-DSA-65
+   key, along with the value of the _ctx_ parameter to ML-DSA.Sign
+   [FIPS-204]:
+
+   {
+     1: TBD,      ; kty: Ref-ML-DSA
+                  ; kid: Opaque identifier of the ML-DSA key
+     2: h'92bc2bfa738f5bb07803fb9c0c58020791acd29fbe253baa7a03ac84f4b26d44',
+
+     3: TBD,      ; alg: ML-DSA-65
+
+                  ; ctx argument to ML-DSA.Sign
+     -1: 'Example application info',
+   }
+
+   The following CDDL example represents a reference to a key derived by
+   ARKG-P256ADD-ECDH and restricted for use with the ESP256
+   [fully-spec-algs] signature algorithm:
+
+   {
+     1: -65538,   ; kty: Ref-ARKG-derived
+                  ; kid: Opaque identifier of ARKG-pub
+     2: h'60b6dfddd31659598ae5de49acb220d8
+          704949e84d484b68344340e2565337d2',
+     3: -9,       ; alg: ESP256
+
+                  ; ARKG-P256ADD-ECDH key handle
+                  ; (HMAC-SHA-256-128 followed by
+                     SEC1 uncompressed ECDH public key)
+     -1: h'ae079e9c52212860678a7cee25b6a6d4
+           048219d973768f8e1adb8eb84b220b0ee3
+             a2532828b9aa65254fe3717a29499e9b
+             aee70cea75b5c8a2ec2eb737834f7467
+             e37b3254776f65f4cfc81e2bc4747a84',
+
+                  ; info argument to ARKG-Derive-Private-Key
+     -2: 'Example application info',
+   }
+
+4.  IANA Considerations
+
+4.1.  COSE Key Types Registrations
+
+   This section registers the following values in the IANA "COSE Key
+   Types" registry [IANA.cose].
+
+   *  Name: Ref-OKP
+
+      -  Value: TBD (Requested assignment -1)
+
+      -  Description: Reference to a key pair of key type "OKP"
+
+      -  Capabilities: [kty(-1), crv]
+
+      -  Reference: Section 3 of this document
+
+   *  Name: Ref-EC2
+
+      -  Value: TBD (Requested assignment -2)
+
+      -  Description: Reference to a key pair of key type "EC2"
+
+      -  Capabilities: [kty(-1), crv]
+
+      -  Reference: Section 3 of this document
+
+   *  Name: Ref-ML-DSA
+
+      -  Value: TBD
+
+      -  Description: Reference to a key pair of key type "ML-DSA"
+
+      -  Capabilities: [kty(TBD), ctx]
+
+      -  Reference: TBD
+
+   These registrations add the following choices to the CDDL [RFC8610]
+   type socket $COSE_kty_ref:
+
+   $COSE_kty_ref /= -1       ; Value TBD
+   $COSE_kty_ref /= -2       ; Value TBD
+   $COSE_kty_ref /= TBD      ; Value TBD
+
+4.2.  COSE Key Type Parameters Registrations
+
+   This section registers the following values in the IANA "COSE Key
+   Type Parameters" registry [IANA.cose].
+
+   *  Key Type: TBD (Ref-ML-DSA)
+
+      -  Name: ctx
+
+      -  Label: -1
+
+      -  CBOR Type: bstr
+
+      -  Description: ctx argument to ML-DSA.Sign or HashML-DSA.Sign
+
+      -  Reference: TBD
+
+5.  References
+
+5.1.  Normative References
+
+   [fully-spec-algs]
+              Jones, M. B., "Fully-Specified Algorithms for JOSE and
+              COSE", 2024, <https://datatracker.ietf.org/doc/draft-ietf-
+              jose-fully-specified-algorithms/>.
+
+   [IANA.cose]
+              IANA, "CBOR Object Signing and Encryption (COSE)",
+              <https://www.iana.org/assignments/cose>.
+
+   [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
+              Hashing for Message Authentication", RFC 2104,
+              DOI 10.17487/RFC2104, February 1997,
+              <https://www.rfc-editor.org/rfc/rfc2104>.
+
+   [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
+              FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
+              <https://www.rfc-editor.org/rfc/rfc4949>.
+
+   [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
+              Key Derivation Function (HKDF)", RFC 5869,
+              DOI 10.17487/RFC5869, May 2010,
+              <https://www.rfc-editor.org/rfc/rfc5869>.
+
+   [RFC6090]  McGrew, D., Igoe, K., and M. Salter, "Fundamental Elliptic
+              Curve Cryptography Algorithms", RFC 6090,
+              DOI 10.17487/RFC6090, February 2011,
+              <https://www.rfc-editor.org/rfc/rfc6090>.
+
+   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
+              for Security", RFC 7748, DOI 10.17487/RFC7748, January
+              2016, <https://www.rfc-editor.org/rfc/rfc7748>.
+
+   [RFC8032]  Josefsson, S. and I. Liusvaara, "Edwards-Curve Digital
+              Signature Algorithm (EdDSA)", RFC 8032,
+              DOI 10.17487/RFC8032, January 2017,
+              <https://www.rfc-editor.org/rfc/rfc8032>.
+
+   [RFC8610]  Birkholz, H., Vigano, C., and C. Bormann, "Concise Data
+              Definition Language (CDDL): A Notational Convention to
+              Express Concise Binary Object Representation (CBOR) and
+              JSON Data Structures", RFC 8610, DOI 10.17487/RFC8610,
+              June 2019, <https://www.rfc-editor.org/rfc/rfc8610>.
+
+   [RFC8812]  Jones, M., "CBOR Object Signing and Encryption (COSE) and
+              JSON Object Signing and Encryption (JOSE) Registrations
+              for Web Authentication (WebAuthn) Algorithms", RFC 8812,
+              DOI 10.17487/RFC8812, August 2020,
+              <https://www.rfc-editor.org/rfc/rfc8812>.
+
+   [RFC9052]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Structures and Process", STD 96, RFC 9052,
+              DOI 10.17487/RFC9052, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9052>.
+
+   [RFC9380]  Faz-Hernandez, A., Scott, S., Sullivan, N., Wahby, R. S.,
+              and C. A. Wood, "Hashing to Elliptic Curves", RFC 9380,
+              DOI 10.17487/RFC9380, August 2023,
+              <https://www.rfc-editor.org/rfc/rfc9380>.
+
+   [SEC1]     Certicom Research, "SEC 1: Elliptic Curve Cryptography",
+              2009, <http://www.secg.org/sec1-v2.pdf>.
+
+   [SEC2]     Certicom Research, "SEC 2: Recommended Elliptic Curve
+              Domain Parameters", 2010,
+              <http://www.secg.org/sec2-v2.pdf>.
+
+5.2.  Informative References
+
+   [ARKG]     "The Asynchronous Remote Key Generation (ARKG) algorithm",
+              2024, <https://datatracker.ietf.org/doc/draft-
+              bradleylundberg-cfrg-arkg/>.
+
+   [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
+              2012, <https://github.com/bitcoin/bips/blob/master/bip-
+              0032.mediawiki>.
+
+   [Clermont] Clermont, S. A., "Post Quantum Asynchronous Remote Key
+              Generation. Master's thesis", 2022,
+              <https://www.cryptoplexity.informatik.tu-
+              darmstadt.de/media/crypt/teaching_1/theses_1/
+              Sebastian_Clermont_Thesis.pdf>.
+
+   [COSE-Hash-Envelope]
+              Steele, O., Lasker, S., and H. Birkholz, "COSE Hash
+              Envelope", 2024, <https://datatracker.ietf.org/doc/draft-
+              ietf-cose-hash-envelope/>.
+
+   [Frymann2020]
+              Frymann, N., Gardham, D., Kiefer, F., Lundberg, E.,
+              Manulis, M., and D. Nilsson, "Asynchronous Remote Key
+              Generation: An Analysis of Yubico's Proposal for W3C
+              WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC
+              Conference on Computer and Communications Security", 2020,
+              <https://eprint.iacr.org/2020/1004>.
+
+   [Frymann2023]
+              Frymann, N., Gardham, D., and M. Manulis, "Asynchronous
+              Remote Key Generation for Post-Quantum Cryptosystems from
+              Lattices. 2023 IEEE 8th European Symposium on Security and
+              Privacy", 2023, <https://eprint.iacr.org/2023/419>.
+
+   [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
+              Encryption (version 2.0)", 2001,
+              <https://www.shoup.net/papers/iso-2.pdf>.
+
+   [WebAuthn-Recovery]
+              Lundberg, E. and D. Nilsson, "WebAuthn recovery extension:
+              Asynchronous delegated key generation without shared
+              secrets. GitHub", 2019,
+              <https://github.com/Yubico/webauthn-recovery-extension>.
+
+   [Wilson]   Wilson, S. M., "Post-Quantum Account Recovery for
+              Passwordless Authentication. Master's thesis", 2023,
+              <http://hdl.handle.net/10012/19316>.
+
+Appendix A.  Document History
+
+   THIS IS A TEMPORARY DOCUMENT JUST TO MOCK UP THE IDEA
+
+Author's Address
+
+   Emil Lundberg (editor)
+   Yubico
+   Kungsgatan 44
+   Stockholm
+   Sweden
+   Email: emil@emlun.se
