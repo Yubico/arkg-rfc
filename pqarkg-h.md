@@ -118,7 +118,7 @@ computed in step 2 of `DeriveSK` of pqARKG, this `b` is also mixed into the PRF 
 This disrupts any algebraic relationship between `b` and `tau`,
 thus preventing the subordinate party from extracting the private seed `sk` by a malicious choice of `b`.
 
-The new argument to the PRF is however not `b` directly,
+The new argument mixed into the PRF is however not `b` directly,
 but a blinded public key `pk^b_Delta`incorporating the blinding factor `b`.
 This enables the subordinate party to prove to an external auditor that a public key was generated using pqARKG-H
 without having to disclose `b`.
@@ -144,6 +144,8 @@ pqARKG-H requires three additional properties of the the key blinding scheme `De
     and `Delta.BlindSK(Delta.BlindSK(sk, a), b) = Delta.BlindSK(Delta.BlindSK(sk, b), a)`
     for all `pk`, `sk`, `a` and `b`.
 
+For example, any construction based on cyclic groups is likely to satisfy these properties.
+
 pqARKG-H is defined as the following suite of procedures:
 
 ```
@@ -154,17 +156,19 @@ KeyGen(pp):           same as pqARKG
 DerivePK(pp, pk = (pk_Delta, pk_Pi), b, aux):
   1. (c, k) <-$ Pi.Encaps(pk_Pi)
   2. pk^b_Delta <- Delta.BlindPK(pk_Delta, b)
-  3. tau <- PRF(k, pk^b_Delta, aux)
+  3. tau <- PRF(k, pk^b_Delta || aux)
   4. pk' <- Delta.BlindPK(pk^b_Delta, tau)
   5. return pk', cred = (c, aux)
 
 DeriveSK(pp, pk = (pk_Delta, pk_Pi), sk = (sk_Delta, sk_Pi), b, cred = (c, aux)):
   1. k <- Pi.Decaps(sk_Pi, c)
   2. pk^b_Delta <- Delta.BlindPK(pk_Delta, b)
-  3. tau <- PRF(k, pk^b_Delta, aux)
+  3. tau <- PRF(k, pk^b_Delta || aux)
   4. sk^b_Delta <- Delta.BlindSK(sk_Delta, b)
   5. return Delta.BlindSK(sk^b_Delta, tau)
 ```
+
+where `||` denotes binary concatenation (and assuming a well-known standard encoding of `pk^b_Delta`).
 
 Note that if `Delta.BlindSK(sk, b)` is linear in `b`,
 then steps 4-5 of `DeriveSK` may be optimized as `4. return Delta.BlindSK(sk_Delta, b + tau)`.
@@ -185,8 +189,8 @@ Exp^{msKS}_{pqARKG-H,B}:
   4. (sk, pk) <-$ KeyGen()
   5. (sk*, pk*, b*, cred*) <-$ B^{O_pk', O_sk'}(pp, pk)
   6. sk' <- DeriveSK(pp, pk, sk, b*, cred*)
-  7. return Check(sk*, pk*)
-  8.    AND Check(sk', pk*)
+  7. return Delta.Check(sk*, pk*)
+  8.    AND Delta.Check(sk', pk*)
   9.    AND (b*, (c*, aux*)) not in SKList
 
 O_pk'(c, aux):
@@ -211,29 +215,28 @@ we construct an adversary `A` that defeats `Exp^{msKS}_{pqARKG,A}` as follows:
 
 ```
 A^{O_pk', O_sk'}(pp = (Delta, Pi, PRF), pk):
-  1. PRF# <- f(k, pkb, aux) = PRF(k, aux)
-  2. pp# <- (Delta, Pi, PRF#)
-  3. O_pk'# <- f(b, aux):
-       1. (pk', (c, ~)) <-$ O_pk'(aux)
-       2. pk'# <- Delta.BlindPK(pk', b)
-       3. return (pk'#, (c, aux))
-  4. O_sk'# <- f(b, c, aux):
-       1. sk' <- O_sk'(c, aux)
-       2. return Delta.BlindSK(sk', b)
-  5. (sk*#, pk*#, b*#, cred*#) <-$ B^{O_pk'#, O_sk'#}(pp#, pk)
-  6. sk* <- Delta.UnblindSK(sk*#, b*#)
-  7. pk* <- Delta.UnblindPK(pk*#, b*#)
-  8. return (sk*, pk*, cred*#)
+  1. Define adapted oracle O_pk'#(b, aux):
+       1. pk^b_Delta <- Delta.BlindPK(pk_Delta, b)
+       2. (pk', (c, ~)) <-$ O_pk'(pk^b_Delta || aux)
+       3. pk'# <- Delta.BlindPK(pk', b)
+       4. return (pk'#, (c, aux))
+  2. Define adapted oracle O_sk'#(b, c, aux):
+       1. pk^b_Delta <- Delta.BlindPK(pk_Delta, b)
+       2. sk' <- O_sk'(c, pk^b_Delta || aux)
+       3. return Delta.BlindSK(sk', b)
+  3. (sk*#, pk*#, b*#, cred*#) <-$ B^{O_pk'#, O_sk'#}(pp#, pk)
+  4. sk* <- Delta.UnblindSK(sk*#, b*#)
+  5. pk* <- Delta.UnblindPK(pk*#, b*#)
+  6. pk^{b*}_Delta <- Delta.BlindPK(pk_Delta, b*#)
+  7. return (sk*, pk*, (c*#, pk^{b*}_Delta || aux*#))
 ```
 
 When invoked, this adversary `A` simply invokes the given adversary `B` with its own challenge.
-The PRF given in the `pp` input to `A` is adapted to the signature expected by `B`
-by simply adding a parameter `pkb` which is ignored when forwarding to the provided PRF.
-Because `B` defeats `Exp^{msKS}_{pqARKG-H,B}` given any PRF, `B` must also succeed given this relaxed PRF.
-
-The `O_pk'` and `O_sk'` oracles are similarly adapted for `B` by performing the additional blinding with the `b` argument.
-Because the PRF forwarded to `B` ignores its `pkb` argument,
-pqARKG-H will produce the same `tau` on line 3 of its `DerivePK` and `DeriveSK` functions
+The `O_pk'` and `O_sk'` oracles are adapted for `B`
+by adding the `pk^b_Delta` prefix to `aux` and performing the additional blinding with the `b` argument,
+and the `aux*` returned to the challenger is adapted with the additional `pk^{b*}_Delta` prefix
+computed using the blinding factor `b*#` returned by `B`.
+Thus pqARKG-H produces the same `tau` on line 3 of its `DerivePK` and `DeriveSK` functions
 as pqARKG does on line 2 of its `DerivePK` and `DeriveSK` functions.
 
 We see that this adversary passes the checks on lines 7-9 of `Exp^{msKS}_{pqARKG,A}`:
@@ -258,10 +261,10 @@ We see that this adversary passes the checks on lines 7-9 of `Exp^{msKS}_{pqARKG
   ```
   sk'# = DeriveSK(pp#, sk, b*#, cred*#) =   { Expand DeriveSK }
        = Delta.BlindSK(sk^b_Delta, tau) =   { Expand tau }
-       = Delta.BlindSK(sk^b_Delta, PRF#(k, pk^b_Delta, aux*#)) =   { PRF# ignores pk^b_Delta and forwards to PRF }
-       = Delta.BlindSK(sk^b_Delta, PRF(k, aux*#)) =   { Expand sk^b_Delta }
-       = Delta.BlindSK(Delta.BlindSK(sk_Delta, b*#), PRF(k, aux*#)) =   { Expand k }
-       = Delta.BlindSK(Delta.BlindSK(sk_Delta, b*#), PRF(Pi.Decaps(sk_Pi, c*#), aux*#)) =   { c* = c*# and aux* = aux*# }
+       = Delta.BlindSK(sk^b_Delta, PRF(k, pk^b_Delta || aux*#)) =   { identify aux* }
+       = Delta.BlindSK(sk^b_Delta, PRF(k, aux*)) =   { Expand sk^b_Delta }
+       = Delta.BlindSK(Delta.BlindSK(sk_Delta, b*#), PRF(k, aux*)) =   { Expand k }
+       = Delta.BlindSK(Delta.BlindSK(sk_Delta, b*#), PRF(Pi.Decaps(sk_Pi, c*#), aux*)) =   { c* = c*# }
        = Delta.BlindSK(Delta.BlindSK(sk_Delta, b*#), PRF(Pi.Decaps(sk_Pi, c*), aux*)) =   { Commutative blinding }
        = Delta.BlindSK(Delta.BlindSK(sk_Delta, PRF(Pi.Decaps(sk_Pi, c*), aux*)), b*#)
   ```
@@ -276,36 +279,20 @@ We see that this adversary passes the checks on lines 7-9 of `Exp^{msKS}_{pqARKG
   ```
 
   so `Check(sk', pk*)` succeeds in `Exp^{msKS}_{pqARKG,A}`
-  when and precisely when `Check(sk'#, pk*#)` succeeds in `Exp^{msKS}_{pqARKG-H,B}`.
+  precisely when `Check(sk'#, pk*#)` succeeds in `Exp^{msKS}_{pqARKG-H,B}`.
   Since `B` passes its challenge, `A` passes this condition as well.
 
 - `(c*, aux*) not in SKList` succeeds because:
 
   Because `B` defeats `Exp^{msKS}_{pqARKG-H,B}`,
-  the condition `(b*, (c*, aux*)) in SKList` has succeeded in `Exp^{msKS}_{pqARKG-H,B}`.
-  Therefore `O_sk'#` has not been called with arguments `(b*, c*, aux*)`,
-  therefore `O_sk'` has not been called with arguments `(c*, aux*)`,
+  the condition `(b*, (c*, aux*)) in SKList` succeeds in `Exp^{msKS}_{pqARKG-H,B}`.
+  Therefore `B` does not call `O_sk'#` with arguments `(b*, c*, aux*)`,
+  therefore `A` does not call `O_sk'` with arguments `(c*, aux*)`,
   therefore `(c*, aux*) not in SKList` also succeeds.
 
 In conclusion, an adversary `B` that can defeat the msKS property of pqARKG-H
 can also be used to also defeat the msKS property of pqARKG.
 Thus we conclude that pqARKG-H retains the msKS property of pqARKG.
-
-
-## Known issues
-
-We are not ourselves convinced of the step:
-
->Because `B` defeats `Exp^{msKS}_{pqARKG-H,B}` given any PRF, `B` must also succeed given this relaxed PRF.
-
-since with a weak PRF, this extension introduces an opportunity for the adversary
-to choose `b` and `aux` such that the PRF outputs `tau = -b`,
-meaning `O_sk'` would return the unblinded private seed `sk`.
-In particular, this is easy if the PRF simply ignores the `b`-based parameter.
-Therefore this security argument should in some way be conditioned on the unpredictability of the PRF
-in the `b` parameter, but it currently is not
-(there is an implicit dependency on the PRF in the reduction to `Adv^{msKS}_{pqARKG}`,
-but that advantage is quantified with the pqARKG PRF rather than the pqARKG-H PRF).
 
 
 ## Acknowledgements
