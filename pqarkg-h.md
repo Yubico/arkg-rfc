@@ -292,6 +292,22 @@ can also be used to also defeat the msKS property of pqARKG.
 Thus we conclude that pqARKG-H retains the msKS property of pqARKG.
 
 
+## Known issues
+
+We are not ourselves convinced of the step:
+
+>Because `B` defeats `Exp^{msKS}_{pqARKG-H,B}` given any PRF, `B` must also succeed given this relaxed PRF.
+
+since with a weak PRF, this extension introduces an opportunity for the adversary
+to choose `b` and `aux` such that the PRF outputs `tau = -b`,
+meaning `O_sk'` would return the unblinded private seed `sk`.
+In particular, this is easy if the PRF simply ignores the `b`-based parameter.
+Therefore this security argument should in some way be conditioned on the unpredictability of the PRF
+in the `b` parameter, but it currently is not
+(there is an implicit dependency on the PRF in the reduction to `Adv^{msKS}_{pqARKG}`,
+but that advantage is quantified with the pqARKG PRF rather than the pqARKG-H PRF).
+
+
 ## Acknowledgements
 
 Thanks to Sander Dijkhuis (@sander) for proposing the construction with mixing `pk^b_Delta` into the PRF instead of `b`.
