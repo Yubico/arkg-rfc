@@ -1,0 +1,10 @@
+!pqarkg-h.pdf
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_*
+*.fls
+*.log
+*.out
+*.run.xml

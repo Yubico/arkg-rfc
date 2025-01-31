@@ -1,0 +1,492 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[style=alphabetic]{biblatex}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[keys,lambda,sets,adversary,advantage,events,logic,operators,probability,ff,primitives]{cryptocode}
+\usepackage{xspace}
+\usepackage{draftwatermark}
+
+\addbibresource{pqarkg-h.bib}
+
+\author{Emil Lundberg\\Yubico AB\\emil@yubico.com}
+\title{pqARKG-H: An extension of pqARKG for Hierarchical Deterministic Keys}
+
+\SetWatermarkText{Draft}
+\SetWatermarkScale{8}
+\SetWatermarkColor[gray]{0.85}
+
+\newcommand{\figlabel}[1]{\label{fig:{#1}}}
+\newcommand{\figref}[1]{Figure~\ref{fig:{#1}}}
+
+\newcommand{\ALGNAME}{pqARKG\babelhyphen{nobreak}H\xspace}
+\newcommand{\ALGBASE}{pqARKG\xspace}
+\newcommand{\pub}{\ensuremath{\mathsf{pp}}\xspace}
+\newcommand{\bl}{\ensuremath{\mathsf{\Delta}}\xspace}
+\let\oldsk\sk\renewcommand{\sk}{\oldsk\xspace}
+\let\oldpk\pk\renewcommand{\pk}{\oldpk\xspace}
+\newcommand{\kem}{\ensuremath{\mathsf{\Pi}}\xspace}
+\newcommand{\aux}{\ensuremath{\mathsf{aux}}\xspace}
+\newcommand{\cred}{\ensuremath{\mathsf{cred}}\xspace}
+\newcommand{\msks}{\ensuremath{\mathsf{msKS}}\xspace}
+
+\newcommand{\barvar}[1]{\ensuremath{\overline{#1}}}
+\newcommand{\starvar}[1]{\ensuremath{{#1}^\star}\xspace}
+\newcommand{\pkstar}{\starvar{\pk}}
+\newcommand{\skstar}{\starvar{\sk}}
+\newcommand{\bstar}{\starvar{b}}
+\newcommand{\cstar}{\starvar{c}}
+\newcommand{\credstar}{\starvar{\cred}}
+\newcommand{\auxstar}{\starvar{\aux}}
+
+\newcommand{\skbl}{\ensuremath{\sk_\bl}\xspace}
+\newcommand{\skbd}{\ensuremath{\sk^{b}_{\bl}}\xspace}
+\newcommand{\skbsd}{\ensuremath{\sk^{\bstar}_{\bl}}\xspace}
+\newcommand{\skkem}{\ensuremath{\sk_\kem}\xspace}
+\newcommand{\pkp}{\ensuremath{\pk'}\xspace}
+\newcommand{\skp}{\ensuremath{\sk'}\xspace}
+\newcommand{\pkbl}{\ensuremath{\pk_\bl}\xspace}
+\newcommand{\pkbd}{\ensuremath{\pk^{b}_{\bl}}\xspace}
+\newcommand{\pkbsd}{\ensuremath{\pk^{\bstar}_{\bl}}\xspace}
+\newcommand{\pkkem}{\ensuremath{\pk_\kem}\xspace}
+
+\newcommand{\algname}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\algsetup}{\algname{Setup}}
+\newcommand{\algcheck}{\algname{Check}}
+\newcommand{\algkgen}{\algname{KGen}}
+\newcommand{\algdpk}{\algname{DerivePK}}
+\newcommand{\algdsk}{\algname{DeriveSK}}
+
+\newcommand{\algbl}[1]{\bl.{#1}}
+\newcommand{\algblcheck}{\algbl{\algcheck}}
+\newcommand{\algblkgen}{\algbl{\algkgen}}
+\newcommand{\algblbpk}{\algbl{\algname{BlindPK}}}
+\newcommand{\algblbsk}{\algbl{\algname{BlindSK}}}
+\newcommand{\algblupk}{\algbl{\algname{UnblindPK}}}
+\newcommand{\algblusk}{\algbl{\algname{UnblindSK}}}
+
+\newcommand{\algkem}[1]{\kem.{#1}}
+\newcommand{\algkemkgen}{\algkem{\algkgen}}
+\newcommand{\algkemenc}{\algkem{\algname{Encaps}}}
+\newcommand{\algkemdec}{\algkem{\algname{Decaps}}}
+
+\newcommand{\defproc}[2]{\procedure[linenumbering,width=\linewidth]{\ensuremath{#1}}{#2}}
+\newcommand{\experiment}[2]{\ensuremath{\mathsf{Exp}^{#1}_{#2}}\xspace}
+\let\oldadv\adv\renewcommand{\adv}{\oldadv\xspace}
+\let\oldbdv\bdv\renewcommand{\bdv}{\oldbdv\xspace}
+\let\oldprf\prf\renewcommand{\prf}{\oldprf\xspace}
+\newcommand{\Oracle}{\ensuremath{\mathcal{O}}}
+\newcommand{\Opkp}{\ensuremath{\Oracle_\pkp}\xspace}
+\newcommand{\Oskp}{\ensuremath{\Oracle_\skp}\xspace}
+\newcommand{\pklist}{\ensuremath{\mathsf{PKList}}\xspace}
+\newcommand{\sklist}{\ensuremath{\mathsf{SKList}}\xspace}
+\newcommand{\expmsksbase}{\experiment{\msks}{\ALGBASE,\adv}}
+\newcommand{\expmsksnew}{\experiment{\msks}{\ALGNAME,\bdv}}
+\newcommand{\explain}[1]{\left\{\text{#1}\right\}}
+
+\let\oldconcat\concat\renewcommand{\concat}{\oldconcat\,}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hierarchical Deterministic Keys (HDK) is a draft specification
+using key blinding techniques including ARKG
+to create hierarchies of keys all derived from a single root secret key,
+in such a way that only the root secret key needs to be kept in a secure environment
+and new public keys can be generated without access to the root secret key.
+However, when ARKG is used in HDK, the original ARKG procedures
+would require one invocation of \algdsk per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each invocation would require a distinct user gesture.
+
+To address this we analyze the security of \ALGNAME, an extension of \ALGBASE for better compatibility with HDK.
+\ALGBASE is in turn a post-quantum compatible generalization of ARKG.
+\ALGNAME enables any number of HDK layers with a single call to the root private~key.
+We demonstrate that \ALGNAME retains the key security properties of \ALGBASE
+by a straightforward reduction of the key security experiment.
+\end{abstract}
+
+
+\section{Introduction}
+Hierarchical Deterministic Keys (HDK) \cite{HDK} is a draft specification
+using key blinding techniques including ARKG \cite{ARKG}
+to create hierarchies of keys all derived from a single root secret key,
+in such a way that only the root secret key needs to be kept in a secure environment
+and new public keys can be generated without access to the root secret key.
+However, when ARKG is used in HDK, the original ARKG procedures
+would require one invocation of \algdsk per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each invocation would require a distinct user gesture.
+One such context is the WebAuthn ``sign'' extension \cite{webauthn-sign}
+proposed to introduce general-purpose signing capabilities to the Web Authentication API (WebAuthn) \cite{webauthn},
+including signing using private keys derived via ARKG.
+Since WebAuthn requires a user gesture for any signing operation,
+HDK operations based on this ``sign'' extension would also require one user gesture per HDK layer.
+
+The ARKG construction in \cite{ARKG} is based upon \ALGBASE \cite{Wilson},
+a post-quantum compatible generalization of the original ARKG \cite{Frymann2020}.
+Here we propose and analyze \ALGNAME, an extension of pqARKG for better compatibility with HDK.
+\ALGNAME enables any number of HDK layers with a single invocation of the \algdsk procedure.
+
+The next section repeats the definition of \ALGBASE and its \msks security experiment.
+Then we propose the extension \ALGNAME and its corresponding security experiment,
+and finally demonstrate by a straightforward reduction
+that \ALGNAME retains the \msks property of \ALGBASE.
+
+
+\section{pqARKG}
+
+Here we repeat the definition of \ALGBASE and its \msks security experiment \cite{Wilson}.
+The instance parameters are a key blinding scheme \bl,
+a key encapsulation mechanism (KEM) \kem
+and a pseudo-random function \prf outputting blinding factors in the domain of \bl.
+
+\ALGBASE is defined as the suite of procedures in \figref{pqarkg}.
+The \msks security experiment for \ALGBASE is defined in \figref{exp-msks-pqarkg}.
+\footnote{We have corrected a misprint in \cite{Wilson} writing $\tau$ in place of $k$ on line 3 of \Oskp,
+and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
+
+\begin{figure}
+  \figlabel{pqarkg}
+  \centering
+  \begin{minipage}{0.6\linewidth}
+
+    \defproc{\algsetup(\secpar)}{
+      \pcreturn \pub=(\bl, \kem, \prf)
+    }
+    \bigskip
+
+    \defproc{\algcheck(\pub, \skp, \pkp)}{
+      \pcreturn \algblcheck(\skp, \pkp)
+    }
+    \bigskip
+
+    \defproc{\algkgen(\pub)}{
+      (\skbl, \pkbl) \leftarrow \algblkgen() \\
+      (\skkem, \pkkem) \leftarrow \algkemkgen() \\
+      \pcreturn \sk=(\skbl, \skkem), \pk=(\pkbl, \pkkem)
+    }
+    \bigskip
+
+    \defproc{\algdpk(\pub, \pk = (\pkbl, \pkkem), \aux)}{
+      (c, k) \leftarrow \algkemenc(\pkkem) \\
+      \tau \leftarrow \prf(k, \aux) \\
+      \pkp \leftarrow \algblbpk(\pkbl, \tau) \\
+      \pcreturn \pkp, \cred = (c, \aux)
+    }
+    \bigskip
+
+    \defproc{\algdsk(\pub, \sk =(\skbl, \skkem), \cred =(c, \aux))}{
+      k \leftarrow \algkemdec(\skkem, c) \\
+      \tau \leftarrow \prf(k, \aux) \\
+      \pcreturn \algblbsk(\skbl, \tau)
+    }
+
+  \end{minipage}
+  \caption{Algorithms of the \ALGBASE scheme \cite{Wilson}.}
+\end{figure}
+
+
+\begin{figure}
+  \figlabel{exp-msks-pqarkg}
+  \centering
+  \begin{minipage}[t]{0.5\linewidth}
+    \defproc{\expmsksbase(\secpar)}{
+      \pub \leftarrow \algsetup(\secparam) \\
+      \pklist \leftarrow \emptyset \\
+      \sklist \leftarrow \emptyset \\
+      (\sk, \pk) \sample \algkgen() \\
+      (\skstar, \pkstar, \credstar) \sample \adv^{\Opkp, \Oskp}(\pub, \pk) \\
+      \skp \leftarrow \algdsk(\pub, \sk, \credstar) \\
+      \pcreturn \algblcheck(\skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \hphantom{\pcreturn} \land \left[ \credstar \not\in \sklist \right]
+    }
+    \bigskip
+  \end{minipage}
+  \hspace{0.05\linewidth}
+  \begin{minipage}[t]{0.4\linewidth}
+    \defproc{\Opkp(\aux)}{
+      (c, k) \sample \algkemenc(\pkkem) \\
+      \tau \leftarrow \prf(\aux) \\
+      \pkp \leftarrow \algblbpk(\pkbl, \tau) \\
+      \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \left(c, \aux\right)\right) \right\} \\
+      \pcreturn \pkp, (c, \aux)
+    }
+    \bigskip
+
+    \defproc{\Oskp(c, \aux)}{
+      \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
+      \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
+      k \leftarrow \algkemdec(\pkkem, c) \\
+      \tau \leftarrow \prf(k, \aux) \\
+      \pcreturn \algblbsk(\skbl, \tau)
+    }
+  \end{minipage}
+  \caption{The \msks security experiment for \ALGBASE~\cite{Wilson}.}
+\end{figure}
+
+
+
+\section{\ALGNAME}
+
+Here we define our modified \ALGNAME scheme and a corresponding \msks security experiment.
+
+A new parameter~$b$ is added to the \algdpk and \algdsk functions.
+This~$b$ is an additional blinding factor in the key blinding scheme~\bl,
+allowing the ARKG subordinate party (the party generating public keys) to add any number of additional blinding layers
+on top of the one performed by the ARKG delegating party (the party holding the ARKG private seed).
+To~prevent choosing $b = -\tau$ so that it cancels the blinding factor~$\tau$
+computed in step~2 of~\algdsk of~\ALGBASE, this~$b$ is also mixed into the PRF arguments to compute~$\tau$.
+This disrupts any algebraic relationship between $b$ and~$\tau$,
+thus preventing the subordinate party from extracting the private seed~\sk by a malicious choice of~$b$.
+
+The new argument mixed into the PRF is however not $b$ directly,
+but a blinded public key~\pkbd incorporating the blinding factor~$b$.
+This enables the subordinate party to prove to a third party that a public key was generated using \ALGNAME
+without having to disclose~$b$.
+This is desirable if the subordinate party does not wish to reveal
+the relationship with keys from other branches of an HDK tree which might be used for unrelated purposes;
+knowing~$b$ would enable the third party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
+Instead, the third party may receive $k$ and~\aux and recompute steps 3-5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
+the identity blinding factor,
+and thus be convinced that \pkp was generated from the claimed public seed~\pkbd.
+
+Finally, the \algdsk function of~\ALGNAME also receives the blinding key \pkbl as a new parameter
+in order to reconstruct the same PRF output as~\algdpk.
+This~\pkbl parameter may be eliminated in instantiations where~\pkbl can be computed from~\skbl.
+
+\ALGNAME requires three additional properties of the the key blinding scheme~\bl:
+
+\begin{enumerate}
+\item{There exists an \emph{identity blinding factor}, denoted $1$,
+  such that
+  $$ \algblbpk(\pk, 1) = \pk \text{\xspace and \xspace} \algblbsk(\sk, 1) = \sk $$
+  for all \pk and \sk.}
+
+\item{\bl supports \emph{public key unblinding} in addition to private key unblinding:
+  A function $\algblupk(\pk, b)$ such that
+  $$ \algblupk(\algblbpk(\pk, b), b) = \pk $$
+  for all \pk and $b$.}
+
+\item{\bl is \emph{commutative} in the blinding factor:
+  for all \pk, \sk, $a$ and $b$,
+  $$ \algblbpk(\algblbpk(\pk, a), b) = \algblbpk(\algblbpk(\pk, b), a) $$
+  $$\algblbsk(\algblbsk(\sk, a), b) = \algblbsk(\algblbsk(\sk, b), a). $$
+}
+\end{enumerate}
+
+For example, any construction based on cyclic groups is likely to satisfy these properties.
+
+\ALGNAME is defined as the suite of procedures in \figref{pqarkg}.
+The operator~\concat denotes binary concatenation,
+and we assume some well-known encoding is used for $\pkbd$.
+Note that if $\algblbsk(\sk, b)$ is linear in $b$,
+then steps 4-5 of \algdsk may be optimized as "$4. \, \pcreturn \algblbsk(\skbl, b \tau)$".
+
+\begin{figure}
+  \figlabel{pqarkg-h}
+  \centering
+  \begin{minipage}{0.7\linewidth}
+
+    \algsetup: Same as \ALGBASE. \\
+    \algcheck: Same as \ALGBASE. \\
+    \algkgen: Same as \ALGBASE. \\
+
+    \defproc{\algdpk(\pub, \pk = (\pkbl, \pkkem), b, \aux)}{
+      (c, k) \leftarrow \algkemenc(\pkkem) \\
+      \pkbd \leftarrow \algblbpk(\pkbl, b) \\
+      \tau \leftarrow \prf(k, \pkbd \concat \aux) \\
+      \pkp \leftarrow \algblbpk(\pkbd, \tau) \\
+      \pcreturn \pkp, \cred = (c, \aux)
+    }
+    \bigskip
+
+    \defproc{\algdsk(\pub, \pkbl, \sk=(\skbl, \skkem), b, \cred =(c, \aux))}{
+      k \leftarrow \algkemdec(\skkem, c) \\
+      \pkbd \leftarrow \algblbpk(\pkbl, b) \\
+      \tau \leftarrow \prf(k, \pkbd \concat \aux) \\
+      \skbd \leftarrow \algblbsk(\skbl, b) \\
+      \pcreturn \algblbsk(\skbd, \tau)
+    }
+
+  \end{minipage}
+  \caption{
+    Algorithms of the \ALGNAME scheme.
+    The \algsetup, \algcheck and \algkgen algorithms are unchanged from \ALGBASE.
+  }
+\end{figure}
+
+We also modify the \msks security experiment accordingly,
+resulting in the security experiment \expmsksnew.
+The main difference is that the adversary \bdv also returns the value \bstar to be used as the $b$ argument to \algdsk.
+The public and private key oracles \Opkp and \Oskp are also updated to include the $b$ parameter
+and the additional blinding step.
+Finally, the check against \bdv trivially querying \Oskp for a solution
+is relaxed to forbid only the exact combination of \bstar and \credstar returned as the solution.
+
+\begin{figure}
+  \figlabel{exp-msks-pqarkg-h}
+  \centering
+  \begin{minipage}[t]{0.5\linewidth}
+    \defproc{\expmsksnew(\secpar)}{
+      \pub \leftarrow \algsetup(\secparam) \\
+      \pklist \leftarrow \emptyset \\
+      \sklist \leftarrow \emptyset \\
+      (\sk, \pk) \sample \algkgen() \\
+      (\skstar, \pkstar, \bstar, \credstar) \sample \bdv^{\Opkp, \Oskp}(\pub, \pk) \\
+      \skp \leftarrow \algdsk(\pub, \pkbl, \sk, \bstar, \credstar) \\
+      \pcreturn \algblcheck(\skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \hphantom{\pcreturn} \land \left[ (\bstar, \credstar) \not\in \sklist \right]
+    }
+    \bigskip
+  \end{minipage}
+  \hspace{0.05\linewidth}
+  \begin{minipage}[t]{0.4\linewidth}
+    \defproc{\Opkp(b, \aux)}{
+      (\pkp, \cred) \sample \algdpk(\pub, \pk, b, \aux) \\
+      \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \cred \right) \right\} \\
+      \pcreturn \pkp, \cred
+    }
+    \bigskip
+
+    \defproc{\Oskp(b, c, \aux)}{
+      \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
+      \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
+      \pcreturn \algdsk(\pub, \pkbl, \sk, b, (c, \aux))
+    }
+  \end{minipage}
+  \caption{The \msks security experiment for \ALGNAME.}
+\end{figure}
+
+
+\section{Reduction of \ALGBASE to \ALGNAME in \msks security experiment}
+
+We now show that \ALGNAME is \msks secure
+by showing that an adversary \bdv that defeats \expmsksnew
+also defeats \expmsksbase.
+Given such an adversary \bdv,
+we construct an adversary \adv that defeats \expmsksbase
+as defined in \figref{adv-reduction}.
+
+\begin{figure}
+  \figlabel{adv-reduction}
+  \centering
+  \begin{minipage}[t]{0.6\linewidth}
+    \defproc{\adv^{\Opkp, \Oskp}(\pub = (\bl, \kem, \prf), \pk = (\pkbl, \pkkem))}{
+      (\barvar{\skstar}, \barvar{\pkstar}, \barvar{\bstar}, \barvar{\credstar}) \sample \bdv^{\barvar{\Opkp}, \barvar{\Oskp}}(\pub, \pk) \\
+      \skstar \leftarrow \algblusk(\barvar{\skstar}, \barvar{\bstar}) \\
+      \pkstar \leftarrow \algblupk(\barvar{\pkstar}, \barvar{\bstar}) \\
+      \pkbsd \leftarrow \algblbpk(\pkbl, \barvar{\bstar}) \\
+      \pcreturn (\skstar, \pkstar, (\barvar{\cstar}, \pkbsd \concat \barvar{\auxstar}))
+    }
+    \bigskip
+  \end{minipage}
+  \hspace{0.05\linewidth}
+  \begin{minipage}[t]{0.3\linewidth}
+    \defproc{\overline{\Opkp}(b, \aux)}{
+      \pkbd \leftarrow \algblbpk(\pkbl, b) \\
+      (\pkp, (c, \cdot)) \sample \Opkp(\pkbd \concat \aux) \\
+      \barvar{\pkp} \leftarrow \algblbpk(\pkp, b) \\
+      \pcreturn (\barvar{\pkp}, (c, \aux))
+    }
+    \bigskip
+
+    \defproc{\barvar{\Oskp}(b, c, \aux)}{
+      \pkbd \leftarrow \algblbpk(\pkbl, b) \\
+      \skp \leftarrow \Oskp(c, \pkbd \concat \aux) \\
+      \pcreturn \algblbsk(\skp, b)
+    }
+  \end{minipage}
+  \caption{Reduction of \expmsksbase to \expmsksnew.}
+\end{figure}
+
+When invoked, this adversary \adv simply invokes the given adversary \bdv with its own challenge.
+The \Opkp and~\Oskp oracles are adapted for~\bdv
+by adding the \pkbd~prefix to~\aux and performing the additional blinding with the $b$ argument,
+thus \adv faithfully simulates \expmsksnew for \bdv.
+The \auxstar returned to the challenger is adapted with the \pkbsd prefix
+computed using the blinding factor $\barvar{\bstar}=\bstar$ returned by~\bdv,
+thus~\ALGNAME produces the same $\tau$ on line 3 of its \algdpk and \algdsk functions
+as \ALGBASE does on line 2 of its \algdpk and \algdsk functions.
+
+We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
+
+\begin{itemize}
+\item{$\algblcheck(\skstar, \pkstar)$ succeeds because:
+
+  $\skstar = \algblusk(\barvar{\skstar}, \barvar{\bstar})$ and $\pkstar = \algblupk(\barvar{\pkstar}, \barvar{\bstar})$.
+  Therefore by the definitions of unblinding and unique blinding,
+  \adv passes its $\algblcheck(\skstar, \pkstar)$ condition precisely when \bdv does.
+}
+
+\item{$\algblcheck(\skp, \pkstar)$ succeeds because:
+
+  First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
+  and therefore
+  $$ \tau = \prf(\algkemdec(\skkem, \cstar), \auxstar) = \prf(\algkemdec(\skkem, \barvar{\cstar}), \pkbsd \concat \barvar{\auxstar}) $$
+  so \algdsk on line~6 of \expmsksbase computes the same $\tau$ as on line~6 of \expmsksnew.
+
+  The above gives
+  \begin{align*}
+    \skp &=& \algdsk(\pub, \sk, \credstar) &= \\
+    &=& \algblbsk(\skbl, \prf(\algkemdec(\skkem, \cstar), \auxstar)) \\
+    &=& \algblbsk(\skbl, \tau)
+  \end{align*}
+  where $\credstar = (\cstar, \auxstar)$.
+
+  Let \barvar{\skp} be an alias of the \skp on line 6 of \expmsksnew.
+  Then
+
+  \begin{align*}
+    \barvar{\skp} &=& \algdsk(\pub, \pkbl, \sk, \barvar{\bstar}, \barvar{\credstar}) &= \\
+    &=& \algblbsk(\algblbsk(\skbl, \barvar{\bstar}), \tau) &= \\
+    &=& \algblbsk(\algblbsk(\skbl, \tau), \barvar{\bstar}) &= \\
+    &=& \algblbsk(\skp, \barvar{\bstar}) \\
+    &\Longrightarrow& \skp = \algblusk(\barvar{\skp}, \barvar{\bstar})
+  \end{align*}
+
+  so by the definitions of unblinding and unique blinding,
+  the $\algblcheck(\skp, \pkstar)$ condition in \expmsksnew is equivalent to
+
+  \begin{align*}
+    & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \barvar{\pkstar}) = \\
+    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) = \\
+    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) = \\
+    = & \algblcheck(\skp, \pkstar)
+  \end{align*}
+
+  which is precisely the condition on line 8 of \expmsksbase.
+  Therefore \adv passes its $\algblcheck(\skp, \pkstar)$ condition precisely when \bdv~does.
+}
+
+\item{$(\cstar, \auxstar) \not\in \sklist$ succeeds because:
+
+  \sklist is appended to only when \adv invokes \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
+  Therefore if \bdv does not invoke \barvar{\Oskp} with arguments $(\bstar, \cstar, \auxstar)$,
+  then \adv also does not invoke \Oskp with arguments $(\cstar, \auxstar)$.
+  This is the case when \bdv wins its game, therefore \adv passes this condition when \bdv does.
+}
+
+\end{itemize}
+
+In conclusion, we see that \adv wins its game precisely when \bdv wins its game,
+therefore the advantages are equal:
+
+$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
+
+Thus we conclude that \ALGNAME retains the \msks property of \ALGBASE.
+
+
+\section{Acknowledgements}
+
+We would like to thank Sander Dijkhuis for proposing the construction with mixing \pkbd into the PRF instead of $b$,
+and for helping find a successful approach for the security reduction.
+
+
+\printbibliography
+
+
+\end{document}
