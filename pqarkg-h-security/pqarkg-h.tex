@@ -421,65 +421,52 @@ computed using the blinding factor $\barvar{\bstar}=\bstar$ returned by~\bdv,
 thus~\ALGNAME produces the same $\tau$ on line 3 of its \algdpk and \algdsk functions
 as \ALGBASE does on line 2 of its \algdpk and \algdsk functions.
 
-To prove that \adv wins its game precisely when \bdv wins its game, we observe that \adv passes each of the three conditions on lines 7--9 of \expmsksbase if and only if \bdv passes the corresponding condition from the ones on lines 7--9 of \expmsksnew:
+To prove that \adv wins its game precisely when \bdv wins its game, we observe that \adv passes each of the three conditions on lines 7--9 of \expmsksbase if and only if \bdv passes the corresponding condition from the ones on lines 7--9 of \expmsksnew.
 
-\begin{itemize}
-\item{$\algblcheck(\skstar, \pkstar)$ succeeds because:
+For the first condition this holds because by definition of \skstar and \pkstar, and applying the unique blinding and private-key unblinding properties,
 
-  $\skstar = \algblusk(\barvar{\skstar}, \barvar{\bstar})$ and $\pkstar = \algblupk(\barvar{\pkstar}, \barvar{\bstar})$.
-  Therefore by the definitions of unblinding and unique blinding,
-  \adv passes its $\algblcheck(\skstar, \pkstar)$ condition precisely when \bdv does.
-}
+\begin{align*}
+  \algblcheck(\skstar, \pkstar)
+  &= \algblcheck(\algblusk(\barvar{\skstar}, \barvar{\bstar}), \algblupk(\barvar{\pkstar}, \barvar{\bstar})) \\
+  &= \algblcheck(\barvar\skstar, \barvar\pkstar).
+\end{align*}
 
-\item{$\algblcheck(\skp, \pkstar)$ succeeds because:
+For the second condition this holds because of the following argument.
+First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
+and therefore
+$$ \tau = \prf(\algkemdec(\skkem, \cstar), \auxstar) = \prf(\algkemdec(\skkem, \barvar{\cstar}), \pkbsd \concat \barvar{\auxstar}) $$
+so \algdsk on line~6 of \expmsksbase computes the same $\tau$ as on line~6 of \expmsksnew.
+The above gives
+\begin{align*}
+  \skp &= \algdsk(\pub, \sk, \credstar) \\
+  &= \algblbsk(\skbl, \prf(\algkemdec(\skkem, \cstar), \auxstar)) \\
+  &= \algblbsk(\skbl, \tau)
+\end{align*}
+where $\credstar = (\cstar, \auxstar)$.
+Let \barvar{\skp} be an alias of the target symbol on line 6 of \expmsksnew.
+Then
+\begin{align*}
+  \barvar{\skp} &= \algdsk(\pub, \pkbl, \sk, \barvar{\bstar}, \barvar{\credstar}) \\
+  &= \algblbsk(\algblbsk(\skbl, \barvar{\bstar}), \tau) \\
+  &= \algblbsk(\algblbsk(\skbl, \tau), \barvar{\bstar}) \\
+  &= \algblbsk(\skp, \barvar{\bstar})
+\end{align*}
+and therefore
+$$ \skp = \algblusk(\barvar{\skp}, \barvar{\bstar}) $$
+so by the definitions of unblinding and unique blinding,
+the second condition in \expmsksnew is equivalent to
+\begin{align*}
+  \algblcheck(\barvar\skp,\barvar\pkstar)
+  &= \algblcheck(\barvar\skp, \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) \\
+  &= \algblcheck(\barvar\skp, \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\skp, \pkstar).
+\end{align*}
 
-  First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
-  and therefore
-  $$ \tau = \prf(\algkemdec(\skkem, \cstar), \auxstar) = \prf(\algkemdec(\skkem, \barvar{\cstar}), \pkbsd \concat \barvar{\auxstar}) $$
-  so \algdsk on line~6 of \expmsksbase computes the same $\tau$ as on line~6 of \expmsksnew.
-
-  The above gives
-  \begin{align*}
-    \skp &=& \algdsk(\pub, \sk, \credstar) &= \\
-    &=& \algblbsk(\skbl, \prf(\algkemdec(\skkem, \cstar), \auxstar)) \\
-    &=& \algblbsk(\skbl, \tau)
-  \end{align*}
-  where $\credstar = (\cstar, \auxstar)$.
-
-  Let \barvar{\skp} be an alias of the \skp on line 6 of \expmsksnew.
-  Then
-
-  \begin{align*}
-    \barvar{\skp} &=& \algdsk(\pub, \pkbl, \sk, \barvar{\bstar}, \barvar{\credstar}) &= \\
-    &=& \algblbsk(\algblbsk(\skbl, \barvar{\bstar}), \tau) &= \\
-    &=& \algblbsk(\algblbsk(\skbl, \tau), \barvar{\bstar}) &= \\
-    &=& \algblbsk(\skp, \barvar{\bstar}) \\
-    &\Longrightarrow& \skp = \algblusk(\barvar{\skp}, \barvar{\bstar})
-  \end{align*}
-
-  so by the definitions of unblinding and unique blinding,
-  the $\algblcheck(\skp, \pkstar)$ condition in \expmsksnew is equivalent to
-
-  \begin{align*}
-    & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \barvar{\pkstar}) = \\
-    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) = \\
-    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) = \\
-    = & \algblcheck(\skp, \pkstar)
-  \end{align*}
-
-  which is precisely the condition on line 8 of \expmsksbase.
-  Therefore \adv passes its $\algblcheck(\skp, \pkstar)$ condition precisely when \bdv~does.
-}
-
-\item{$(\cstar, \auxstar) \not\in \sklist$ succeeds because:
-
-  \sklist is appended to only when \adv invokes \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
-  Therefore if \bdv does not invoke \barvar{\Oskp} with arguments $(\bstar, \cstar, \auxstar)$,
-  then \adv also does not invoke \Oskp with arguments $(\cstar, \auxstar)$.
-  This is the case when \bdv wins its game, therefore \adv passes this condition when \bdv does.
-}
-
-\end{itemize}
+For the third condition this holds because \adv only appends to \sklist when invoking \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
+Therefore if \bdv does not invoke \barvar{\Oskp} with arguments $(\bstar, \cstar, \auxstar)$,
+then \adv also does not invoke \Oskp with arguments $(\cstar, \auxstar)$.
+This is the case when \bdv wins its game, therefore \adv passes the condition  $(\cstar, \auxstar) \not\in \sklist$ whenever \bdv does.
 
 \end{proof}
 
