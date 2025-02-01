@@ -8,6 +8,7 @@
 \usepackage[keys,lambda,sets,adversary,advantage,events,logic,operators,probability,ff,primitives]{cryptocode}
 \usepackage{xspace}
 \usepackage{draftwatermark}
+\usepackage{amsthm}
 
 \addbibresource{pqarkg-h.bib}
 
@@ -87,6 +88,8 @@
 \newcommand{\explain}[1]{\left\{\text{#1}\right\}}
 
 \let\oldconcat\concat\renewcommand{\concat}{\oldconcat\,}
+
+\newtheorem{theorem}{Theorem}[section]
 
 \begin{document}
 \maketitle
@@ -364,12 +367,18 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
 
 \section{Reduction of \ALGBASE to \ALGNAME in \msks security experiment}
 
-We now show that \ALGNAME is \msks secure
-by showing that an adversary \bdv that defeats \expmsksnew
-also defeats \expmsksbase.
-Given such an adversary \bdv,
-we construct an adversary \adv that defeats \expmsksbase
-as defined in \figref{exp-msks-pqarkg}.
+We now show that \ALGNAME can satisfy malicious strong key security \msks. The proof requires two additional properties of some key blinding schemes that are defined in \cite{Wilson}: unique blinding and private-key unblinding. Recall from \cite{Wilson} that \ALGBASE satisfies \msks when instantiated with a key blinding scheme that provides these properties. Therefore a reduction proof from \ALGNAME to \ALGBASE suffices.
+
+\begin{theorem}
+Let \ALGNAME be the ARKG construction described in \figref{pqarkg-h}, instantiated with a key blinding scheme \bl that provides unique blinding and supports private-key unblinding. For any efficient adversary \bdv, there exists an efficient algorithm \adv such that
+$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
+where the security experiment \msks is defined in \figref{exp-msks-pqarkg-h} for \ALGNAME and in \figref{exp-msks-pqarkg} for \ALGBASE.
+\end{theorem}
+
+\begin{proof}
+
+Given an adversary \bdv that defeats \expmsksnew,
+we construct an adversary \adv that defeats \expmsksbase.
 
 \begin{figure}
   \figlabel{adv-reduction}
@@ -412,7 +421,7 @@ computed using the blinding factor $\barvar{\bstar}=\bstar$ returned by~\bdv,
 thus~\ALGNAME produces the same $\tau$ on line 3 of its \algdpk and \algdsk functions
 as \ALGBASE does on line 2 of its \algdpk and \algdsk functions.
 
-We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
+To prove that \adv wins its game precisely when \bdv wins its game, we observe that \adv passes each of the three conditions on lines 7--9 of \expmsksbase if and only if \bdv passes the corresponding condition from the ones on lines 7--9 of \expmsksnew:
 
 \begin{itemize}
 \item{$\algblcheck(\skstar, \pkstar)$ succeeds because:
@@ -472,15 +481,7 @@ We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
 
 \end{itemize}
 
-In conclusion, we see that \adv wins its game precisely when \bdv wins its game. Therefore:
-
-$$ \advantage{\msks}{\ALGNAME,\bdv} \geq \advantage{\msks}{\ALGBASE,\adv} $$
-
-On the other hand, given an adversary \adv that defeats \expmsksbase, we can trivially construct an adversary \bdv that defeats \expmsksnew by invoking \adv and additionally returning $b^*=1$. Therefore the advantages are equal:
-
-$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
-
-Thus we conclude that \ALGNAME retains the \msks property of \ALGBASE.
+\end{proof}
 
 
 \section{Acknowledgements}
