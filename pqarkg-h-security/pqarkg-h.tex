@@ -354,7 +354,7 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
 
     \defproc{\Oskp(b, c, \aux)}{
       \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
-      \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
+      \sklist \leftarrow \sklist \cup \left\{ (b, (c, \aux)) \right\} \\
       \pcreturn \algdsk(\pub, \pkbl, \sk, b, (c, \aux))
     }
   \end{minipage}
