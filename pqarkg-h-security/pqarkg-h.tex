@@ -87,6 +87,8 @@
 \newcommand{\expmsksnew}{\experiment{\msks}{\ALGNAME,\bdv}}
 \newcommand{\explain}[1]{\left\{\text{#1}\right\}}
 
+\newcommand{\id}{\ensuremath{\mathsf{id_\Delta}}}
+
 \let\oldconcat\concat\renewcommand{\concat}{\oldconcat\,}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -251,7 +253,7 @@ This enables the delegating party to share a derived public \ALGNAME seed with a
 This is desirable if the delegating party does not wish to reveal
 the relationship with other keys in an HDK tree which might be used for unrelated purposes;
 knowing~$b$ would enable the subordinate party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
-Instead, the subordinate party may determine $k$ and~\aux and compute steps 3--5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
+Instead, the subordinate party may determine $k$ and~\aux and compute steps 3--5 of \algdpk with $\pkbl=\pkbd$ and~$b=\id$,
 the identity blinding factor,
 and thus be convinced that \pkp was generated from the claimed public seed~\pkbd.
 
@@ -262,9 +264,9 @@ This~\pkbl parameter may be eliminated in instantiations where~\pkbl can be comp
 \ALGNAME requires three additional properties of the the key blinding scheme~\bl:
 
 \begin{enumerate}
-\item{There exists an \emph{identity blinding factor}, denoted $1$,
+\item{There exists an \emph{identity blinding factor}, denoted \id,
   such that
-  $$ \algblbpk(\pk, 1) = \pk \text{\xspace and \xspace} \algblbsk(\sk, 1) = \sk $$
+  $$ \algblbpk(\pk, \id) = \pk \text{\xspace and \xspace} \algblbsk(\sk, \id) = \sk $$
   for all \pk and \sk.}
 
 \item{\bl supports \emph{public key unblinding} in addition to private key unblinding:
@@ -284,8 +286,8 @@ For example, any construction based on cyclic groups is likely to satisfy these 
 \ALGNAME is defined as the suite of procedures in \figref{pqarkg}.
 The operator~\concat denotes binary concatenation,
 and we assume some well-known encoding is used for $\pkbd$.
-Note that if $\algblbsk(\sk, b)$ is linear in $b$,
-then steps 4-5 of \algdsk may be optimized as "$4. \, \pcreturn \algblbsk(\skbl, b \tau)$".
+Note that if $\algblbsk(\sk, b)$ is linear in $b$ with operation $\circ$,
+then steps 4-5 of \algdsk may be optimized as "$4. \, \pcreturn \algblbsk(\skbl, b\ \circ \tau)$".
 
 \begin{figure}
   \figlabel{pqarkg-h}
