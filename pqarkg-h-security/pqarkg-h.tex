@@ -472,8 +472,11 @@ We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
 
 \end{itemize}
 
-In conclusion, we see that \adv wins its game precisely when \bdv wins its game,
-therefore the advantages are equal:
+In conclusion, we see that \adv wins its game precisely when \bdv wins its game. Therefore:
+
+$$ \advantage{\msks}{\ALGNAME,\bdv} \geq \advantage{\msks}{\ALGBASE,\adv} $$
+
+On the other hand, given an adversary \adv that defeats \expmsksbase, we can trivially construct an adversary \bdv that defeats \expmsksnew by invoking \adv and additionally returning $b^*=1$. Therefore the advantages are equal:
 
 $$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
 
