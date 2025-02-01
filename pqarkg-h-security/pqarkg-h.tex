@@ -350,7 +350,7 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
     \defproc{\Opkp(b, \aux)}{
       (\pkp, \cred) \sample \algdpk(\pub, \pk, b, \aux) \\
       \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \cred \right) \right\} \\
-      \pcreturn \pkp, \cred
+      \pcreturn (\pkp, \cred)
     }
     \bigskip
 
@@ -378,7 +378,7 @@ as defined in \figref{adv-reduction}.
   \centering
   \begin{minipage}[t]{0.6\linewidth}
     \defproc{\adv^{\Opkp, \Oskp}(\pub = (\bl, \kem, \prf), \pk = (\pkbl, \pkkem))}{
-      (\barvar{\skstar}, \barvar{\pkstar}, \barvar{\bstar}, \barvar{\credstar}) \sample \bdv^{\barvar{\Opkp}, \barvar{\Oskp}}(\pub, \pk) \\
+      (\barvar{\skstar}, \barvar{\pkstar}, \barvar{\bstar}, (\barvar{\cstar}, \barvar{\auxstar})) \sample \bdv^{\barvar{\Opkp}, \barvar{\Oskp}}(\pub, \pk) \\
       \skstar \leftarrow \algblusk(\barvar{\skstar}, \barvar{\bstar}) \\
       \pkstar \leftarrow \algblupk(\barvar{\pkstar}, \barvar{\bstar}) \\
       \pkbsd \leftarrow \algblbpk(\pkbl, \barvar{\bstar}) \\
