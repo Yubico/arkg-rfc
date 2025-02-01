@@ -238,21 +238,20 @@ Here we define our modified \ALGNAME scheme and a corresponding \msks security e
 
 A new parameter~$b$ is added to the \algdpk and \algdsk functions.
 This~$b$ is an additional blinding factor in the key blinding scheme~\bl,
-allowing the ARKG subordinate party (the party generating public keys) to add any number of additional blinding layers
-on top of the one performed by the ARKG delegating party (the party holding the ARKG private seed).
+allowing the ARKG delegating party (the party holding the ARKG private seed) to add any number of additional blinding layers
+on top of the one performed by the ARKG subordinate party (the party generating public keys).
 To~prevent choosing $b = -\tau$ so that it cancels the blinding factor~$\tau$
 computed in step~2 of~\algdsk of~\ALGBASE, this~$b$ is also mixed into the PRF arguments to compute~$\tau$.
 This disrupts any algebraic relationship between $b$ and~$\tau$,
-thus preventing the subordinate party from extracting the private seed~\sk by a malicious choice of~$b$.
+thus preventing the a compromised subordinate party from extracting the private seed~\sk by a malicious choice of~$b$.
 
 The new argument mixed into the PRF is however not $b$ directly,
 but a blinded public key~\pkbd incorporating the blinding factor~$b$.
-This enables the subordinate party to prove to a third party that a public key was generated using \ALGNAME
-without having to disclose~$b$.
-This is desirable if the subordinate party does not wish to reveal
-the relationship with keys from other branches of an HDK tree which might be used for unrelated purposes;
-knowing~$b$ would enable the third party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
-Instead, the third party may receive $k$ and~\aux and recompute steps 3-5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
+This enables the delegating party to share a derived public \ALGNAME seed with a subordinate party without having to disclose~$b$.
+This is desirable if the delegating party does not wish to reveal
+the relationship with other keys in an HDK tree which might be used for unrelated purposes;
+knowing~$b$ would enable the subordinate party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
+Instead, the subordinate party may determine $k$ and~\aux and compute steps 3--5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
 the identity blinding factor,
 and thus be convinced that \pkp was generated from the claimed public seed~\pkbd.
 
