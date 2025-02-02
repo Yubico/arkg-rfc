@@ -214,7 +214,7 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
   \begin{minipage}[t]{0.4\linewidth}
     \defproc{\Opkp(\aux)}{
       (c, k) \sample \algkemenc(\pkkem) \\
-      \tau \leftarrow \prf(\aux) \\
+      \tau \leftarrow \prf(k, \aux) \\
       \pkp \leftarrow \algblbpk(\pkbl, \tau) \\
       \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \left(c, \aux\right)\right) \right\} \\
       \pcreturn \pkp, (c, \aux)
