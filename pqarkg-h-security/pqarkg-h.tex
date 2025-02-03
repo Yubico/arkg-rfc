@@ -209,7 +209,7 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
   \begin{minipage}[t]{0.4\linewidth}
     \defproc{\Opkp(\aux)}{
       (c, k) \sample \algkemenc(\pkkem) \\
-      \tau \leftarrow \prf(\aux) \\
+      \tau \leftarrow \prf(k, \aux) \\
       \pkp \leftarrow \algblbpk(\pkbl, \tau) \\
       \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \left(c, \aux\right)\right) \right\} \\
       \pcreturn \pkp, (c, \aux)
@@ -219,7 +219,7 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
     \defproc{\Oskp(c, \aux)}{
       \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
       \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
-      k \leftarrow \algkemdec(\pkkem, c) \\
+      k \leftarrow \algkemdec(\skkem, c) \\
       \tau \leftarrow \prf(k, \aux) \\
       \pcreturn \algblbsk(\skbl, \tau)
     }
