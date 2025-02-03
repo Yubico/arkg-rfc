@@ -241,7 +241,8 @@ on top of the one performed by the ARKG delegating party (the party holding the 
 To~prevent choosing $b = -\tau$ so that it cancels the blinding factor~$\tau$
 computed in step~2 of~\algdsk of~\ALGBASE, this~$b$ is also mixed into the PRF arguments to compute~$\tau$.
 This disrupts any algebraic relationship between $b$ and~$\tau$,
-thus preventing the subordinate party from extracting the private seed~\sk by a malicious choice of~$b$.
+thus preventing extraction of the private seed~\sk by a malicious choice of~$b$
+even if a derived private key \skp is leaked.
 
 The new argument mixed into the PRF is however not $b$ directly,
 but a blinded public key~\pkbd incorporating the blinding factor~$b$.
