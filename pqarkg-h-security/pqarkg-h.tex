@@ -55,7 +55,7 @@
 \newcommand{\algname}[1]{\ensuremath{\mathsf{#1}}\xspace}
 \newcommand{\algsetup}{\algname{Setup}}
 \newcommand{\algcheck}{\algname{Check}}
-\newcommand{\algkgen}{\algname{KGen}}
+\newcommand{\algkgen}{\algname{KeyGen}}
 \newcommand{\algdpk}{\algname{DerivePK}}
 \newcommand{\algdsk}{\algname{DeriveSK}}
 
@@ -145,7 +145,8 @@ and a pseudo-random function \prf outputting blinding factors in the domain of \
 \ALGBASE is defined as the suite of procedures in \figref{pqarkg}.
 The \msks security experiment for \ALGBASE is defined in \figref{exp-msks-pqarkg}.
 \footnote{We have corrected a misprint in \cite{Wilson} writing $\tau$ in place of $k$ on line 3 of \Oskp,
-and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
+renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp,
+and~made explicit the argument \pub to \algcheck.}
 
 \begin{figure}
   \figlabel{pqarkg}
@@ -199,8 +200,8 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
       (\sk, \pk) \sample \algkgen() \\
       (\skstar, \pkstar, \credstar) \sample \adv^{\Opkp, \Oskp}(\pub, \pk) \\
       \skp \leftarrow \algdsk(\pub, \sk, \credstar) \\
-      \pcreturn \algblcheck(\skstar, \pkstar) \\
-      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \pcreturn \algcheck(\pub, \skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algcheck(\pub, \skp, \pkstar) \\
       \hphantom{\pcreturn} \land \left[ \credstar \not\in \sklist \right]
     }
     \bigskip
@@ -337,8 +338,8 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
       (\sk, \pk) \sample \algkgen() \\
       (\skstar, \pkstar, \bstar, \credstar) \sample \bdv^{\Opkp, \Oskp}(\pub, \pk) \\
       \skp \leftarrow \algdsk(\pub, \pkbl, \sk, \bstar, \credstar) \\
-      \pcreturn \algblcheck(\skstar, \pkstar) \\
-      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \pcreturn \algcheck(\pub, \skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algcheck(\pub, \skp, \pkstar) \\
       \hphantom{\pcreturn} \land \left[ (\bstar, \credstar) \not\in \sklist \right]
     }
     \bigskip
@@ -415,14 +416,14 @@ as \ALGBASE does on line 2 of its \algdpk and \algdsk functions.
 We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
 
 \begin{itemize}
-\item{$\algblcheck(\skstar, \pkstar)$ succeeds because:
+\item{$\algcheck(\pub, \skstar, \pkstar)$ succeeds because:
 
   $\skstar = \algblusk(\barvar{\skstar}, \barvar{\bstar})$ and $\pkstar = \algblupk(\barvar{\pkstar}, \barvar{\bstar})$.
   Therefore by the definitions of unblinding and unique blinding,
-  \adv passes its $\algblcheck(\skstar, \pkstar)$ condition precisely when \bdv does.
+  \adv passes its $\algcheck(\pub, \skstar, \pkstar)$ condition precisely when \bdv does.
 }
 
-\item{$\algblcheck(\skp, \pkstar)$ succeeds because:
+\item{$\algcheck(\pub, \skp, \pkstar)$ succeeds because:
 
   First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
   and therefore
@@ -449,17 +450,17 @@ We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
   \end{align*}
 
   so by the definitions of unblinding and unique blinding,
-  the $\algblcheck(\skp, \pkstar)$ condition in \expmsksnew is equivalent to
+  the $\algcheck(\pub, \skp, \pkstar)$ condition in \expmsksnew is equivalent to
 
   \begin{align*}
-    & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \barvar{\pkstar}) = \\
-    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) = \\
-    = & \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) = \\
-    = & \algblcheck(\skp, \pkstar)
+    & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \barvar{\pkstar}) = \\
+    = & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) = \\
+    = & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) = \\
+    = & \algcheck(\pub, \skp, \pkstar)
   \end{align*}
 
   which is precisely the condition on line 8 of \expmsksbase.
-  Therefore \adv passes its $\algblcheck(\skp, \pkstar)$ condition precisely when \bdv~does.
+  Therefore \adv passes its $\algcheck(\pub, \skp, \pkstar)$ condition precisely when \bdv~does.
 }
 
 \item{$(\cstar, \auxstar) \not\in \sklist$ succeeds because:
