@@ -95,17 +95,17 @@
 Hierarchical Deterministic Keys (HDK) is a draft specification
 using key blinding techniques including ARKG
 to create hierarchies of keys all derived from a single root secret key,
-in such a way that only the root secret key needs to be kept in a secure environment
-and new public keys can be generated without access to the root secret key.
+in such a way that only the root secret key needs to be kept in a secure element (SE)
+and new public keys can be generated without invoking the SE.
 However, when ARKG is used in HDK, the original ARKG procedures
-would require one invocation of \algdsk per HDK layer when exercising derived private keys.
-This is undesirable in contexts where each invocation would require a distinct user gesture.
+would require one SE invocation per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each SE invocation would require a distinct user gesture.
 
-To address this we analyze the security of \ALGNAME, an extension of \ALGBASE for better compatibility with HDK.
-\ALGBASE is in turn a post-quantum compatible generalization of ARKG.
-\ALGNAME enables any number of HDK layers with a single call to the root private~key.
-We demonstrate that \ALGNAME retains the key security properties of \ALGBASE
-by a straightforward reduction of the key security experiment.
+To address this we analyze the security of an ARKG extension \ALGNAME
+that enables any number of HDK layers with a single SE invocation.
+We base \ALGNAME on the ARKG generalization \ALGBASE,
+and demonstrate that it retains \msks security
+by a straightforward reduction of the security experiment.
 \end{abstract}
 
 
@@ -113,11 +113,11 @@ by a straightforward reduction of the key security experiment.
 Hierarchical Deterministic Keys (HDK) \cite{HDK} is a draft specification
 using key blinding techniques including ARKG \cite{ARKG}
 to create hierarchies of keys all derived from a single root secret key,
-in such a way that only the root secret key needs to be kept in a secure environment
-and new public keys can be generated without access to the root secret key.
+in such a way that only the root secret key needs to be kept in a secure element (SE)
+and new public keys can be generated without invoking the SE.
 However, when ARKG is used in HDK, the original ARKG procedures
-would require one invocation of \algdsk per HDK layer when exercising derived private keys.
-This is undesirable in contexts where each invocation would require a distinct user gesture.
+would require one SE invocation of \algdsk per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each SE invocation would require a distinct user gesture.
 One such context is the WebAuthn ``sign'' extension \cite{webauthn-sign}
 proposed to introduce general-purpose signing capabilities to the Web Authentication API (WebAuthn) \cite{webauthn},
 including signing using private keys derived via ARKG.
@@ -125,7 +125,7 @@ Since WebAuthn requires a user gesture for any signing operation,
 HDK operations based on this ``sign'' extension would also require one user gesture per HDK layer.
 
 The ARKG construction in \cite{ARKG} is based upon \ALGBASE \cite{Wilson},
-a post-quantum compatible generalization of the original ARKG \cite{Frymann2020}.
+a~post-quantum compatible generalization of the original ARKG \cite{Frymann2020}.
 Here we propose and analyze \ALGNAME, an extension of pqARKG for better compatibility with HDK.
 \ALGNAME enables any number of HDK layers with a single invocation of the \algdsk procedure.
 
