@@ -56,7 +56,7 @@
 \newcommand{\algname}[1]{\ensuremath{\mathsf{#1}}\xspace}
 \newcommand{\algsetup}{\algname{Setup}}
 \newcommand{\algcheck}{\algname{Check}}
-\newcommand{\algkgen}{\algname{KGen}}
+\newcommand{\algkgen}{\algname{KeyGen}}
 \newcommand{\algdpk}{\algname{DerivePK}}
 \newcommand{\algdsk}{\algname{DeriveSK}}
 
@@ -79,8 +79,8 @@
 \let\oldbdv\bdv\renewcommand{\bdv}{\oldbdv\xspace}
 \let\oldprf\prf\renewcommand{\prf}{\oldprf\xspace}
 \newcommand{\Oracle}{\ensuremath{\mathcal{O}}}
-\newcommand{\Opkp}{\ensuremath{\Oracle_\pkp}\xspace}
-\newcommand{\Oskp}{\ensuremath{\Oracle_\skp}\xspace}
+\newcommand{\Opkp}{\ensuremath{\Oracle_{\pkp}}\xspace}
+\newcommand{\Oskp}{\ensuremath{\Oracle_{\skp}}\xspace}
 \newcommand{\pklist}{\ensuremath{\mathsf{PKList}}\xspace}
 \newcommand{\sklist}{\ensuremath{\mathsf{SKList}}\xspace}
 \newcommand{\expmsksbase}{\experiment{\msks}{\ALGBASE,\adv}}
@@ -100,17 +100,17 @@
 Hierarchical Deterministic Keys (HDK) is a draft specification
 using key blinding techniques including ARKG
 to create hierarchies of keys all derived from a single root secret key,
-in such a way that only the root secret key needs to be kept in a secure environment
-and new public keys can be generated without access to the root secret key.
+in such a way that only the root secret key needs to be kept in a secure element (SE)
+and new public keys can be generated without invoking the SE.
 However, when ARKG is used in HDK, the original ARKG procedures
-would require one invocation of \algdsk per HDK layer when exercising derived private keys.
-This is undesirable in contexts where each invocation would require a distinct user gesture.
+would require one SE invocation per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each SE invocation would require a distinct user gesture.
 
-To address this we analyze the security of \ALGNAME, an extension of \ALGBASE for better compatibility with HDK.
-\ALGBASE is in turn a post-quantum compatible generalization of ARKG.
-\ALGNAME enables any number of HDK layers with a single call to the root private~key.
-We demonstrate that \ALGNAME retains the key security properties of \ALGBASE
-by a straightforward reduction of the key security experiment.
+To address this we analyze the security of an ARKG extension \ALGNAME
+that enables any number of HDK layers with a single SE invocation.
+We base \ALGNAME on the ARKG generalization \ALGBASE,
+and demonstrate that it retains \msks security
+by a straightforward reduction of the security experiment.
 \end{abstract}
 
 
@@ -118,11 +118,11 @@ by a straightforward reduction of the key security experiment.
 Hierarchical Deterministic Keys (HDK) \cite{HDK} is a draft specification
 using key blinding techniques including ARKG \cite{ARKG}
 to create hierarchies of keys all derived from a single root secret key,
-in such a way that only the root secret key needs to be kept in a secure environment
-and new public keys can be generated without access to the root secret key.
+in such a way that only the root secret key needs to be kept in a secure element (SE)
+and new public keys can be generated without invoking the SE.
 However, when ARKG is used in HDK, the original ARKG procedures
-would require one invocation of \algdsk per HDK layer when exercising derived private keys.
-This is undesirable in contexts where each invocation would require a distinct user gesture.
+would require one SE invocation of \algdsk per HDK layer when exercising derived private keys.
+This is undesirable in contexts where each SE invocation would require a distinct user gesture.
 One such context is the WebAuthn ``sign'' extension \cite{webauthn-sign}
 proposed to introduce general-purpose signing capabilities to the Web Authentication API (WebAuthn) \cite{webauthn},
 including signing using private keys derived via ARKG.
@@ -130,7 +130,7 @@ Since WebAuthn requires a user gesture for any signing operation,
 HDK operations based on this ``sign'' extension would also require one user gesture per HDK layer.
 
 The ARKG construction in \cite{ARKG} is based upon \ALGBASE \cite{Wilson},
-a post-quantum compatible generalization of the original ARKG \cite{Frymann2020}.
+a~post-quantum compatible generalization of the original ARKG \cite{Frymann2020}.
 Here we propose and analyze \ALGNAME, an extension of pqARKG for better compatibility with HDK.
 \ALGNAME enables any number of HDK layers with a single invocation of the \algdsk procedure.
 
@@ -144,13 +144,14 @@ that \ALGNAME retains the \msks property of \ALGBASE.
 
 Here we repeat the definition of \ALGBASE and its \msks security experiment \cite{Wilson}.
 The instance parameters are a key blinding scheme \bl,
-a key encapsulation mechanism (KEM) \kem
+a~key encapsulation mechanism (KEM) \kem
 and a pseudo-random function \prf outputting blinding factors in the domain of \bl.
 
 \ALGBASE is defined as the suite of procedures in \figref{pqarkg}.
 The \msks security experiment for \ALGBASE is defined in \figref{exp-msks-pqarkg}.
 \footnote{We have corrected a misprint in \cite{Wilson} writing $\tau$ in place of $k$ on line 3 of \Oskp,
-and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
+renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp,
+and~made explicit the argument \pub to \algcheck.}
 
 \begin{figure}
   \figlabel{pqarkg}
@@ -204,8 +205,8 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
       (\sk, \pk) \sample \algkgen() \\
       (\skstar, \pkstar, \credstar) \sample \adv^{\Opkp, \Oskp}(\pub, \pk) \\
       \skp \leftarrow \algdsk(\pub, \sk, \credstar) \\
-      \pcreturn \algblcheck(\skstar, \pkstar) \\
-      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \pcreturn \algcheck(\pub, \skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algcheck(\pub, \skp, \pkstar) \\
       \hphantom{\pcreturn} \land \left[ \credstar \not\in \sklist \right]
     }
     \bigskip
@@ -224,7 +225,7 @@ and~renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp.}
     \defproc{\Oskp(c, \aux)}{
       \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
       \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
-      k \leftarrow \algkemdec(\pkkem, c) \\
+      k \leftarrow \algkemdec(\skkem, c) \\
       \tau \leftarrow \prf(k, \aux) \\
       \pcreturn \algblbsk(\skbl, \tau)
     }
@@ -245,7 +246,8 @@ on top of the one performed by the ARKG subordinate party (the party generating 
 To~prevent choosing $b = -\tau$ so that it cancels the blinding factor~$\tau$
 computed in step~2 of~\algdsk of~\ALGBASE, this~$b$ is also mixed into the PRF arguments to compute~$\tau$.
 This disrupts any algebraic relationship between $b$ and~$\tau$,
-thus preventing the a compromised subordinate party from extracting the private seed~\sk by a malicious choice of~$b$.
+thus preventing extraction of the private seed~\sk by a malicious choice of~$b$
+even if a derived private key \skp is leaked.
 
 The new argument mixed into the PRF is however not $b$ directly,
 but a blinded public key~\pkbd incorporating the blinding factor~$b$.
@@ -341,8 +343,8 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
       (\sk, \pk) \sample \algkgen() \\
       (\skstar, \pkstar, \bstar, \credstar) \sample \bdv^{\Opkp, \Oskp}(\pub, \pk) \\
       \skp \leftarrow \algdsk(\pub, \pkbl, \sk, \bstar, \credstar) \\
-      \pcreturn \algblcheck(\skstar, \pkstar) \\
-      \hphantom{\pcreturn} \land \algblcheck(\skp, \pkstar) \\
+      \pcreturn \algcheck(\pub, \skstar, \pkstar) \\
+      \hphantom{\pcreturn} \land \algcheck(\pub, \skp, \pkstar) \\
       \hphantom{\pcreturn} \land \left[ (\bstar, \credstar) \not\in \sklist \right]
     }
     \bigskip
@@ -427,9 +429,9 @@ To prove that \adv wins its game precisely when \bdv wins its game, we observe t
 For the first condition this holds because by definition of \skstar and \pkstar, and applying the unique blinding and private-key unblinding properties,
 
 \begin{align*}
-  \algblcheck(\skstar, \pkstar)
-  &= \algblcheck(\algblusk(\barvar{\skstar}, \barvar{\bstar}), \algblupk(\barvar{\pkstar}, \barvar{\bstar})) \\
-  &= \algblcheck(\barvar\skstar, \barvar\pkstar).
+  \algblcheck(\pub, \skstar, \pkstar)
+  &= \algblcheck(\pub, \algblusk(\barvar{\skstar}, \barvar{\bstar}), \algblupk(\barvar{\pkstar}, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \barvar\skstar, \barvar\pkstar).
 \end{align*}
 
 For the second condition this holds because of the following argument.
@@ -457,11 +459,11 @@ $$ \skp = \algblusk(\barvar{\skp}, \barvar{\bstar}) $$
 so by the definitions of unblinding and unique blinding,
 the second condition in \expmsksnew is equivalent to
 \begin{align*}
-  \algblcheck(\barvar\skp,\barvar\pkstar)
-  &= \algblcheck(\barvar\skp, \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) \\
-  &= \algblcheck(\barvar\skp, \algblbpk(\pkstar, \barvar{\bstar})) \\
-  &= \algblcheck(\algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) \\
-  &= \algblcheck(\skp, \pkstar).
+  \algblcheck(\pub, \barvar\skp,\barvar\pkstar)
+  &= \algblcheck(\pub, \barvar\skp, \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \barvar\skp, \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \skp, \pkstar).
 \end{align*}
 
 For the third condition this holds because \adv only appends to \sklist when invoking \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
