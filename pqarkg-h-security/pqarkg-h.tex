@@ -8,11 +8,12 @@
 \usepackage[keys,lambda,sets,adversary,advantage,events,logic,operators,probability,ff,primitives]{cryptocode}
 \usepackage{xspace}
 \usepackage{draftwatermark}
+\usepackage{amsthm}
 
 \addbibresource{pqarkg-h.bib}
 
 \author{Emil Lundberg\\Yubico AB\\emil@yubico.com}
-\title{pqARKG-H: An extension of pqARKG for Hierarchical Deterministic Keys}
+\title{Quantum-safe Hierarchical Deterministic Keys with the pqARKG-H extension}
 
 \SetWatermarkText{Draft}
 \SetWatermarkScale{8}
@@ -86,7 +87,11 @@
 \newcommand{\expmsksnew}{\experiment{\msks}{\ALGNAME,\bdv}}
 \newcommand{\explain}[1]{\left\{\text{#1}\right\}}
 
+\newcommand{\id}{\ensuremath{\mathsf{id_\Delta}}}
+
 \let\oldconcat\concat\renewcommand{\concat}{\oldconcat\,}
+
+\newtheorem{theorem}{Theorem}[section]
 
 \begin{document}
 \maketitle
@@ -236,8 +241,8 @@ Here we define our modified \ALGNAME scheme and a corresponding \msks security e
 
 A new parameter~$b$ is added to the \algdpk and \algdsk functions.
 This~$b$ is an additional blinding factor in the key blinding scheme~\bl,
-allowing the ARKG subordinate party (the party generating public keys) to add any number of additional blinding layers
-on top of the one performed by the ARKG delegating party (the party holding the ARKG private seed).
+allowing the ARKG delegating party (the party holding the ARKG private seed) to add any number of additional blinding layers
+on top of the one performed by the ARKG subordinate party (the party generating public keys).
 To~prevent choosing $b = -\tau$ so that it cancels the blinding factor~$\tau$
 computed in step~2 of~\algdsk of~\ALGBASE, this~$b$ is also mixed into the PRF arguments to compute~$\tau$.
 This disrupts any algebraic relationship between $b$ and~$\tau$,
@@ -246,12 +251,11 @@ even if a derived private key \skp is leaked.
 
 The new argument mixed into the PRF is however not $b$ directly,
 but a blinded public key~\pkbd incorporating the blinding factor~$b$.
-This enables the subordinate party to prove to a third party that a public key was generated using \ALGNAME
-without having to disclose~$b$.
-This is desirable if the subordinate party does not wish to reveal
-the relationship with keys from other branches of an HDK tree which might be used for unrelated purposes;
-knowing~$b$ would enable the third party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
-Instead, the third party may receive $k$ and~\aux and recompute steps 3-5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
+This enables the delegating party to share a derived public \ALGNAME seed with a subordinate party without having to disclose~$b$.
+This is desirable if the delegating party does not wish to reveal
+the relationship with other keys in an HDK tree which might be used for unrelated purposes;
+knowing~$b$ would enable the subordinate party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
+Instead, the subordinate party may determine $k$ and~\aux and compute steps 3--5 of \algdpk with $\pkbl=\pkbd$ and~$b=\id$,
 the identity blinding factor,
 and thus be convinced that \pkp was generated from the claimed public seed~\pkbd.
 
@@ -262,9 +266,9 @@ This~\pkbl parameter may be eliminated in instantiations where~\pkbl can be comp
 \ALGNAME requires three additional properties of the the key blinding scheme~\bl:
 
 \begin{enumerate}
-\item{There exists an \emph{identity blinding factor}, denoted $1$,
+\item{There exists an \emph{identity blinding factor}, denoted \id,
   such that
-  $$ \algblbpk(\pk, 1) = \pk \text{\xspace and \xspace} \algblbsk(\sk, 1) = \sk $$
+  $$ \algblbpk(\pk, \id) = \pk \text{\xspace and \xspace} \algblbsk(\sk, \id) = \sk $$
   for all \pk and \sk.}
 
 \item{\bl supports \emph{public key unblinding} in addition to private key unblinding:
@@ -284,8 +288,8 @@ For example, any construction based on cyclic groups is likely to satisfy these 
 \ALGNAME is defined as the suite of procedures in \figref{pqarkg}.
 The operator~\concat denotes binary concatenation,
 and we assume some well-known encoding is used for $\pkbd$.
-Note that if $\algblbsk(\sk, b)$ is linear in $b$,
-then steps 4-5 of \algdsk may be optimized as "$4. \, \pcreturn \algblbsk(\skbl, b \tau)$".
+Note that if $\algblbsk(\sk, b)$ is linear in $b$ with operation $\circ$,
+then steps 4-5 of \algdsk may be optimized as "$4. \, \pcreturn \algblbsk(\skbl, b\ \circ \tau)$".
 
 \begin{figure}
   \figlabel{pqarkg-h}
@@ -350,13 +354,13 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
     \defproc{\Opkp(b, \aux)}{
       (\pkp, \cred) \sample \algdpk(\pub, \pk, b, \aux) \\
       \pklist \leftarrow \pklist \cup \left\{ \left(\pkp, \cred \right) \right\} \\
-      \pcreturn \pkp, \cred
+      \pcreturn (\pkp, \cred)
     }
     \bigskip
 
     \defproc{\Oskp(b, c, \aux)}{
       \pcif (\cdot, (c, \aux)) \not\in \pklist \pcthen \pcreturn \bot \\
-      \sklist \leftarrow \sklist \cup \left\{ (c, \aux) \right\} \\
+      \sklist \leftarrow \sklist \cup \left\{ (b, (c, \aux)) \right\} \\
       \pcreturn \algdsk(\pub, \pkbl, \sk, b, (c, \aux))
     }
   \end{minipage}
@@ -366,19 +370,25 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
 
 \section{Reduction of \ALGBASE to \ALGNAME in \msks security experiment}
 
-We now show that \ALGNAME is \msks secure
-by showing that an adversary \bdv that defeats \expmsksnew
-also defeats \expmsksbase.
-Given such an adversary \bdv,
-we construct an adversary \adv that defeats \expmsksbase
-as defined in \figref{adv-reduction}.
+We now show that \ALGNAME can satisfy malicious strong key security \msks. The proof requires two additional properties of some key blinding schemes that are defined in \cite{Wilson}: unique blinding and private-key unblinding. Recall from \cite{Wilson} that \ALGBASE satisfies \msks when instantiated with a key blinding scheme that provides these properties. Therefore a reduction proof from \ALGNAME to \ALGBASE suffices.
+
+\begin{theorem}
+Let \ALGNAME be the ARKG construction described in \figref{pqarkg-h}, instantiated with a key blinding scheme \bl that provides unique blinding and supports private-key unblinding. For any efficient adversary \bdv, there exists an efficient algorithm \adv such that
+$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
+where the security experiment \msks is defined in \figref{exp-msks-pqarkg-h} for \ALGNAME and in \figref{exp-msks-pqarkg} for \ALGBASE.
+\end{theorem}
+
+\begin{proof}
+
+Given an adversary \bdv that defeats \expmsksnew,
+we construct an adversary \adv that defeats \expmsksbase.
 
 \begin{figure}
   \figlabel{adv-reduction}
   \centering
   \begin{minipage}[t]{0.6\linewidth}
     \defproc{\adv^{\Opkp, \Oskp}(\pub = (\bl, \kem, \prf), \pk = (\pkbl, \pkkem))}{
-      (\barvar{\skstar}, \barvar{\pkstar}, \barvar{\bstar}, \barvar{\credstar}) \sample \bdv^{\barvar{\Opkp}, \barvar{\Oskp}}(\pub, \pk) \\
+      (\barvar{\skstar}, \barvar{\pkstar}, \barvar{\bstar}, (\barvar{\cstar}, \barvar{\auxstar})) \sample \bdv^{\barvar{\Opkp}, \barvar{\Oskp}}(\pub, \pk) \\
       \skstar \leftarrow \algblusk(\barvar{\skstar}, \barvar{\bstar}) \\
       \pkstar \leftarrow \algblupk(\barvar{\pkstar}, \barvar{\bstar}) \\
       \pkbsd \leftarrow \algblbpk(\pkbl, \barvar{\bstar}) \\
@@ -414,72 +424,54 @@ computed using the blinding factor $\barvar{\bstar}=\bstar$ returned by~\bdv,
 thus~\ALGNAME produces the same $\tau$ on line 3 of its \algdpk and \algdsk functions
 as \ALGBASE does on line 2 of its \algdpk and \algdsk functions.
 
-We see that \adv passes the conditions on lines 7-9 of \expmsksbase:
+To prove that \adv wins its game precisely when \bdv wins its game, we observe that \adv passes each of the three conditions on lines 7--9 of \expmsksbase if and only if \bdv passes the corresponding condition from the ones on lines 7--9 of \expmsksnew.
 
-\begin{itemize}
-\item{$\algcheck(\pub, \skstar, \pkstar)$ succeeds because:
+For the first condition this holds because by definition of \skstar and \pkstar, and applying the unique blinding and private-key unblinding properties,
 
-  $\skstar = \algblusk(\barvar{\skstar}, \barvar{\bstar})$ and $\pkstar = \algblupk(\barvar{\pkstar}, \barvar{\bstar})$.
-  Therefore by the definitions of unblinding and unique blinding,
-  \adv passes its $\algcheck(\pub, \skstar, \pkstar)$ condition precisely when \bdv does.
-}
+\begin{align*}
+  \algblcheck(\pub, \skstar, \pkstar)
+  &= \algblcheck(\pub, \algblusk(\barvar{\skstar}, \barvar{\bstar}), \algblupk(\barvar{\pkstar}, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \barvar\skstar, \barvar\pkstar).
+\end{align*}
 
-\item{$\algcheck(\pub, \skp, \pkstar)$ succeeds because:
+For the second condition this holds because of the following argument.
+First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
+and therefore
+$$ \tau = \prf(\algkemdec(\skkem, \cstar), \auxstar) = \prf(\algkemdec(\skkem, \barvar{\cstar}), \pkbsd \concat \barvar{\auxstar}) $$
+so \algdsk on line~6 of \expmsksbase computes the same $\tau$ as on line~6 of \expmsksnew.
+The above gives
+\begin{align*}
+  \skp &= \algdsk(\pub, \sk, \credstar) \\
+  &= \algblbsk(\skbl, \prf(\algkemdec(\skkem, \cstar), \auxstar)) \\
+  &= \algblbsk(\skbl, \tau)
+\end{align*}
+where $\credstar = (\cstar, \auxstar)$.
+Let \barvar{\skp} be an alias of the target symbol on line 6 of \expmsksnew.
+Then
+\begin{align*}
+  \barvar{\skp} &= \algdsk(\pub, \pkbl, \sk, \barvar{\bstar}, \barvar{\credstar}) \\
+  &= \algblbsk(\algblbsk(\skbl, \barvar{\bstar}), \tau) \\
+  &= \algblbsk(\algblbsk(\skbl, \tau), \barvar{\bstar}) \\
+  &= \algblbsk(\skp, \barvar{\bstar})
+\end{align*}
+and therefore
+$$ \skp = \algblusk(\barvar{\skp}, \barvar{\bstar}) $$
+so by the definitions of unblinding and unique blinding,
+the second condition in \expmsksnew is equivalent to
+\begin{align*}
+  \algblcheck(\pub, \barvar\skp,\barvar\pkstar)
+  &= \algblcheck(\pub, \barvar\skp, \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \barvar\skp, \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) \\
+  &= \algblcheck(\pub, \skp, \pkstar).
+\end{align*}
 
-  First, observe that $\cstar = \barvar{\cstar}$ and $\auxstar = \pkbsd \concat \barvar{\auxstar}$,
-  and therefore
-  $$ \tau = \prf(\algkemdec(\skkem, \cstar), \auxstar) = \prf(\algkemdec(\skkem, \barvar{\cstar}), \pkbsd \concat \barvar{\auxstar}) $$
-  so \algdsk on line~6 of \expmsksbase computes the same $\tau$ as on line~6 of \expmsksnew.
+For the third condition this holds because \adv only appends to \sklist when invoking \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
+Therefore if \bdv does not invoke \barvar{\Oskp} with arguments $(\bstar, \cstar, \auxstar)$,
+then \adv also does not invoke \Oskp with arguments $(\cstar, \auxstar)$.
+This is the case when \bdv wins its game, therefore \adv passes the condition  $(\cstar, \auxstar) \not\in \sklist$ whenever \bdv does.
 
-  The above gives
-  \begin{align*}
-    \skp &=& \algdsk(\pub, \sk, \credstar) &= \\
-    &=& \algblbsk(\skbl, \prf(\algkemdec(\skkem, \cstar), \auxstar)) \\
-    &=& \algblbsk(\skbl, \tau)
-  \end{align*}
-  where $\credstar = (\cstar, \auxstar)$.
-
-  Let \barvar{\skp} be an alias of the \skp on line 6 of \expmsksnew.
-  Then
-
-  \begin{align*}
-    \barvar{\skp} &=& \algdsk(\pub, \pkbl, \sk, \barvar{\bstar}, \barvar{\credstar}) &= \\
-    &=& \algblbsk(\algblbsk(\skbl, \barvar{\bstar}), \tau) &= \\
-    &=& \algblbsk(\algblbsk(\skbl, \tau), \barvar{\bstar}) &= \\
-    &=& \algblbsk(\skp, \barvar{\bstar}) \\
-    &\Longrightarrow& \skp = \algblusk(\barvar{\skp}, \barvar{\bstar})
-  \end{align*}
-
-  so by the definitions of unblinding and unique blinding,
-  the $\algcheck(\pub, \skp, \pkstar)$ condition in \expmsksnew is equivalent to
-
-  \begin{align*}
-    & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \barvar{\pkstar}) = \\
-    = & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\algblupk(\barvar{\pkstar}, \barvar{\bstar}), \barvar{\bstar})) = \\
-    = & \algcheck(\pub, \algblbsk(\skp, \barvar{\bstar}), \algblbpk(\pkstar, \barvar{\bstar})) = \\
-    = & \algcheck(\pub, \skp, \pkstar)
-  \end{align*}
-
-  which is precisely the condition on line 8 of \expmsksbase.
-  Therefore \adv passes its $\algcheck(\pub, \skp, \pkstar)$ condition precisely when \bdv~does.
-}
-
-\item{$(\cstar, \auxstar) \not\in \sklist$ succeeds because:
-
-  \sklist is appended to only when \adv invokes \Oskp, which it does only when \bdv invokes \barvar{\Oskp}.
-  Therefore if \bdv does not invoke \barvar{\Oskp} with arguments $(\bstar, \cstar, \auxstar)$,
-  then \adv also does not invoke \Oskp with arguments $(\cstar, \auxstar)$.
-  This is the case when \bdv wins its game, therefore \adv passes this condition when \bdv does.
-}
-
-\end{itemize}
-
-In conclusion, we see that \adv wins its game precisely when \bdv wins its game,
-therefore the advantages are equal:
-
-$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
-
-Thus we conclude that \ALGNAME retains the \msks property of \ALGBASE.
+\end{proof}
 
 
 \section{Acknowledgements}
