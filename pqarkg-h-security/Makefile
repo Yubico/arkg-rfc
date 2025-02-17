@@ -6,7 +6,7 @@ auto:
 force: clean all
 
 clean:
-	rm -f *.aux *.log *.out *.pdf
+	rm -f *.aux *.bbl *.bcf *.blg *.fdb_latexmk *.fls *.log *.out *.pdf *.run.xml
 
 %.pdf: %.tex %.bib
 	latexmk -pdf pqarkg-h
