@@ -246,14 +246,16 @@ even if a derived private key \skp is leaked.
 
 The new argument mixed into the PRF is however not $b$ directly,
 but a blinded public key~\pkbd incorporating the blinding factor~$b$.
-This enables the subordinate party to prove to a third party that a public key was generated using \ALGNAME
-without having to disclose~$b$.
+This enables the subordinate party to prove to a third party
+that a derived key pair $(\skp, \pkp)$ is cryptographically associated with a given \ALGNAME seed
+-- meaning that knowing \skp is equivalent to knowing the \ALGNAME private seed --
+without disclosing~$b$.
 This is desirable if the subordinate party does not wish to reveal
-the relationship with keys from other branches of an HDK tree which might be used for unrelated purposes;
-knowing~$b$ would enable the third party to unblind the derived public key~\pkp to reveal the root public seed~\pkbl.
-Instead, the third party may receive $k$ and~\aux and recompute steps 3-5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
+the relationship with other keys in an HDK tree which might be used for unrelated purposes;
+knowing~$b$ would enable the third party to unblind~\pkp to reveal the root public seed~\pkbl.
+Instead, the subordinate party may receive $k$ and~\aux and recompute steps 3--5 of \algdpk with $\pkbl=\pkbd$ and~$b=1$,
 the identity blinding factor,
-and thus be convinced that \pkp was generated from the claimed public seed~\pkbd.
+and thus be convinced that \pkp is cryptographically associated with the claimed public seed~\pkbd.
 
 Finally, the \algdsk function of~\ALGNAME also receives the blinding key \pkbl as a new parameter
 in order to reconstruct the same PRF output as~\algdpk.
