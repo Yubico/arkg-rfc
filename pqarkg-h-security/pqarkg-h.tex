@@ -151,7 +151,6 @@ renamed the variable $\mathsf{ck}$ to $\tau$ in \Opkp,
 and~made explicit the argument \pub to \algcheck.}
 
 \begin{figure}
-  \figlabel{pqarkg}
   \centering
   \begin{minipage}{0.6\linewidth}
 
@@ -188,11 +187,11 @@ and~made explicit the argument \pub to \algcheck.}
 
   \end{minipage}
   \caption{Algorithms of the \ALGBASE scheme \cite{Wilson}.}
+  \figlabel{pqarkg}
 \end{figure}
 
 
 \begin{figure}
-  \figlabel{exp-msks-pqarkg}
   \centering
   \begin{minipage}[t]{0.5\linewidth}
     \defproc{\expmsksbase(\secpar)}{
@@ -228,6 +227,7 @@ and~made explicit the argument \pub to \algcheck.}
     }
   \end{minipage}
   \caption{The \msks security experiment for \ALGBASE~\cite{Wilson}.}
+  \figlabel{exp-msks-pqarkg}
 \end{figure}
 
 
@@ -292,7 +292,6 @@ The operator~\concat denotes binary concatenation,
 and we assume some well-known encoding is used for $\pkbd$.
 
 \begin{figure}
-  \figlabel{pqarkg-h}
   \centering
   \begin{minipage}{0.7\linewidth}
 
@@ -322,6 +321,7 @@ and we assume some well-known encoding is used for $\pkbd$.
     Algorithms of the \ALGNAME scheme.
     The \algsetup, \algcheck and \algkgen algorithms are unchanged from \ALGBASE.
   }
+  \figlabel{pqarkg-h}
 \end{figure}
 
 We also modify the \msks security experiment accordingly,
@@ -333,7 +333,6 @@ Finally, the check against \bdv trivially querying \Oskp for a solution
 is relaxed to forbid only the exact combination of \bstar and \credstar returned as the solution.
 
 \begin{figure}
-  \figlabel{exp-msks-pqarkg-h}
   \centering
   \begin{minipage}[t]{0.5\linewidth}
     \defproc{\expmsksnew(\secpar)}{
@@ -365,6 +364,7 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
     }
   \end{minipage}
   \caption{The \msks security experiment for \ALGNAME.}
+  \figlabel{exp-msks-pqarkg-h}
 \end{figure}
 
 
@@ -378,7 +378,6 @@ we construct an adversary \adv that defeats \expmsksbase
 as defined in \figref{adv-reduction}.
 
 \begin{figure}
-  \figlabel{adv-reduction}
   \centering
   \begin{minipage}[t]{0.6\linewidth}
     \defproc{\adv^{\Opkp, \Oskp}(\pub = (\bl, \kem, \prf), \pk = (\pkbl, \pkkem))}{
@@ -407,6 +406,7 @@ as defined in \figref{adv-reduction}.
     }
   \end{minipage}
   \caption{Reduction of \expmsksbase to \expmsksnew.}
+  \figlabel{adv-reduction}
 \end{figure}
 
 When invoked, this adversary \adv simply invokes the given adversary \bdv with its own challenge.
