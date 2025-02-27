@@ -27,7 +27,7 @@ author:
 - role: editor
   fullname: Emil Lundberg
   organization: Yubico
-  street: Kungsgatan 44
+  street: Gävlegatan 22
   city: Stockholm
   country: SE
   email: emil@emlun.se
