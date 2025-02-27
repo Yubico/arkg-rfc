@@ -1058,7 +1058,7 @@ This section registers the following values in the IANA "COSE Key Types" registr
 - Name: Ref-ARKG-derived
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
-  - Capabilities: \[kty(-65538), kh\]
+  - Capabilities: \[kty(-65538), kh, info\]
   - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
