@@ -1168,24 +1168,30 @@ TODO
 
 # Document History
 
-- 00 Initial Version
+-00
 
-- 01 Editorial Fixes to formatting and references.
+* Initial Version
 
-- 02
-  - Rewritten introduction.
-  - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
-  - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
-  - Eliminated top-level MAC and KDF instance parameters.
-  - Added info parameter to instance parameter functions.
-  - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
-  - Added curve/edwards25519/448 instances.
-  - Added proposal for COSE bindings and key reference types.
+-01
 
-- 03
-  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
-  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
-  - Added reference to Shoup for definition of key encapsulation mechanism.
-  - Added CDDL definition of COSE_Key_Ref
-  - Editorial fixes to references.
-  - Renamed proposed COSE Key Types.
+* Editorial Fixes to formatting and references.
+
+-02
+
+* Rewritten introduction.
+* Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+* Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
+* Eliminated top-level MAC and KDF instance parameters.
+* Added info parameter to instance parameter functions.
+* Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
+* Added curve/edwards25519/448 instances.
+* Added proposal for COSE bindings and key reference types.
+
+-03
+
+* Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
+* Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
+* Added reference to Shoup for definition of key encapsulation mechanism.
+* Added CDDL definition of COSE_Key_Ref
+* Editorial fixes to references.
+* Renamed proposed COSE Key Types.
