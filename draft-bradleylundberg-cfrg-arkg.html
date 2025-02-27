@@ -1273,6 +1273,9 @@ We expect that additional instances will be defined in the future.<a href="#sect
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-cose-key-type-parameters-re" class="internal xref">COSE Key Type Parameters Registrations</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-cose-algorithms-registratio" class="internal xref">COSE Algorithms Registrations</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
@@ -2412,19 +2415,122 @@ and references <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D
         </h3>
 <p id="section-5.1-1">An ARKG public seed is represented as a COSE_Key structure <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>
 with <code>kty</code> value TBD (placeholder value -65537).
-This key type defines key type parameters -1 and -2 for the <code>BL</code> and <code>KEM</code> public key, respectively.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">The <code>alg</code> parameter, when present,
-defines the <code>alg</code> parameter of ARKG derived public keys derived from this ARKG public seed.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
-restricted to generating derived public keys for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-5.1-4">
+<a href="#tbl-arkg-pub-params" class="auto internal xref">Table 1</a> defines key type parameters <code>pkbl</code> (-1) and <code>pkkem</code> (-2) for the <code>BL</code> and <code>KEM</code> public key, respectively,
+as well as key type parameter <code>dkalg</code> (-3), representing the algorithm that derived public and private keys are to be used with.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<span id="name-cose-key-type-parameters-fo"></span><div id="tbl-arkg-pub-params">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-cose-key-type-parameters-fo" class="selfRef">COSE key type parameters for the ARKG-pub key type.</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Label</th>
+              <th class="text-left" rowspan="1" colspan="1">Value type</th>
+              <th class="text-left" rowspan="1" colspan="1">Required?</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">pkbl</td>
+              <td class="text-left" rowspan="1" colspan="1">-1</td>
+              <td class="text-left" rowspan="1" colspan="1">COSE_Key</td>
+              <td class="text-left" rowspan="1" colspan="1">Required</td>
+              <td class="text-left" rowspan="1" colspan="1">BL key of ARKG public seed</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">pkkem</td>
+              <td class="text-left" rowspan="1" colspan="1">-2</td>
+              <td class="text-left" rowspan="1" colspan="1">COSE_Key</td>
+              <td class="text-left" rowspan="1" colspan="1">Required</td>
+              <td class="text-left" rowspan="1" colspan="1">KEM key of ARKG public seed</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">dkalg</td>
+              <td class="text-left" rowspan="1" colspan="1">-3</td>
+              <td class="text-left" rowspan="1" colspan="1">int / tstr</td>
+              <td class="text-left" rowspan="1" colspan="1">Optional</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <code>alg</code> parameter of public and private keys derived from this ARKG public seed</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-5.1-3">When <code>dkalg</code> (-3) is present in an ARKG public seed,
+the <code>alg</code> (3) parameter of public keys derived using <code>ARKG-Derive-Public-Key</code> with that seed
+<span class="bcp14">SHOULD</span> be set to the <code>dkalg</code> (-3) value of the seed.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">The <code>alg</code> (3) parameter, when present,
+identifies the ARKG instance this public seed is to be used with.
+<a href="#tbl-arkg-pub-algs" class="auto internal xref">Table 2</a> defines an initial set of COSE algorithm identifiers for this purpose.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<span id="name-cose-algorithm-identifiers-"></span><div id="tbl-arkg-pub-algs">
+<table class="center" id="table-2">
+          <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-cose-algorithm-identifiers-" class="selfRef">COSE algorithm identifiers to represent ARKG instances.</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-P256ADD-ECDH</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65700)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-P256ADD-ECDH" class="auto internal xref">Section 4.1</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-P384ADD-ECDH</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65701)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-P384ADD-ECDH" class="auto internal xref">Section 4.2</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-P521ADD-ECDH</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65702)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-P521ADD-ECDH" class="auto internal xref">Section 4.3</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-P256kADD-ECDH</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65703)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-P256kADD-ECDH" class="auto internal xref">Section 4.4</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-curve25519ADD-X25519</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65704)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-curve25519ADD-X25519" class="auto internal xref">Section 4.5</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-curve448ADD-X448</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65705)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-curve448ADD-X448" class="auto internal xref">Section 4.6</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-edwards25519ADD-X25519</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65706)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-edwards25519ADD-X25519" class="auto internal xref">Section 4.7</a> of this document</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ARKG-edwards448ADD-X448</td>
+              <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65707)</td>
+              <td class="text-left" rowspan="1" colspan="1">The ARKG instance defined in <a href="#ARKG-edwards448ADD-X448" class="auto internal xref">Section 4.8</a> of this document</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-5.1-6">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256ADD-ECDH</code> public seed
+restricted to generating derived keys for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-6" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.1-7">
 <pre>
 {
-  1: -65537,   ; kty: ARKG-pub
+  1: -65537,   ; kty: ARKG-pub (placeholder value)
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65700,   ; alg: ARKG-P256ADD-ECDH (placeholder value)
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -2442,21 +2548,23 @@ restricted to generating derived public keys for use with the ESP256 <span>[<a h
           9EC7F543043008BC84967A8D875B5D78',
     -3: h'539D57429FCB1C138DA29010A155DCA1
           4566A8F55AC2F1780810C49D4ED72D58',
-  }
+  },
+
+  -3: -9       ; Derived key algorithm: ESP256
 }
-</pre><a href="#section-5.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-5.1-7" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-5">The following is the same example encoded as CBOR:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-6">
+<p id="section-5.1-8">The following is the same example encoded as CBOR:<a href="#section-5.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.1-9">
 <pre>
-h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2032820a40102200121582069380fc1c3b09652134fee
-  fba61776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0b
-  d55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158
-  205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d
-  78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
-  4ed72d588'
-</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
+h'a6013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d2033a000100a320a40102200121582069380fc1c3b096
+  52134feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831
+  462ccb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a40102
+  20012158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a
+  8d875b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f178
+  0810c49d4ed72d582228'
+</pre><a href="#section-5.1-9" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2472,19 +2580,30 @@ This key reference type defines key type parameters -1 and -2 respectively
 for the <code>kh</code> and <code>info</code> parameters of <code>ARKG-Derive-Private-Key</code>.
 The <code>kid</code> (2) parameter identifies the ARKG private seed <code>sk</code>.
 Thus the <code>COSE_Key_Ref</code> structure conveys all arguments to use in <code>ARKG-Derive-Private-Key</code>
-to acquire the referenced private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">A <code>COSE_Key_Ref</code> structure whose <code>kty</code> is TBD (Ref-ARKG-derived, placeholder -65538)
-<span class="bcp14">MUST</span> include the parameters <code>kh</code> (-1) and <code>info</code> (-2) defined in <a href="#tbl-ref-arkg-params" class="auto internal xref">Table 1</a>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<span id="name-cose_key_ref-parameters-for"></span><div id="tbl-ref-arkg-params">
-<table class="center" id="table-1">
+to derive the referenced private key.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2"><a href="#tbl-ref-arkg-params" class="auto internal xref">Table 3</a> defines key type parameters for the Ref-ARKG-derived key type.
+A <code>COSE_Key_Ref</code> structure whose <code>kty</code> is TBD (Ref-ARKG-derived, placeholder -65538)
+<span class="bcp14">MUST</span> include the parameters <code>kh</code> (-1) and <code>info</code> (-2).
+The <code>inst</code> (-3) parameter <span class="bcp14">MAY</span> be used to indicate the ARKG instance
+whose <code>ARKG-Derive-Private-Key</code> procedure to use to derive the private key;
+its value is taken from the IANA "COSE Algorithms" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>
+and an initial set of values is defined in <a href="#tbl-arkg-pub-params" class="auto internal xref">Table 1</a>.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.2-3">If <code>dkalg</code> (-3) is present in the ARKG public seed used in <code>ARKG-Derive-Public-Key</code> to generate the <code>kh</code> value,
+then the <code>alg</code> (3) parameter of the COSE_Key_Ref <span class="bcp14">SHOULD</span> be set to the <code>dkalg</code> (-3) value of the seed.
+If <code>alg</code> (3) is present in the seed,
+then the <code>inst</code> (-3) parameter of the COSE_Key_Ref <span class="bcp14">SHOULD</span> be set to the <code>alg</code> (3) value of the seed.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<span id="name-cose-key-type-parameters-for"></span><div id="tbl-ref-arkg-params">
+<table class="center" id="table-3">
           <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-cose_key_ref-parameters-for" class="selfRef">COSE_Key_Ref parameters for the Ref-ARKG-derived type.</a>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-cose-key-type-parameters-for" class="selfRef">COSE key type parameters for the Ref-ARKG-derived type.</a>
           </caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Name</th>
-              <th class="text-left" rowspan="1" colspan="1">COSE Value</th>
+              <th class="text-left" rowspan="1" colspan="1">Label</th>
+              <th class="text-left" rowspan="1" colspan="1">Value type</th>
+              <th class="text-left" rowspan="1" colspan="1">Required?</th>
               <th class="text-left" rowspan="1" colspan="1">Description</th>
             </tr>
           </thead>
@@ -2492,6 +2611,8 @@ to acquire the referenced private key.<a href="#section-5.2-1" class="pilcrow">�
             <tr>
               <td class="text-left" rowspan="1" colspan="1">kh</td>
               <td class="text-left" rowspan="1" colspan="1">-1</td>
+              <td class="text-left" rowspan="1" colspan="1">bstr</td>
+              <td class="text-left" rowspan="1" colspan="1">Required</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <code>kh</code> argument to <code>ARKG-Derive-Private-Key</code>
 </td>
@@ -2499,23 +2620,32 @@ to acquire the referenced private key.<a href="#section-5.2-1" class="pilcrow">�
             <tr>
               <td class="text-left" rowspan="1" colspan="1">info</td>
               <td class="text-left" rowspan="1" colspan="1">-2</td>
+              <td class="text-left" rowspan="1" colspan="1">bstr</td>
+              <td class="text-left" rowspan="1" colspan="1">Required</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <code>info</code> argument to <code>ARKG-Derive-Private-Key</code>
 </td>
             </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">inst</td>
+              <td class="text-left" rowspan="1" colspan="1">-3</td>
+              <td class="text-left" rowspan="1" colspan="1">int / tstr</td>
+              <td class="text-left" rowspan="1" colspan="1">Optional</td>
+              <td class="text-left" rowspan="1" colspan="1">COSE algorithm identifier of ARKG instance</td>
+            </tr>
           </tbody>
         </table>
 </div>
-<p id="section-5.2-4">The following CDDL example represents a reference to a key derived by <code>ARKG-P256ADD-ECDH</code>
-and restricted for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<div class="lang-cddl sourcecode" id="section-5.2-5">
+<p id="section-5.2-5">The following CDDL example represents a reference to a key derived using <code>ARKG-P256ADD-ECDH</code>
+and restricted for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<div class="lang-cddl sourcecode" id="section-5.2-6">
 <pre>
 {
   1: -65538,   ; kty: Ref-ARKG-derived
                ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -9,       ; alg: ESP256
 
                ; ARKG-P256ADD-ECDH key handle
                ; (HMAC-SHA-256-128 followed by
@@ -2528,18 +2658,21 @@ and restricted for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs
 
                ; info argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
+
+  -3: -65700   ; inst: ARKG-P256ADD-ECDH (placeholder value)
 }
-</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.2-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-6">The following is the same example encoded as CBOR:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2-7">
+<p id="section-5.2-7">The following is the same example encoded as CBOR:<a href="#section-5.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-8">
 <pre>
-h'a5013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25
-  b6a6d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a
-  29499e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2b
-  c4747a842158184578616d706c65206170706c69636174696f6e20696e666f'
-</pre><a href="#section-5.2-7" class="pilcrow">¶</a>
+h'a6013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d404
+  8219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9b
+  aee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84
+  2158184578616d706c65206170706c69636174696f6e20696e666f223a000100
+  a3'
+</pre><a href="#section-5.2-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2700,6 +2833,152 @@ $COSE_kty_ref /= -65538   ; Placeholder value
 </li>
               <li class="normal" id="section-8.2-2.4.2.5">
                 <p id="section-8.2-2.4.2.5.1">Reference: <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>, <a href="#cose-arkg-derived-refs" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.2-2.4.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+        </ul>
+</section>
+</div>
+<div id="cose-algorithms-registrations">
+<section id="section-8.3">
+        <h3 id="name-cose-algorithms-registratio">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-cose-algorithms-registratio" class="section-name selfRef">COSE Algorithms Registrations</a>
+        </h3>
+<p id="section-8.3-1">This section registers the following values in the IANA "COSE Algorithms" registry <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.1">
+            <p id="section-8.3-2.1.1">Name: ARKG-P256ADD-ECDH<a href="#section-8.3-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.1.2.1">
+                <p id="section-8.3-2.1.2.1.1">Value: TBD (placeholder -65700)<a href="#section-8.3-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.2">
+                <p id="section-8.3-2.1.2.2.1">Description: ARKG using ECDH and additive blinding on secp256r1<a href="#section-8.3-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.3">
+                <p id="section-8.3-2.1.2.3.1">Reference: <a href="#ARKG-P256ADD-ECDH" class="auto internal xref">Section 4.1</a> of this document<a href="#section-8.3-2.1.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.1.2.4">
+                <p id="section-8.3-2.1.2.4.1">Recommended: TBD<a href="#section-8.3-2.1.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.2">
+            <p id="section-8.3-2.2.1">Name: ARKG-P384ADD-ECDH<a href="#section-8.3-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.2.2.1">
+                <p id="section-8.3-2.2.2.1.1">Value: TBD (placeholder -65701)<a href="#section-8.3-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.2">
+                <p id="section-8.3-2.2.2.2.1">Description: ARKG using ECDH and additive blinding on secp384r1<a href="#section-8.3-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.3">
+                <p id="section-8.3-2.2.2.3.1">Reference: <a href="#ARKG-P384ADD-ECDH" class="auto internal xref">Section 4.2</a> of this document<a href="#section-8.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.2.2.4">
+                <p id="section-8.3-2.2.2.4.1">Recommended: TBD<a href="#section-8.3-2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.3">
+            <p id="section-8.3-2.3.1">Name: ARKG-P521ADD-ECDH<a href="#section-8.3-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.3.2.1">
+                <p id="section-8.3-2.3.2.1.1">Value: TBD (placeholder -65702)<a href="#section-8.3-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.2">
+                <p id="section-8.3-2.3.2.2.1">Description: ARKG using ECDH and additive blinding on secp521r1<a href="#section-8.3-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.3">
+                <p id="section-8.3-2.3.2.3.1">Reference: <a href="#ARKG-P521ADD-ECDH" class="auto internal xref">Section 4.3</a> of this document<a href="#section-8.3-2.3.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.3.2.4">
+                <p id="section-8.3-2.3.2.4.1">Recommended: TBD<a href="#section-8.3-2.3.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.4">
+            <p id="section-8.3-2.4.1">Name: ARKG-P256kADD-ECDH<a href="#section-8.3-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.4.2.1">
+                <p id="section-8.3-2.4.2.1.1">Value: TBD (placeholder -65703)<a href="#section-8.3-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.2">
+                <p id="section-8.3-2.4.2.2.1">Description: ARKG using ECDH and additive blinding on secp256k1<a href="#section-8.3-2.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.3">
+                <p id="section-8.3-2.4.2.3.1">Reference: <a href="#ARKG-P256kADD-ECDH" class="auto internal xref">Section 4.4</a> of this document<a href="#section-8.3-2.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.4.2.4">
+                <p id="section-8.3-2.4.2.4.1">Recommended: TBD<a href="#section-8.3-2.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.5">
+            <p id="section-8.3-2.5.1">Name: ARKG-curve25519ADD-X25519<a href="#section-8.3-2.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.5.2.1">
+                <p id="section-8.3-2.5.2.1.1">Value: TBD (placeholder -65704)<a href="#section-8.3-2.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.2">
+                <p id="section-8.3-2.5.2.2.1">Description: ARKG using X25519 and additive blinding on curve25519<a href="#section-8.3-2.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.3">
+                <p id="section-8.3-2.5.2.3.1">Reference: <a href="#ARKG-curve25519ADD-X25519" class="auto internal xref">Section 4.5</a> of this document<a href="#section-8.3-2.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.5.2.4">
+                <p id="section-8.3-2.5.2.4.1">Recommended: TBD<a href="#section-8.3-2.5.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.6">
+            <p id="section-8.3-2.6.1">Name: ARKG-curve448ADD-X448<a href="#section-8.3-2.6.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.6.2.1">
+                <p id="section-8.3-2.6.2.1.1">Value: TBD (placeholder -65705)<a href="#section-8.3-2.6.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.2">
+                <p id="section-8.3-2.6.2.2.1">Description: ARKG using X448 and additive blinding on curve448<a href="#section-8.3-2.6.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.3">
+                <p id="section-8.3-2.6.2.3.1">Reference: <a href="#ARKG-curve448ADD-X448" class="auto internal xref">Section 4.6</a> of this document<a href="#section-8.3-2.6.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.6.2.4">
+                <p id="section-8.3-2.6.2.4.1">Recommended: TBD<a href="#section-8.3-2.6.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.7">
+            <p id="section-8.3-2.7.1">Name: ARKG-edwards25519ADD-X25519<a href="#section-8.3-2.7.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.7.2.1">
+                <p id="section-8.3-2.7.2.1.1">Value: TBD (placeholder -65706)<a href="#section-8.3-2.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.7.2.2">
+                <p id="section-8.3-2.7.2.2.1">Description: ARKG using X25519 and additive blinding on edwards25519<a href="#section-8.3-2.7.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.7.2.3">
+                <p id="section-8.3-2.7.2.3.1">Reference: <a href="#ARKG-edwards25519ADD-X25519" class="auto internal xref">Section 4.7</a> of this document<a href="#section-8.3-2.7.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.7.2.4">
+                <p id="section-8.3-2.7.2.4.1">Recommended: TBD<a href="#section-8.3-2.7.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.3-2.8">
+            <p id="section-8.3-2.8.1">Name: ARKG-edwards448ADD-X448<a href="#section-8.3-2.8.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.3-2.8.2.1">
+                <p id="section-8.3-2.8.2.1.1">Value: TBD (placeholder -65707)<a href="#section-8.3-2.8.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.8.2.2">
+                <p id="section-8.3-2.8.2.2.1">Description: ARKG using X448 and additive blinding on edwards448<a href="#section-8.3-2.8.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.8.2.3">
+                <p id="section-8.3-2.8.2.3.1">Reference: <a href="#ARKG-edwards448ADD-X448" class="auto internal xref">Section 4.8</a> of this document<a href="#section-8.3-2.8.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-8.3-2.8.2.4">
+                <p id="section-8.3-2.8.2.4.1">Recommended: TBD<a href="#section-8.3-2.8.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2974,6 +3253,12 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 <ul class="normal">
 <li class="normal" id="appendix-C-10.1">
           <p id="appendix-C-10.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-10.2">
+          <p id="appendix-C-10.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-10.3">
+          <p id="appendix-C-10.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
