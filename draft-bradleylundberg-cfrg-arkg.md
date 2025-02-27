@@ -977,7 +977,7 @@ h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
 ~~~
 
 
-## References to ARKG derived private keys {#cose-arkg-derived-refs}
+## COSE key reference type: ARKG derived private key {#cose-arkg-derived-refs}
 
 A reference to a private key derived using ARKG
 may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
