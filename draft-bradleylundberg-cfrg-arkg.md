@@ -1195,3 +1195,7 @@ TODO
 * Added CDDL definition of COSE_Key_Ref
 * Editorial fixes to references.
 * Renamed proposed COSE Key Types.
+
+-04
+
+* Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
