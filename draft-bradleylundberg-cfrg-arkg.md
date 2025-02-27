@@ -935,7 +935,7 @@ and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
 An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
 {{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively,
-as well as key type parameter `dkalg` (-3) representing the algorithm that derived public and private keys may be used with.
+as well as key type parameter `dkalg` (-3), representing the algorithm that derived public and private keys are to be used with.
 
 {: #tbl-arkg-pub-params title="COSE key type parameters for the ARKG-pub key type."}
 | Name  | Label | Value type | Required? | Description |
@@ -949,7 +949,7 @@ the `alg` (3) parameter of public keys derived using `ARKG-Derive-Public-Key` wi
 SHOULD be set to the `dkalg` (-3) value of the seed.
 
 The `alg` (3) parameter, when present,
-identifies the ARKG instance this public seed may be used with.
+identifies the ARKG instance this public seed is to be used with.
 {{tbl-arkg-pub-algs}} defines an initial set of COSE algorithm identifiers for this purpose.
 
 {: #tbl-arkg-pub-algs title="COSE algorithm identifiers to represent ARKG instances."}
