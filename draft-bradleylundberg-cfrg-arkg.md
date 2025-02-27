@@ -981,13 +981,15 @@ h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
 
 A reference to a private key derived using ARKG
 may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
-whose `kty` is `TBD (placeholder -65538)`.
-This represents the arguments to use in `ARKG-Derive-Private-Key` to acquire the referenced private key:
-the `kid` parameter identifies the ARKG private seed `sk`
-and the `kh` and `info` parameters contain the arguments for the respective parameter of `ARKG-Derive-Private-Key`.
+whose `kty` is `TBD` (Ref-ARKG-derived, placeholder -65538).
+This key reference type defines key type parameters -1 and -2 respectively
+for the `kh` and `info` parameters of `ARKG-Derive-Private-Key`.
+The `kid` (2) parameter identifies the ARKG private seed `sk`.
+Thus the `COSE_Key_Ref` structure conveys all arguments to use in `ARKG-Derive-Private-Key`
+to acquire the referenced private key.
 
-A `COSE_Key_Ref` structure whose `kty` is `TBD (placeholder -65538)`
-MUST include the parameters `kh (-1)` and `info (-2)` defined in {{tbl-ref-arkg-params}}.
+A `COSE_Key_Ref` structure whose `kty` is TBD (Ref-ARKG-derived, placeholder -65538)
+MUST include the parameters `kh` (-1) and `info` (-2) defined in {{tbl-ref-arkg-params}}.
 
 {: #tbl-ref-arkg-params title="COSE_Key_Ref parameters for the Ref-ARKG-derived type."}
 | Name | COSE Value | Description |
@@ -1057,7 +1059,7 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
   - Capabilities: \[kty(-65538), kh\]
-  - Reference: {{cose-arkg-derived-refs}} of this document
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
 
@@ -1067,8 +1069,6 @@ $COSE_kty_ref /= -65538   ; Placeholder value
 
 
 ## COSE Key Type Parameters Registrations
-
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
 
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
@@ -1091,69 +1091,14 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Label: -1
   - CBOR Type: bstr
   - Description: kh argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-arkg-derived-refs}} of this document
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 - Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
   - Name: info
   - Label: -2
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-arkg-derived-refs}} of this document
-
-
-## COSE Algorithms Registrations
-
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
-
-This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
-
-- Name: ESP256-ARKG
-  - Value: TBD (Placeholder -65539)
-  - Description: ESP256 with key derived by ARKG-P256ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ESP384-ARKG
-  - Value: TBD (Placeholder -65540)
-  - Description: ESP384 with key derived by ARKG-P384ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ESP512-ARKG
-  - Value: TBD (Placeholder -65541)
-  - Description: ESP512 with key derived by ARKG-P521ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: ES256K-ARKG
-  - Value: TBD (Placeholder -65542)
-  - Description: ES256K with key derived by ARKG-P256kADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [RFC8812], {{ARKG-P256kADD-ECDH}} of this document
-  - Recommended: Yes
-
-- Name: Ed25519-ARKG
-  - Value: TBD (Placeholder -65543)
-  - Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
-  - Recommended: Yes
-
-- Name: Ed448-ARKG
-  - Value: TBD (Placeholder -65544)
-  - Description: Ed448 with key derived by ARKG-edwards448ADD-X448
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
-  - Recommended: Yes
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 
 # Design rationale
