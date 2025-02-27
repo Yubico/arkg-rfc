@@ -98,7 +98,7 @@ Table of Contents
      4.8.  ARKG-edwards448ADD-X448
    5.  COSE bindings
      5.1.  COSE key type: ARKG public seed
-     5.2.  References to ARKG derived private keys
+     5.2.  COSE key reference type: ARKG derived private key
    6.  Security Considerations
    7.  Privacy Considerations
    8.  IANA Considerations
@@ -1056,7 +1056,7 @@ Table of Contents
      78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
      4ed72d588'
 
-5.2.  References to ARKG derived private keys
+5.2.  COSE key reference type: ARKG derived private key
 
    A reference to a private key derived using ARKG may be represented as
    a COSE_Key_Ref structure [I-D.lundberg-cose-2p-algs] whose kty is TBD
@@ -1414,46 +1414,55 @@ Appendix B.  Test Vectors
 
 Appendix C.  Document History
 
-   *  00 Initial Version
+   -00
 
-   *  01 Editorial Fixes to formatting and references.
+   *  Initial Version
 
-   *  02
+   -01
 
-      -  Rewritten introduction.
+   *  Editorial Fixes to formatting and references.
 
-      -  Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+   -02
 
-      -  Overhauled EC instantiations to use hash_to_field and account
-         for non-prime order curve key generation.
+   *  Rewritten introduction.
 
-      -  Eliminated top-level MAC and KDF instance parameters.
+   *  Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
 
-      -  Added info parameter to instance parameter functions.
+   *  Overhauled EC instantiations to use hash_to_field and account for
+      non-prime order curve key generation.
 
-      -  Added requirement of KEM ciphertext integrity and generic
-         formula for augmenting any KEM using HMAC.
+   *  Eliminated top-level MAC and KDF instance parameters.
 
-      -  Added curve/edwards25519/448 instances.
+   *  Added info parameter to instance parameter functions.
 
-      -  Added proposal for COSE bindings and key reference types.
+   *  Added requirement of KEM ciphertext integrity and generic formula
+      for augmenting any KEM using HMAC.
 
-   *  03
+   *  Added curve/edwards25519/448 instances.
 
-      -  Renamed section "Using HMAC to adapt a KEM without {integrity
-         protection => ciphertext integrity}".
+   *  Added proposal for COSE bindings and key reference types.
 
-      -  Fixed info argument to HMAC in section "Using HMAC to adapt a
-         KEM without ciphertext integrity".
+   -03
 
-      -  Added reference to Shoup for definition of key encapsulation
-         mechanism.
+   *  Renamed section "Using HMAC to adapt a KEM without {integrity
+      protection => ciphertext integrity}".
 
-      -  Added CDDL definition of COSE_Key_Ref
+   *  Fixed info argument to HMAC in section "Using HMAC to adapt a KEM
+      without ciphertext integrity".
 
-      -  Editorial fixes to references.
+   *  Added reference to Shoup for definition of key encapsulation
+      mechanism.
 
-      -  Renamed proposed COSE Key Types.
+   *  Added CDDL definition of COSE_Key_Ref
+
+   *  Editorial fixes to references.
+
+   *  Renamed proposed COSE Key Types.
+
+   -04
+
+   *  Extracted COSE_Key_Ref definition and COSE algorithm registrations
+      to draft-lundberg-cose-two-party-signing-algs.
 
 Contributors
 
