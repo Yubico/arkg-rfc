@@ -1478,6 +1478,7 @@ Contributors
    Michael B. Jones
    Self-Issued Consulting
    United States
+   URI:   https://self-issued.info/
 
 
 Authors' Addresses
