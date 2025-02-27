@@ -46,6 +46,7 @@ contributor:
 
 normative:
   I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
+  I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
   IANA.cose:
   RFC2104:
   RFC4949:
@@ -919,8 +920,8 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
 # COSE bindings {#cose}
 
 This section proposes additions to COSE [RFC9052] to support ARKG use cases.
-The novelty lies primarily in a new key type definition to represent ARKG public seeds
-and new key type definitions to represent references to private keys rather than the keys themselves.
+These consist of new key type definitions to represent ARKG public seeds
+and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
 
 
 ## COSE key type: ARKG public seed {#cose-arkg-pub-seed}
@@ -976,26 +977,23 @@ h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
 ~~~
 
 
-## COSE key reference types {#cose-key-refs}
+## References to ARKG derived private keys {#cose-arkg-derived-refs}
 
-TODO: This should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
+A reference to a private key derived using ARKG
+may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
+whose `kty` is `TBD (placeholder -65538)`.
+This represents the arguments to use in `ARKG-Derive-Private-Key` to acquire the referenced private key:
+the `kid` parameter identifies the ARKG private seed `sk`
+and the `kh` and `info` parameters contain the arguments for the respective parameter of `ARKG-Derive-Private-Key`.
 
-While keys used by many other algorithms can usually be referenced by a single atomic identifier,
-such as that used in the `kid` parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
-users of the function `ARKG-Derive-Secret-Key` need to represent
-a reference to an ARKG private seed along with a key handle for a derived private key.
+A `COSE_Key_Ref` structure whose `kty` is `TBD (placeholder -65538)`
+MUST include the parameters `kh (-1)` and `info (-2)` defined in {{tbl-ref-arkg-params}}.
 
-A COSE key reference is a COSE_Key object whose `kty` value is defined to represent a reference to a key.
-The `kid` parameter MUST be present when `kty` is a key reference type.
-These requirements are encoded in the CDDL [RFC8610] type `COSE_Key_Ref`:
-
-~~~cddl
-COSE_Key_Ref = COSE_Key .within {
-  1 ^ => $COSE_kty_ref   ; kty: Any reference type
-  2 ^ => any,            ; kid is required
-  any => any,            ; Any other entries allowed by COSE_Key
-}
-~~~
+{: #tbl-ref-arkg-params title="COSE_Key_Ref parameters for the Ref-ARKG-derived type."}
+| Name | COSE Value | Description |
+| ---- | ---------- | ----------- |
+| kh   | -1         | `kh` argument to `ARKG-Derive-Private-Key` |
+| info | -2         | `info` argument to `ARKG-Derive-Private-Key` |
 
 The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
 and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
@@ -1059,26 +1057,12 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
   - Capabilities: \[kty(-65538), kh\]
-  - Reference: {{cose-key-refs}} of this document
+  - Reference: {{cose-arkg-derived-refs}} of this document
 
-- Name: Ref-OKP
-  - Value: TBD (Requested assignment -1)
-  - Description: Reference to a key pair of key type "OKP"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-- Name: Ref-EC2
-  - Value: TBD (Requested assignment -2)
-  - Description: Reference to a key pair of key type "EC2"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref`:
+These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
 
 ~~~cddl
 $COSE_kty_ref /= -65538   ; Placeholder value
-$COSE_kty_ref /= -1       ; Value TBD
-$COSE_kty_ref /= -2       ; Value TBD
 ~~~
 
 
@@ -1107,14 +1091,14 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Label: -1
   - CBOR Type: bstr
   - Description: kh argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
+  - Reference: {{cose-arkg-derived-refs}} of this document
 
 - Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
   - Name: info
   - Label: -2
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
+  - Reference: {{cose-arkg-derived-refs}} of this document
 
 
 ## COSE Algorithms Registrations
