@@ -44,6 +44,12 @@ contributor:
   organization: Agency for Digital Government
   country: SE
 
+- fullname: Michael B. Jones
+  ins: M.B. Jones
+  organization: Self-Issued Consulting
+  uri: https://self-issued.info/
+  country: United States
+
 normative:
   I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
   I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
