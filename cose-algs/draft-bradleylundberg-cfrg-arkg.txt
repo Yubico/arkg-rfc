@@ -1012,9 +1012,9 @@ Table of Contents
    An ARKG public seed is represented as a COSE_Key structure [RFC9052]
    with kty value TBD (placeholder value -65537).  Table 1 defines key
    type parameters pkbl (-1) and pkkem (-2) for the BL and KEM public
-   key, respectively, as well as key type parameter dkalg (-3)
-   representing the algorithm that derived public and private keys may
-   be used with.
+   key, respectively, as well as key type parameter dkalg (-3),
+   representing the algorithm that derived public and private keys are
+   to be used with.
 
    +=======+=======+==========+===========+============================+
    | Name  | Label | Value    | Required? | Description                |
@@ -1039,8 +1039,8 @@ Table of Contents
    that seed SHOULD be set to the dkalg (-3) value of the seed.
 
    The alg (3) parameter, when present, identifies the ARKG instance
-   this public seed may be used with.  Table 2 defines an initial set of
-   COSE algorithm identifiers for this purpose.
+   this public seed is to be used with.  Table 2 defines an initial set
+   of COSE algorithm identifiers for this purpose.
 
      +=============================+==============+==================+
      | Name                        | Value        | Description      |
