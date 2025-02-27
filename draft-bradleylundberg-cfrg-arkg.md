@@ -1299,3 +1299,5 @@ TODO
 -04
 
 * Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
+* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key
+* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type
