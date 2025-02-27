@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 18 April 2025                                   15 October 2024
+Expires: 31 August 2025                                 27 February 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,11 +54,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2025.
+   This Internet-Draft will expire on 31 August 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -98,13 +98,12 @@ Table of Contents
      4.8.  ARKG-edwards448ADD-X448
    5.  COSE bindings
      5.1.  COSE key type: ARKG public seed
-     5.2.  COSE key reference types
+     5.2.  References to ARKG derived private keys
    6.  Security Considerations
    7.  Privacy Considerations
    8.  IANA Considerations
      8.1.  COSE Key Types Registrations
      8.2.  COSE Key Type Parameters Registrations
-     8.3.  COSE Algorithms Registrations
    9.  Design rationale
      9.1.  Using a MAC
      9.2.  Implementation Status
@@ -1003,9 +1002,9 @@ Table of Contents
 5.  COSE bindings
 
    This section proposes additions to COSE [RFC9052] to support ARKG use
-   cases.  The novelty lies primarily in a new key type definition to
-   represent ARKG public seeds and new key type definitions to represent
-   references to private keys rather than the keys themselves.
+   cases.  These consist of new key type definitions to represent ARKG
+   public seeds and references [I-D.lundberg-cose-2p-algs] to private
+   keys derived using ARKG.
 
 5.1.  COSE key type: ARKG public seed
 
@@ -1019,7 +1018,7 @@ Table of Contents
 
    The following CDDL [RFC8610] example represents an ARKG-P256ADD-ECDH
    public seed restricted to generating derived public keys for use with
-   the ESP256 [fully-spec-algs] signature algorithm:
+   the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
    {
      1: -65537,   ; kty: ARKG-pub
@@ -1057,34 +1056,34 @@ Table of Contents
      78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
      4ed72d588'
 
-5.2.  COSE key reference types
+5.2.  References to ARKG derived private keys
 
-   TODO: This should eventually move to a separate "algoritm IDs for
-   two-party signing" spec, see:
-   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
-   Z88GpFY/
+   A reference to a private key derived using ARKG may be represented as
+   a COSE_Key_Ref structure [I-D.lundberg-cose-2p-algs] whose kty is TBD
+   (Ref-ARKG-derived, placeholder -65538).  This key reference type
+   defines key type parameters -1 and -2 respectively for the kh and
+   info parameters of ARKG-Derive-Private-Key. The kid (2) parameter
+   identifies the ARKG private seed sk.  Thus the COSE_Key_Ref structure
+   conveys all arguments to use in ARKG-Derive-Private-Key to acquire
+   the referenced private key.
 
-   While keys used by many other algorithms can usually be referenced by
-   a single atomic identifier, such as that used in the kid parameter in
-   a COSE_Key object or in the unprotected header of a COSE_Recipient,
-   users of the function ARKG-Derive-Secret-Key need to represent a
-   reference to an ARKG private seed along with a key handle for a
-   derived private key.
+   A COSE_Key_Ref structure whose kty is TBD (Ref-ARKG-derived,
+   placeholder -65538) MUST include the parameters kh (-1) and info (-2)
+   defined in Table 1.
 
-   A COSE key reference is a COSE_Key object whose kty value is defined
-   to represent a reference to a key.  The kid parameter MUST be present
-   when kty is a key reference type.  These requirements are encoded in
-   the CDDL [RFC8610] type COSE_Key_Ref:
+     +======+============+==========================================+
+     | Name | COSE Value | Description                              |
+     +======+============+==========================================+
+     | kh   | -1         | kh argument to ARKG-Derive-Private-Key   |
+     +------+------------+------------------------------------------+
+     | info | -2         | info argument to ARKG-Derive-Private-Key |
+     +------+------------+------------------------------------------+
 
-   COSE_Key_Ref = COSE_Key .within {
-     1 ^ => $COSE_kty_ref   ; kty: Any reference type
-     2 ^ => any,            ; kid is required
-     any => any,            ; Any other entries allowed by COSE_Key
-   }
+     Table 1: COSE_Key_Ref parameters for the Ref-ARKG-derived type.
 
    The following CDDL example represents a reference to a key derived by
    ARKG-P256ADD-ECDH and restricted for use with the ESP256
-   [fully-spec-algs] signature algorithm:
+   [I-D.jose-fully-spec-algs] signature algorithm:
 
    {
      1: -65538,   ; kty: Ref-ARKG-derived
@@ -1145,43 +1144,17 @@ Table of Contents
 
       -  Description: Reference to private key derived by ARKG
 
-      -  Capabilities: [kty(-65538), kh]
+      -  Capabilities: [kty(-65538), kh, info]
 
-      -  Reference: Section 5.2 of this document
-
-   *  Name: Ref-OKP
-
-      -  Value: TBD (Requested assignment -1)
-
-      -  Description: Reference to a key pair of key type "OKP"
-
-      -  Capabilities: [kty(-1), crv]
-
-      -  Reference: Section 5.2 of this document
-
-   *  Name: Ref-EC2
-
-      -  Value: TBD (Requested assignment -2)
-
-      -  Description: Reference to a key pair of key type "EC2"
-
-      -  Capabilities: [kty(-1), crv]
-
-      -  Reference: Section 5.2 of this document
+      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+         document
 
    These registrations add the following choices to the CDDL [RFC8610]
-   type socket $COSE_kty_ref:
+   type socket $COSE_kty_ref [I-D.lundberg-cose-2p-algs]:
 
    $COSE_kty_ref /= -65538   ; Placeholder value
-   $COSE_kty_ref /= -1       ; Value TBD
-   $COSE_kty_ref /= -2       ; Value TBD
 
 8.2.  COSE Key Type Parameters Registrations
-
-   TODO: These should eventually move to a separate "algoritm IDs for
-   two-party signing" spec, see:
-   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
-   Z88GpFY/
 
    This section registers the following values in the IANA "COSE Key
    Type Parameters" registry [IANA.cose].
@@ -1220,7 +1193,8 @@ Table of Contents
 
       -  Description: kh argument to ARKG-Derive-Private-Key
 
-      -  Reference: Section 5.2 of this document
+      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+         document
 
    *  Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
 
@@ -1232,102 +1206,8 @@ Table of Contents
 
       -  Description: info argument to ARKG-Derive-Private-Key
 
-      -  Reference: Section 5.2 of this document
-
-8.3.  COSE Algorithms Registrations
-
-   TODO: These should eventually move to a separate "algoritm IDs for
-   two-party signing" spec, see:
-   https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-
-   Z88GpFY/
-
-   This section registers the following values in the IANA "COSE
-   Algorithms" registry [IANA.cose].
-
-   *  Name: ESP256-ARKG
-
-      -  Value: TBD (Placeholder -65539)
-
-      -  Description: ESP256 with key derived by ARKG-P256ADD-ECDH
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [fully-spec-algs], Section 4.1 of this document
-
-      -  Recommended: Yes
-
-   *  Name: ESP384-ARKG
-
-      -  Value: TBD (Placeholder -65540)
-
-      -  Description: ESP384 with key derived by ARKG-P384ADD-ECDH
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [fully-spec-algs], Section 4.2 of this document
-
-      -  Recommended: Yes
-
-   *  Name: ESP512-ARKG
-
-      -  Value: TBD (Placeholder -65541)
-
-      -  Description: ESP512 with key derived by ARKG-P521ADD-ECDH
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [fully-spec-algs], Section 4.3 of this document
-
-      -  Recommended: Yes
-
-   *  Name: ES256K-ARKG
-
-      -  Value: TBD (Placeholder -65542)
-
-      -  Description: ES256K with key derived by ARKG-P256kADD-ECDH
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [RFC8812], Section 4.4 of this document
-
-      -  Recommended: Yes
-
-   *  Name: Ed25519-ARKG
-
-      -  Value: TBD (Placeholder -65543)
-
-      -  Description: Ed25519 with key derived by ARKG-
-         edwards25519ADD-X25519
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [fully-spec-algs], Section 4.7 of this document
-
-      -  Recommended: Yes
-
-   *  Name: Ed448-ARKG
-
-      -  Value: TBD (Placeholder -65544)
-
-      -  Description: Ed448 with key derived by ARKG-edwards448ADD-X448
-
-      -  Capabilities: [kty]
-
-      -  Change Controller: TBD
-
-      -  Reference: [fully-spec-algs], Section 4.8 of this document
-
-      -  Recommended: Yes
+      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+         document
 
 9.  Design rationale
 
@@ -1382,10 +1262,19 @@ Table of Contents
 
 10.1.  Normative References
 
-   [fully-spec-algs]
-              Jones, M. B., "Fully-Specified Algorithms for JOSE and
-              COSE", 2024, <https://datatracker.ietf.org/doc/draft-ietf-
-              jose-fully-specified-algorithms/>.
+   [I-D.jose-fully-spec-algs]
+              Jones, M. B. and O. Steele, "Fully-Specified Algorithms
+              for JOSE and COSE", Work in Progress, Internet-Draft,
+              draft-ietf-jose-fully-specified-algorithms-07, 20 February
+              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              jose-fully-specified-algorithms-07>.
+
+   [I-D.lundberg-cose-2p-algs]
+              Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
+              Party Signing", Work in Progress, Internet-Draft, draft-
+              lundberg-cose-two-party-signing-algs-00, 18 February 2025,
+              <https://datatracker.ietf.org/doc/html/draft-lundberg-
+              cose-two-party-signing-algs-00>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
