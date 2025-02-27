@@ -45,17 +45,7 @@ contributor:
   country: SE
 
 normative:
-  fully-spec-algs:
-    title: Fully-Specified Algorithms for JOSE and COSE
-    target: https://datatracker.ietf.org/doc/draft-ietf-jose-fully-specified-algorithms/
-    author:
-    - name: Michael B. Jones
-      ins: M.B. Jones
-      org: Self-Issued Consulting
-      email: michael_b_jones@hotmail.com
-      uri: https://self-issued.info
-    date: 2024
-  IANA.cose:
+  I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
   IANA.cose:
   RFC2104:
   RFC4949:
@@ -943,7 +933,7 @@ The `alg` parameter, when present,
 defines the `alg` parameter of ARKG derived public keys derived from this ARKG public seed.
 
 The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
-restricted to generating derived public keys for use with the ESP256 [fully-spec-algs] signature algorithm:
+restricted to generating derived public keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
@@ -1008,7 +998,7 @@ COSE_Key_Ref = COSE_Key .within {
 ~~~
 
 The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
-and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
+and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
@@ -1138,7 +1128,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Description: ESP256 with key derived by ARKG-P256ADD-ECDH
   - Capabilities: \[kty\]
   - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
+  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
   - Recommended: Yes
 
 - Name: ESP384-ARKG
@@ -1146,7 +1136,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Description: ESP384 with key derived by ARKG-P384ADD-ECDH
   - Capabilities: \[kty\]
   - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
+  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
   - Recommended: Yes
 
 - Name: ESP512-ARKG
@@ -1154,7 +1144,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Description: ESP512 with key derived by ARKG-P521ADD-ECDH
   - Capabilities: \[kty\]
   - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
+  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
   - Recommended: Yes
 
 - Name: ES256K-ARKG
@@ -1170,7 +1160,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519
   - Capabilities: \[kty\]
   - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
+  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
   - Recommended: Yes
 
 - Name: Ed448-ARKG
@@ -1178,7 +1168,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Description: Ed448 with key derived by ARKG-edwards448ADD-X448
   - Capabilities: \[kty\]
   - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
+  - Reference: [I-D.jose-fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
   - Recommended: Yes
 
 
