@@ -934,13 +934,19 @@ and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
 
 An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
-{{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively.
+{{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively,
+as well as key type parameter `dkalg` (-3) representing the algorithm that derived public and private keys may be used with.
 
 {: #tbl-arkg-pub-params title="COSE key type parameters for the ARKG-pub key type."}
 | Name  | Label | Value type | Required? | Description |
 | ----- | ----- | ---------- | --------- | ----------- |
 | pkbl  | -1    | COSE_Key   | Required  | BL key of ARKG public seed |
 | pkkem | -2    | COSE_Key   | Required  | KEM key of ARKG public seed |
+| dkalg | -3    | int / tstr | Optional  | `alg` parameter of public and private keys derived from this ARKG public seed |
+
+When `dkalg` (-3) is present in an ARKG public seed,
+the `alg` (3) parameter of public keys derived using `ARKG-Derive-Public-Key` with that seed
+SHOULD be set to the `dkalg` (-3) value of the seed.
 
 The `alg` (3) parameter, when present,
 identifies the ARKG instance this public seed may be used with.
@@ -958,7 +964,8 @@ identifies the ARKG instance this public seed may be used with.
 | ARKG-edwards25519ADD-X25519 | TBD (placeholder -65706) | The ARKG instance defined in {{ARKG-edwards25519ADD-X25519}} of this document |
 | ARKG-edwards448ADD-X448 | TBD (placeholder -65707) | The ARKG instance defined in {{ARKG-edwards448ADD-X448}} of this document |
 
-The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed:
+The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
+restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
@@ -984,20 +991,22 @@ The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public se
           9EC7F543043008BC84967A8D875B5D78',
     -3: h'539D57429FCB1C138DA29010A155DCA1
           4566A8F55AC2F1780810C49D4ED72D58',
-  }
+  },
+
+  -3: -9       ; Derived key algorithm: ESP256
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
+h'a6013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
   4b68344340e2565337d2033a000100a320a40102200121582069380fc1c3b096
   52134feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831
   462ccb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a40102
   20012158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a
   8d875b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f178
-  0810c49d4ed72d58'
+  0810c49d4ed72d582228'
 ~~~
 
 
@@ -1010,18 +1019,29 @@ This key reference type defines key type parameters -1 and -2 respectively
 for the `kh` and `info` parameters of `ARKG-Derive-Private-Key`.
 The `kid` (2) parameter identifies the ARKG private seed `sk`.
 Thus the `COSE_Key_Ref` structure conveys all arguments to use in `ARKG-Derive-Private-Key`
-to acquire the referenced private key.
+to derive the referenced private key.
 
+{{tbl-ref-arkg-params}} defines key type parameters for the Ref-ARKG-derived key type.
 A `COSE_Key_Ref` structure whose `kty` is TBD (Ref-ARKG-derived, placeholder -65538)
-MUST include the parameters `kh` (-1) and `info` (-2) defined in {{tbl-ref-arkg-params}}.
+MUST include the parameters `kh` (-1) and `info` (-2).
+The `inst` (-3) parameter MAY be used to indicate the ARKG instance
+whose `ARKG-Derive-Private-Key` procedure to use to derive the private key;
+its value is taken from the IANA "COSE Algorithms" registry [IANA.cose]
+and an initial set of values is defined in {{tbl-arkg-pub-params}}.
 
-{: #tbl-ref-arkg-params title="COSE_Key_Ref parameters for the Ref-ARKG-derived type."}
-| Name | COSE Value | Description |
-| ---- | ---------- | ----------- |
-| kh   | -1         | `kh` argument to `ARKG-Derive-Private-Key` |
-| info | -2         | `info` argument to `ARKG-Derive-Private-Key` |
+If `dkalg` (-3) is present in the ARKG public seed used in `ARKG-Derive-Public-Key` to generate the `kh` value,
+then the `alg` (3) parameter of the COSE_Key_Ref SHOULD be set to the `dkalg` (-3) value of the seed.
+If `alg` (3) is present in the seed,
+then the `inst` (-3) parameter of the COSE_Key_Ref SHOULD be set to the `alg` (3) value of the seed.
 
-The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
+{: #tbl-ref-arkg-params title="COSE key type parameters for the Ref-ARKG-derived type."}
+| Name | Label | Value type   | Required? | Description |
+| ---- | ----- | ------------ | --------- | ----------- |
+| kh   | -1    | bstr         | Required  | `kh` argument to `ARKG-Derive-Private-Key` |
+| info | -2    | bstr         | Required  | `info` argument to `ARKG-Derive-Private-Key` |
+| inst | -3    | int / tstr   | Optional  | COSE algorithm identifier of ARKG instance |
+
+The following CDDL example represents a reference to a key derived using `ARKG-P256ADD-ECDH`
 and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
@@ -1030,7 +1050,7 @@ and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algo
                ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -9,       ; alg: ESP256
 
                ; ARKG-P256ADD-ECDH key handle
                ; (HMAC-SHA-256-128 followed by
@@ -1043,17 +1063,20 @@ and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algo
 
                ; info argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
+
+  -3: -65700   ; inst: ARKG-P256ADD-ECDH (placeholder value)
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25
-  b6a6d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a
-  29499e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2b
-  c4747a842158184578616d706c65206170706c69636174696f6e20696e666f'
+h'a6013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d404
+  8219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9b
+  aee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84
+  2158184578616d706c65206170706c69636174696f6e20696e666f223a000100
+  a3'
 ~~~
 
 
