@@ -934,21 +934,39 @@ and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
 
 An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
-This key type defines key type parameters -1 and -2 for the `BL` and `KEM` public key, respectively.
+{{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively.
 
-The `alg` parameter, when present,
-defines the `alg` parameter of ARKG derived public keys derived from this ARKG public seed.
+{: #tbl-arkg-pub-params title="COSE key type parameters for the ARKG-pub key type."}
+| Name  | Label | Value type | Required? | Description |
+| ----- | ----- | ---------- | --------- | ----------- |
+| pkbl  | -1    | COSE_Key   | Required  | BL key of ARKG public seed |
+| pkkem | -2    | COSE_Key   | Required  | KEM key of ARKG public seed |
 
-The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
-restricted to generating derived public keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
+The `alg` (3) parameter, when present,
+identifies the ARKG instance this public seed may be used with.
+{{tbl-arkg-pub-algs}} defines an initial set of COSE algorithm identifiers for this purpose.
+
+{: #tbl-arkg-pub-algs title="COSE algorithm identifiers to represent ARKG instances."}
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| ARKG-P256ADD-ECDH | TBD (placeholder -65700) | The ARKG instance defined in {{ARKG-P256ADD-ECDH}} of this document |
+| ARKG-P384ADD-ECDH | TBD (placeholder -65701) | The ARKG instance defined in {{ARKG-P384ADD-ECDH}} of this document |
+| ARKG-P521ADD-ECDH | TBD (placeholder -65702) | The ARKG instance defined in {{ARKG-P521ADD-ECDH}} of this document |
+| ARKG-P256kADD-ECDH | TBD (placeholder -65703) | The ARKG instance defined in {{ARKG-P256kADD-ECDH}} of this document |
+| ARKG-curve25519ADD-X25519 | TBD (placeholder -65704) | The ARKG instance defined in {{ARKG-curve25519ADD-X25519}} of this document |
+| ARKG-curve448ADD-X448 | TBD (placeholder -65705) | The ARKG instance defined in {{ARKG-curve448ADD-X448}} of this document |
+| ARKG-edwards25519ADD-X25519 | TBD (placeholder -65706) | The ARKG instance defined in {{ARKG-edwards25519ADD-X25519}} of this document |
+| ARKG-edwards448ADD-X448 | TBD (placeholder -65707) | The ARKG instance defined in {{ARKG-edwards448ADD-X448}} of this document |
+
+The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed:
 
 ~~~cddl
 {
-  1: -65537,   ; kty: ARKG-pub
+  1: -65537,   ; kty: ARKG-pub (placeholder value)
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65700,   ; alg: ARKG-P256ADD-ECDH (placeholder value)
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -974,12 +992,12 @@ The following is the same example encoded as CBOR:
 
 ~~~
 h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2032820a40102200121582069380fc1c3b09652134fee
-  fba61776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0b
-  d55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158
-  205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d
-  78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
-  4ed72d588'
+  4b68344340e2565337d2033a000100a320a40102200121582069380fc1c3b096
+  52134feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831
+  462ccb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a40102
+  20012158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a
+  8d875b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f178
+  0810c49d4ed72d58'
 ~~~
 
 
@@ -1105,6 +1123,59 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
   - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
+
+
+## COSE Algorithms Registrations
+
+This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
+
+- Name: ARKG-P256ADD-ECDH
+  - Value: TBD (placeholder -65700)
+  - Description: ARKG using ECDH and additive blinding on secp256r1
+  - Reference: {{ARKG-P256ADD-ECDH}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P384ADD-ECDH
+  - Value: TBD (placeholder -65701)
+  - Description: ARKG using ECDH and additive blinding on secp384r1
+  - Reference: {{ARKG-P384ADD-ECDH}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P521ADD-ECDH
+  - Value: TBD (placeholder -65702)
+  - Description: ARKG using ECDH and additive blinding on secp521r1
+  - Reference: {{ARKG-P521ADD-ECDH}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P256kADD-ECDH
+  - Value: TBD (placeholder -65703)
+  - Description: ARKG using ECDH and additive blinding on secp256k1
+  - Reference: {{ARKG-P256kADD-ECDH}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-curve25519ADD-X25519
+  - Value: TBD (placeholder -65704)
+  - Description: ARKG using X25519 and additive blinding on curve25519
+  - Reference: {{ARKG-curve25519ADD-X25519}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-curve448ADD-X448
+  - Value: TBD (placeholder -65705)
+  - Description: ARKG using X448 and additive blinding on curve448
+  - Reference: {{ARKG-curve448ADD-X448}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-edwards25519ADD-X25519
+  - Value: TBD (placeholder -65706)
+  - Description: ARKG using X25519 and additive blinding on edwards25519
+  - Reference: {{ARKG-edwards25519ADD-X25519}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-edwards448ADD-X448
+  - Value: TBD (placeholder -65707)
+  - Description: ARKG using X448 and additive blinding on edwards448
+  - Reference: {{ARKG-edwards448ADD-X448}} of this document
+  - Recommended: TBD
 
 
 # Design rationale
