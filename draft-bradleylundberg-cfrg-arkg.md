@@ -1268,13 +1268,20 @@ TODO
 
 # Document History
 
--00
+-04
 
-* Initial Version
+* Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
+* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key
+* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type
 
--01
+-03
 
-* Editorial Fixes to formatting and references.
+* Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
+* Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
+* Added reference to Shoup for definition of key encapsulation mechanism.
+* Added CDDL definition of COSE_Key_Ref
+* Editorial fixes to references.
+* Renamed proposed COSE Key Types.
 
 -02
 
@@ -1287,17 +1294,10 @@ TODO
 * Added curve/edwards25519/448 instances.
 * Added proposal for COSE bindings and key reference types.
 
--03
+-01
 
-* Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
-* Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
-* Added reference to Shoup for definition of key encapsulation mechanism.
-* Added CDDL definition of COSE_Key_Ref
-* Editorial fixes to references.
-* Renamed proposed COSE Key Types.
+* Editorial Fixes to formatting and references.
 
--04
+-00
 
-* Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
-* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key
-* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type
+* Initial Version
