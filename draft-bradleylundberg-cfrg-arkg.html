@@ -3189,16 +3189,37 @@ modified by the inclusion of a MAC in the key handles as done in the original co
       <h2 id="name-document-history">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
-<p id="appendix-C-1">-00<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">-04<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Initial Version<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-2.2">
+          <p id="appendix-C-2.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-2.3">
+          <p id="appendix-C-2.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-3">-01<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">-03<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-4.1">
-          <p id="appendix-C-4.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-4.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.2">
+          <p id="appendix-C-4.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.3">
+          <p id="appendix-C-4.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.4">
+          <p id="appendix-C-4.4.1">Added CDDL definition of COSE_Key_Ref<a href="#appendix-C-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.5">
+          <p id="appendix-C-4.5.1">Editorial fixes to references.<a href="#appendix-C-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.6">
+          <p id="appendix-C-4.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-4.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-C-5">-02<a href="#appendix-C-5" class="pilcrow">¶</a></p>
@@ -3228,37 +3249,16 @@ modified by the inclusion of a MAC in the key handles as done in the original co
           <p id="appendix-C-6.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-6.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-7">-03<a href="#appendix-C-7" class="pilcrow">¶</a></p>
+<p id="appendix-C-7">-01<a href="#appendix-C-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-8.1">
-          <p id="appendix-C-8.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.2">
-          <p id="appendix-C-8.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-8.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.3">
-          <p id="appendix-C-8.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-8.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.4">
-          <p id="appendix-C-8.4.1">Added CDDL definition of COSE_Key_Ref<a href="#appendix-C-8.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.5">
-          <p id="appendix-C-8.5.1">Editorial fixes to references.<a href="#appendix-C-8.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.6">
-          <p id="appendix-C-8.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-8.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-8.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-9">-04<a href="#appendix-C-9" class="pilcrow">¶</a></p>
+<p id="appendix-C-9">-00<a href="#appendix-C-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-10.1">
-          <p id="appendix-C-10.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.2">
-          <p id="appendix-C-10.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.3">
-          <p id="appendix-C-10.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.1.1">Initial Version<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>

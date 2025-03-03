@@ -1596,13 +1596,33 @@ Appendix B.  Test Vectors
 
 Appendix C.  Document History
 
-   -00
+   -04
 
-   *  Initial Version
+   *  Extracted COSE_Key_Ref definition and COSE algorithm registrations
+      to draft-lundberg-cose-two-party-signing-algs.
 
-   -01
+   *  Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub
+      COSE_Key
 
-   *  Editorial Fixes to formatting and references.
+   *  Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE
+      key type
+
+   -03
+
+   *  Renamed section "Using HMAC to adapt a KEM without {integrity
+      protection => ciphertext integrity}".
+
+   *  Fixed info argument to HMAC in section "Using HMAC to adapt a KEM
+      without ciphertext integrity".
+
+   *  Added reference to Shoup for definition of key encapsulation
+      mechanism.
+
+   *  Added CDDL definition of COSE_Key_Ref
+
+   *  Editorial fixes to references.
+
+   *  Renamed proposed COSE Key Types.
 
    -02
 
@@ -1624,33 +1644,13 @@ Appendix C.  Document History
 
    *  Added proposal for COSE bindings and key reference types.
 
-   -03
+   -01
 
-   *  Renamed section "Using HMAC to adapt a KEM without {integrity
-      protection => ciphertext integrity}".
+   *  Editorial Fixes to formatting and references.
 
-   *  Fixed info argument to HMAC in section "Using HMAC to adapt a KEM
-      without ciphertext integrity".
+   -00
 
-   *  Added reference to Shoup for definition of key encapsulation
-      mechanism.
-
-   *  Added CDDL definition of COSE_Key_Ref
-
-   *  Editorial fixes to references.
-
-   *  Renamed proposed COSE Key Types.
-
-   -04
-
-   *  Extracted COSE_Key_Ref definition and COSE algorithm registrations
-      to draft-lundberg-cose-two-party-signing-algs.
-
-   *  Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub
-      COSE_Key
-
-   *  Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE
-      key type
+   *  Initial Version
 
 Contributors
 
