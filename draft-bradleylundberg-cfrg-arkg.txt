@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 31 August 2025                                 27 February 2025
+Expires: 4 September 2025                                   3 March 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 August 2025.
+   This Internet-Draft will expire on 4 September 2025.
 
 Copyright Notice
 
@@ -1454,9 +1454,9 @@ Table of Contents
    [I-D.lundberg-cose-2p-algs]
               Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
               Party Signing", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-00, 18 February 2025,
+              lundberg-cose-two-party-signing-algs-01, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-00>.
+              cose-two-party-signing-algs-01>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
