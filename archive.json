@@ -1,0 +1,1765 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2025-03-04T00:01:09.333394+00:00",
+  "repo": "Yubico/arkg-rfc",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOKzkccs5oT2FF",
+      "title": "Apply RFC Template Formatting",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/1",
+      "state": "MERGED",
+      "author": "ve7jtb",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Apply RFC template formatting First pass\r\n\r\nNeeds more work but passes the check tools for publishing\r\n",
+      "createdAt": "2024-02-29T15:42:10Z",
+      "updatedAt": "2024-03-01T15:35:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3b890efd578de9a01b1e5d2e706973d755c6f6d3",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "ve7jtb-formating",
+      "headRefOid": "9551ce5ebbc090d7ab883ab804662cd5c44efc11",
+      "closedAt": "2024-03-01T15:35:22Z",
+      "mergedAt": "2024-03-01T15:35:22Z",
+      "mergedBy": "ve7jtb",
+      "mergeCommit": {
+        "oid": "910614d79035a6aa3fe1ec336c78392585e233eb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs5xzOx-",
+          "commit": {
+            "abbreviatedOid": "684f87c"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2024-02-29T15:53:47Z",
+          "updatedAt": "2024-02-29T15:54:49Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "```suggestion\r\nabbrev: \"ARKG\"\r\nlang: en\r\ncategory: info\r\n\r\ndocname: draft-bradleylundberg-cfrg-arkg\r\n```",
+              "createdAt": "2024-02-29T15:53:47Z",
+              "updatedAt": "2024-02-29T15:54:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs5x5_HC",
+          "commit": {
+            "abbreviatedOid": "9551ce5"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-01T12:34:30Z",
+          "updatedAt": "2024-03-01T12:37:44Z",
+          "comments": [
+            {
+              "originalPosition": 65,
+              "body": "The comma was dropped somehow?\r\n```suggestion\r\n    title: WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub\r\n```",
+              "createdAt": "2024-03-01T12:34:30Z",
+              "updatedAt": "2024-03-01T12:37:44Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "Or in case quotes are needed for the comma to not confuse the parser:\r\n```suggestion\r\n    title: \"WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub\"\r\n```\r\n",
+              "createdAt": "2024-03-01T12:34:36Z",
+              "updatedAt": "2024-03-01T12:37:44Z"
+            },
+            {
+              "originalPosition": 76,
+              "body": "Should this not include the rest of the name of the publication? Also colon instead of dash?\r\n\r\n```suggestion\r\n    title: \"Asynchronous Remote Key Generation: An Analysis of Yubico\u2019s Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security\"\r\n```",
+              "createdAt": "2024-03-01T12:34:42Z",
+              "updatedAt": "2024-03-01T12:37:44Z"
+            },
+            {
+              "originalPosition": 84,
+              "body": "```suggestion\r\n    title: Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy\r\n```",
+              "createdAt": "2024-03-01T12:35:04Z",
+              "updatedAt": "2024-03-01T12:37:44Z"
+            },
+            {
+              "originalPosition": 72,
+              "body": "[Frymann] to [Frymann2020] is correct, thanks. But should we keep the [Wilson] reference here?",
+              "createdAt": "2024-03-01T12:37:38Z",
+              "updatedAt": "2024-03-01T12:37:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs5x7J2i",
+          "commit": {
+            "abbreviatedOid": "fa7cb42"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-01T14:42:50Z",
+          "updatedAt": "2024-03-01T14:42:50Z",
+          "comments": [
+            {
+              "originalPosition": 65,
+              "body": "Done needed quotes to not mess up the kramdown parser.",
+              "createdAt": "2024-03-01T14:42:50Z",
+              "updatedAt": "2024-03-01T14:42:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs5x7MEx",
+          "commit": {
+            "abbreviatedOid": "fa7cb42"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-01T14:47:36Z",
+          "updatedAt": "2024-03-01T14:47:36Z",
+          "comments": [
+            {
+              "originalPosition": 84,
+              "body": "done",
+              "createdAt": "2024-03-01T14:47:36Z",
+              "updatedAt": "2024-03-01T14:47:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs5x7Mmd",
+          "commit": {
+            "abbreviatedOid": "fa7cb42"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-01T14:48:46Z",
+          "updatedAt": "2024-03-01T14:48:46Z",
+          "comments": [
+            {
+              "originalPosition": 76,
+              "body": "done",
+              "createdAt": "2024-03-01T14:48:46Z",
+              "updatedAt": "2024-03-01T14:48:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs5x7jCK",
+          "commit": {
+            "abbreviatedOid": "9551ce5"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-01T15:35:36Z",
+          "updatedAt": "2024-03-01T15:35:37Z",
+          "comments": [
+            {
+              "originalPosition": 72,
+              "body": "done",
+              "createdAt": "2024-03-01T15:35:37Z",
+              "updatedAt": "2024-03-01T15:35:37Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOKzkccs5obsbi",
+      "title": "Ve7jtb formating",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/2",
+      "state": "MERGED",
+      "author": "ve7jtb",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Final formatting\r\n",
+      "createdAt": "2024-03-01T17:13:22Z",
+      "updatedAt": "2024-03-01T17:22:59Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "910614d79035a6aa3fe1ec336c78392585e233eb",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "ve7jtb-formating",
+      "headRefOid": "5c6aabfe869c3d20a811efbde2f0a80260de6914",
+      "closedAt": "2024-03-01T17:14:38Z",
+      "mergedAt": "2024-03-01T17:14:37Z",
+      "mergedBy": "ve7jtb",
+      "mergeCommit": {
+        "oid": "1ab526bfc3b01883c1937b469c3ec5bd0fc78871"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOKzkccs5ob7eL",
+      "title": "Fix formatting of code blocks",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/3",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Looks like the ` ``` ` syntax for code blocks isn't supported; use indentation by 4 spaces instead.",
+      "createdAt": "2024-03-01T17:51:06Z",
+      "updatedAt": "2024-03-18T00:48:22Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "cdf5ce4db5b3472a2a6e4c982c674aeb8f8447ed",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "code-block-formatting",
+      "headRefOid": "6d5c7df642fedc945c9c82ef7c2f2e430bd2ebb5",
+      "closedAt": "2024-03-18T00:48:22Z",
+      "mergedAt": "2024-03-18T00:48:22Z",
+      "mergedBy": "ve7jtb",
+      "mergeCommit": {
+        "oid": "bba8faec3c9590e566978ab7481fc76f43314116"
+      },
+      "comments": [
+        {
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "body": "You have made the lines too long. There is a 72 character max line length.   \r\nThat is why I manually wrapped some of them to prevent them from being cut off or having to horizontally scroll for those blocks.\r\n\r\nRemember the official versions are TEXT. \r\n\r\n(969) Unused reference: There seems to be no reference to [hkdf] in the document\r\n(1009) Unused reference: There seems to be no reference to [RFC3279] in the document\r\n(333) Artwork too wide, reducing indentation from 3 to 0\r\n(327) Section too wide, reducing indentation from 0 to 0\r\n(359) Artwork too wide, reducing indentation from 3 to 0\r\n(352) Section too wide, reducing indentation from 0 to 0\r\n(401) Artwork too wide, reducing indentation from 3 to 0\r\n(394) Section too wide, reducing indentation from 0 to 0\r\n(142) Section too wide, reducing indentation from 0 to 0\r\n(63) Section too wide, reducing indentation from 0 to 0\r\n(60) Middle too wide, reducing indentation from 0 to 0\r\n(333) Too long line found (L476), 5 characters longer than 72 characters:\r\n(333) Too long line found (L477), 13 characters longer than 72 characters:\r\n(333) Too long line found (L482), 6 characters longer than 72 characters:\r\n(359) Too long line found (L511), 5 characters longer than 72 characters:\r\n(359) Too long line found (L512), 13 characters longer than 72 characters:\r\n(359) Too long line found (L514), 9 characters longer than 72 characters:\r\n(359) Too long line found (L515), 25 characters longer than 72 characters:\r\n(359) Too long line found (L516), 5 characters longer than 72 characters:\r\n(401) Too long line found (L567), 5 characters longer than 72 characters:\r\n(401) Too long line found (L568), 13 characters longer than 72 characters:\r\n(401) Too long line found (L570), 9 characters longer than 72 characters:\r\n(401) Too long line found (L571), 1 characters longer than 72 characters:\r\n(401) Too long line found (L573), 5 characters longer than 72 characters:",
+          "createdAt": "2024-03-01T21:18:10Z",
+          "updatedAt": "2024-03-01T21:18:10Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Should be fixed now!",
+          "createdAt": "2024-03-05T13:51:50Z",
+          "updatedAt": "2024-03-05T13:51:50Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "I've now also set up the GitHub Action to host rendered drafts on GitHub Pages: https://yubico.github.io/arkg-rfc/ , including preview and diff views of pull request branches.",
+          "createdAt": "2024-03-05T18:59:10Z",
+          "updatedAt": "2024-03-05T18:59:10Z"
+        },
+        {
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "body": "LGTM",
+          "createdAt": "2024-03-18T00:48:17Z",
+          "updatedAt": "2024-03-18T00:48:17Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOKzkccs5owchK",
+      "title": "Miscellaneous editorial changes",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/4",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-03-05T19:02:56Z",
+      "updatedAt": "2024-03-18T00:58:31Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "cdf5ce4db5b3472a2a6e4c982c674aeb8f8447ed",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "misc-editorial",
+      "headRefOid": "b25487c0bc81007bea55ed56639bc9011053d68b",
+      "closedAt": "2024-03-18T00:58:30Z",
+      "mergedAt": "2024-03-18T00:58:30Z",
+      "mergedBy": "ve7jtb",
+      "mergeCommit": {
+        "oid": "7ffb63fef5146d0e3ef5a6f05c75456f12770116"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs5zu8wr",
+          "commit": {
+            "abbreviatedOid": "b25487c"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "lgtm",
+          "createdAt": "2024-03-18T00:58:21Z",
+          "updatedAt": "2024-03-18T00:58:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOKzkccs5owfiT",
+      "title": "Finish ID Bot setup",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/5",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The [setup workflow](https://github.com/martinthomson/internet-draft-template/blob/main/.github/workflows/setup.yml) from the template repository made a bunch of changes, some of which I already cherry-picked into `main`. These seemed more intrusive, so I decoupled them for manual review.",
+      "createdAt": "2024-03-05T19:12:46Z",
+      "updatedAt": "2024-03-18T10:01:34Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "7ffb63fef5146d0e3ef5a6f05c75456f12770116",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "idbot-setup",
+      "headRefOid": "57e3331d915a8dec6e2d21361660e4b928302bbe",
+      "closedAt": "2024-03-18T10:01:33Z",
+      "mergedAt": "2024-03-18T10:01:33Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "3f02f92e33932a6935301d64ff6243f519931862"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs5zvEUx",
+          "commit": {
+            "abbreviatedOid": "31f15a9"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2024-03-18T01:12:45Z",
+          "updatedAt": "2024-03-18T01:12:45Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOKzkccs5p6yVP",
+      "title": "Tweak references",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/6",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Move BIP32 to informative references\r\n- Fix date and title of SEC 1 reference, and syntax referencing it\r\n- Escape non-reference `[...]`\r\n- Define reference SEC2",
+      "createdAt": "2024-03-18T10:13:00Z",
+      "updatedAt": "2024-04-08T12:52:03Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3f02f92e33932a6935301d64ff6243f519931862",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "references",
+      "headRefOid": "fba763398ef1512773bfe3fd64e7a1897fb2bc6c",
+      "closedAt": "2024-04-08T12:52:02Z",
+      "mergedAt": "2024-04-08T12:52:02Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "5cfc61937ace6bdfb58ecf13427428043db4b094"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOKzkccs5p6zQ9",
+      "title": "Tweak generic function definitions",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/7",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Rename function options to ARKG instance parameters\r\n- Declare info inputs as octet strings",
+      "createdAt": "2024-03-18T10:14:59Z",
+      "updatedAt": "2024-04-08T12:52:20Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3f02f92e33932a6935301d64ff6243f519931862",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "tweak-generic",
+      "headRefOid": "00cbc06a0c876986af0e401a1a1c185b92d0707c",
+      "closedAt": "2024-04-08T12:52:19Z",
+      "mergedAt": "2024-04-08T12:52:19Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "09893cf2071a7c3e9e833e1f84a409b68a0ef9b9"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOKzkccs5p-Mud",
+      "title": "Miscellaneous editorial changes",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/8",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Tweak first sentence of sections on using EC as BL and KEM\r\n- Convert some TODOs to editor footnotes\r\n- Remove explicit but unused references section\r\n",
+      "createdAt": "2024-03-18T16:59:07Z",
+      "updatedAt": "2024-04-08T12:53:07Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3f02f92e33932a6935301d64ff6243f519931862",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "misc",
+      "headRefOid": "9b63edd02f7fca02baf189f63c38f85f11681988",
+      "closedAt": "2024-04-08T12:53:06Z",
+      "mergedAt": "2024-04-08T12:53:06Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "93b7f47d8f64760f3b23e537d484eb1c3b043bc4"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOKzkccs5rlTrm",
+      "title": "Disambiguate PRK variable",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/9",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-04-03T15:17:08Z",
+      "updatedAt": "2024-04-08T12:53:25Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3f02f92e33932a6935301d64ff6243f519931862",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "review-2024-04-03/prk",
+      "headRefOid": "e0e26efe08e4e05d1996a574c980f94e382a81ee",
+      "closedAt": "2024-04-08T12:53:24Z",
+      "mergedAt": "2024-04-08T12:53:24Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "67d01d02d4923b1d0f20be8b4dd7a96131ae7fb9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52FlUT",
+          "commit": {
+            "abbreviatedOid": "e0e26ef"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2024-04-04T21:08:24Z",
+          "updatedAt": "2024-04-04T21:08:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOKzkccs5rlXvW",
+      "title": "Address review comments on EC arithmetic and notation",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/10",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(2024-04-03) Review comments from @AltmannPeter and @sander:\r\n\r\n- Most of the checks for error cases are impossible conditions\r\n- No need to reject generator/1 as public/private key - it's the same chance as guessing the private key\r\n- N is the order of the generator (curve subgroup), not the curve\r\n- Use additive notation",
+      "createdAt": "2024-04-03T15:25:03Z",
+      "updatedAt": "2024-04-12T14:21:28Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "4d11c02784d2e38826ab0a1421f4dc96973ce1f2",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "review-2024-04-03/ec-arithmetic",
+      "headRefOid": "d6c935fe1108c39b23fc68f859e62b262dc68a10",
+      "closedAt": "2024-04-12T14:21:28Z",
+      "mergedAt": "2024-04-12T14:21:27Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "f262f0f050586c5a84e5799a54c5fdf11b0fe81a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52FlBv",
+          "commit": {
+            "abbreviatedOid": "4197573"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-04T21:07:31Z",
+          "updatedAt": "2024-04-04T21:07:31Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKzkccs52go1L",
+          "commit": {
+            "abbreviatedOid": "0c36de5"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-09T07:07:02Z",
+          "updatedAt": "2024-04-09T07:26:45Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "Remove N",
+              "createdAt": "2024-04-09T07:09:18Z",
+              "updatedAt": "2024-04-11T06:57:19Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "Remove G",
+              "createdAt": "2024-04-09T07:09:30Z",
+              "updatedAt": "2024-04-11T06:57:08Z"
+            },
+            {
+              "originalPosition": 19,
+              "body": "Add bullet point (harmonized with [RFC 9380](https://www.rfc-editor.org/rfc/rfc9380.html)):\r\n\r\n- `namedCurve` is a set of functions that return parameters relevant for suites that rely on elliptic curves. Parameters relevant for to ARKG are:\r\n    - `F,q,p` that defines a finite field `F` of characteristic `p` and `#F = q = p^m` where `m` is an integer. For prime fields, `q = p`.\r\n    - `E` is an elliptic curve specified by an equation and a field `F`.\r\n    - `n` is the order of `E`.\r\n    - `G` is a prime-order subgroup of the points on `E`.\r\n    - `r` is a prime factor of `n` and the order of `G`.\r\n    - `P` is a generator element of `G`.",
+              "createdAt": "2024-04-09T07:17:54Z",
+              "updatedAt": "2024-04-11T06:56:27Z"
+            },
+            {
+              "originalPosition": 27,
+              "body": "Random(1, r)",
+              "createdAt": "2024-04-09T07:18:41Z",
+              "updatedAt": "2024-04-11T06:57:29Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "sk * P",
+              "createdAt": "2024-04-09T07:19:03Z",
+              "updatedAt": "2024-04-11T06:57:39Z"
+            },
+            {
+              "originalPosition": 36,
+              "body": "I would want to avoid aborts that are not necessary. \r\n\r\nFor tau, you can generate it using hash_to_field() from https://www.rfc-editor.org/rfc/rfc9380.html\r\n\r\nAlternatively, which is likely more suitable, use a try and increment approach when generating tau.",
+              "createdAt": "2024-04-09T07:22:11Z",
+              "updatedAt": "2024-04-11T06:58:04Z"
+            },
+            {
+              "originalPosition": 40,
+              "body": "This way to generate pk_tau does not always necessarily work. I would instead write \"invoke the public key generation mechanism in the chosen suite\"",
+              "createdAt": "2024-04-09T07:23:55Z",
+              "updatedAt": "2024-04-11T06:58:37Z"
+            },
+            {
+              "originalPosition": 45,
+              "body": "Same here, generation of sk_tau is not always like this. Refer to invoking the suite specific key generation routine.",
+              "createdAt": "2024-04-09T07:24:50Z",
+              "updatedAt": "2024-04-11T06:58:47Z"
+            },
+            {
+              "originalPosition": 60,
+              "body": "use `namedCurve`, or similar, here too.",
+              "createdAt": "2024-04-09T07:25:24Z",
+              "updatedAt": "2024-04-11T06:59:23Z"
+            },
+            {
+              "originalPosition": 64,
+              "body": "I would refer to a single key gen for both KEM and BL. ",
+              "createdAt": "2024-04-09T07:26:00Z",
+              "updatedAt": "2024-04-11T06:59:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs520P_J",
+          "commit": {
+            "abbreviatedOid": "0c36de5"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-11T06:59:40Z",
+          "updatedAt": "2024-04-11T06:59:40Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOKzkccs5rtgOg",
+      "title": "Remove TODO about single-key caveats, and generalize to non-EC instances",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/11",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(2024-04-03) Review comments from @AltmannPeter and @sander: This is not a problem.\r\n\r\nThis is also shown by the original construction in [Frymann2020].\r\n\r\nAlso, this section can be generalized to any kind of construction that could use the same key for both BL and KEM, not necessarily only EC constructions.",
+      "createdAt": "2024-04-04T13:45:19Z",
+      "updatedAt": "2024-04-09T12:39:29Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "67d01d02d4923b1d0f20be8b4dd7a96131ae7fb9",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "review-2024-04-03/bl-kem-same-key",
+      "headRefOid": "45a8889a08d3b522a57eb786df767fd87adf00f2",
+      "closedAt": "2024-04-09T12:39:29Z",
+      "mergedAt": "2024-04-09T12:39:29Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "55c16c297a1a448d2abeaa21c0ab591c12cfa3a4"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52FjCp",
+          "commit": {
+            "abbreviatedOid": "06d8cc3"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "lgtm",
+          "createdAt": "2024-04-04T21:03:07Z",
+          "updatedAt": "2024-04-04T21:03:07Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKzkccs52gzAg",
+          "commit": {
+            "abbreviatedOid": "45a8889"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-09T07:27:37Z",
+          "updatedAt": "2024-04-09T07:27:37Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "PR_kwDOKzkccs5rtkUv",
+      "title": "Add note about deterministic key generation",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/12",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(2024-04-03) Review comments from @AltmannPeter and @sander: There are desired use cases for deterministically generated seed keys, such as that outlined in the example here.\r\n\r\nI don't think the defined procedures really need to change, since this is rather an implementation detail for the delegating party. I think we can just note that implementations are free to make that choice, without defining an interoperability API for this.\r\n\r\n(A formal definition of `ARKG-Generate-Seed` is needed just to tie `BL-Generate-Keypair` and `KEM-Generate-Keypair` together, but its implementation details are not important for interoperability, unlike `ARKG-Derive-Public-Key` and `ARKG-Derive-Secret-Key`.)",
+      "createdAt": "2024-04-04T13:53:12Z",
+      "updatedAt": "2024-04-09T15:13:02Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "3f02f92e33932a6935301d64ff6243f519931862",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "review-2024-04-03/deterministic-keygen",
+      "headRefOid": "68a88bba764f0e4096065a8d6b50b3d885b7bc7d",
+      "closedAt": "2024-04-09T15:13:01Z",
+      "mergedAt": "2024-04-09T15:13:01Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "4d11c02784d2e38826ab0a1421f4dc96973ce1f2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52FkJo",
+          "commit": {
+            "abbreviatedOid": "3c56059"
+          },
+          "author": "ve7jtb",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2024-04-04T21:05:16Z",
+          "updatedAt": "2024-04-04T21:05:16Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKzkccs52W7tL",
+          "commit": {
+            "abbreviatedOid": "3c56059"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2024-04-08T08:08:52Z",
+          "updatedAt": "2024-04-08T08:24:13Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": " likely sampling uniformly random key distributions,",
+              "createdAt": "2024-04-08T08:08:52Z",
+              "updatedAt": "2024-04-08T08:24:13Z"
+            },
+            {
+              "originalPosition": 10,
+              "body": "\"as deterministic functions for a given input.\"\r\n\r\n`ARKG-Generate-Seed()` does not derive a key.",
+              "createdAt": "2024-04-08T08:12:51Z",
+              "updatedAt": "2024-04-08T08:24:13Z"
+            },
+            {
+              "originalPosition": 11,
+              "body": "\"This can be thought of as defining a single-use ARKG instance where these function outputs are static.\"",
+              "createdAt": "2024-04-08T08:14:11Z",
+              "updatedAt": "2024-04-08T08:24:13Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOKzkccs5sAmeh",
+      "title": "Fix description of output in ARKG-Derive-Public-Key introduction",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/13",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Noticed by @AltmannPeter and @sander.",
+      "createdAt": "2024-04-08T13:07:55Z",
+      "updatedAt": "2024-04-09T12:39:18Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "67d01d02d4923b1d0f20be8b4dd7a96131ae7fb9",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "fix-derive-pk-output-desc",
+      "headRefOid": "9843dcc10880ed0732f74ca0029f9cfc3ea7fcb6",
+      "closedAt": "2024-04-09T12:39:17Z",
+      "mergedAt": "2024-04-09T12:39:17Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "c5a65c59e8e6071c41c4195f3e1cc101209fa341"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52gzb9",
+          "commit": {
+            "abbreviatedOid": "9843dcc"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-04-09T07:28:35Z",
+          "updatedAt": "2024-04-09T07:28:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOKzkccs5sBVyR",
+      "title": "Use seed term instead of key in ARKG-Generate-Seed output description",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/14",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "To help highlight that the ARKG seed pair doesn't necessarily need to consist directly of keys for other algorithms, it can be anything that is valid inputs to ARKG-Derive-Public-Key and ARKG-Derive-Secret-Key.",
+      "createdAt": "2024-04-08T14:37:51Z",
+      "updatedAt": "2024-04-09T15:11:57Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "67d01d02d4923b1d0f20be8b4dd7a96131ae7fb9",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "key-to-seed",
+      "headRefOid": "ee9d68a26ea6fab20c2de278c8719a21e676e77c",
+      "closedAt": "2024-04-09T15:11:56Z",
+      "mergedAt": "2024-04-09T15:11:56Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "88db3e54c5000e7da2f8d16f226ee07d81f0bb42"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52g0y-",
+          "commit": {
+            "abbreviatedOid": "ee9d68a"
+          },
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2024-04-09T07:31:02Z",
+          "updatedAt": "2024-04-09T07:31:09Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "As I noted in https://github.com/Yubico/arkg-rfc/pull/15, the seed pair is not a private, public pair but a private, shared secret pair. The shared secret seed must be kept secret between entities who are involved in the public key generation.",
+              "createdAt": "2024-04-09T07:31:02Z",
+              "updatedAt": "2024-04-09T07:31:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs52jK3F",
+          "commit": {
+            "abbreviatedOid": "ee9d68a"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-09T12:38:48Z",
+          "updatedAt": "2024-04-09T12:38:48Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Ah yes, that's a better term!\r\n\r\nThe sensitivity of the shared key depends on the application: knowing the shared key does not give an attacker any advantage against SK-security or PK-unlinkability as defined in [[Frymann2020](https://eprint.iacr.org/2020/1004)], but it can indeed give advantage in other kinds of attacks.",
+              "createdAt": "2024-04-09T12:38:48Z",
+              "updatedAt": "2024-04-09T12:38:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs52kwmw",
+          "commit": {
+            "abbreviatedOid": "ee9d68a"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-09T15:11:33Z",
+          "updatedAt": "2024-04-09T15:11:33Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Changing the term throughout the document will probably cause conflicts with a bunch of other PRs, so let's handle that in a separate PR.",
+              "createdAt": "2024-04-09T15:11:33Z",
+              "updatedAt": "2024-04-09T15:11:33Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOKzkccs5sF5CN",
+      "title": "Update Introduction in draft-bradleylundberg-cfrg-arkg.md",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/15",
+      "state": "MERGED",
+      "author": "AltmannPeter",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Restructured the text a bit so that the problem statement is earlier, that the procedures required are enumerated, and to position ARKG in relation to KBSS.\r\n\r\nChanged some terms. \r\n- the seed is not private public. It is private, shared secret. If it was public, then any entity could derive the same keys, rendering the entire proposal moot.\r\n- reduced the number of terms used to describe similar concepts. For instance, 'intended private key holder' instead of delegating party, subordinate entity instead of public key consumer etc.\r\n- Changed the order of how the text uses examples. Examples are now used to illustrate the benefit of a certain ARKG property.\r\n\r\nOverall changes to readability and clarity (I hope).",
+      "createdAt": "2024-04-09T06:40:17Z",
+      "updatedAt": "2024-05-13T14:44:46Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "f262f0f050586c5a84e5799a54c5fdf11b0fe81a",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "proposal-2024-03-09/Introduction",
+      "headRefOid": "4a571196208c6fafa011691e7135621f514515c2",
+      "closedAt": "2024-05-13T14:44:46Z",
+      "mergedAt": "2024-05-13T14:44:46Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "f2e637eeb8bf5b51b77abefb252feadf771f59f6"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52k9ym",
+          "commit": {
+            "abbreviatedOid": "eebb208"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "There's a lot I like here! I ended up rewriting and restructuring a lot of it, though, to cut down on some redundancy and try to say the same things in fewer words.\r\n\r\nI also moved the \"three procedures\" to after the examples, I think the section flows a little better now with ending on the declaration that quantum-resistant instantiations exist and not ending abruptly after a bullet-point list.\r\n\r\nI hope I've preserved the spirit of what you wanted to accomplish, do you agree?",
+          "createdAt": "2024-04-09T15:30:03Z",
+          "updatedAt": "2024-04-09T17:40:58Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": ">and without anyone other than the intended private key holder being able to generate these private keys\r\n\r\nThis seems redundant, already covered by the first half?",
+              "createdAt": "2024-04-09T15:30:03Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 26,
+              "body": "Replacing the \"delegating party\" term would have to be done throughout the document as a whole, not just the introduction. I'm reverting to using the \"delegating party\" term for now.",
+              "createdAt": "2024-04-09T15:30:57Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 29,
+              "body": "I like the term \"shared seed\" (it does not always need to be secret, depending on application) as opposed to \"public seed\", but this also needs to be changed throughout the whole document. Reverting to \"public seed\" for now, but we can change to \"shared seed\" in a separate PR.",
+              "createdAt": "2024-04-09T15:41:09Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 61,
+              "body": ">which presently requires private key holder engagement\r\n\r\nNot just presently, it's unlikely that this restriction will ever be relaxed in WebAuthn.",
+              "createdAt": "2024-04-09T15:54:24Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "These backslashes are needed so the RFC \"compiler\" doesn't interpret this as a reference.",
+              "createdAt": "2024-04-09T15:58:51Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 33,
+              "body": "I think this is mostly covered by the examples below?",
+              "createdAt": "2024-04-09T16:51:53Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 90,
+              "body": "Why remove the key blinding scheme from the list of primitives?",
+              "createdAt": "2024-04-09T17:24:32Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            },
+            {
+              "originalPosition": 59,
+              "body": "The online use case isn't a very strong motivation, as that can almost as easily be done with conventional key generation. The offline use case is much stronger in my opinion: pre-generating keys in large batches at once without having to call out to the secure element (possibly invoking a user gesture) for each key.",
+              "createdAt": "2024-04-09T17:29:01Z",
+              "updatedAt": "2024-04-09T17:40:58Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs53wRpS",
+          "commit": {
+            "abbreviatedOid": "eebb208"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-04-18T14:53:41Z",
+          "updatedAt": "2024-04-18T14:53:41Z",
+          "comments": [
+            {
+              "originalPosition": 59,
+              "body": "The online use case for single-use, just-in-time PID/(Q)EAA still looks valid:\r\n\r\n- Creating a brand new ECDSA key in the mobile SCE does not provide the issuer any assurance that it is bound to the same device as the PID that was presented to them. With ARKG, the issuer can have this assurance.\r\n- Creating a brand new ECDSA key in the mobile SCE requires additional key management, which brings the latency of key generation and in the Android case also the problem of key deletion. With ARKG, the SCE does not need to do any additional key generation or deletion.",
+              "createdAt": "2024-04-18T14:53:41Z",
+              "updatedAt": "2024-04-18T14:53:41Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOKzkccs5sGzy7",
+      "title": "Details-on-ARKG-instance-output",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/16",
+      "state": "OPEN",
+      "author": "AltmannPeter",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is a first draft of text that exemplifies what I meant with clarifying the use of the blind tau. It is not possible to use a generic approach for all keys since the keys differ based both on use and curve.",
+      "createdAt": "2024-04-09T09:16:12Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "proposal-2024-03-09/ARKG-instance-output",
+      "headRefOid": "8b0c85ca80e8bcfb8d0c1471ed1d56b84ac59a65",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "AltmannPeter",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Changed the text to reflect the above comment.\r\n\r\n> I don't think I understand what you mean by \"clarifying the use of the blind tau\".\r\n\r\nGiven the layout clarification, my comment is not relevant for this section. We need to find a place where we can clarify that `tau`, once generated, will then be used differently when generating keys for a particular procedure over a particular group.\r\n",
+          "createdAt": "2024-04-11T07:23:40Z",
+          "updatedAt": "2024-04-11T07:23:40Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs52k7Ik",
+          "commit": {
+            "abbreviatedOid": "bcbc4f7"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "CHANGES_REQUESTED",
+          "body": "I think this misunderstands the layout of the document. This section is about the structure of ARKG in the abstract, it is not tied to any particular instantiation and in particular has nothing to do with elliptic curves. It does not have to be true in general that \"each blinding key is also a private key\" - that depends entirely on the instantiation of the `BL` parameter. It is true when `BL` is based on ECC, but not necessarily in general.\r\n\r\nIf anything this text should rather be in section 3, but even then I don't think I understand what you mean by \"clarifying the use of the blind tau\".",
+          "createdAt": "2024-04-09T15:25:37Z",
+          "updatedAt": "2024-04-09T15:25:37Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOKzkccs53Dcl3",
+          "commit": {
+            "abbreviatedOid": "8b0c85c"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "I don't think the example needs to be quite so specific, I think it's fine as is. :slightly_smiling_face:",
+          "createdAt": "2024-04-12T14:36:43Z",
+          "updatedAt": "2024-04-12T14:36:43Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "PR_kwDOKzkccs5uXmlE",
+      "title": "Refer to private keys instead of secret keys for asymmetric key pairs",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/17",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "As suggested by @AltmannPeter.",
+      "createdAt": "2024-05-02T14:37:01Z",
+      "updatedAt": "2024-05-13T14:39:12Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "proposal-2024-03-09/Introduction",
+      "baseRefOid": "f81cd37a575e962d939f63d6522dd583c2ff5cd0",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "secret-to-private",
+      "headRefOid": "75cdf78c11c3f2717dc6caa6e0e13faf36d9d724",
+      "closedAt": "2024-05-13T14:39:11Z",
+      "mergedAt": "2024-05-13T14:39:11Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "d9697e94ab7604dfeb9e0768c742f6e8a8970b6e"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOKzkccs5uXrns",
+      "title": "Note that for online scenarios, ARKG gives assurance of same-hardware binding",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/18",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "As pointed out by @sander in https://github.com/Yubico/arkg-rfc/pull/15#discussion_r1570922372",
+      "createdAt": "2024-05-02T14:46:27Z",
+      "updatedAt": "2024-05-13T14:42:21Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "proposal-2024-03-09/Introduction",
+      "baseRefOid": "f81cd37a575e962d939f63d6522dd583c2ff5cd0",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "introduction-review-sander",
+      "headRefOid": "50d9bebc902bda8e1989f7dfdee521338198f54b",
+      "closedAt": "2024-05-13T14:42:21Z",
+      "mergedAt": "2024-05-13T14:42:20Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "4a571196208c6fafa011691e7135621f514515c2"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOKzkccs5vRcbp",
+      "title": "Overhaul hashing to curve scalars and fold MAC into KEM",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/19",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This follows up on some threads from PR #15 and related discussions. This is an overhaul consisting of two major revisions:\r\n\r\n- Eliminating the generic KDF parameter and instead explicitly using `hash_to_field` for the EC instantiations, and\r\n- Replacing the MAC parameter with a requirement that the KEM guarantees ciphertext integrity and a formula for adapting any KEM (e.g., ECDH) to this requirement using HMAC.\r\n\r\nThis also adds instances for curve25519/448 and edwards25519/448, with the caveat that these instances are not directly compatible with the external API of X25519/448 and EdDSA, but have to be applied internally after interpreting the private key scalar from the random private key octet string.",
+      "createdAt": "2024-05-13T14:54:47Z",
+      "updatedAt": "2024-05-17T15:11:29Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "f2e637eeb8bf5b51b77abefb252feadf771f59f6",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "overhaul-ec-and-kem",
+      "headRefOid": "3a4c59a6a3fbbd23b9d97f98c36541a83d9c46c7",
+      "closedAt": "2024-05-17T15:11:28Z",
+      "mergedAt": "2024-05-17T15:11:28Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "4e76688cc84ed87c2d83602120b10703e207e858"
+      },
+      "comments": [
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Rendered versions and diff available here for review:\r\n\r\n- HTML and text versions: https://yubico.github.io/arkg-rfc/overhaul-ec-and-kem/\r\n- Diff with main: https://author-tools.ietf.org/api/iddiff?url_1=https://Yubico.github.io/arkg-rfc/draft-bradleylundberg-cfrg-arkg.txt&url_2=https://Yubico.github.io/arkg-rfc/overhaul-ec-and-kem/draft-bradleylundberg-cfrg-arkg.txt",
+          "createdAt": "2024-05-13T14:58:39Z",
+          "updatedAt": "2024-05-13T14:59:58Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Merging this as we want to update the Datatracker version soon, we can review after the fact.",
+          "createdAt": "2024-05-17T15:11:24Z",
+          "updatedAt": "2024-05-17T15:11:24Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOKzkccs5vaovz",
+      "title": "Make KEM ciphertext integrity (MAC) optional when unlinkability is not needed",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/20",
+      "state": "OPEN",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "It occurred to me while writing up the API for the [WebAuthn sign extension](https://github.com/Yubico/webauthn-sign-kem-extensions#client-extension-input), where a key identifier `kid` will be the primary way to reference a non-ARKG key, that the only reason we needed the MAC in the KEM is for uncorrelatability when the key handle is transmitted through an untrusted channel - e.g., the original ARKG proposal where the key handle is transmitted between two WebAuthn authenticators through a WebAuthn RP, and the RP must not be able to track users by some ARKG seed identifier. In use cases where this uncorrelatability is not needed - e.g., the WebAuthn signing extension, where the WebAuthn RP is the ARKG subordinate party and the key handle is transmitted directly between subordinate (RP) and delegating party (authenticator), this MAC is not necessary. Thus we can omit the MAC and simply use a static, opaque identifier for the ARKG seed instead.\r\n\r\nOne argument against this is the proliferation of mostly duplicated ARKG instances (e.g., `ARKG-P256ADD-ECDH` and `ARKG-P256ADD-ECDH-HMAC` are close to identical), and the fact that computing/verifying a HMAC is a tiny additional computational cost compared to the dominant operations (EC point multiplication, or even heavier PQC). I would be okay with dismissing this idea and keeping the MAC (KEM ciphertext integrity) requirement for all ARKG instances, as that addresses the widest set of use cases. I'll still rewrite some of the reasoning and some of the \"considerations\" sections in that case, though.",
+      "createdAt": "2024-05-14T15:04:42Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "mac-optional",
+      "headRefOid": "51a69d8affa8c4783cdc66dded0abeb4a3c25663",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "body": "This seems right for [Hierarchical Deterministic Keys](https://github.com/sander/hierarchical-deterministic-keys). After issuance, there should be no contact between the wallet and other parties about the key handle or an ARKG seed identifier. Communicating the MAC from the issuer to the wallet, or storing it in the wallet, does not seem to add anything useful.\r\n\r\n> One argument against this is the proliferation of mostly duplicated ARKG instances (e.g., ARKG-P256ADD-ECDH and ARKG-P256ADD-ECDH-HMAC are close to identical)\r\n\r\nNote that such duplication will happen as well if ARKG includes the distinction between e.g. additive-blinded P256ADD and multiplicative-blinded P256MUL (e.g. for use with threshold ECDSA).",
+          "createdAt": "2024-05-24T22:49:38Z",
+          "updatedAt": "2024-05-24T22:49:38Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": ">Communicating the MAC from the issuer to the wallet, or storing it in the wallet, does not seem to add anything useful.\r\n\r\nIndeed it doesn't when ARKG is used in this architecture, but it does when ARKG is used in other ways as I mentioned above and [in the updated text](https://github.com/Yubico/arkg-rfc/pull/20/files#diff-8476be33632c257ba5e301fb51ffe43e079813e130ecd8bb34acba3c48fbacbcR1125): for example when the key generation parties are instead two wallets (authenticators) without a confidential communication channel.\r\n\r\nAs I've considered this a bit more I'm now more inclined to keep the MAC for all ARKG instances since that is compatible with more use cases than without, and fewer instances means fewer opportunities for incompatibility. The MAC may be unnecessary for some use cases, but noone wants a future where half of implementations support only MAC-less instances and half support only MAC-ful instances, all else equal. I think it's better that there's only the one variant that works for the most use cases.\r\n\r\n> Note that such duplication will happen as well if ARKG includes the distinction between e.g. additive-blinded P256ADD and multiplicative-blinded P256MUL (e.g. for use with threshold ECDSA).\r\n\r\nYes, but that distinction will be necessary regardless of use case, so I'm not as opposed to this.",
+          "createdAt": "2024-05-27T11:01:50Z",
+          "updatedAt": "2024-05-27T11:01:50Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 21,
+      "id": "PR_kwDOKzkccs551twQ",
+      "title": "Sign over the key handle, not info_sub, in HMAC-adapted KEM",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/21",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Discovered while testing a prototype implementation - the MAC is computed over the domain separation tags, not the KEM ciphertext. Not sure what I was thinking when I initially wrote that in 52b738efda6f0cf2dee2f4aa797cb899f6be38b7 - the initial commit 139af55600ed4101e704ffc147bdd777037c5e62 has the MAC sign over both the ciphertext and the DST.\r\n\r\nThe DSTs are still mixed into the MAC since they are part of the derivation of the MAC key.",
+      "createdAt": "2024-08-29T14:02:32Z",
+      "updatedAt": "2024-10-02T13:33:31Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "a241a1661a983e78ef001e824b29d37aaafd64c0",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "fix-mac-text",
+      "headRefOid": "d6799ed9326663c5bdd4c448cad2eac5d6b8ee54",
+      "closedAt": "2024-10-02T13:33:29Z",
+      "mergedAt": "2024-10-02T13:33:29Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "123f33f4d3a3edcdbe4baf681d4f0894a50f9955"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 22,
+      "id": "PR_kwDOKzkccs551t43",
+      "title": "Shorten ARKG-pub-seed label and prefix ARKG-derived with Ref-",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/22",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-08-29T14:02:45Z",
+      "updatedAt": "2024-10-02T13:33:59Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "a241a1661a983e78ef001e824b29d37aaafd64c0",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "arkg-cose-labels",
+      "headRefOid": "21f7f71b3e0e05152c350846121064b65e5ef6bd",
+      "closedAt": "2024-10-02T13:33:57Z",
+      "mergedAt": "2024-10-02T13:33:57Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "dcfb4c2c6b49afeaca9ad8bf74f7b3fe04435136"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDOKzkccs57MAco",
+      "title": "Remove COSE Algorithms for \"[ALG] with key derived by [ARKG]\"",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/23",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "These shouldn't be needed since the \"derived by ARKG\" part is already expressed in the key type. The signature verifier does not need to do anything special to verify these signatures, as it is assumed the verifier receives the derived public key already blinded and can use it to verify the signature as normal.",
+      "createdAt": "2024-09-11T16:36:36Z",
+      "updatedAt": "2024-10-02T13:34:51Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "dcfb4c2c6b49afeaca9ad8bf74f7b3fe04435136",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "arkg-cose-algs",
+      "headRefOid": "5c8ff9f98949956669c17a8e6fbd3ffb67139168",
+      "closedAt": "2024-10-02T13:34:48Z",
+      "mergedAt": "2024-10-02T13:34:48Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "f6a7ec4cca9d71d91e3c825ba599aa2069c74d0e"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 24,
+      "id": "PR_kwDOKzkccs5-tAS5",
+      "title": "Restore COSE Algorithms registrations",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/24",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "These should probably move to a separate spec of two-party signing algorithm identifiers: https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/\r\n\r\nbut let's keep them here for now for completeness.",
+      "createdAt": "2024-10-15T16:38:37Z",
+      "updatedAt": "2024-10-15T16:41:31Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "62d44af5a8d9dd347dea1d52c1857ff183b4af47",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "restore-cose-algs",
+      "headRefOid": "7aed36fea339aa71c93a113ab5976cbdab57f022",
+      "closedAt": "2024-10-15T16:41:29Z",
+      "mergedAt": "2024-10-15T16:41:29Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "44bebc364a1d1d30535c12cc2aed15d7253fbac0"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 25,
+      "id": "PR_kwDOKzkccs6B61ic",
+      "title": "Update reference to published Paper; modified citation style",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/25",
+      "state": "CLOSED",
+      "author": "nichtmonti",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The Master Thesis by Clermont has since been published at Asiacrypt2024. The references have been updated to point to the conference version and to acknowledge the co-authors.\r\n\r\nFurthermore, the citation style of [Clermont] and [Frymann2020] has been updated to match the convention used by Cryptobib to allow for an easy identification of the venue where it was published and the authors involved in the project.",
+      "createdAt": "2024-11-14T13:04:44Z",
+      "updatedAt": "2024-11-14T13:17:29Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "44bebc364a1d1d30535c12cc2aed15d7253fbac0",
+      "headRepository": "nichtmonti/arkg-rfc",
+      "headRefName": "main",
+      "headRefOid": "2ef751be631a62012ad6b79ce698c973794e2713",
+      "closedAt": "2024-11-14T13:16:57Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "nichtmonti",
+          "authorAssociation": "NONE",
+          "body": "Closed, citation for Frymann2023 was not adapted",
+          "createdAt": "2024-11-14T13:17:27Z",
+          "updatedAt": "2024-11-14T13:17:27Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "PR_kwDOKzkccs6B7AIG",
+      "title": "Update references to published Paper; modified citation style",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/26",
+      "state": "OPEN",
+      "author": "nichtmonti",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The Master Thesis by Clermont has since been published at Asiacrypt2024 and the Master Thesis by Wilson has been published at ASIACCS. The references have been updated to point to the conference version and to acknowledge the co-authors.\r\n\r\nFurthermore, the citation style of [Clermont], [Wilson], [Frymann2020] and [Frymann2023] has been updated to match the convention used by Cryptobib to allow for an easy identification of the venue where it was published and the authors involved in the project.",
+      "createdAt": "2024-11-14T13:26:30Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "nichtmonti/arkg-rfc",
+      "headRefName": "main",
+      "headRefOid": "215f3b8e5a665ee7dacab163662a0c893c2c2032",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Thank you! I'll have to confirm that the new sources still match up with what we're referencing, but on the surface these look like reasonable changes.",
+          "createdAt": "2024-11-14T13:32:01Z",
+          "updatedAt": "2024-11-14T13:32:01Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "PR_kwDOKzkccs6IR3zy",
+      "title": "Compute tau' in the same way as signature-key-blinding",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/27",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This change increases interoperability with [draft-irtf-cfrg-signature-key-blinding-07](https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-signature-key-blinding-07). In that draft, the message for `hash_to_field` is `tau || 0x00 || info`, and the `DST` is a static string such as `\"ECDSA Key Blind\"`.\r\n\r\nSee for the interoperability issue [draft-dijkhuis-cfrg-hdkeys-05](https://datatracker.ietf.org/doc/html/draft-dijkhuis-cfrg-hdkeys-05): \u00a7 3.2. After this fix, `DeriveBlindingFactor` in HDK is compatible with the computation of `tau'` in the ARKG key blinding functions.",
+      "createdAt": "2025-01-19T21:47:32Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "patch-1",
+      "headRefOid": "b97fc9f3450bca62e7419182c1619a6fb53d2e6b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "PR_kwDOKzkccs6IWo6P",
+      "title": "Enable pre-blinding the private key",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/28",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Relates to: https://github.com/sander/hierarchical-deterministic-keys/issues/94",
+      "createdAt": "2025-01-20T13:13:26Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/blind-blinded",
+      "headRefOid": "76969bd32f2d02cfde4bb087721fe0d581c808af",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOKzkccs6IW1qQ",
+      "title": "Apply KEM from RFC 9180; TODO authenticated KEM",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/29",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I have not fully checked the details yet, but suspect that the ARKG spec can be simplified by referring to the KEM from RFC 9180.\r\n\r\nIt removes the ability to provide a context string, but I don\u2019t think that is a problem, since the output from KEM-Encap is ephemeral and therefore bound to the application context anyway.\r\n\r\nReferring to DHKEM specifically does add `\"HPKE-v1\"` to the HKDF input keying material, which is awkward. But there seem to be already precedents of Internet-Drafts and RFCs reusing the DHKEM outside of the context of HPKE.\r\n\r\nProbably the section \u201cUsing ECDH as the KEM\u201d can be removed as well, if we find a predefined KEM for `secp256k1`.",
+      "createdAt": "2025-01-20T13:38:51Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/rfc-kem",
+      "headRefOid": "fa5aa505052cc4e01dd85625734c5aa3ad308d54",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 30,
+      "id": "PR_kwDOKzkccs6IW8zC",
+      "title": "Make deterministic ARKG seeds the default",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/30",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Rationale: [Avoid The Randomness From The Sky](https://words.filippo.io/dispatches/avoid-the-randomness-from-the-sky/).\r\n\r\nEnables interoperability with [Hierarchical Deterministic Keys](https://github.com/sander/hierarchical-deterministic-keys).\r\n\r\nNote that to achieve the ARKG objectives, we probably do not need to pose particular entropy requirements to ikm. However, applications such as HDK may pose these for privacy reasons.",
+      "createdAt": "2025-01-20T13:52:55Z",
+      "updatedAt": "2025-03-03T16:47:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/deterministic-seed",
+      "headRefOid": "f4b6d8f141df3909ec5e1bb1d499a173b9b094be",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDOKzkccs6JvlJ1",
+      "title": "Suggestions for pqARKG-H security proof",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/31",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Probably easiest to review/cherry-pick commit-by-commit. Context is discussion in: https://github.com/sander/hierarchical-deterministic-keys/issues/94",
+      "createdAt": "2025-02-01T21:26:12Z",
+      "updatedAt": "2025-02-26T13:58:04Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "pqarkg-h",
+      "baseRefOid": "92d1757bf2b90930e855a07358d6b4b2cc5d9f3a",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/pqarkg-h-fixes",
+      "headRefOid": "a3b4c6cb0e59c150ff49f7f877af697f076aa668",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs6cL_Q6",
+          "commit": {
+            "abbreviatedOid": "a3b4c6c"
+          },
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "state": "CHANGES_REQUESTED",
+          "body": "Thanks! I like most but not all of this, and some changes like the proof rewrite are a bit too large to entangle with the smaller fixes. I'll cherry-pick the obvious improvements directly to the `pqarkg-h` branch and we can look at the rest in isolation.",
+          "createdAt": "2025-02-17T08:49:15Z",
+          "updatedAt": "2025-02-26T13:58:04Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "This was not meant to reference the experiment, but the adversary construction. Let's instead clarify the text to remove that confusion.",
+              "createdAt": "2025-02-17T08:49:16Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 5,
+              "body": "Let's move this to a different changeset. I'm not sold on this title, I think it over-emphasizes the quantum part and under-emphasizes the HDK part which is the actual innovation here.",
+              "createdAt": "2025-02-17T08:51:51Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 10,
+              "body": "Is this necessary? I reckon that \"\\adv wins its game precisely when \\bdv wins its game\" on its own is enough to conclude equality, is it not?",
+              "createdAt": "2025-02-17T08:57:03Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 38,
+              "body": "I like the general outline of this, but let's move this to a separate changeset apart from the smaller fixes.",
+              "createdAt": "2025-02-17T09:06:05Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 7,
+              "body": "It is the subordinate party that adds the additional blinding layers - namely reducing them to the single additional blinding factor `b` passed to the delegating party. I'll keep this as is.",
+              "createdAt": "2025-02-17T09:08:31Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 12,
+              "body": "I don't think this addition is necessary.",
+              "createdAt": "2025-02-17T09:09:46Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            },
+            {
+              "originalPosition": 26,
+              "body": "I'll cherry-pick parts of this but keep the overall structure the same. Thanks!",
+              "createdAt": "2025-02-17T09:27:04Z",
+              "updatedAt": "2025-02-26T13:58:04Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "PR_kwDOKzkccs6MyWTl",
+      "title": "Move COSE_Key_Ref and two-party alg definitions to separate spec",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/32",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "These are moved to: https://github.com/YubicoLabs/cose-two-party-signing-algs-rfc\r\n\r\nI chose to keep the definitions of the ARKG-pub and Ref-ARKG-derived types in this document since they are intrinsically linked to ARKG and do not depend on the two-party signing alg IDs. The algorithm registrations, however, do belong better in the other spec since they are specifically about defining how to generate a signature and are entirely irrelevant to signature verifiers.\r\n\r\nI also want to change the definition of the `alg` parameter in the ARKG-pub type, as the current definition is unconventional and confusing:\r\n\r\n>The alg parameter, when present, defines the alg parameter of ARKG derived public keys derived from this ARKG public seed.\r\n\r\nRather I think `alg` (3), if present, should represent the ARKG instance of the public seed (for which we currently define no alg IDs, so it cannot be used), and the usage of derived keys should instead be represented by a new parameter if at all. But I'll leave that for a separate PR.",
+      "createdAt": "2025-02-27T11:58:03Z",
+      "updatedAt": "2025-02-27T13:45:30Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "44bebc364a1d1d30535c12cc2aed15d7253fbac0",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "external-cose-key-ref",
+      "headRefOid": "d8c04258cb005cce2eafc5eb0a9006dfdbdb033a",
+      "closedAt": "2025-02-27T13:45:30Z",
+      "mergedAt": "2025-02-27T13:45:30Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "d8c04258cb005cce2eafc5eb0a9006dfdbdb033a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs6dzwI9",
+          "commit": {
+            "abbreviatedOid": "d8c0425"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "LGTM!",
+          "createdAt": "2025-02-27T12:18:46Z",
+          "updatedAt": "2025-02-27T12:18:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "PR_kwDOKzkccs6MzVOb",
+      "title": "Fix changelog markup",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/33",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "@selfissued please review",
+      "createdAt": "2025-02-27T13:50:10Z",
+      "updatedAt": "2025-02-27T14:17:32Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "d8c04258cb005cce2eafc5eb0a9006dfdbdb033a",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "fix-changelog",
+      "headRefOid": "211409c55490e5361bdac61180d23ce277bf507f",
+      "closedAt": "2025-02-27T14:17:31Z",
+      "mergedAt": "2025-02-27T14:17:31Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "211409c55490e5361bdac61180d23ce277bf507f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs6d00Oj",
+          "commit": {
+            "abbreviatedOid": "211409c"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "You also need to add the history entry for -04.  Other than that, looks good.",
+          "createdAt": "2025-02-27T13:58:23Z",
+          "updatedAt": "2025-02-27T13:58:23Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "id": "PR_kwDOKzkccs6M0kZT",
+      "title": "(Re)define algorithm parameters for ARKG-pub and Ref-ARKG-derived",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/34",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The current definitions (and lack thereof) have a couple of problems:\r\n\r\n- The current definition of `alg` for ARKG-pub is unconventional and surprising, and does not help the recipient of an ARKG-pub key understand how the key can be used.\r\n- Ref-ARKG-derived currently has no field to represent which ARKG instance the key handle (and the ARKG secret seed referenced by `kid`) belongs to.\r\n\r\nTherefore this redefines `alg` in ARKG-pub to represent the ARKG instance to use the public seed with, and introduces a new `dkalg` (-3) parameter to represent the `alg` parameter of derived public and private keys. Similarly, `alg` (3) of Ref-ARKG-derived references is now defined to represent the algorithm to use the derived private key with (and conversely the verification algorithm to use to verify signatures by that key, if it is a signature key) while the new parameter `inst` (-3) represents the ARKG instance to use to derive the private key.",
+      "createdAt": "2025-02-27T16:01:13Z",
+      "updatedAt": "2025-02-27T16:35:54Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "4b53a8717ed33aff5d43e042ba8b4ed26fc287ba",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "cose-algs",
+      "headRefOid": "abeecf46d52bdc85b4712b0867e5df0edac56320",
+      "closedAt": "2025-02-27T16:35:54Z",
+      "mergedAt": "2025-02-27T16:35:53Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "abeecf46d52bdc85b4712b0867e5df0edac56320"
+      },
+      "comments": [
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks!",
+          "createdAt": "2025-02-27T16:34:55Z",
+          "updatedAt": "2025-02-27T16:34:55Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs6d2x6C",
+          "commit": {
+            "abbreviatedOid": "c2cb3c4"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-27T16:27:01Z",
+          "updatedAt": "2025-02-27T16:27:02Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "```suggestion\r\nas well as key type parameter `dkalg` (-3), representing the algorithm that derived public and private keys are to be used with.\r\n```",
+              "createdAt": "2025-02-27T16:27:01Z",
+              "updatedAt": "2025-02-27T16:27:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6d2zGL",
+          "commit": {
+            "abbreviatedOid": "c2cb3c4"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-02-27T16:28:41Z",
+          "updatedAt": "2025-02-27T16:28:41Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "```suggestion\r\nidentifies the ARKG instance this public seed is to be used with.\r\n```",
+              "createdAt": "2025-02-27T16:28:41Z",
+              "updatedAt": "2025-02-27T16:28:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6d22xb",
+          "commit": {
+            "abbreviatedOid": "c2cb3c4"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Looks good to me, modulo minor suggested wording changes.",
+          "createdAt": "2025-02-27T16:33:52Z",
+          "updatedAt": "2025-02-27T16:33:52Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
