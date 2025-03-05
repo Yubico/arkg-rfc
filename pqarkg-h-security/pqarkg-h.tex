@@ -8,6 +8,7 @@
 \usepackage[keys,lambda,sets,adversary,advantage,events,logic,operators,probability,ff,primitives]{cryptocode}
 \usepackage{xspace}
 \usepackage{draftwatermark}
+\usepackage{amsthm}
 
 \addbibresource{pqarkg-h.bib}
 
@@ -89,6 +90,8 @@
 \newcommand{\id}{\ensuremath{\mathsf{id_\Delta}}}
 
 \let\oldconcat\concat\renewcommand{\concat}{\oldconcat\,}
+
+\newtheorem{theorem}{Theorem}[section]
 
 \begin{document}
 \maketitle
@@ -370,12 +373,19 @@ is relaxed to forbid only the exact combination of \bstar and \credstar returned
 
 \section{Reduction of \ALGBASE to \ALGNAME in \msks security experiment}
 
-We now show that \ALGNAME is \msks secure
-by showing that an adversary \bdv that defeats \expmsksnew
-also defeats \expmsksbase.
+We now show that \ALGNAME can satisfy malicious strong key security \msks. The proof requires two additional properties of some key blinding schemes that are defined in \cite{Wilson}: unique blinding and private-key unblinding. Recall from \cite{Wilson} that \ALGBASE satisfies \msks when instantiated with a key blinding scheme that provides these properties. Therefore a reduction proof from \ALGNAME to \ALGBASE suffices.
+
+\begin{theorem}
+Let \ALGNAME be the ARKG construction described in \figref{pqarkg-h}, instantiated with a key blinding scheme \bl that provides unique blinding and supports private-key unblinding. For any efficient adversary \bdv, there exists an efficient algorithm \adv such that
+$$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
+where the security experiment \msks is defined in \figref{exp-msks-pqarkg-h} for \ALGNAME and in \figref{exp-msks-pqarkg} for \ALGBASE.
+\end{theorem}
+
+\begin{proof}
+
 Given such an adversary \bdv,
-we construct an adversary \adv that defeats \expmsksbase
-as defined in \figref{adv-reduction}.
+we construct an adversary \adv that defeats \expmsksbase.
+This reduction is defined in \figref{adv-reduction}.
 
 \begin{figure}
   \centering
@@ -484,6 +494,8 @@ therefore the advantages are equal:
 $$ \advantage{\msks}{\ALGNAME,\bdv} = \advantage{\msks}{\ALGBASE,\adv} $$
 
 Thus we conclude that \ALGNAME retains the \msks property of \ALGBASE.
+
+\end{proof}
 
 
 \section{Acknowledgements}
