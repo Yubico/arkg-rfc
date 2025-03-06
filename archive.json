@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-04T00:01:09.333394+00:00",
+  "timestamp": "2025-03-06T00:01:03.231379+00:00",
   "repo": "Yubico/arkg-rfc",
   "labels": [
     {
@@ -1516,7 +1516,7 @@
       "labels": [],
       "body": "Probably easiest to review/cherry-pick commit-by-commit. Context is discussion in: https://github.com/sander/hierarchical-deterministic-keys/issues/94",
       "createdAt": "2025-02-01T21:26:12Z",
-      "updatedAt": "2025-02-26T13:58:04Z",
+      "updatedAt": "2025-03-05T19:48:14Z",
       "baseRepository": "Yubico/arkg-rfc",
       "baseRefName": "pqarkg-h",
       "baseRefOid": "92d1757bf2b90930e855a07358d6b4b2cc5d9f3a",
@@ -1527,7 +1527,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "body": "Thank you for the review @emlun. I\u2019ve opened new PRs for the separate changes, and in the current PR only https://github.com/Yubico/arkg-rfc/pull/31#discussion_r1982075368 seems to be left to resolve.",
+          "createdAt": "2025-03-05T19:48:12Z",
+          "updatedAt": "2025-03-05T19:48:12Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOKzkccs6cL_Q6",
@@ -1582,6 +1590,126 @@
               "body": "I'll cherry-pick parts of this but keep the overall structure the same. Thanks!",
               "createdAt": "2025-02-17T09:27:04Z",
               "updatedAt": "2025-02-26T13:58:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6erymW",
+          "commit": {
+            "abbreviatedOid": "1f01711"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:26:21Z",
+          "updatedAt": "2025-03-05T19:26:21Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "https://github.com/Yubico/arkg-rfc/pull/35",
+              "createdAt": "2025-03-05T19:26:21Z",
+              "updatedAt": "2025-03-05T19:26:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6er1WD",
+          "commit": {
+            "abbreviatedOid": "b97d949"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:30:44Z",
+          "updatedAt": "2025-03-05T19:30:44Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "https://github.com/Yubico/arkg-rfc/pull/36",
+              "createdAt": "2025-03-05T19:30:44Z",
+              "updatedAt": "2025-03-05T19:30:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6er3Tf",
+          "commit": {
+            "abbreviatedOid": "fe444c0"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:34:15Z",
+          "updatedAt": "2025-03-05T19:34:16Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "Right, so my proposal is incomplete. In my view, the current argument only proves $\\geq$. We also need the short explanation for the construction in the other way, before we can conclude equality and \u201cprecisely when\u201d, no?",
+              "createdAt": "2025-03-05T19:34:16Z",
+              "updatedAt": "2025-03-05T19:34:16Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6er7Bk",
+          "commit": {
+            "abbreviatedOid": "b4cd553"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:41:48Z",
+          "updatedAt": "2025-03-05T19:41:49Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "https://github.com/Yubico/arkg-rfc/pull/37",
+              "createdAt": "2025-03-05T19:41:48Z",
+              "updatedAt": "2025-03-05T19:41:49Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6er8GH",
+          "commit": {
+            "abbreviatedOid": "551618e"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:44:00Z",
+          "updatedAt": "2025-03-05T19:44:00Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Right, agreed. I was confusing the HDK issuer with the ARKG subordinate party.",
+              "createdAt": "2025-03-05T19:44:00Z",
+              "updatedAt": "2025-03-05T19:44:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOKzkccs6er8Ud",
+          "commit": {
+            "abbreviatedOid": "551618e"
+          },
+          "author": "sander",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2025-03-05T19:44:27Z",
+          "updatedAt": "2025-03-05T19:44:27Z",
+          "comments": [
+            {
+              "originalPosition": 12,
+              "body": "Agreed.",
+              "createdAt": "2025-03-05T19:44:27Z",
+              "updatedAt": "2025-03-05T19:44:27Z"
             }
           ]
         }
@@ -1760,6 +1888,84 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 35,
+      "id": "PR_kwDOKzkccs6NhjuZ",
+      "title": "More clearly refer to adversary construction",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/35",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-05T19:26:16Z",
+      "updatedAt": "2025-03-05T19:26:16Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "pqarkg-h",
+      "baseRefOid": "993ea753acf993fe151231e33ced1f453f0ad042",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/pqarkg-h-review-2",
+      "headRefOid": "8b49944ec437eec7737f3c7f72cae3cc2873cf38",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 36,
+      "id": "PR_kwDOKzkccs6NhmG4",
+      "title": "Propose title with fewer abbreviations",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/36",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-05T19:30:37Z",
+      "updatedAt": "2025-03-05T19:30:37Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "pqarkg-h",
+      "baseRefOid": "993ea753acf993fe151231e33ced1f453f0ad042",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/pqarkg-h-title",
+      "headRefOid": "7d4840e451900356afab888565b8299d08b0c503",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 37,
+      "id": "PR_kwDOKzkccs6NhsPy",
+      "title": "Theorem-proof structure",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/37",
+      "state": "OPEN",
+      "author": "sander",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Does not yet adopt the full proof structure from https://github.com/Yubico/arkg-rfc/pull/31.",
+      "createdAt": "2025-03-05T19:41:39Z",
+      "updatedAt": "2025-03-05T19:42:03Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "pqarkg-h",
+      "baseRefOid": "993ea753acf993fe151231e33ced1f453f0ad042",
+      "headRepository": "sander/arkg-rfc",
+      "headRefName": "feat/pqarkg-h-proof",
+      "headRefOid": "c2a489c0fd03e0d58497bc0879f8ca98580f5f67",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
