@@ -564,7 +564,7 @@ KEM-Derive-Key-Pair(ikm) -> (pk, sk)
     (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encap(pk, info) -> (k, c)
+KEM-Encaps(pk, info) -> (k, c)
 
     info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
     (k', c') = Sub-Kem-Encaps(pk, info_sub)
@@ -589,7 +589,7 @@ KEM-Encap(pk, info) -> (k, c)
     c = t || c'
 
 
-KEM-Decap(sk, c, info) -> k
+KEM-Decaps(sk, c, info) -> k
 
     t = LEFT(c, 16)
     c' = DROP_LEFT(c, 16)
@@ -634,7 +634,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 
 - `Hash`: `Hash`.
 - `DST_ext`: `'ARKG-ECDH.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encap` and `Sub-Kem-Decap` defined as follows:
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
     are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1],
@@ -652,7 +652,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       Generate (pk, sk) using some procedure defined for crv.
 
 
-  Sub-Kem-Encap(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, info) -> (k, c)
 
       (pk', sk') = Sub-Kem-Generate-Key-Pair()
 
@@ -660,7 +660,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       c = Elliptic-Curve-Point-to-Octet-String(pk')
 
 
-  Sub-Kem-Decap(sk, c, info) -> k
+  Sub-Kem-Decaps(sk, c, info) -> k
 
       pk' = Octet-String-to-Elliptic-Curve-Point(c)
       k = ECDH(pk', sk)
@@ -682,7 +682,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 - `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
   or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
 - `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encap` and `Sub-Kem-Decap` defined as follows:
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Random-Bytes(N)` represents a cryptographically secure,
     uniformly distributed random octet string of length `N`.
