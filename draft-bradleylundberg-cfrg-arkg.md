@@ -50,6 +50,10 @@ contributor:
   uri: https://self-issued.info/
   country: United States
 
+- fullname: Sander Dijkhuis
+  organization: Cleverbase
+  country: NL
+
 normative:
   I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
   I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
