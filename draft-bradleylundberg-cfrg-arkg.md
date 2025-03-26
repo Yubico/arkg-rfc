@@ -263,7 +263,7 @@ The parameters of an ARKG instance are:
 - `BL`: An asymmetric key blinding scheme [Wilson], consisting of:
   - Function `BL-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a blinding key pair.
 
-    Input consists of an opaque octet string `ikm`.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
@@ -283,6 +283,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the blinded private key `sk_tau`.
 
+  `ikm` is an opaque octet string of a suitable length as defined by the BL instance.
   `tau` and `info` are an opaque octet strings of arbitrary length.
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
@@ -292,13 +293,14 @@ The parameters of an ARKG instance are:
 - `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
   - `KEM-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a key encapsulation key pair.
 
-    Input consists of an opaque octet string `ikm`.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of public key `pk` and private key `sk`.
 
-  - `KEM-Encaps(pk, info) -> (k, c)`: Generate a key encapsulation.
+  - `KEM-Encaps(pk, ikm, info) -> (k, c)`: Derive a key encapsulation.
 
-    Input consists of an encapsulation public key `pk`
+    Input consists of an encapsulation public key `pk`,
+    input entropy `ikm`
     and a domain separation parameter `info`.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
@@ -310,6 +312,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
+  `ikm` is an opaque octet string of a suitable length as defined by the KEM instance.
   `k`, `c` and `info` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
@@ -351,7 +354,7 @@ ARKG-Derive-Seed(ikm) -> (pk, sk)
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        ikm       Input keying material.
+        ikm       Input keying material entropy.
 
     Output:
         (pk, sk)  An ARKG seed pair with public seed pk
@@ -376,7 +379,7 @@ This function may be invoked any number of times with the same public seed,
 in order to generate any number of public keys.
 
 ~~~pseudocode
-ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
+ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -384,6 +387,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
+        ikm       Input entropy for KEM encapsulation.
         info      An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
@@ -398,7 +402,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     info_kem = 'ARKG-Derive-Key-KEM.' || info
     info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
-    (tau, c) = KEM-Encaps(pk_kem, info_kem)
+    (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
     pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
 
     kh = c
@@ -545,7 +549,7 @@ This formula has the following parameters:
 - `DST_ext`: A domain separation parameter.
 - `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
   except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
-  `Sub-Kem` defines the functions `Sub-Kem-Generate-Key-Pair`, `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
+  `Sub-Kem` defines the functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 The `KEM` parameter of ARKG may be instantiated using `Sub-Kem`,
 HMAC [RFC2104] and HKDF [RFC5869] as follows:
@@ -568,10 +572,10 @@ KEM-Derive-Key-Pair(ikm) -> (pk, sk)
     (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encaps(pk, info) -> (k, c)
+KEM-Encaps(pk, ikm, info) -> (k, c)
 
     info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    (k', c') = Sub-Kem-Encaps(pk, info_sub)
+    (k', c') = Sub-Kem-Encaps(pk, ikm, info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -651,14 +655,14 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   - `N` is the order of `G`.
 
   ~~~pseudocode
-  Sub-Kem-Derive-Key-Pair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
       Generate (pk, sk) using some procedure defined for crv.
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Key-Pair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = ECDH(pk, sk')
       c = Elliptic-Curve-Point-to-Octet-String(pk')
@@ -700,15 +704,15 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
     which is the u-coordinate of the generator point of the respective curve group.
 
   ~~~pseudocode
-  Sub-Kem-Derive-Key-Pair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
       sk = Random-Bytes(L)
       pk = DH-Function(sk, G)
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Key-Pair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = DH-Function(sk', pk)
       c = pk'
