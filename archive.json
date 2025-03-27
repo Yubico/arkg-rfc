@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-25T00:01:07.335914+00:00",
+  "timestamp": "2025-03-27T00:01:02.155144+00:00",
   "repo": "Yubico/arkg-rfc",
   "labels": [
     {
@@ -1184,21 +1184,21 @@
       "id": "PR_kwDOKzkccs5vaovz",
       "title": "Make KEM ciphertext integrity (MAC) optional when unlinkability is not needed",
       "url": "https://github.com/Yubico/arkg-rfc/pull/20",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emlun",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "It occurred to me while writing up the API for the [WebAuthn sign extension](https://github.com/Yubico/webauthn-sign-kem-extensions#client-extension-input), where a key identifier `kid` will be the primary way to reference a non-ARKG key, that the only reason we needed the MAC in the KEM is for uncorrelatability when the key handle is transmitted through an untrusted channel - e.g., the original ARKG proposal where the key handle is transmitted between two WebAuthn authenticators through a WebAuthn RP, and the RP must not be able to track users by some ARKG seed identifier. In use cases where this uncorrelatability is not needed - e.g., the WebAuthn signing extension, where the WebAuthn RP is the ARKG subordinate party and the key handle is transmitted directly between subordinate (RP) and delegating party (authenticator), this MAC is not necessary. Thus we can omit the MAC and simply use a static, opaque identifier for the ARKG seed instead.\r\n\r\nOne argument against this is the proliferation of mostly duplicated ARKG instances (e.g., `ARKG-P256ADD-ECDH` and `ARKG-P256ADD-ECDH-HMAC` are close to identical), and the fact that computing/verifying a HMAC is a tiny additional computational cost compared to the dominant operations (EC point multiplication, or even heavier PQC). I would be okay with dismissing this idea and keeping the MAC (KEM ciphertext integrity) requirement for all ARKG instances, as that addresses the widest set of use cases. I'll still rewrite some of the reasoning and some of the \"considerations\" sections in that case, though.",
       "createdAt": "2024-05-14T15:04:42Z",
-      "updatedAt": "2025-03-03T16:47:37Z",
+      "updatedAt": "2025-03-26T10:20:36Z",
       "baseRepository": "Yubico/arkg-rfc",
       "baseRefName": "main",
       "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
       "headRepository": "Yubico/arkg-rfc",
       "headRefName": "mac-optional",
       "headRefOid": "51a69d8affa8c4783cdc66dded0abeb4a3c25663",
-      "closedAt": null,
+      "closedAt": "2025-03-26T10:20:36Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -1216,6 +1216,13 @@
           "body": ">Communicating the MAC from the issuer to the wallet, or storing it in the wallet, does not seem to add anything useful.\r\n\r\nIndeed it doesn't when ARKG is used in this architecture, but it does when ARKG is used in other ways as I mentioned above and [in the updated text](https://github.com/Yubico/arkg-rfc/pull/20/files#diff-8476be33632c257ba5e301fb51ffe43e079813e130ecd8bb34acba3c48fbacbcR1125): for example when the key generation parties are instead two wallets (authenticators) without a confidential communication channel.\r\n\r\nAs I've considered this a bit more I'm now more inclined to keep the MAC for all ARKG instances since that is compatible with more use cases than without, and fewer instances means fewer opportunities for incompatibility. The MAC may be unnecessary for some use cases, but noone wants a future where half of implementations support only MAC-less instances and half support only MAC-ful instances, all else equal. I think it's better that there's only the one variant that works for the most use cases.\r\n\r\n> Note that such duplication will happen as well if ARKG includes the distinction between e.g. additive-blinded P256ADD and multiplicative-blinded P256MUL (e.g. for use with threshold ECDSA).\r\n\r\nYes, but that distinction will be necessary regardless of use case, so I'm not as opposed to this.",
           "createdAt": "2024-05-27T11:01:50Z",
           "updatedAt": "2024-05-27T11:01:50Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Closing this per the rationale above.",
+          "createdAt": "2025-03-26T10:20:36Z",
+          "updatedAt": "2025-03-26T10:20:36Z"
         }
       ],
       "reviews": []
@@ -1438,7 +1445,7 @@
       "labels": [],
       "body": "Relates to: https://github.com/sander/hierarchical-deterministic-keys/issues/94",
       "createdAt": "2025-01-20T13:13:26Z",
-      "updatedAt": "2025-03-03T16:47:37Z",
+      "updatedAt": "2025-03-26T10:24:07Z",
       "baseRepository": "Yubico/arkg-rfc",
       "baseRefName": "main",
       "baseRefOid": "fe868e78e02e041b2fe745740d2cb5e7fe699179",
@@ -1449,7 +1456,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks, indeed we'll want this eventually but I'll hold off on this until the draft proof has had some proper peer review.",
+          "createdAt": "2025-03-26T10:24:04Z",
+          "updatedAt": "2025-03-26T10:24:04Z"
+        }
+      ],
       "reviews": []
     },
     {
