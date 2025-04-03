@@ -1303,6 +1303,15 @@ TODO
 
 # Document History
 
+-05
+
+* Remodeled procedures to be fully deterministic:
+  * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`
+  * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`
+  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm)`
+  * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
+  * Section "Deterministic key generation" deleted
+
 -04
 
 * Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
