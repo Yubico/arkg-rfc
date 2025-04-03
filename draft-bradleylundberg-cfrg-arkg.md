@@ -274,24 +274,24 @@ The parameters of an ARKG instance are:
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
-  - Function `BL-Blind-Public-Key(pk, tau, info) -> pk_tau`: Deterministically compute a blinded public key.
+  - Function `BL-Blind-Public-Key(pk, tau, ctx) -> pk_tau`: Deterministically compute a blinded public key.
 
     Input consists of a blinding public key `pk`,
     a blinding factor `tau`
-    and a domain separation parameter `info`.
+    and a domain separation parameter `ctx`.
 
     Output consists of the blinded public key `pk_tau`.
 
-  - Function `BL-Blind-Private-Key(sk, tau, info) -> sk_tau`: Deterministically compute a blinded private key.
+  - Function `BL-Blind-Private-Key(sk, tau, ctx) -> sk_tau`: Deterministically compute a blinded private key.
 
     Input consists of a blinding private key `sk`,
     a blinding factor `tau`
-    and a domain separation parameter `info`.
+    and a domain separation parameter `ctx`.
 
     Output consists of the blinded private key `sk_tau`.
 
   `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
-  `tau` and `info` are an opaque octet strings of arbitrary length.
+  `tau` and `ctx` are opaque octet strings of arbitrary length.
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
 
@@ -304,28 +304,28 @@ The parameters of an ARKG instance are:
 
     Output consists of public key `pk` and private key `sk`.
 
-  - `KEM-Encaps(pk, ikm, info) -> (k, c)`: Derive a key encapsulation.
+  - `KEM-Encaps(pk, ikm, ctx) -> (k, c)`: Derive a key encapsulation.
 
     Input consists of an encapsulation public key `pk`,
     input entropy `ikm`
-    and a domain separation parameter `info`.
+    and a domain separation parameter `ctx`.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
 
-  - `KEM-Decaps(sk, c, info) -> k`: Decapsulate a shared secret.
+  - `KEM-Decaps(sk, c, ctx) -> k`: Decapsulate a shared secret.
 
     Input consists of encapsulation private key `sk`, encapsulation ciphertext `c`
-    and a domain separation parameter `info`.
+    and a domain separation parameter `ctx`.
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
   `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
-  `k`, `c` and `info` are opaque octet strings of arbitrary length.
+  `k`, `c` and `ctx` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
 
   The KEM MUST guarantee integrity of the ciphertext,
-  meaning that knowledge of the public key `pk` and the domain separation parameter `info`
+  meaning that knowledge of the public key `pk` and the domain separation parameter `ctx`
   is required in order to create any ciphertext `c` that can be successfully decapsulated by the corresponding private key `sk`.
   {{hmac-kem}} describes a general formula for how any KEM can be adapted to include this guarantee.
   {{design-rationale-mac}} discusses the reasons for this requirement.
@@ -393,11 +393,11 @@ The resulting public key `pk'` can be provided to external parties to use in asy
 and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
 
 This function may be invoked any number of times with the same public seed,
-using different `ikm` or `info` arguments,
+using different `ikm` or `ctx` arguments,
 in order to generate any number of public keys.
 
 ~~~pseudocode
-ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, info) -> (pk', kh)
+ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -406,7 +406,7 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, info) -> (pk', kh)
         pk_bl     A key blinding public key.
         pk_kem    A key encapsulation public key.
         ikm       Input entropy for KEM encapsulation.
-        info      An octet string containing optional context
+        ctx       An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
 
@@ -417,17 +417,17 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, info) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    info_bl  = 'ARKG-Derive-Key-BL.'  || info
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx
 
-    (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
-    pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
+    (tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
+    pk' = BL-Blind-Public-Key(pk_bl, tau, ctx_bl)
 
     kh = c
 ~~~
 
 If this procedure aborts due to an error,
-the procedure can safely be retried with the same `(pk_bl, pk_kem)` and `info` arguments but a new `ikm` argument.
+the procedure can safely be retried with the same `(pk_bl, pk_kem)` and `ctx` arguments but a new `ikm` argument.
 
 
 ### Nondeterministic variants
@@ -451,7 +451,7 @@ This function may be invoked any number of times with the same private seed,
 in order to derive the same or different private keys any number of times.
 
 ~~~pseudocode
-ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, info) -> sk'
+ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, ctx) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -460,7 +460,7 @@ ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, info) -> sk'
         sk_bl     A key blinding private key.
         sk_kem    A key encapsulation private key.
         kh        A key handle output from ARKG-Derive-Public-Key.
-        info      An octet string containing optional context
+        ctx       An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
 
@@ -469,14 +469,14 @@ ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
-    info_bl  = 'ARKG-Derive-Key-BL.'  || info
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx
 
-    tau = KEM-Decaps(sk_kem, kh, info_kem)
+    tau = KEM-Decaps(sk_kem, kh, ctx_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau, info_bl)
+    sk' = BL-Blind-Private-Key(sk_bl, tau, ctx_bl)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
@@ -529,10 +529,10 @@ BL-Derive-Key-Pair(ikm) -> (pk, sk)
     pk = sk * G
 
 
-BL-Blind-Public-Key(pk, tau, info) -> pk_tau
+BL-Blind-Public-Key(pk, tau, ctx) -> pk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+        DST: 'ARKG-BL-EC.' || DST_ext || ctx
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -544,10 +544,10 @@ BL-Blind-Public-Key(pk, tau, info) -> pk_tau
     pk_tau = pk + tau' * G
 
 
-BL-Blind-Private-Key(sk, tau, info) -> sk_tau
+BL-Blind-Private-Key(sk, tau, ctx) -> sk_tau
 
     tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+        DST: 'ARKG-BL-EC.' || DST_ext || ctx
         F: GF(N), the scalar field
            of the prime order subgroup of crv.
         p: N
@@ -577,7 +577,7 @@ This formula has the following parameters:
 - `Hash`: A cryptographic hash function.
 - `DST_ext`: A domain separation parameter.
 - `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
-  except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
+  except `Sub-Kem` MAY ignore the `ctx` parameter and MAY not guarantee ciphertext integrity.
   `Sub-Kem` defines the functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 The `KEM` parameter of ARKG may be instantiated using `Sub-Kem`,
@@ -601,10 +601,10 @@ KEM-Derive-Key-Pair(ikm) -> (pk, sk)
     (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encaps(pk, ikm, info) -> (k, c)
+KEM-Encaps(pk, ikm, ctx) -> (k, c)
 
-    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    (k', c') = Sub-Kem-Encaps(pk, ikm, info_sub)
+    ctx_sub = 'ARKG-KEM-HMAC.' || DST_ext || ctx
+    (k', c') = Sub-Kem-Encaps(pk, ikm, ctx_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -614,24 +614,24 @@ KEM-Encaps(pk, ikm, info) -> (k, c)
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
         L: L
     t = HMAC-Hash-128(K=mk, text=c')
 
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
+        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
         L: The length of k' in octets.
     c = t || c'
 
 
-KEM-Decaps(sk, c, info) -> k
+KEM-Decaps(sk, c, ctx) -> k
 
     t = LEFT(c, 16)
     c' = DROP_LEFT(c, 16)
-    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    k' = Sub-Kem-Decaps(sk, c', info_sub)
+    ctx_sub = 'ARKG-KEM-HMAC.' || DST_ext || ctx
+    k' = Sub-Kem-Decaps(sk, c', ctx_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -641,7 +641,7 @@ KEM-Decaps(sk, c, info) -> k
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
         L: L
 
     t' = HMAC-Hash-128(K=mk, text=c')
@@ -649,7 +649,7 @@ KEM-Decaps(sk, c, info) -> k
         k = HKDF-Expand with the arguments:
             Hash: Hash
             PRK: prk
-            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
+            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
             L: The length of k' in octets.
     Else:
         Abort with an error.
@@ -701,7 +701,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       pk = sk * G
 
 
-  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, ctx) -> (k, c)
 
       (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
@@ -709,7 +709,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       c = Elliptic-Curve-Point-to-Octet-String(pk')
 
 
-  Sub-Kem-Decaps(sk, c, info) -> k
+  Sub-Kem-Decaps(sk, c, ctx) -> k
 
       pk' = Octet-String-to-Elliptic-Curve-Point(c)
       k = ECDH(pk', sk)
@@ -748,7 +748,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       pk = DH-Function(sk, G)
 
 
-  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, ctx) -> (k, c)
 
       (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
@@ -756,7 +756,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       c = pk'
 
 
-  Sub-Kem-Decaps(sk, c, info) -> k
+  Sub-Kem-Decaps(sk, c, ctx) -> k
 
       k = DH-Function(sk, c)
   ~~~
@@ -941,14 +941,14 @@ A reference to a private key derived using ARKG
 may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
 whose `kty` is `TBD` (Ref-ARKG-derived, placeholder -65538).
 This key reference type defines key type parameters -1 and -2 respectively
-for the `kh` and `info` parameters of `ARKG-Derive-Private-Key`.
+for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
 The `kid` (2) parameter identifies the ARKG private seed `sk`.
 Thus the `COSE_Key_Ref` structure conveys all arguments to use in `ARKG-Derive-Private-Key`
 to derive the referenced private key.
 
 {{tbl-ref-arkg-params}} defines key type parameters for the Ref-ARKG-derived key type.
 A `COSE_Key_Ref` structure whose `kty` is TBD (Ref-ARKG-derived, placeholder -65538)
-MUST include the parameters `kh` (-1) and `info` (-2).
+MUST include the parameters `kh` (-1) and `ctx` (-2).
 The `inst` (-3) parameter MAY be used to indicate the ARKG instance
 whose `ARKG-Derive-Private-Key` procedure to use to derive the private key;
 its value is taken from the IANA "COSE Algorithms" registry [IANA.cose]
@@ -963,7 +963,7 @@ then the `inst` (-3) parameter of the COSE_Key_Ref SHOULD be set to the `alg` (3
 | Name | Label | Value type   | Required? | Description |
 | ---- | ----- | ------------ | --------- | ----------- |
 | kh   | -1    | bstr         | Required  | `kh` argument to `ARKG-Derive-Private-Key` |
-| info | -2    | bstr         | Required  | `info` argument to `ARKG-Derive-Private-Key` |
+| ctx  | -2    | bstr         | Required  | `ctx` argument to `ARKG-Derive-Private-Key` |
 | inst | -3    | int / tstr   | Optional  | COSE algorithm identifier of ARKG instance |
 
 The following CDDL example represents a reference to a key derived using `ARKG-P256ADD-ECDH`
@@ -986,7 +986,7 @@ and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algo
           aee70cea75b5c8a2ec2eb737834f7467
           e37b3254776f65f4cfc81e2bc4747a84',
 
-               ; info argument to ARKG-Derive-Private-Key
+               ; ctx argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
 
   -3: -65700   ; inst: ARKG-P256ADD-ECDH (placeholder value)
@@ -1030,7 +1030,7 @@ This section registers the following values in the IANA "COSE Key Types" registr
 - Name: Ref-ARKG-derived
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
-  - Capabilities: \[kty(-65538), kh, info\]
+  - Capabilities: \[kty(-65538), kh, ctx\]
   - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
@@ -1066,10 +1066,10 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 - Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
-  - Name: info
+  - Name: ctx
   - Label: -2
   - CBOR Type: bstr
-  - Description: info argument to ARKG-Derive-Private-Key
+  - Description: ctx argument to ARKG-Derive-Private-Key
   - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 
@@ -1185,6 +1185,7 @@ TODO
   * Section "Deterministic key generation" deleted.
 * Flipped order of `(pk_bl, pk_kem)` and `(sk_bl, sk_kem)` parameter and return value tuples
   for consistent ordering between BL and KEM throughout document.
+* `info` parameter renamed to `ctx`.
 
 -04
 
