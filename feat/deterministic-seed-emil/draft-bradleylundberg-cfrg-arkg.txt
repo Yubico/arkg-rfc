@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 31 August 2025                                 27 February 2025
+Expires: 5 October 2025                                     3 April 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 August 2025.
+   This Internet-Draft will expire on 5 October 2025.
 
 Copyright Notice
 
@@ -77,8 +77,7 @@ Table of Contents
      1.2.  Notation
    2.  The Asynchronous Remote Key Generation (ARKG) algorithm
      2.1.  Instance parameters
-     2.2.  The function ARKG-Generate-Seed
-       2.2.1.  Deterministic key generation
+     2.2.  The function ARKG-Derive-Seed
      2.3.  The function ARKG-Derive-Public-Key
      2.4.  The function ARKG-Derive-Private-Key
    3.  Generic ARKG instantiations
@@ -223,6 +222,14 @@ Table of Contents
    party can use the private seed and a key handle to derive the
    corresponding private key.
 
+   This construction of ARKG is fully deterministic, extracting input
+   entropy as explicit parameters, as opposed to the internal random
+   sampling typically used in the academic literature [Frymann2020]
+   [Wilson] [Clermont].  Implementations MAY choose to instead implement
+   the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
+   procedures omitting their respective ikm parameter; this choice does
+   not affect interoperability.
+
    The following subsections define the abstract instance parameters
    used to construct the three ARKG functions, followed by the
    definitions of the three ARKG functions.
@@ -234,10 +241,10 @@ Table of Contents
 
    *  BL: An asymmetric key blinding scheme [Wilson], consisting of:
 
-      -  Function BL-Generate-Keypair() -> (pk, sk): Generate a blinding
+      -  Function BL-Derive-Key-Pair(ikm) -> (pk, sk): Derive a blinding
          key pair.
 
-         No input.
+         Input consists of input keying material entropy ikm.
 
          Output consists of a blinding public key pk and a blinding
          private key sk.
@@ -258,10 +265,11 @@ Table of Contents
 
          Output consists of the blinded private key sk_tau.
 
-      tau and info are an opaque octet strings of arbitrary length.  The
-      representations of pk and pk_tau are defined by the protocol that
-      invokes ARKG.  The representations of sk and sk_tau are an
-      undefined implementation detail.
+      ikm is an opaque octet string of a suitable length as defined by
+      the ARKG instance. tau and info are an opaque octet strings of
+      arbitrary length.  The representations of pk and pk_tau are
+      defined by the protocol that invokes ARKG.  The representations of
+      sk and sk_tau are an undefined implementation detail.
 
       See [Wilson] for definitions of security properties required of
       the key blinding scheme BL.
@@ -269,17 +277,18 @@ Table of Contents
    *  KEM: A key encapsulation mechanism [Shoup], consisting of the
       functions:
 
-      -  KEM-Generate-Keypair() -> (pk, sk): Generate a key
+      -  KEM-Derive-Key-Pair(ikm) -> (pk, sk): Derive a key
          encapsulation key pair.
 
-         No input.
+         Input consists of input keying material entropy ikm.
 
          Output consists of public key pk and private key sk.
 
-      -  KEM-Encaps(pk, info) -> (k, c): Generate a key encapsulation.
+      -  KEM-Encaps(pk, ikm, info) -> (k, c): Derive a key
+         encapsulation.
 
-         Input consists of an encapsulation public key pk and a domain
-         separation parameter info.
+         Input consists of an encapsulation public key pk, input entropy
+         ikm and a domain separation parameter info.
 
          Output consists of a shared secret k and an encapsulation
          ciphertext c.
@@ -292,9 +301,11 @@ Table of Contents
          Output consists of the shared secret k on success, or an error
          otherwise.
 
-      k, c and info are opaque octet strings of arbitrary length.  The
-      representation of pk is defined by the protocol that invokes ARKG.
-      The representation of sk is an undefined implementation detail.
+      ikm is an opaque octet string of a suitable length as defined by
+      the ARKG instance. k, c and info are opaque octet strings of
+      arbitrary length.  The representation of pk is defined by the
+      protocol that invokes ARKG.  The representation of sk is an
+      undefined implementation detail.
 
       The KEM MUST guarantee integrity of the ciphertext, meaning that
       knowledge of the public key pk and the domain separation parameter
@@ -308,7 +319,7 @@ Table of Contents
       required of the key encapsulation mechanism KEM.
 
    A concrete ARKG instantiation MUST specify the instantiation of each
-   of the above functions and values.
+   of the above functions.
 
    The output keys of the BL scheme are also the output keys of the ARKG
    instance as a whole.  For example, if BL-Blind-Public-Key and BL-
@@ -316,28 +327,29 @@ Table of Contents
    output ECDSA keys.
 
    We denote a concrete ARKG instance by the pattern ARKG-BL-KEM,
-   substituting the chosen instantiation for the BL and KEM.  Note that
-   this pattern cannot in general be unambiguously parsed;
-   implementations MUST NOT attempt to construct an ARKG instance by
-   parsing such a pattern string.  Concrete ARKG instances MUST always
-   be identified by lookup in a registry of fully specified ARKG
-   instances.  This is to prevent usage of algorithm combinations that
-   may be incompatible or insecure.
+   substituting the chosen instantiation for BL and KEM.  Note that this
+   pattern cannot in general be unambiguously parsed; implementations
+   MUST NOT attempt to construct an ARKG instance by parsing such a
+   pattern string.  Concrete ARKG instances MUST always be identified by
+   lookup in a registry of fully specified ARKG instances.  This is to
+   prevent usage of algorithm combinations that may be incompatible or
+   insecure.
 
-2.2.  The function ARKG-Generate-Seed
+2.2.  The function ARKG-Derive-Seed
 
    This function is performed by the delegating party.  The delegating
-   party generates the ARKG seed pair (pk, sk) and keeps the private
-   seed sk secret, while the public seed pk is provided to the
-   subordinate party.  The subordinate party will then be able to
-   generate public keys on behalf of the delegating party.
+   party derives the ARKG seed pair (pk, sk) and keeps the private seed
+   sk secret, while the public seed pk is provided to the subordinate
+   party.  The subordinate party will then be able to derive public keys
+   on behalf of the delegating party.
 
-   ARKG-Generate-Seed() -> (pk, sk)
+   ARKG-Derive-Seed(ikm) -> (pk, sk)
        ARKG instance parameters:
            BL        A key blinding scheme.
            KEM       A key encapsulation mechanism.
 
-       Inputs: None
+       Inputs:
+           ikm       Input keying material entropy.
 
        Output:
            (pk, sk)  An ARKG seed pair with public seed pk
@@ -345,29 +357,10 @@ Table of Contents
 
        The output (pk, sk) is calculated as follows:
 
-       (pk_kem, sk_kem) = KEM-Generate-Keypair()
-       (pk_bl, sk_bl) = BL-Generate-Keypair()
+       (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm)
+       (pk_bl, sk_bl) = BL-Derive-Key-Pair(ikm)
        pk = (pk_kem, pk_bl)
        sk = (sk_kem, sk_bl)
-
-2.2.1.  Deterministic key generation
-
-   Although the above definition expresses the key generation as opaque,
-   likely sampling uniformly random key distributions, implementations
-   MAY choose to implement the functions BL-Generate-Keypair(), KEM-
-   Generate-Keypair() and ARKG-Generate-Seed() as deterministic
-   functions of some out-of-band input.  This can be thought of as
-   defining a single-use ARKG instance where these function outputs are
-   static.  This use case is beyond the scope of this document since the
-   implementation of ARKG-Generate-Seed is internal to the delegating
-   party, even if applications choose to distribute the delegating party
-   across multiple processing entities.
-
-   For example, one entity may randomly sample pk_bl, derive pk_kem
-   deterministically from pk_bl and submit only pk_bl to a separate
-   service that uses the same procedure to also derive the same pk_kem.
-   This document considers both of these entities as parts of the same
-   logical delegating party.
 
 2.3.  The function ARKG-Derive-Public-Key
 
@@ -378,9 +371,10 @@ Table of Contents
    delegating party to derive the private key corresponding to pk'.
 
    This function may be invoked any number of times with the same public
-   seed, in order to generate any number of public keys.
+   seed, using different ikm or info arguments, in order to generate any
+   number of public keys.
 
-   ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
+   ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
        ARKG instance parameters:
            BL        A key blinding scheme.
            KEM       A key encapsulation mechanism.
@@ -388,6 +382,7 @@ Table of Contents
        Inputs:
            pk_kem    A key encapsulation public key.
            pk_bl     A key blinding public key.
+           ikm       Input entropy for KEM encapsulation.
            info      An octet string containing optional context
                        and application specific information
                        (can be a zero-length string).
@@ -402,13 +397,14 @@ Table of Contents
        info_kem = 'ARKG-Derive-Key-KEM.' || info
        info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
-       (tau, c) = KEM-Encaps(pk_kem, info_kem)
+       (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
        pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
 
        kh = c
 
    If this procedure aborts due to an error, the procedure can safely be
-   retried with the same arguments.
+   retried with the same (pk_kem, pk_bl) and info arguments but a new
+   ikm argument.
 
 2.4.  The function ARKG-Derive-Private-Key
 
@@ -487,9 +483,19 @@ Table of Contents
 
    *  The function hash_to_field is defined in Section 5 of [RFC9380].
 
-   BL-Generate-Keypair() -> (pk, sk)
+   BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
-       Generate (pk, sk) using some procedure defined for the curve crv.
+       sk = hash_to_field(ikm, 1) with the parameters:
+           DST: 'ARKG-BL-EC-KG.' || DST_ext
+           F: GF(N), the scalar field
+              of the prime order subgroup of crv
+           p: N
+           m: 1
+           L: The L defined in hash-to-crv-suite
+           expand_message: The expand_message function
+                           defined in hash-to-crv-suite
+
+       pk = sk * G
 
 
    BL-Blind-Public-Key(pk, tau, info) -> pk_tau
@@ -544,7 +550,7 @@ Table of Contents
    *  Sub-Kem: A key encapsulation mechanism as described for the KEM
       parameter in Section 2.1, except Sub-Kem MAY ignore the info
       parameter and MAY not guarantee ciphertext integrity.  Sub-Kem
-      defines the functions Sub-Kem-Generate-Keypair, Sub-Kem-Encaps and
+      defines the functions Sub-Kem-Derive-Key-Pair, Sub-Kem-Encaps and
       Sub-Kem-Decaps.
 
    The KEM parameter of ARKG may be instantiated using Sub-Kem, HMAC
@@ -563,15 +569,15 @@ Table of Contents
    output length appropriate for the desired security level, in order to
    not leak information about the Sub-KEM shared secret key.
 
-   KEM-Generate-Keypair() -> (pk, sk)
+   KEM-Derive-Key-Pair(ikm) -> (pk, sk)
 
-       (pk, sk) = Sub-Kem-Generate-Keypair()
+       (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-   KEM-Encaps(pk, info) -> (k, c)
+   KEM-Encaps(pk, ikm, info) -> (k, c)
 
        info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-       (k', c') = Sub-Kem-Encaps(pk, info_sub)
+       (k', c') = Sub-Kem-Encaps(pk, ikm, info_sub)
 
        prk = HKDF-Extract with the arguments:
            Hash: Hash
@@ -633,6 +639,9 @@ Table of Contents
 
    *  Hash: A cryptographic hash function.
 
+   *  hash-to-crv-suite: A hash-to-curve suite [RFC9380] suitable for
+      hashing to the scalar field of crv.
+
    *  DST_ext: A domain separation parameter.
 
    The KEM parameter of ARKG may be instantiated as described in section
@@ -642,8 +651,8 @@ Table of Contents
 
    *  DST_ext: 'ARKG-ECDH.' || DST_ext.
 
-   *  Sub-Kem: The functions Sub-Kem-Generate-Keypair, Sub-Kem-Encaps
-      and Sub-Kem-Decaps defined as follows:
+   *  Sub-Kem: The functions Sub-Kem-Derive-Key-Pair, Sub-Kem-Encaps and
+      Sub-Kem-Decaps defined as follows:
 
       -  Elliptic-Curve-Point-to-Octet-String and Octet-String-to-
          Elliptic-Curve-Point are the conversion routines defined in
@@ -657,14 +666,24 @@ Table of Contents
 
       -  N is the order of G.
 
-      Sub-Kem-Generate-Keypair() -> (pk, sk)
+      Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-          Generate (pk, sk) using some procedure defined for crv.
+          sk = hash_to_field(ikm, 1) with the parameters:
+              DST: 'ARKG-KEM-ECDH-KG.' || DST_ext
+              F: GF(N), the scalar field
+                of the prime order subgroup of crv
+              p: N
+              m: 1
+              L: The L defined in hash-to-crv-suite
+              expand_message: The expand_message function
+                              defined in hash-to-crv-suite
+
+          pk = sk * G
 
 
-      Sub-Kem-Encaps(pk, info) -> (k, c)
+      Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-          (pk', sk') = Sub-Kem-Generate-Keypair()
+          (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
           k = ECDH(pk, sk')
           c = Elliptic-Curve-Point-to-Octet-String(pk')
@@ -695,13 +714,8 @@ Table of Contents
 
    *  DST_ext: 'ARKG-ECDHX.' || DST_ext.
 
-   *  Sub-Kem: The functions Sub-Kem-Generate-Keypair, Sub-Kem-Encaps
-      and Sub-Kem-Decaps defined as follows:
-
-      -  Random-Bytes(N) represents a cryptographically secure,
-         uniformly distributed random octet string of length N.
-
-      -  L is 32 if DH-Function is X25519, or 56 if DH-Function is X448.
+   *  Sub-Kem: The functions Sub-Kem-Derive-Key-Pair, Sub-Kem-Encaps and
+      Sub-Kem-Decaps defined as follows:
 
       -  G is the octet string h'0900000000000000 0000000000000000
          0000000000000000 0000000000000000' if DH-Function is X25519, or
@@ -713,15 +727,15 @@ Table of Contents
          which is the u-coordinate of the generator point of the
          respective curve group.
 
-      Sub-Kem-Generate-Keypair() -> (pk, sk)
+      Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-          sk = Random-Bytes(L)
+          sk = ikm
           pk = DH-Function(sk, G)
 
 
-      Sub-Kem-Encaps(pk, info) -> (k, c)
+      Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-          (pk', sk') = Sub-Kem-Generate-Keypair()
+          (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
           k = DH-Function(sk', pk)
           c = pk'
@@ -770,6 +784,9 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P256ADD-ECDH'.
 
+   ikm inputs to the procedures in this ARKG instance SHOULD contain at
+   least 256 bits of entropy.
+
 4.2.  ARKG-P384ADD-ECDH
 
    The identifier ARKG-P384ADD-ECDH represents the following ARKG
@@ -791,6 +808,9 @@ Table of Contents
       -  Hash: SHA-384 [FIPS 180-4].
 
       -  DST_ext: 'ARKG-P384ADD-ECDH'.
+
+   ikm inputs to the procedures in this ARKG instance SHOULD contain at
+   least 384 bits of entropy.
 
 4.3.  ARKG-P521ADD-ECDH
 
@@ -814,6 +834,9 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P521ADD-ECDH'.
 
+   ikm inputs to the procedures in this ARKG instance SHOULD contain at
+   least 512 bits of entropy.
+
 4.4.  ARKG-P256kADD-ECDH
 
    The identifier ARKG-P256kADD-ECDH represents the following ARKG
@@ -835,6 +858,9 @@ Table of Contents
       -  Hash: SHA-256 [FIPS 180-4].
 
       -  DST_ext: 'ARKG-P256kADD-ECDH'.
+
+   ikm inputs to the procedures in this ARKG instance SHOULD contain at
+   least 256 bits of entropy.
 
 4.5.  ARKG-curve25519ADD-X25519
 
@@ -877,6 +903,9 @@ Table of Contents
 
       -  DST_ext: 'ARKG-curve25519ADD-X25519'.
 
+   ikm inputs to the procedures in this ARKG instance MUST be 32
+   uniformly distributed random bytes.
+
 4.6.  ARKG-curve448ADD-X448
 
    The identifier ARKG-curve448ADD-X448 represents the following ARKG
@@ -917,6 +946,9 @@ Table of Contents
       -  DH-Function: X448 [RFC7748].
 
       -  DST_ext: 'ARKG-curve448ADD-X448'.
+
+   ikm inputs to the procedures in this ARKG instance MUST be 56
+   uniformly distributed random bytes.
 
 4.7.  ARKG-edwards25519ADD-X25519
 
@@ -959,6 +991,9 @@ Table of Contents
 
       -  DST_ext: 'ARKG-edwards25519ADD-X25519'.
 
+   ikm inputs to the procedures in this ARKG instance MUST be 32
+   uniformly distributed random bytes.
+
 4.8.  ARKG-edwards448ADD-X448
 
    The identifier ARKG-edwards448ADD-X448 represents the following ARKG
@@ -999,6 +1034,9 @@ Table of Contents
       -  DH-Function: X448 [RFC7748].
 
       -  DST_ext: 'ARKG-edwards448ADD-X448'.
+
+   ikm inputs to the procedures in this ARKG instance MUST be 56
+   uniformly distributed random bytes.
 
 5.  COSE bindings
 
@@ -1447,16 +1485,16 @@ Table of Contents
    [I-D.jose-fully-spec-algs]
               Jones, M. B. and O. Steele, "Fully-Specified Algorithms
               for JOSE and COSE", Work in Progress, Internet-Draft,
-              draft-ietf-jose-fully-specified-algorithms-07, 20 February
+              draft-ietf-jose-fully-specified-algorithms-09, 2 April
               2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              jose-fully-specified-algorithms-07>.
+              jose-fully-specified-algorithms-09>.
 
    [I-D.lundberg-cose-2p-algs]
               Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
               Party Signing", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-00, 18 February 2025,
+              lundberg-cose-two-party-signing-algs-01, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-00>.
+              cose-two-party-signing-algs-01>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1596,13 +1634,47 @@ Appendix B.  Test Vectors
 
 Appendix C.  Document History
 
-   -00
+   -05
 
-   *  Initial Version
+   *  Remodeled procedures to be fully deterministic:
 
-   -01
+      -  BL-Generate-Keypair() replaced with BL-Derive-Key-Pair(ikm)
 
-   *  Editorial Fixes to formatting and references.
+      -  KEM-Generate-Keypair() replaced with KEM-Derive-Key-Pair(ikm)
+
+      -  ARKG-Generate-Seed() replaced with ARKG-Derive-Seed(ikm)
+
+      -  Parameter ikm added to ARKG-Derive-Public-Key.
+
+      -  Section "Deterministic key generation" deleted
+
+   -04
+
+   *  Extracted COSE_Key_Ref definition and COSE algorithm registrations
+      to draft-lundberg-cose-two-party-signing-algs.
+
+   *  Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub
+      COSE_Key
+
+   *  Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE
+      key type
+
+   -03
+
+   *  Renamed section "Using HMAC to adapt a KEM without {integrity
+      protection => ciphertext integrity}".
+
+   *  Fixed info argument to HMAC in section "Using HMAC to adapt a KEM
+      without ciphertext integrity".
+
+   *  Added reference to Shoup for definition of key encapsulation
+      mechanism.
+
+   *  Added CDDL definition of COSE_Key_Ref
+
+   *  Editorial fixes to references.
+
+   *  Renamed proposed COSE Key Types.
 
    -02
 
@@ -1624,33 +1696,13 @@ Appendix C.  Document History
 
    *  Added proposal for COSE bindings and key reference types.
 
-   -03
+   -01
 
-   *  Renamed section "Using HMAC to adapt a KEM without {integrity
-      protection => ciphertext integrity}".
+   *  Editorial Fixes to formatting and references.
 
-   *  Fixed info argument to HMAC in section "Using HMAC to adapt a KEM
-      without ciphertext integrity".
+   -00
 
-   *  Added reference to Shoup for definition of key encapsulation
-      mechanism.
-
-   *  Added CDDL definition of COSE_Key_Ref
-
-   *  Editorial fixes to references.
-
-   *  Renamed proposed COSE Key Types.
-
-   -04
-
-   *  Extracted COSE_Key_Ref definition and COSE algorithm registrations
-      to draft-lundberg-cose-two-party-signing-algs.
-
-   *  Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub
-      COSE_Key
-
-   *  Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE
-      key type
+   *  Initial Version
 
 Contributors
 
@@ -1667,6 +1719,11 @@ Contributors
    Self-Issued Consulting
    United States
    URI:   https://self-issued.info/
+
+
+   Sander Dijkhuis
+   Cleverbase
+   Netherlands
 
 
 Authors' Addresses
