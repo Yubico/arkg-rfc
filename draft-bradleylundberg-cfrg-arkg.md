@@ -1176,28 +1176,28 @@ TODO
   since implementations with a non-prime order generator, including EdDSA,
   are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".
 * Remodeled procedures to be fully deterministic:
-  * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`
-  * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`
-  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`
+  * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`.
+  * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`.
+  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`.
   * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
   * Instance parameter `hash-to-crv-suite` added to generic formula "Using ECDH as the KEM",
     affecting concrete instances `ARKG-P256ADD-ECDH`, `ARKG-P384ADD-ECDH`, `ARKG-P521ADD-ECDH` and `ARKG-P256kADD-ECDH`.
-  * Section "Deterministic key generation" deleted
+  * Section "Deterministic key generation" deleted.
 * Flipped order of `(pk_bl, pk_kem)` and `(sk_bl, sk_kem)` parameter and return value tuples
   for consistent ordering between BL and KEM throughout document.
 
 -04
 
 * Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
-* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key
-* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type
+* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.
+* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.
 
 -03
 
 * Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
 * Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
 * Added reference to Shoup for definition of key encapsulation mechanism.
-* Added CDDL definition of COSE_Key_Ref
+* Added CDDL definition of COSE_Key_Ref.
 * Editorial fixes to references.
 * Renamed proposed COSE Key Types.
 
