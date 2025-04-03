@@ -63,6 +63,7 @@ normative:
   RFC5869:
   RFC6090:
   RFC7748:
+  RFC8017:
   RFC8032:
   RFC8610:
   RFC8812:
@@ -241,6 +242,9 @@ The following notation is used throughout this document:
   and `+` also denotes scalar addition modulo the curve order.
   `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
 
+- `LEN(x)` is the length, in octets, of the octet string `x`.
+- The function `I2OSP` converts a nonnegative integer into an octet string as defined in {{Section 4.1 of RFC8017}}.
+
 
 # The Asynchronous Remote Key Generation (ARKG) algorithm
 
@@ -418,11 +422,12 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    if ctx has length greater than 64 bytes:
+    if LEN(ctx) > 64:
         Abort with an error.
 
-    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx
-    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx
+    ctx'    = I2OSP(LEN(ctx), 1) || ctx
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
     (tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
     pk' = BL-Blind-Public-Key(pk_bl, tau, ctx_bl)
@@ -476,11 +481,12 @@ ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, ctx) -> sk'
 
     The output sk' is calculated as follows:
 
-    if ctx has length greater than 64 bytes:
+    if LEN(ctx) > 64:
         Abort with an error.
 
-    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx
-    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx
+    ctx'    = I2OSP(LEN(ctx), 1) || ctx
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
     tau = KEM-Decaps(sk_kem, kh, ctx_kem)
     If decapsulation failed:
@@ -1213,6 +1219,7 @@ TODO
   for consistent ordering between BL and KEM throughout document.
 * `info` parameter renamed to `ctx`.
 * `ctx` length limited to at most 64 bytes.
+* Encoding of `ctx` in `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key` now embeds the length of `ctx`.
 
 -04
 
