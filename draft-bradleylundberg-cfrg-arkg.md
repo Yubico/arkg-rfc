@@ -251,6 +251,9 @@ while keeping the _private seed_ secret.
 The subordinate party can then use the public seed to generate derived public keys and _key handles_,
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.
 
+This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
+as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
+
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
 
@@ -283,7 +286,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the blinded private key `sk_tau`.
 
-  `ikm` is an opaque octet string of a suitable length as defined by the BL instance.
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
   `tau` and `info` are an opaque octet strings of arbitrary length.
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
@@ -312,7 +315,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
-  `ikm` is an opaque octet string of a suitable length as defined by the KEM instance.
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
   `k`, `c` and `info` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
@@ -326,14 +329,14 @@ The parameters of an ARKG instance are:
   See [Wilson] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
 
 A concrete ARKG instantiation MUST specify the instantiation
-of each of the above functions and values.
+of each of the above functions.
 
 The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole.
 For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
 We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM`,
-substituting the chosen instantiation for the `BL` and `KEM`.
+substituting the chosen instantiation for `BL` and `KEM`.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
@@ -343,9 +346,9 @@ This is to prevent usage of algorithm combinations that may be incompatible or i
 ## The function ARKG-Derive-Seed
 
 This function is performed by the delegating party.
-The delegating party generates the ARKG seed pair `(pk, sk)`
+The delegating party derives the ARKG seed pair `(pk, sk)`
 and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
-The subordinate party will then be able to generate public keys on behalf of the delegating party.
+The subordinate party will then be able to derive public keys on behalf of the delegating party.
 
 ~~~pseudocode
 ARKG-Derive-Seed(ikm) -> (pk, sk)
@@ -376,6 +379,7 @@ The resulting public key `pk'` can be provided to external parties to use in asy
 and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
 
 This function may be invoked any number of times with the same public seed,
+using different `ikm` or `info` arguments,
 in order to generate any number of public keys.
 
 ~~~pseudocode
@@ -409,7 +413,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
 ~~~
 
 If this procedure aborts due to an error,
-the procedure can safely be retried with the same arguments.
+the procedure can safely be retried with the same `(pk_kem, pk_bl)` and `info` arguments but a new `ikm` argument.
 
 
 ## The function ARKG-Derive-Private-Key
@@ -488,7 +492,7 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
     sk = hash_to_field(ikm, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext
+        DST: 'ARKG-BL-EC-KG.' || DST_ext
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -636,6 +640,8 @@ This formula has the following parameters:
 
 - `crv`: an elliptic curve valid for use with ECDH [RFC6090].
 - `Hash`: A cryptographic hash function.
+- `hash-to-crv-suite`: A hash-to-curve suite [RFC9380]
+  suitable for hashing to the scalar field of `crv`.
 - `DST_ext`: A domain separation parameter.
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
@@ -657,7 +663,17 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   ~~~pseudocode
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      Generate (pk, sk) using some procedure defined for crv.
+      sk = hash_to_field(ikm, 1) with the parameters:
+          DST: 'ARKG-KEM-ECDH-KG.' || DST_ext
+          F: GF(N), the scalar field
+            of the prime order subgroup of crv
+          p: N
+          m: 1
+          L: The L defined in hash-to-crv-suite
+          expand_message: The expand_message function
+                          defined in hash-to-crv-suite
+
+      pk = sk * G
 
 
   Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
@@ -692,9 +708,6 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 - `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
 - `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
-  - `Random-Bytes(N)` represents a cryptographically secure,
-    uniformly distributed random octet string of length `N`.
-  - `L` is 32 if `DH-Function` is X25519, or 56 if `DH-Function` is X448.
   - `G` is the octet string `h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'`
     if `DH-Function` is X25519,
     or the octet string `h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'`
@@ -706,7 +719,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   ~~~pseudocode
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      sk = Random-Bytes(L)
+      sk = ikm
       pk = DH-Function(sk, G)
 
 
@@ -755,6 +768,8 @@ The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-256 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
 
+`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 256 bits of entropy.
+
 
 ## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
 
@@ -768,6 +783,8 @@ The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+
+`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 384 bits of entropy.
 
 
 ## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
@@ -783,6 +800,8 @@ The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-512 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
 
+`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 512 bits of entropy.
+
 
 ## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
 
@@ -796,6 +815,8 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+
+`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 256 bits of entropy.
 
 
 ## ARKG-curve25519ADD-X25519 {#ARKG-curve25519ADD-X25519}
@@ -829,6 +850,8 @@ The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instanc
   - `DH-Function`: X25519 [RFC7748].
   - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
 
+`ikm` inputs to the procedures in this ARKG instance MUST be 32 uniformly distributed random bytes.
+
 
 ## ARKG-curve448ADD-X448 {#ARKG-curve448ADD-X448}
 
@@ -860,6 +883,8 @@ The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
 - `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X448 [RFC7748].
   - `DST_ext`: `'ARKG-curve448ADD-X448'`.
+
+`ikm` inputs to the procedures in this ARKG instance MUST be 56 uniformly distributed random bytes.
 
 
 ## ARKG-edwards25519ADD-X25519 {#ARKG-edwards25519ADD-X25519}
@@ -893,6 +918,8 @@ The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG insta
   - `DH-Function`: X25519 [RFC7748].
   - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
 
+`ikm` inputs to the procedures in this ARKG instance MUST be 32 uniformly distributed random bytes.
+
 
 ## ARKG-edwards448ADD-X448 {#ARKG-edwards448ADD-X448}
 
@@ -924,6 +951,8 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
 - `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
   - `DH-Function`: X448 [RFC7748].
   - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
+
+`ikm` inputs to the procedures in this ARKG instance MUST be 56 uniformly distributed random bytes.
 
 
 # COSE bindings {#cose}
