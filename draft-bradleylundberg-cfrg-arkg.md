@@ -27,7 +27,7 @@ author:
 - role: editor
   fullname: Emil Lundberg
   organization: Yubico
-  street: Kungsgatan 44
+  street: Gävlegatan 22
   city: Stockholm
   country: SE
   email: emil@emlun.se
@@ -44,18 +44,15 @@ contributor:
   organization: Agency for Digital Government
   country: SE
 
+- fullname: Michael B. Jones
+  ins: M.B. Jones
+  organization: Self-Issued Consulting
+  uri: https://self-issued.info/
+  country: United States
+
 normative:
-  fully-spec-algs:
-    title: Fully-Specified Algorithms for JOSE and COSE
-    target: https://datatracker.ietf.org/doc/draft-ietf-jose-fully-specified-algorithms/
-    author:
-    - name: Michael B. Jones
-      ins: M.B. Jones
-      org: Self-Issued Consulting
-      email: michael_b_jones@hotmail.com
-      uri: https://self-issued.info
-    date: 2024
-  IANA.cose:
+  I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
+  I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
   IANA.cose:
   RFC2104:
   RFC4949:
@@ -924,29 +921,54 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
 # COSE bindings {#cose}
 
 This section proposes additions to COSE [RFC9052] to support ARKG use cases.
-The novelty lies primarily in a new key type definition to represent ARKG public seeds
-and new key type definitions to represent references to private keys rather than the keys themselves.
+These consist of new key type definitions to represent ARKG public seeds
+and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
 
 
 ## COSE key type: ARKG public seed {#cose-arkg-pub-seed}
 
 An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
-This key type defines key type parameters -1 and -2 for the `BL` and `KEM` public key, respectively.
+{{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively,
+as well as key type parameter `dkalg` (-3), representing the algorithm that derived public and private keys are to be used with.
 
-The `alg` parameter, when present,
-defines the `alg` parameter of ARKG derived public keys derived from this ARKG public seed.
+{: #tbl-arkg-pub-params title="COSE key type parameters for the ARKG-pub key type."}
+| Name  | Label | Value type | Required? | Description |
+| ----- | ----- | ---------- | --------- | ----------- |
+| pkbl  | -1    | COSE_Key   | Required  | BL key of ARKG public seed |
+| pkkem | -2    | COSE_Key   | Required  | KEM key of ARKG public seed |
+| dkalg | -3    | int / tstr | Optional  | `alg` parameter of public and private keys derived from this ARKG public seed |
+
+When `dkalg` (-3) is present in an ARKG public seed,
+the `alg` (3) parameter of public keys derived using `ARKG-Derive-Public-Key` with that seed
+SHOULD be set to the `dkalg` (-3) value of the seed.
+
+The `alg` (3) parameter, when present,
+identifies the ARKG instance this public seed is to be used with.
+{{tbl-arkg-pub-algs}} defines an initial set of COSE algorithm identifiers for this purpose.
+
+{: #tbl-arkg-pub-algs title="COSE algorithm identifiers to represent ARKG instances."}
+| Name | Value | Description |
+| ---- | ----- | ----------- |
+| ARKG-P256ADD-ECDH | TBD (placeholder -65700) | The ARKG instance defined in {{ARKG-P256ADD-ECDH}} of this document |
+| ARKG-P384ADD-ECDH | TBD (placeholder -65701) | The ARKG instance defined in {{ARKG-P384ADD-ECDH}} of this document |
+| ARKG-P521ADD-ECDH | TBD (placeholder -65702) | The ARKG instance defined in {{ARKG-P521ADD-ECDH}} of this document |
+| ARKG-P256kADD-ECDH | TBD (placeholder -65703) | The ARKG instance defined in {{ARKG-P256kADD-ECDH}} of this document |
+| ARKG-curve25519ADD-X25519 | TBD (placeholder -65704) | The ARKG instance defined in {{ARKG-curve25519ADD-X25519}} of this document |
+| ARKG-curve448ADD-X448 | TBD (placeholder -65705) | The ARKG instance defined in {{ARKG-curve448ADD-X448}} of this document |
+| ARKG-edwards25519ADD-X25519 | TBD (placeholder -65706) | The ARKG instance defined in {{ARKG-edwards25519ADD-X25519}} of this document |
+| ARKG-edwards448ADD-X448 | TBD (placeholder -65707) | The ARKG instance defined in {{ARKG-edwards448ADD-X448}} of this document |
 
 The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
-restricted to generating derived public keys for use with the ESP256 [fully-spec-algs] signature algorithm:
+restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
-  1: -65537,   ; kty: ARKG-pub
+  1: -65537,   ; kty: ARKG-pub (placeholder value)
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65700,   ; alg: ARKG-P256ADD-ECDH (placeholder value)
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -964,46 +986,58 @@ restricted to generating derived public keys for use with the ESP256 [fully-spec
           9EC7F543043008BC84967A8D875B5D78',
     -3: h'539D57429FCB1C138DA29010A155DCA1
           4566A8F55AC2F1780810C49D4ED72D58',
-  }
+  },
+
+  -3: -9       ; Derived key algorithm: ESP256
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2032820a40102200121582069380fc1c3b09652134fee
-  fba61776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0b
-  d55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158
-  205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d
-  78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
-  4ed72d588'
+h'a6013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d2033a000100a320a40102200121582069380fc1c3b096
+  52134feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831
+  462ccb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a40102
+  20012158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a
+  8d875b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f178
+  0810c49d4ed72d582228'
 ~~~
 
 
-## COSE key reference types {#cose-key-refs}
+## COSE key reference type: ARKG derived private key {#cose-arkg-derived-refs}
 
-TODO: This should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
+A reference to a private key derived using ARKG
+may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
+whose `kty` is `TBD` (Ref-ARKG-derived, placeholder -65538).
+This key reference type defines key type parameters -1 and -2 respectively
+for the `kh` and `info` parameters of `ARKG-Derive-Private-Key`.
+The `kid` (2) parameter identifies the ARKG private seed `sk`.
+Thus the `COSE_Key_Ref` structure conveys all arguments to use in `ARKG-Derive-Private-Key`
+to derive the referenced private key.
 
-While keys used by many other algorithms can usually be referenced by a single atomic identifier,
-such as that used in the `kid` parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
-users of the function `ARKG-Derive-Secret-Key` need to represent
-a reference to an ARKG private seed along with a key handle for a derived private key.
+{{tbl-ref-arkg-params}} defines key type parameters for the Ref-ARKG-derived key type.
+A `COSE_Key_Ref` structure whose `kty` is TBD (Ref-ARKG-derived, placeholder -65538)
+MUST include the parameters `kh` (-1) and `info` (-2).
+The `inst` (-3) parameter MAY be used to indicate the ARKG instance
+whose `ARKG-Derive-Private-Key` procedure to use to derive the private key;
+its value is taken from the IANA "COSE Algorithms" registry [IANA.cose]
+and an initial set of values is defined in {{tbl-arkg-pub-params}}.
 
-A COSE key reference is a COSE_Key object whose `kty` value is defined to represent a reference to a key.
-The `kid` parameter MUST be present when `kty` is a key reference type.
-These requirements are encoded in the CDDL [RFC8610] type `COSE_Key_Ref`:
+If `dkalg` (-3) is present in the ARKG public seed used in `ARKG-Derive-Public-Key` to generate the `kh` value,
+then the `alg` (3) parameter of the COSE_Key_Ref SHOULD be set to the `dkalg` (-3) value of the seed.
+If `alg` (3) is present in the seed,
+then the `inst` (-3) parameter of the COSE_Key_Ref SHOULD be set to the `alg` (3) value of the seed.
 
-~~~cddl
-COSE_Key_Ref = COSE_Key .within {
-  1 ^ => $COSE_kty_ref   ; kty: Any reference type
-  2 ^ => any,            ; kid is required
-  any => any,            ; Any other entries allowed by COSE_Key
-}
-~~~
+{: #tbl-ref-arkg-params title="COSE key type parameters for the Ref-ARKG-derived type."}
+| Name | Label | Value type   | Required? | Description |
+| ---- | ----- | ------------ | --------- | ----------- |
+| kh   | -1    | bstr         | Required  | `kh` argument to `ARKG-Derive-Private-Key` |
+| info | -2    | bstr         | Required  | `info` argument to `ARKG-Derive-Private-Key` |
+| inst | -3    | int / tstr   | Optional  | COSE algorithm identifier of ARKG instance |
 
-The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
-and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
+The following CDDL example represents a reference to a key derived using `ARKG-P256ADD-ECDH`
+and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
 {
@@ -1011,7 +1045,7 @@ and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
                ; kid: Opaque identifier of ARKG-pub
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -9,       ; alg: ESP256
 
                ; ARKG-P256ADD-ECDH key handle
                ; (HMAC-SHA-256-128 followed by
@@ -1024,17 +1058,20 @@ and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
 
                ; info argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
+
+  -3: -65700   ; inst: ARKG-P256ADD-ECDH (placeholder value)
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25
-  b6a6d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a
-  29499e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2b
-  c4747a842158184578616d706c65206170706c69636174696f6e20696e666f'
+h'a6013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d404
+  8219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9b
+  aee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84
+  2158184578616d706c65206170706c69636174696f6e20696e666f223a000100
+  a3'
 ~~~
 
 
@@ -1063,33 +1100,17 @@ This section registers the following values in the IANA "COSE Key Types" registr
 - Name: Ref-ARKG-derived
   - Value: TBD (Placeholder -65538)
   - Description: Reference to private key derived by ARKG
-  - Capabilities: \[kty(-65538), kh\]
-  - Reference: {{cose-key-refs}} of this document
+  - Capabilities: \[kty(-65538), kh, info\]
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
-- Name: Ref-OKP
-  - Value: TBD (Requested assignment -1)
-  - Description: Reference to a key pair of key type "OKP"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-- Name: Ref-EC2
-  - Value: TBD (Requested assignment -2)
-  - Description: Reference to a key pair of key type "EC2"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref`:
+These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
 
 ~~~cddl
 $COSE_kty_ref /= -65538   ; Placeholder value
-$COSE_kty_ref /= -1       ; Value TBD
-$COSE_kty_ref /= -2       ; Value TBD
 ~~~
 
 
 ## COSE Key Type Parameters Registrations
-
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
 
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
@@ -1112,69 +1133,67 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Label: -1
   - CBOR Type: bstr
   - Description: kh argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 - Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
   - Name: info
   - Label: -2
   - CBOR Type: bstr
   - Description: info argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
 
 
 ## COSE Algorithms Registrations
 
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
-
 This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
 
-- Name: ESP256-ARKG
-  - Value: TBD (Placeholder -65539)
-  - Description: ESP256 with key derived by ARKG-P256ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
-  - Recommended: Yes
+- Name: ARKG-P256ADD-ECDH
+  - Value: TBD (placeholder -65700)
+  - Description: ARKG using ECDH and additive blinding on secp256r1
+  - Reference: {{ARKG-P256ADD-ECDH}} of this document
+  - Recommended: TBD
 
-- Name: ESP384-ARKG
-  - Value: TBD (Placeholder -65540)
-  - Description: ESP384 with key derived by ARKG-P384ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
-  - Recommended: Yes
+- Name: ARKG-P384ADD-ECDH
+  - Value: TBD (placeholder -65701)
+  - Description: ARKG using ECDH and additive blinding on secp384r1
+  - Reference: {{ARKG-P384ADD-ECDH}} of this document
+  - Recommended: TBD
 
-- Name: ESP512-ARKG
-  - Value: TBD (Placeholder -65541)
-  - Description: ESP512 with key derived by ARKG-P521ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
-  - Recommended: Yes
+- Name: ARKG-P521ADD-ECDH
+  - Value: TBD (placeholder -65702)
+  - Description: ARKG using ECDH and additive blinding on secp521r1
+  - Reference: {{ARKG-P521ADD-ECDH}} of this document
+  - Recommended: TBD
 
-- Name: ES256K-ARKG
-  - Value: TBD (Placeholder -65542)
-  - Description: ES256K with key derived by ARKG-P256kADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [RFC8812], {{ARKG-P256kADD-ECDH}} of this document
-  - Recommended: Yes
+- Name: ARKG-P256kADD-ECDH
+  - Value: TBD (placeholder -65703)
+  - Description: ARKG using ECDH and additive blinding on secp256k1
+  - Reference: {{ARKG-P256kADD-ECDH}} of this document
+  - Recommended: TBD
 
-- Name: Ed25519-ARKG
-  - Value: TBD (Placeholder -65543)
-  - Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
-  - Recommended: Yes
+- Name: ARKG-curve25519ADD-X25519
+  - Value: TBD (placeholder -65704)
+  - Description: ARKG using X25519 and additive blinding on curve25519
+  - Reference: {{ARKG-curve25519ADD-X25519}} of this document
+  - Recommended: TBD
 
-- Name: Ed448-ARKG
-  - Value: TBD (Placeholder -65544)
-  - Description: Ed448 with key derived by ARKG-edwards448ADD-X448
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
-  - Recommended: Yes
+- Name: ARKG-curve448ADD-X448
+  - Value: TBD (placeholder -65705)
+  - Description: ARKG using X448 and additive blinding on curve448
+  - Reference: {{ARKG-curve448ADD-X448}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-edwards25519ADD-X25519
+  - Value: TBD (placeholder -65706)
+  - Description: ARKG using X25519 and additive blinding on edwards25519
+  - Reference: {{ARKG-edwards25519ADD-X25519}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-edwards448ADD-X448
+  - Value: TBD (placeholder -65707)
+  - Description: ARKG using X448 and additive blinding on edwards448
+  - Reference: {{ARKG-edwards448ADD-X448}} of this document
+  - Recommended: TBD
 
 
 # Design rationale
@@ -1244,24 +1263,36 @@ TODO
 
 # Document History
 
-- 00 Initial Version
+-04
 
-- 01 Editorial Fixes to formatting and references.
+* Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
+* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key
+* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type
 
-- 02
-  - Rewritten introduction.
-  - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
-  - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
-  - Eliminated top-level MAC and KDF instance parameters.
-  - Added info parameter to instance parameter functions.
-  - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
-  - Added curve/edwards25519/448 instances.
-  - Added proposal for COSE bindings and key reference types.
+-03
 
-- 03
-  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
-  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
-  - Added reference to Shoup for definition of key encapsulation mechanism.
-  - Added CDDL definition of COSE_Key_Ref
-  - Editorial fixes to references.
-  - Renamed proposed COSE Key Types.
+* Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
+* Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
+* Added reference to Shoup for definition of key encapsulation mechanism.
+* Added CDDL definition of COSE_Key_Ref
+* Editorial fixes to references.
+* Renamed proposed COSE Key Types.
+
+-02
+
+* Rewritten introduction.
+* Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+* Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
+* Eliminated top-level MAC and KDF instance parameters.
+* Added info parameter to instance parameter functions.
+* Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
+* Added curve/edwards25519/448 instances.
+* Added proposal for COSE bindings and key reference types.
+
+-01
+
+* Editorial Fixes to formatting and references.
+
+-00
+
+* Initial Version
