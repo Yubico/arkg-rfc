@@ -253,6 +253,9 @@ and the delegating party can use the private seed and a key handle to derive the
 
 This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
 as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
+Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
+as nondeterministic procedures omitting their respective `ikm` parameter;
+this choice does not affect interoperability.
 
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
