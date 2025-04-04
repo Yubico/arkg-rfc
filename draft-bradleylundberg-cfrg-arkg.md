@@ -254,7 +254,7 @@ and the delegating party can use the private seed and a key handle to derive the
 This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
 as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
 Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
-as nondeterministic procedures omitting their respective `ikm` parameter
+as nondeterministic procedures omitting their respective `ikm` parameters
 and sampling random entropy internally;
 this choice does not affect interoperability.
 
@@ -355,13 +355,14 @@ and keeps the private seed `sk` secret, while the public seed `pk` is provided t
 The subordinate party will then be able to derive public keys on behalf of the delegating party.
 
 ~~~pseudocode
-ARKG-Derive-Seed(ikm) -> (pk, sk)
+ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        ikm       Input keying material entropy.
+        ikm_bl    Input keying material entropy for BL.
+        ikm_kem   Input keying material entropy for KEM.
 
     Output:
         (pk, sk)  An ARKG seed pair with public seed pk
@@ -369,8 +370,8 @@ ARKG-Derive-Seed(ikm) -> (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm)
-    (pk_bl, sk_bl) = BL-Derive-Key-Pair(ikm)
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 ~~~
@@ -380,7 +381,7 @@ ARKG-Derive-Seed(ikm) -> (pk, sk)
 
 Applications that do not need a deterministic interface MAY choose
 to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
-as nondeterministic procedures omitting their respective `ikm` parameter
+as nondeterministic procedures omitting their respective `ikm` parameters
 and sampling random entropy internally;
 this choice does not affect interoperability.
 
@@ -792,7 +793,8 @@ The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-256 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
 
-`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 256 bits of entropy.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
 ## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
@@ -808,7 +810,8 @@ The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-384 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
 
-`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 384 bits of entropy.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 384 bits of entropy.
 
 
 ## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
@@ -824,7 +827,8 @@ The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-512 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
 
-`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 512 bits of entropy.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 512 bits of entropy.
 
 
 ## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
@@ -840,7 +844,8 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
   - `Hash`: SHA-256 [FIPS 180-4].
   - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
 
-`ikm` inputs to the procedures in this ARKG instance SHOULD contain at least 256 bits of entropy.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
 ## ARKG-curve25519ADD-X25519 {#ARKG-curve25519ADD-X25519}
@@ -874,7 +879,8 @@ The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instanc
   - `DH-Function`: X25519 [RFC7748].
   - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
 
-`ikm` inputs to the procedures in this ARKG instance MUST be 32 uniformly distributed random bytes.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+MUST be 32 uniformly distributed random bytes.
 
 
 ## ARKG-curve448ADD-X448 {#ARKG-curve448ADD-X448}
@@ -908,7 +914,8 @@ The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
   - `DH-Function`: X448 [RFC7748].
   - `DST_ext`: `'ARKG-curve448ADD-X448'`.
 
-`ikm` inputs to the procedures in this ARKG instance MUST be 56 uniformly distributed random bytes.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+MUST be 56 uniformly distributed random bytes.
 
 
 ## ARKG-edwards25519ADD-X25519 {#ARKG-edwards25519ADD-X25519}
@@ -942,7 +949,8 @@ The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG insta
   - `DH-Function`: X25519 [RFC7748].
   - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
 
-`ikm` inputs to the procedures in this ARKG instance MUST be 32 uniformly distributed random bytes.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+MUST be 32 uniformly distributed random bytes.
 
 
 ## ARKG-edwards448ADD-X448 {#ARKG-edwards448ADD-X448}
@@ -976,7 +984,8 @@ The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
   - `DH-Function`: X448 [RFC7748].
   - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
 
-`ikm` inputs to the procedures in this ARKG instance MUST be 56 uniformly distributed random bytes.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+MUST be 56 uniformly distributed random bytes.
 
 
 # COSE bindings {#cose}
@@ -1329,7 +1338,7 @@ TODO
 * Remodeled procedures to be fully deterministic:
   * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`
   * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`
-  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm)`
+  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`
   * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
   * Section "Deterministic key generation" deleted
 
