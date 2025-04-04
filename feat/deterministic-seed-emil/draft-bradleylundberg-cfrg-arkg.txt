@@ -229,7 +229,7 @@ Table of Contents
    sampling typically used in the academic literature [Frymann2020]
    [Wilson] [Clermont].  Implementations MAY choose to instead implement
    the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
-   procedures omitting their respective ikm parameter and sampling
+   procedures omitting their respective ikm parameters and sampling
    random entropy internally; this choice does not affect
    interoperability.
 
@@ -346,13 +346,14 @@ Table of Contents
    party.  The subordinate party will then be able to derive public keys
    on behalf of the delegating party.
 
-   ARKG-Derive-Seed(ikm) -> (pk, sk)
+   ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
        ARKG instance parameters:
            BL        A key blinding scheme.
            KEM       A key encapsulation mechanism.
 
        Inputs:
-           ikm       Input keying material entropy.
+           ikm_bl    Input keying material entropy for BL.
+           ikm_kem   Input keying material entropy for KEM.
 
        Output:
            (pk, sk)  An ARKG seed pair with public seed pk
@@ -360,8 +361,8 @@ Table of Contents
 
        The output (pk, sk) is calculated as follows:
 
-       (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm)
-       (pk_bl, sk_bl) = BL-Derive-Key-Pair(ikm)
+       (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
+       (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
        pk = (pk_kem, pk_bl)
        sk = (sk_kem, sk_bl)
 
@@ -370,8 +371,8 @@ Table of Contents
    Applications that do not need a deterministic interface MAY choose to
    instead implement ARKG-Derive-Seed, KEM-Derive-Key-Pair and BL-
    Derive-Key-Pair as nondeterministic procedures omitting their
-   respective ikm parameter and sampling random entropy internally; this
-   choice does not affect interoperability.
+   respective ikm parameters and sampling random entropy internally;
+   this choice does not affect interoperability.
 
 2.3.  The function ARKG-Derive-Public-Key
 
@@ -806,8 +807,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P256ADD-ECDH'.
 
-   ikm inputs to the procedures in this ARKG instance SHOULD contain at
-   least 256 bits of entropy.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance SHOULD contain at least 256 bits of entropy.
 
 4.2.  ARKG-P384ADD-ECDH
 
@@ -831,8 +832,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P384ADD-ECDH'.
 
-   ikm inputs to the procedures in this ARKG instance SHOULD contain at
-   least 384 bits of entropy.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance SHOULD contain at least 384 bits of entropy.
 
 4.3.  ARKG-P521ADD-ECDH
 
@@ -856,8 +857,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P521ADD-ECDH'.
 
-   ikm inputs to the procedures in this ARKG instance SHOULD contain at
-   least 512 bits of entropy.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance SHOULD contain at least 512 bits of entropy.
 
 4.4.  ARKG-P256kADD-ECDH
 
@@ -881,8 +882,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P256kADD-ECDH'.
 
-   ikm inputs to the procedures in this ARKG instance SHOULD contain at
-   least 256 bits of entropy.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance SHOULD contain at least 256 bits of entropy.
 
 4.5.  ARKG-curve25519ADD-X25519
 
@@ -925,8 +926,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-curve25519ADD-X25519'.
 
-   ikm inputs to the procedures in this ARKG instance MUST be 32
-   uniformly distributed random bytes.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance MUST be 32 uniformly distributed random bytes.
 
 4.6.  ARKG-curve448ADD-X448
 
@@ -969,8 +970,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-curve448ADD-X448'.
 
-   ikm inputs to the procedures in this ARKG instance MUST be 56
-   uniformly distributed random bytes.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance MUST be 56 uniformly distributed random bytes.
 
 4.7.  ARKG-edwards25519ADD-X25519
 
@@ -1013,8 +1014,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-edwards25519ADD-X25519'.
 
-   ikm inputs to the procedures in this ARKG instance MUST be 32
-   uniformly distributed random bytes.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance MUST be 32 uniformly distributed random bytes.
 
 4.8.  ARKG-edwards448ADD-X448
 
@@ -1057,8 +1058,8 @@ Table of Contents
 
       -  DST_ext: 'ARKG-edwards448ADD-X448'.
 
-   ikm inputs to the procedures in this ARKG instance MUST be 56
-   uniformly distributed random bytes.
+   Each ikm_bl, ikm_kem and ikm input to the procedures in this ARKG
+   instance MUST be 56 uniformly distributed random bytes.
 
 5.  COSE bindings
 
