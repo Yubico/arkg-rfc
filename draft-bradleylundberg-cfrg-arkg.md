@@ -791,6 +791,7 @@ The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
@@ -808,6 +809,7 @@ The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
@@ -825,6 +827,7 @@ The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `Hash`: SHA-512 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
@@ -842,6 +845,7 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
@@ -1340,6 +1344,8 @@ TODO
   * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`
   * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`
   * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
+  * Instance parameter `hash-to-crv-suite` added to generic formula "Using ECDH as the KEM",
+    affecting concrete instances `ARKG-P256ADD-ECDH`, `ARKG-P384ADD-ECDH`, `ARKG-P521ADD-ECDH` and `ARKG-P256kADD-ECDH`.
   * Section "Deterministic key generation" deleted
 
 -04
