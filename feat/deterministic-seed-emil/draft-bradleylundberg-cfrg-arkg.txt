@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 5 October 2025                                     3 April 2025
+Expires: 6 October 2025                                     4 April 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 October 2025.
+   This Internet-Draft will expire on 6 October 2025.
 
 Copyright Notice
 
@@ -78,7 +78,9 @@ Table of Contents
    2.  The Asynchronous Remote Key Generation (ARKG) algorithm
      2.1.  Instance parameters
      2.2.  The function ARKG-Derive-Seed
+       2.2.1.  Nondeterministic variants
      2.3.  The function ARKG-Derive-Public-Key
+       2.3.1.  Nondeterministic variants
      2.4.  The function ARKG-Derive-Private-Key
    3.  Generic ARKG instantiations
      3.1.  Using elliptic curve addition for key blinding
@@ -227,8 +229,9 @@ Table of Contents
    sampling typically used in the academic literature [Frymann2020]
    [Wilson] [Clermont].  Implementations MAY choose to instead implement
    the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
-   procedures omitting their respective ikm parameter; this choice does
-   not affect interoperability.
+   procedures omitting their respective ikm parameter and sampling
+   random entropy internally; this choice does not affect
+   interoperability.
 
    The following subsections define the abstract instance parameters
    used to construct the three ARKG functions, followed by the
@@ -362,6 +365,14 @@ Table of Contents
        pk = (pk_kem, pk_bl)
        sk = (sk_kem, sk_bl)
 
+2.2.1.  Nondeterministic variants
+
+   Applications that do not need a deterministic interface MAY choose to
+   instead implement ARKG-Derive-Seed, KEM-Derive-Key-Pair and BL-
+   Derive-Key-Pair as nondeterministic procedures omitting their
+   respective ikm parameter and sampling random entropy internally; this
+   choice does not affect interoperability.
+
 2.3.  The function ARKG-Derive-Public-Key
 
    This function is performed by the subordinate party, which holds the
@@ -405,6 +416,17 @@ Table of Contents
    If this procedure aborts due to an error, the procedure can safely be
    retried with the same (pk_kem, pk_bl) and info arguments but a new
    ikm argument.
+
+2.3.1.  Nondeterministic variants
+
+   Applications that do not need a deterministic interface MAY choose to
+   instead implement ARKG-Derive-Public-Key and KEM-Encaps as
+   nondeterministic procedures omitting their respective ikm parameter
+   and sampling random entropy internally; this choice does not affect
+   interoperability.
+
+   BL-Blind-Public-Key must always be deterministic for compatibility
+   with ARKG-Derive-Private-Key.
 
 2.4.  The function ARKG-Derive-Private-Key
 
