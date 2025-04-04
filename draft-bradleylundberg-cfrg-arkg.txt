@@ -92,10 +92,6 @@ Table of Contents
      4.2.  ARKG-P384ADD-ECDH
      4.3.  ARKG-P521ADD-ECDH
      4.4.  ARKG-P256kADD-ECDH
-     4.5.  ARKG-curve25519ADD-X25519
-     4.6.  ARKG-curve448ADD-X448
-     4.7.  ARKG-edwards25519ADD-X25519
-     4.8.  ARKG-edwards448ADD-X448
    5.  COSE bindings
      5.1.  COSE key type: ARKG public seed
      5.2.  COSE key reference type: ARKG derived private key
@@ -836,170 +832,6 @@ Table of Contents
 
       -  DST_ext: 'ARKG-P256kADD-ECDH'.
 
-4.5.  ARKG-curve25519ADD-X25519
-
-   The identifier ARKG-curve25519ADD-X25519 represents the following
-   ARKG instance:
-
-   *  BL: Elliptic curve addition as described in Section 3.1 with the
-      parameters:
-
-      -  crv: The curve curve25519 [RFC7748].
-
-      -  hash-to-crv-suite: curve25519_XMD:SHA-512_ELL2_RO_ [RFC9380].
-
-      -  DST_ext: 'ARKG-curve25519ADD-X25519'.
-
-      WARNING: Some algorithms on curve25519, including X25519
-      [RFC7748], construct private key scalars within a particular range
-      to enable optimizations and constant-time guarantees.  This BL
-      scheme does not guarantee that blinded private scalars remain in
-      that range, so implementations using this ARKG instance MUST NOT
-      rely on such a guarantee.
-
-      Note: Input and output keys of this BL scheme are curve scalars
-      and curve points.  Some algorithms on curve25519, including X25519
-      [RFC7748], define the private key input as a random octet string
-      and applies some preprocessing to it before interpreting the
-      result as a private key scalar, and define public keys as a
-      particular octet string encoding of a curve point.  This BL scheme
-      is not compatible with such preprocessing since it breaks the
-      relationship between the blinded private key and the blinded
-      public key.  Implementations using this ARKG instance MUST apply
-      BL-Blind-Private-Key to the interpreted private key scalar, not
-      the random private key octet string, and implementations of BL-
-      Blind-Public-Key MUST interpret the public key input as a curve
-      point, not an opaque octet string.
-
-   *  KEM: X25519 as described in Section 3.4 with the parameters:
-
-      -  DH-Function: X25519 [RFC7748].
-
-      -  DST_ext: 'ARKG-curve25519ADD-X25519'.
-
-4.6.  ARKG-curve448ADD-X448
-
-   The identifier ARKG-curve448ADD-X448 represents the following ARKG
-   instance:
-
-   *  BL: Elliptic curve addition as described in Section 3.1 with the
-      parameters:
-
-      -  crv: The curve curve448 [RFC7748].
-
-      -  hash-to-crv-suite: curve448_XOF:SHAKE256_ELL2_RO_ [RFC9380].
-
-      -  DST_ext: 'ARKG-curve448ADD-X448'.
-
-      WARNING: Some algorithms on curve25519, including X448 [RFC7748],
-      construct private key scalars within a particular range to enable
-      optimizations and constant-time guarantees.  This BL scheme does
-      not guarantee that blinded private scalars remain in that range,
-      so implementations using this ARKG instance MUST NOT rely on such
-      a guarantee.
-
-      Note: Input and output keys of this BL scheme are curve scalars
-      and curve points.  Some algorithms on curve25519, including X448
-      [RFC7748], define the private key input as a random octet string
-      and applies some preprocessing to it before interpreting the
-      result as a private key scalar, and define public keys as a
-      particular octet string encoding of a curve point.  This BL scheme
-      is not compatible with such preprocessing since it breaks the
-      relationship between the blinded private key and the blinded
-      public key.  Implementations using this ARKG instance MUST apply
-      BL-Blind-Private-Key to the interpreted private key scalar, not
-      the random private key octet string, and implementations of BL-
-      Blind-Public-Key MUST interpret the public key input as a curve
-      point, not an opaque octet string.
-
-   *  KEM: X448 as described in Section 3.4 with the parameters:
-
-      -  DH-Function: X448 [RFC7748].
-
-      -  DST_ext: 'ARKG-curve448ADD-X448'.
-
-4.7.  ARKG-edwards25519ADD-X25519
-
-   The identifier ARKG-edwards25519ADD-X25519 represents the following
-   ARKG instance:
-
-   *  BL: Elliptic curve addition as described in Section 3.1 with the
-      parameters:
-
-      -  crv: The curve edwards25519 [RFC7748].
-
-      -  hash-to-crv-suite: edwards25519_XMD:SHA-512_ELL2_RO_ [RFC9380].
-
-      -  DST_ext: 'ARKG-edwards25519ADD-X25519'.
-
-      WARNING: Some algorithms on edwards25519, including EdDSA
-      [RFC8032], construct private key scalars within a particular range
-      to enable optimizations and constant-time guarantees.  This BL
-      scheme does not guarantee that blinded private scalars remain in
-      that range, so implementations using this ARKG instance MUST NOT
-      rely on such a guarantee.
-
-      Note: Input and output keys of this BL scheme are curve scalars
-      and curve points.  Some algorithms on edwards25519, including
-      EdDSA [RFC8032], define the private key input as a random octet
-      string and applies some preprocessing to it before interpreting
-      the result as a private key scalar, and define public keys as a
-      particular octet string encoding of a curve point.  This BL scheme
-      is not compatible with such preprocessing since it breaks the
-      relationship between the blinded private key and the blinded
-      public key.  Implementations using this ARKG instance MUST apply
-      BL-Blind-Private-Key to the interpreted private key scalar, not
-      the random private key octet string, and implementations of BL-
-      Blind-Public-Key MUST interpret the public key input as a curve
-      point, not an opaque octet string.
-
-   *  KEM: X25519 as described in Section 3.4 with the parameters:
-
-      -  DH-Function: X25519 [RFC7748].
-
-      -  DST_ext: 'ARKG-edwards25519ADD-X25519'.
-
-4.8.  ARKG-edwards448ADD-X448
-
-   The identifier ARKG-edwards448ADD-X448 represents the following ARKG
-   instance:
-
-   *  BL: Elliptic curve addition as described in Section 3.1 with the
-      parameters:
-
-      -  crv: The curve edwards448 [RFC7748].
-
-      -  hash-to-crv-suite: edwards448_XOF:SHAKE256_ELL2_RO_ [RFC9380].
-
-      -  DST_ext: 'ARKG-edwards448ADD-X448'.
-
-      WARNING: Some algorithms on edwards25519, including EdDSA
-      [RFC8032], construct private key scalars within a particular range
-      to enable optimizations and constant-time guarantees.  This BL
-      scheme does not guarantee that blinded private scalars remain in
-      that range, so implementations using this ARKG instance MUST NOT
-      rely on such a guarantee.
-
-      Note: Input and output keys of this BL scheme are curve scalars
-      and curve points.  Some algorithms on edwards25519, including
-      EdDSA [RFC8032], define the private key input as a random octet
-      string and applies some preprocessing to it before interpreting
-      the result as a private key scalar, and define public keys as a
-      particular octet string encoding of a curve point.  This BL scheme
-      is not compatible with such preprocessing since it breaks the
-      relationship between the blinded private key and the blinded
-      public key.  Implementations using this ARKG instance MUST apply
-      BL-Blind-Private-Key to the interpreted private key scalar, not
-      the random private key octet string, and implementations of BL-
-      Blind-Public-Key MUST interpret the public key input as a curve
-      point, not an opaque octet string.
-
-   *  KEM: X448 as described in Section 3.4 with the parameters:
-
-      -  DH-Function: X448 [RFC7748].
-
-      -  DST_ext: 'ARKG-edwards448ADD-X448'.
-
 5.  COSE bindings
 
    This section proposes additions to COSE [RFC9052] to support ARKG use
@@ -1042,51 +874,27 @@ Table of Contents
    this public seed is to be used with.  Table 2 defines an initial set
    of COSE algorithm identifiers for this purpose.
 
-     +=============================+==============+==================+
-     | Name                        | Value        | Description      |
-     +=============================+==============+==================+
-     | ARKG-P256ADD-ECDH           | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65700)      | in Section 4.1   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-P384ADD-ECDH           | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65701)      | in Section 4.2   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-P521ADD-ECDH           | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65702)      | in Section 4.3   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-P256kADD-ECDH          | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65703)      | in Section 4.4   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-curve25519ADD-X25519   | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65704)      | in Section 4.5   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-curve448ADD-X448       | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65705)      | in Section 4.6   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-edwards25519ADD-X25519 | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65706)      | in Section 4.7   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
-     | ARKG-edwards448ADD-X448     | TBD          | The ARKG         |
-     |                             | (placeholder | instance defined |
-     |                             | -65707)      | in Section 4.8   |
-     |                             |              | of this document |
-     +-----------------------------+--------------+------------------+
+    +====================+==================+========================+
+    | Name               | Value            | Description            |
+    +====================+==================+========================+
+    | ARKG-P256ADD-ECDH  | TBD (placeholder | The ARKG instance      |
+    |                    | -65700)          | defined in Section 4.1 |
+    |                    |                  | of this document       |
+    +--------------------+------------------+------------------------+
+    | ARKG-P384ADD-ECDH  | TBD (placeholder | The ARKG instance      |
+    |                    | -65701)          | defined in Section 4.2 |
+    |                    |                  | of this document       |
+    +--------------------+------------------+------------------------+
+    | ARKG-P521ADD-ECDH  | TBD (placeholder | The ARKG instance      |
+    |                    | -65702)          | defined in Section 4.3 |
+    |                    |                  | of this document       |
+    +--------------------+------------------+------------------------+
+    | ARKG-P256kADD-ECDH | TBD (placeholder | The ARKG instance      |
+    |                    | -65703)          | defined in Section 4.4 |
+    |                    |                  | of this document       |
+    +--------------------+------------------+------------------------+
 
-      Table 2: COSE algorithm identifiers to represent ARKG instances.
+     Table 2: COSE algorithm identifiers to represent ARKG instances.
 
    The following CDDL [RFC8610] example represents an ARKG-P256ADD-ECDH
    public seed restricted to generating derived keys for use with the
@@ -1348,49 +1156,6 @@ Table of Contents
 
       -  Recommended: TBD
 
-   *  Name: ARKG-curve25519ADD-X25519
-
-      -  Value: TBD (placeholder -65704)
-
-      -  Description: ARKG using X25519 and additive blinding on
-         curve25519
-
-      -  Reference: Section 4.5 of this document
-
-      -  Recommended: TBD
-
-   *  Name: ARKG-curve448ADD-X448
-
-      -  Value: TBD (placeholder -65705)
-
-      -  Description: ARKG using X448 and additive blinding on curve448
-
-      -  Reference: Section 4.6 of this document
-
-      -  Recommended: TBD
-
-   *  Name: ARKG-edwards25519ADD-X25519
-
-      -  Value: TBD (placeholder -65706)
-
-      -  Description: ARKG using X25519 and additive blinding on
-         edwards25519
-
-      -  Reference: Section 4.7 of this document
-
-      -  Recommended: TBD
-
-   *  Name: ARKG-edwards448ADD-X448
-
-      -  Value: TBD (placeholder -65707)
-
-      -  Description: ARKG using X448 and additive blinding on
-         edwards448
-
-      -  Reference: Section 4.8 of this document
-
-      -  Recommended: TBD
-
 9.  Design rationale
 
 9.1.  Using a MAC
@@ -1595,6 +1360,14 @@ Appendix B.  Test Vectors
    TODO
 
 Appendix C.  Document History
+
+   -05
+
+   *  Deleted concrete instances ARKG-curve25519ADD-X25519, ARKG-
+      curve448ADD-X448, ARKG-edwards25519ADD-X25519 and ARKG-
+      edwards448ADD-X448 since implementations with a non-prime order
+      generator, including EdDSA, are incompatible with the additive
+      blinding scheme.
 
    -04
 
