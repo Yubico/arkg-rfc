@@ -343,8 +343,8 @@ The output keys of the `BL` scheme are also the output keys of the ARKG instance
 For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
-We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM`,
-substituting the chosen instantiation for `BL` and `KEM`.
+We denote a concrete ARKG instance by the pattern `ARKG-NAME`,
+substituting for `NAME` some description of the chosen instantiation for `BL` and `KEM`.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
@@ -812,73 +812,73 @@ This section defines an initial set of concrete ARKG instantiations.
 TODO: IANA registry? COSE/JOSE?
 
 
-## ARKG-P256ADD-ECDH {#ARKG-P256ADD-ECDH}
+## ARKG-P256 {#ARKG-P256}
 
-The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
   - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
 SHOULD contain at least 256 bits of entropy.
 
 
-## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
+## ARKG-P384 {#ARKG-P384}
 
-The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P384` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P384'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
   - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P384'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
 SHOULD contain at least 384 bits of entropy.
 
 
-## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
+## ARKG-P521 {#ARKG-P521}
 
-The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P521` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P521'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `Hash`: SHA-512 [FIPS 180-4].
   - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P521'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
 SHOULD contain at least 512 bits of entropy.
 
 
-## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
+## ARKG-P256k {#ARKG-P256k}
 
-The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P256k` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256k'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
   - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256k'`.
 
 Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
 SHOULD contain at least 256 bits of entropy.
@@ -916,12 +916,12 @@ identifies the ARKG instance this public seed is to be used with.
 {: #tbl-arkg-pub-algs title="COSE algorithm identifiers to represent ARKG instances."}
 | Name | Value | Description |
 | ---- | ----- | ----------- |
-| ARKG-P256ADD-ECDH | TBD (placeholder -65700) | The ARKG instance defined in {{ARKG-P256ADD-ECDH}} of this document |
-| ARKG-P384ADD-ECDH | TBD (placeholder -65701) | The ARKG instance defined in {{ARKG-P384ADD-ECDH}} of this document |
-| ARKG-P521ADD-ECDH | TBD (placeholder -65702) | The ARKG instance defined in {{ARKG-P521ADD-ECDH}} of this document |
-| ARKG-P256kADD-ECDH | TBD (placeholder -65703) | The ARKG instance defined in {{ARKG-P256kADD-ECDH}} of this document |
+| ARKG-P256 | TBD (placeholder -65700) | The ARKG instance defined in {{ARKG-P256}} of this document |
+| ARKG-P384 | TBD (placeholder -65701) | The ARKG instance defined in {{ARKG-P384}} of this document |
+| ARKG-P521 | TBD (placeholder -65702) | The ARKG instance defined in {{ARKG-P521}} of this document |
+| ARKG-P256k | TBD (placeholder -65703) | The ARKG instance defined in {{ARKG-P256k}} of this document |
 
-The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
+The following CDDL [RFC8610] example represents an `ARKG-P256` public seed
 restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
@@ -930,7 +930,7 @@ restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-sp
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -65700,   ; alg: ARKG-P256ADD-ECDH (placeholder value)
+  3: -65700,   ; alg: ARKG-P256 (placeholder value)
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -998,7 +998,7 @@ then the `inst` (-3) parameter of the COSE_Key_Ref SHOULD be set to the `alg` (3
 | ctx  | -2    | bstr         | Required  | `ctx` argument to `ARKG-Derive-Private-Key` |
 | inst | -3    | int / tstr   | Optional  | COSE algorithm identifier of ARKG instance |
 
-The following CDDL example represents a reference to a key derived using `ARKG-P256ADD-ECDH`
+The following CDDL example represents a reference to a key derived using `ARKG-P256`
 and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
 
 ~~~cddl
@@ -1009,7 +1009,7 @@ and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algo
        704949e84d484b68344340e2565337d2',
   3: -9,       ; alg: ESP256
 
-               ; ARKG-P256ADD-ECDH key handle
+               ; ARKG-P256 key handle
                ; (HMAC-SHA-256-128 followed by
                   SEC1 uncompressed ECDH public key)
   -1: h'ae079e9c52212860678a7cee25b6a6d4
@@ -1021,7 +1021,7 @@ and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algo
                ; ctx argument to ARKG-Derive-Private-Key
   -2: 'Example application info',
 
-  -3: -65700   ; inst: ARKG-P256ADD-ECDH (placeholder value)
+  -3: -65700   ; inst: ARKG-P256 (placeholder value)
 }
 ~~~
 
@@ -1109,28 +1109,28 @@ This section registers the following values in the IANA "COSE Key Type Parameter
 
 This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
 
-- Name: ARKG-P256ADD-ECDH
+- Name: ARKG-P256
   - Value: TBD (placeholder -65700)
   - Description: ARKG using ECDH and additive blinding on secp256r1
-  - Reference: {{ARKG-P256ADD-ECDH}} of this document
+  - Reference: {{ARKG-P256}} of this document
   - Recommended: TBD
 
-- Name: ARKG-P384ADD-ECDH
+- Name: ARKG-P384
   - Value: TBD (placeholder -65701)
   - Description: ARKG using ECDH and additive blinding on secp384r1
-  - Reference: {{ARKG-P384ADD-ECDH}} of this document
+  - Reference: {{ARKG-P384}} of this document
   - Recommended: TBD
 
-- Name: ARKG-P521ADD-ECDH
+- Name: ARKG-P521
   - Value: TBD (placeholder -65702)
   - Description: ARKG using ECDH and additive blinding on secp521r1
-  - Reference: {{ARKG-P521ADD-ECDH}} of this document
+  - Reference: {{ARKG-P521}} of this document
   - Recommended: TBD
 
-- Name: ARKG-P256kADD-ECDH
+- Name: ARKG-P256k
   - Value: TBD (placeholder -65703)
   - Description: ARKG using ECDH and additive blinding on secp256k1
-  - Reference: {{ARKG-P256kADD-ECDH}} of this document
+  - Reference: {{ARKG-P256k}} of this document
   - Recommended: TBD
 
 
@@ -1220,6 +1220,11 @@ TODO
 * `info` parameter renamed to `ctx`.
 * `ctx` length limited to at most 64 bytes.
 * Encoding of `ctx` in `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key` now embeds the length of `ctx`.
+* Renamed concrete instances and corresponding `DST_ext` values:
+  - `ARKG-P256ADD-ECDH` to `ARKG-P256`
+  - `ARKG-P384ADD-ECDH` to `ARKG-P384`
+  - `ARKG-P521ADD-ECDH` to `ARKG-P521`
+  - `ARKG-P256kADD-ECDH` to `ARKG-P256k`
 
 -04
 
