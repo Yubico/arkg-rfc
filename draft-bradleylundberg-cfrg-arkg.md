@@ -254,7 +254,8 @@ and the delegating party can use the private seed and a key handle to derive the
 This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
 as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
 Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
-as nondeterministic procedures omitting their respective `ikm` parameter;
+as nondeterministic procedures omitting their respective `ikm` parameter
+and sampling random entropy internally;
 this choice does not affect interoperability.
 
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
@@ -375,6 +376,15 @@ ARKG-Derive-Seed(ikm) -> (pk, sk)
 ~~~
 
 
+### Nondeterministic variants
+
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
+as nondeterministic procedures omitting their respective `ikm` parameter
+and sampling random entropy internally;
+this choice does not affect interoperability.
+
+
 ## The function ARKG-Derive-Public-Key
 
 This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
@@ -417,6 +427,17 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
 
 If this procedure aborts due to an error,
 the procedure can safely be retried with the same `(pk_kem, pk_bl)` and `info` arguments but a new `ikm` argument.
+
+
+### Nondeterministic variants
+
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Public-Key` and `KEM-Encaps`
+as nondeterministic procedures omitting their respective `ikm` parameter
+and sampling random entropy internally;
+this choice does not affect interoperability.
+
+`BL-Blind-Public-Key` must always be deterministic for compatibility with `ARKG-Derive-Private-Key`.
 
 
 ## The function ARKG-Derive-Private-Key
