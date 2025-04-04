@@ -1665,7 +1665,8 @@ Appendix C.  Document History
 
       -  KEM-Generate-Keypair() replaced with KEM-Derive-Key-Pair(ikm)
 
-      -  ARKG-Generate-Seed() replaced with ARKG-Derive-Seed(ikm)
+      -  ARKG-Generate-Seed() replaced with ARKG-Derive-Seed(ikm_bl,
+         ikm_kem)
 
       -  Parameter ikm added to ARKG-Derive-Public-Key.
 
