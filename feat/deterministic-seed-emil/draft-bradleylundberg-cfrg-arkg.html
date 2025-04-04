@@ -2106,7 +2106,10 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.1-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-2.2.2.3">
-                <p id="section-4.1-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P256_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-2.2.2.4">
+                <p id="section-4.1-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2146,7 +2149,10 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.2-2.2.2.2.1"><code>Hash</code>: SHA-384 [FIPS 180-4].<a href="#section-4.2-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.2-2.2.2.3">
-                <p id="section-4.2-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P384_XMD:SHA-384_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.2-2.2.2.4">
+                <p id="section-4.2-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2186,7 +2192,10 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.3-2.2.2.2.1"><code>Hash</code>: SHA-512 [FIPS 180-4].<a href="#section-4.3-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.3-2.2.2.3">
-                <p id="section-4.3-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.3-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P521_XMD:SHA-512_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.3-2.2.2.4">
+                <p id="section-4.3-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -2226,7 +2235,10 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.4-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.4-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.4-2.2.2.3">
-                <p id="section-4.4-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.4-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>secp256k1_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.4-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.4-2.2.2.4">
+                <p id="section-4.4-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -3264,7 +3276,11 @@ modified by the inclusion of a MAC in the key handles as done in the original co
               <p id="appendix-C-2.1.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-C-2.1.2.5">
-              <p id="appendix-C-2.1.2.5.1">Section "Deterministic key generation" deleted<a href="#appendix-C-2.1.2.5.1" class="pilcrow">¶</a></p>
+              <p id="appendix-C-2.1.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
+affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-2.1.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.1.2.6">
+              <p id="appendix-C-2.1.2.6.1">Section "Deterministic key generation" deleted<a href="#appendix-C-2.1.2.6.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
