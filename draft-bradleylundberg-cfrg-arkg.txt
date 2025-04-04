@@ -1367,7 +1367,8 @@ Appendix C.  Document History
       curve448ADD-X448, ARKG-edwards25519ADD-X25519 and ARKG-
       edwards448ADD-X448 since implementations with a non-prime order
       generator, including EdDSA, are incompatible with the additive
-      blinding scheme.
+      blinding scheme defined in section "Using elliptic curve addition
+      for key blinding".
 
    -04
 
