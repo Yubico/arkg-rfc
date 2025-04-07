@@ -1059,7 +1059,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 6 October 2025</td>
+<td class="center">Expires 9 October 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-04" class="published">4 April 2025</time>
+<time datetime="2025-04-07" class="published">7 April 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-06">6 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-10-09">9 October 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1183,15 +1183,20 @@ We expect that additional instances will be defined in the future.<a href="#sect
                 <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-instance-parameters" class="internal xref">Instance parameters</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-the-function-arkg-generate-" class="internal xref">The function ARKG-Generate-Seed</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-the-function-arkg-derive-se" class="internal xref">The function ARKG-Derive-Seed</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
-                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-deterministic-key-generatio" class="internal xref">Deterministic key generation</a></p>
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="auto internal xref">2.2.1</a>.  <a href="#name-nondeterministic-variants" class="internal xref">Nondeterministic variants</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-the-function-arkg-derive-pu" class="internal xref">The function ARKG-Derive-Public-Key</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3.2.1">
+                    <p id="section-toc.1-1.2.2.3.2.1.1"><a href="#section-2.3.1" class="auto internal xref">2.3.1</a>.  <a href="#name-nondeterministic-variants-2" class="internal xref">Nondeterministic variants</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
                 <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-the-function-arkg-derive-pr" class="internal xref">The function ARKG-Derive-Private-Key</a></p>
@@ -1424,8 +1429,14 @@ The delegating party generates an ARKG <em>seed pair</em> and emits the <em>publ
 while keeping the <em>private seed</em> secret.
 The subordinate party can then use the public seed to generate derived public keys and <em>key handles</em>,
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">The following subsections define the abstract instance parameters used to construct the three ARKG functions,
-followed by the definitions of the three ARKG functions.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-2">This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
+as opposed to the internal random sampling typically used in the academic literature <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> <span>[<a href="#Clermont" class="cite xref">Clermont</a>]</span>.
+Implementations <span class="bcp14">MAY</span> choose to instead implement the <code>ARKG-Derive-Seed</code> and <code>KEM-Encaps</code> functions
+as nondeterministic procedures omitting their respective <code>ikm</code> parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">The following subsections define the abstract instance parameters used to construct the three ARKG functions,
+followed by the definitions of the three ARKG functions.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <div id="arkg-params">
 <section id="section-2.1">
         <h3 id="name-instance-parameters">
@@ -1438,9 +1449,9 @@ The parameters of an ARKG instance are:<a href="#section-2.1-1" class="pilcrow">
             <p id="section-2.1-2.1.1"><code>BL</code>: An asymmetric key blinding scheme <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>, consisting of:<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.1.2.1">
-                <p id="section-2.1-2.1.2.1.1">Function <code>BL-Generate-Keypair() -&gt; (pk, sk)</code>: Generate a blinding key pair.<a href="#section-2.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.1.1">Function <code>BL-Derive-Key-Pair(ikm) -&gt; (pk, sk)</code>: Derive a blinding key pair.<a href="#section-2.1-2.1.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.1.2">
-No input.<a href="#section-2.1-2.1.2.1.2" class="pilcrow">¶</a></p>
+Input consists of input keying material entropy <code>ikm</code>.<a href="#section-2.1-2.1.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.1.3">
 Output consists of a blinding public key <code>pk</code> and a blinding private key <code>sk</code>.<a href="#section-2.1-2.1.2.1.3" class="pilcrow">¶</a></p>
 </li>
@@ -1464,6 +1475,7 @@ Output consists of the blinded private key <code>sk_tau</code>.<a href="#section
 </li>
             </ul>
 <p id="section-2.1-2.1.3">
+<code>ikm</code> is an opaque octet string of a suitable length as defined by the ARKG instance.
 <code>tau</code> and <code>info</code> are an opaque octet strings of arbitrary length.
 The representations of <code>pk</code> and <code>pk_tau</code> are defined by the protocol that invokes ARKG.
 The representations of <code>sk</code> and <code>sk_tau</code> are an undefined implementation detail.<a href="#section-2.1-2.1.3" class="pilcrow">¶</a></p>
@@ -1474,16 +1486,17 @@ See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definition
             <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism <span>[<a href="#Shoup" class="cite xref">Shoup</a>]</span>, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.2.2.1">
-                <p id="section-2.1-2.2.2.1.1"><code>KEM-Generate-Keypair() -&gt; (pk, sk)</code>: Generate a key encapsulation key pair.<a href="#section-2.1-2.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.2.2.1.1"><code>KEM-Derive-Key-Pair(ikm) -&gt; (pk, sk)</code>: Derive a key encapsulation key pair.<a href="#section-2.1-2.2.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.1.2">
-No input.<a href="#section-2.1-2.2.2.1.2" class="pilcrow">¶</a></p>
+Input consists of input keying material entropy <code>ikm</code>.<a href="#section-2.1-2.2.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.1.3">
 Output consists of public key <code>pk</code> and private key <code>sk</code>.<a href="#section-2.1-2.2.2.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-2.2.2.2">
-                <p id="section-2.1-2.2.2.2.1"><code>KEM-Encaps(pk, info) -&gt; (k, c)</code>: Generate a key encapsulation.<a href="#section-2.1-2.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.2.2.2.1"><code>KEM-Encaps(pk, ikm, info) -&gt; (k, c)</code>: Derive a key encapsulation.<a href="#section-2.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.2.2">
-Input consists of an encapsulation public key <code>pk</code>
+Input consists of an encapsulation public key <code>pk</code>,
+input entropy <code>ikm</code>
 and a domain separation parameter <code>info</code>.<a href="#section-2.1-2.2.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.2.2.3">
 Output consists of a shared secret <code>k</code> and an encapsulation ciphertext <code>c</code>.<a href="#section-2.1-2.2.2.2.3" class="pilcrow">¶</a></p>
@@ -1498,6 +1511,7 @@ Output consists of the shared secret <code>k</code> on success, or an error othe
 </li>
             </ul>
 <p id="section-2.1-2.2.3">
+<code>ikm</code> is an opaque octet string of a suitable length as defined by the ARKG instance.
 <code>k</code>, <code>c</code> and <code>info</code> are opaque octet strings of arbitrary length.
 The representation of <code>pk</code> is defined by the protocol that invokes ARKG.
 The representation of <code>sk</code> is an undefined implementation detail.<a href="#section-2.1-2.2.3" class="pilcrow">¶</a></p>
@@ -1512,35 +1526,37 @@ See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definition
 </li>
         </ul>
 <p id="section-2.1-3">A concrete ARKG instantiation <span class="bcp14">MUST</span> specify the instantiation
-of each of the above functions and values.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+of each of the above functions.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4">The output keys of the <code>BL</code> scheme are also the output keys of the ARKG instance as a whole.
 For example, if <code>BL-Blind-Public-Key</code> and <code>BL-Blind-Private-Key</code> output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5">We denote a concrete ARKG instance by the pattern <code>ARKG-BL-KEM</code>,
-substituting the chosen instantiation for the <code>BL</code> and <code>KEM</code>.
+substituting the chosen instantiation for <code>BL</code> and <code>KEM</code>.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations <span class="bcp14">MUST NOT</span> attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances <span class="bcp14">MUST</span> always be identified by lookup in a registry of fully specified ARKG instances.
 This is to prevent usage of algorithm combinations that may be incompatible or insecure.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="the-function-arkg-generate-seed">
+<div id="the-function-arkg-derive-seed">
 <section id="section-2.2">
-        <h3 id="name-the-function-arkg-generate-">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-the-function-arkg-generate-" class="section-name selfRef">The function ARKG-Generate-Seed</a>
+        <h3 id="name-the-function-arkg-derive-se">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-the-function-arkg-derive-se" class="section-name selfRef">The function ARKG-Derive-Seed</a>
         </h3>
 <p id="section-2.2-1">This function is performed by the delegating party.
-The delegating party generates the ARKG seed pair <code>(pk, sk)</code>
+The delegating party derives the ARKG seed pair <code>(pk, sk)</code>
 and keeps the private seed <code>sk</code> secret, while the public seed <code>pk</code> is provided to the subordinate party.
-The subordinate party will then be able to generate public keys on behalf of the delegating party.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+The subordinate party will then be able to derive public keys on behalf of the delegating party.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-2.2-2">
 <pre>
-ARKG-Generate-Seed() -&gt; (pk, sk)
+ARKG-Derive-Seed(ikm_bl, ikm_kem) -&gt; (pk, sk)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
-    Inputs: None
+    Inputs:
+        ikm_bl    Input keying material entropy for BL.
+        ikm_kem   Input keying material entropy for KEM.
 
     Output:
         (pk, sk)  An ARKG seed pair with public seed pk
@@ -1548,29 +1564,22 @@ ARKG-Generate-Seed() -&gt; (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Generate-Keypair()
-    (pk_bl, sk_bl) = BL-Generate-Keypair()
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
 </div>
-<div id="deterministic-key-generation">
+<div id="nondeterministic-variants">
 <section id="section-2.2.1">
-          <h4 id="name-deterministic-key-generatio">
-<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-deterministic-key-generatio" class="section-name selfRef">Deterministic key generation</a>
+          <h4 id="name-nondeterministic-variants">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-nondeterministic-variants" class="section-name selfRef">Nondeterministic variants</a>
           </h4>
-<p id="section-2.2.1-1">Although the above definition expresses the key generation as opaque,
-likely sampling uniformly random key distributions,
-implementations <span class="bcp14">MAY</span> choose to implement the functions <code>BL-Generate-Keypair()</code>,
-<code>KEM-Generate-Keypair()</code> and <code>ARKG-Generate-Seed()</code>
-as deterministic functions of some out-of-band input.
-This can be thought of as defining a single-use ARKG instance where these function outputs are static.
-This use case is beyond the scope of this document
-since the implementation of <code>ARKG-Generate-Seed</code> is internal to the delegating party,
-even if applications choose to distribute the delegating party across multiple processing entities.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.2.1-2">For example, one entity may randomly sample <code>pk_bl</code>, derive <code>pk_kem</code> deterministically from <code>pk_bl</code>
-and submit only <code>pk_bl</code> to a separate service that uses the same procedure to also derive the same <code>pk_kem</code>.
-This document considers both of these entities as parts of the same logical delegating party.<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-1">Applications that do not need a deterministic interface <span class="bcp14">MAY</span> choose
+to instead implement <code>ARKG-Derive-Seed</code>, <code>KEM-Derive-Key-Pair</code> and <code>BL-Derive-Key-Pair</code>
+as nondeterministic procedures omitting their respective <code>ikm</code> parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1584,10 +1593,11 @@ This document considers both of these entities as parts of the same logical dele
 The resulting public key <code>pk'</code> can be provided to external parties to use in asymmetric cryptography protocols,
 and the resulting key handle <code>kh</code> can be used by the delegating party to derive the private key corresponding to <code>pk'</code>.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
 <p id="section-2.3-2">This function may be invoked any number of times with the same public seed,
+using different <code>ikm</code> or <code>info</code> arguments,
 in order to generate any number of public keys.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-2.3-3">
 <pre>
-ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
+ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -&gt; (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -1595,6 +1605,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
     Inputs:
         pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
+        ikm       Input entropy for KEM encapsulation.
         info      An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
@@ -1609,14 +1620,27 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -&gt; (pk', kh)
     info_kem = 'ARKG-Derive-Key-KEM.' || info
     info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
-    (tau, c) = KEM-Encaps(pk_kem, info_kem)
+    (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
     pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
 
     kh = c
 </pre><a href="#section-2.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-2.3-4">If this procedure aborts due to an error,
-the procedure can safely be retried with the same arguments.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+the procedure can safely be retried with the same <code>(pk_kem, pk_bl)</code> and <code>info</code> arguments but a new <code>ikm</code> argument.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+<div id="nondeterministic-variants-1">
+<section id="section-2.3.1">
+          <h4 id="name-nondeterministic-variants-2">
+<a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-nondeterministic-variants-2" class="section-name selfRef">Nondeterministic variants</a>
+          </h4>
+<p id="section-2.3.1-1">Applications that do not need a deterministic interface <span class="bcp14">MAY</span> choose
+to instead implement <code>ARKG-Derive-Public-Key</code> and <code>KEM-Encaps</code>
+as nondeterministic procedures omitting their respective <code>ikm</code> parameter
+and sampling random entropy internally;
+this choice does not affect interoperability.<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-2"><code>BL-Blind-Public-Key</code> must always be deterministic for compatibility with <code>ARKG-Derive-Private-Key</code>.<a href="#section-2.3.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="the-function-arkg-derive-private-key">
@@ -1712,9 +1736,19 @@ suitable for hashing to the scalar field of <code>crv</code>.<a href="#section-3
         </ul>
 <div class="lang-pseudocode sourcecode" id="section-3.1-6">
 <pre>
-BL-Generate-Keypair() -&gt; (pk, sk)
+BL-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
-    Generate (pk, sk) using some procedure defined for the curve crv.
+    sk = hash_to_field(ikm, 1) with the parameters:
+        DST: 'ARKG-BL-EC-KG.' || DST_ext
+        F: GF(N), the scalar field
+           of the prime order subgroup of crv
+        p: N
+        m: 1
+        L: The L defined in hash-to-crv-suite
+        expand_message: The expand_message function
+                        defined in hash-to-crv-suite
+
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau, info) -&gt; pk_tau
@@ -1773,7 +1807,7 @@ and can be successfully decapsulated using any elliptic curve private scalar.<a 
           <li class="normal" id="section-3.2-4.3">
             <p id="section-3.2-4.3.1"><code>Sub-Kem</code>: A key encapsulation mechanism as described for the <code>KEM</code> parameter in <a href="#arkg-params" class="auto internal xref">Section 2.1</a>,
 except <code>Sub-Kem</code> <span class="bcp14">MAY</span> ignore the <code>info</code> parameter and <span class="bcp14">MAY</span> not guarantee ciphertext integrity.
-<code>Sub-Kem</code> defines the functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.2-4.3.1" class="pilcrow">¶</a></p>
+<code>Sub-Kem</code> defines the functions <code>Sub-Kem-Derive-Key-Pair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.2-5">The <code>KEM</code> parameter of ARKG may be instantiated using <code>Sub-Kem</code>,
@@ -1797,15 +1831,15 @@ with an output length appropriate for the desired security level,
 in order to not leak information about the <code>Sub-KEM</code> shared secret key.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
 <div class="breakable lang-pseudocode sourcecode" id="section-3.2-8">
 <pre>
-KEM-Generate-Keypair() -&gt; (pk, sk)
+KEM-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
-    (pk, sk) = Sub-Kem-Generate-Keypair()
+    (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encaps(pk, info) -&gt; (k, c)
+KEM-Encaps(pk, ikm, info) -&gt; (k, c)
 
     info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    (k', c') = Sub-Kem-Encaps(pk, info_sub)
+    (k', c') = Sub-Kem-Encaps(pk, ikm, info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -1874,7 +1908,11 @@ This section defines a general formula for such instantiations of <code>KEM</cod
             <p id="section-3.3-3.2.1"><code>Hash</code>: A cryptographic hash function.<a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-3.3">
-            <p id="section-3.3-3.3.1"><code>DST_ext</code>: A domain separation parameter.<a href="#section-3.3-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-3.3.1"><code>hash-to-crv-suite</code>: A hash-to-curve suite <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>
+suitable for hashing to the scalar field of <code>crv</code>.<a href="#section-3.3-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-3.4">
+            <p id="section-3.3-3.4.1"><code>DST_ext</code>: A domain separation parameter.<a href="#section-3.3-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.3-4">The <code>KEM</code> parameter of ARKG may be instantiated as described in section <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> with the parameters:<a href="#section-3.3-4" class="pilcrow">¶</a></p>
@@ -1886,7 +1924,7 @@ This section defines a general formula for such instantiations of <code>KEM</cod
             <p id="section-3.3-5.2.1"><code>DST_ext</code>: <code>'ARKG-ECDH.' || DST_ext</code>.<a href="#section-3.3-5.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-5.3">
-            <p id="section-3.3-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.3-5.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Derive-Key-Pair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.3-5.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-5.3.2.1">
                 <p id="section-3.3-5.3.2.1.1"><code>Elliptic-Curve-Point-to-Octet-String</code> and <code>Octet-String-to-Elliptic-Curve-Point</code>
@@ -1906,14 +1944,24 @@ using public key (curve point) <code>pk</code> and private key (exponent) <code>
             </ul>
 <div class="lang-pseudocode sourcecode" id="section-3.3-5.3.3">
 <pre>
-Sub-Kem-Generate-Keypair() -&gt; (pk, sk)
+Sub-Kem-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
-    Generate (pk, sk) using some procedure defined for crv.
+    sk = hash_to_field(ikm, 1) with the parameters:
+        DST: 'ARKG-KEM-ECDH-KG.' || DST_ext
+        F: GF(N), the scalar field
+          of the prime order subgroup of crv
+        p: N
+        m: 1
+        L: The L defined in hash-to-crv-suite
+        expand_message: The expand_message function
+                        defined in hash-to-crv-suite
+
+    pk = sk * G
 
 
-Sub-Kem-Encaps(pk, info) -&gt; (k, c)
+Sub-Kem-Encaps(pk, ikm, info) -&gt; (k, c)
 
-    (pk', sk') = Sub-Kem-Generate-Keypair()
+    (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
     k = ECDH(pk, sk')
     c = Elliptic-Curve-Point-to-Octet-String(pk')
@@ -1955,36 +2003,29 @@ or SHAKE256 [FIPS 202] with output length 64 octets if <code>DH-Function</code> 
             <p id="section-3.4-5.2.1"><code>DST_ext</code>: <code>'ARKG-ECDHX.' || DST_ext</code>.<a href="#section-3.4-5.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-5.3">
-            <p id="section-3.4-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Generate-Keypair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.4-5.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-5.3.1"><code>Sub-Kem</code>: The functions <code>Sub-Kem-Derive-Key-Pair</code>, <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> defined as follows:<a href="#section-3.4-5.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.4-5.3.2.1">
-                <p id="section-3.4-5.3.2.1.1"><code>Random-Bytes(N)</code> represents a cryptographically secure,
-uniformly distributed random octet string of length <code>N</code>.<a href="#section-3.4-5.3.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.4-5.3.2.2">
-                <p id="section-3.4-5.3.2.2.1"><code>L</code> is 32 if <code>DH-Function</code> is X25519, or 56 if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-3.4-5.3.2.3">
-                <p id="section-3.4-5.3.2.3.1"><code>G</code> is the octet string <code>h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
+                <p id="section-3.4-5.3.2.1.1"><code>G</code> is the octet string <code>h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
 if <code>DH-Function</code> is X25519,
 or the octet string <code>h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'</code>
-if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.2.3.1" class="pilcrow">¶</a></p>
-<p id="section-3.4-5.3.2.3.2">
+if <code>DH-Function</code> is X448.<a href="#section-3.4-5.3.2.1.1" class="pilcrow">¶</a></p>
+<p id="section-3.4-5.3.2.1.2">
 These are the little-endian encodings of the integers 9 and 5,
-which is the u-coordinate of the generator point of the respective curve group.<a href="#section-3.4-5.3.2.3.2" class="pilcrow">¶</a></p>
+which is the u-coordinate of the generator point of the respective curve group.<a href="#section-3.4-5.3.2.1.2" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <div class="lang-pseudocode sourcecode" id="section-3.4-5.3.3">
 <pre>
-Sub-Kem-Generate-Keypair() -&gt; (pk, sk)
+Sub-Kem-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
-    sk = Random-Bytes(L)
+    sk = ikm
     pk = DH-Function(sk, G)
 
 
-Sub-Kem-Encaps(pk, info) -&gt; (k, c)
+Sub-Kem-Encaps(pk, ikm, info) -&gt; (k, c)
 
-    (pk', sk') = Sub-Kem-Generate-Keypair()
+    (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
     k = DH-Function(sk', pk)
     c = pk'
@@ -2053,11 +2094,16 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.1-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.1-2.2.2.3">
-                <p id="section-4.1-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P256_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.1-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-2.2.2.4">
+                <p id="section-4.1-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P256ADD-ECDH'</code>.<a href="#section-4.1-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
+<p id="section-4.1-3">Each <code>ikm_bl</code>, <code>ikm_kem</code> and <code>ikm</code> input to the procedures in this ARKG instance
+<span class="bcp14">SHOULD</span> contain at least 256 bits of entropy.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ARKG-P384ADD-ECDH">
@@ -2091,11 +2137,16 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.2-2.2.2.2.1"><code>Hash</code>: SHA-384 [FIPS 180-4].<a href="#section-4.2-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.2-2.2.2.3">
-                <p id="section-4.2-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.2-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P384_XMD:SHA-384_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.2-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.2-2.2.2.4">
+                <p id="section-4.2-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P384ADD-ECDH'</code>.<a href="#section-4.2-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
+<p id="section-4.2-3">Each <code>ikm_bl</code>, <code>ikm_kem</code> and <code>ikm</code> input to the procedures in this ARKG instance
+<span class="bcp14">SHOULD</span> contain at least 384 bits of entropy.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ARKG-P521ADD-ECDH">
@@ -2129,11 +2180,16 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.3-2.2.2.2.1"><code>Hash</code>: SHA-512 [FIPS 180-4].<a href="#section-4.3-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.3-2.2.2.3">
-                <p id="section-4.3-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.3-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>P521_XMD:SHA-512_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.3-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.3-2.2.2.4">
+                <p id="section-4.3-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P521ADD-ECDH'</code>.<a href="#section-4.3-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
+<p id="section-4.3-3">Each <code>ikm_bl</code>, <code>ikm_kem</code> and <code>ikm</code> input to the procedures in this ARKG instance
+<span class="bcp14">SHOULD</span> contain at least 512 bits of entropy.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ARKG-P256kADD-ECDH">
@@ -2167,11 +2223,16 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
                 <p id="section-4.4-2.2.2.2.1"><code>Hash</code>: SHA-256 [FIPS 180-4].<a href="#section-4.4-2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.4-2.2.2.3">
-                <p id="section-4.4-2.2.2.3.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.2.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-4.4-2.2.2.3.1"><code>hash-to-crv-suite</code>: <code>secp256k1_XMD:SHA-256_SSWU_RO_</code> <span>[<a href="#RFC9380" class="cite xref">RFC9380</a>]</span>.<a href="#section-4.4-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.4-2.2.2.4">
+                <p id="section-4.4-2.2.2.4.1"><code>DST_ext</code>: <code>'ARKG-P256kADD-ECDH'</code>.<a href="#section-4.4-2.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
+<p id="section-4.4-3">Each <code>ikm_bl</code>, <code>ikm_kem</code> and <code>ikm</code> input to the procedures in this ARKG instance
+<span class="bcp14">SHOULD</span> contain at least 256 bits of entropy.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2885,6 +2946,30 @@ modified by the inclusion of a MAC in the key handles as done in the original co
 since implementations with a non-prime order generator, including EdDSA,
 are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
+        <li class="normal" id="appendix-C-2.2">
+          <p id="appendix-C-2.2.1">Remodeled procedures to be fully deterministic:<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.2.1">
+              <p id="appendix-C-2.2.2.1.1"><code>BL-Generate-Keypair()</code> replaced with <code>BL-Derive-Key-Pair(ikm)</code><a href="#appendix-C-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.2.2.2">
+              <p id="appendix-C-2.2.2.2.1"><code>KEM-Generate-Keypair()</code> replaced with <code>KEM-Derive-Key-Pair(ikm)</code><a href="#appendix-C-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.2.2.3">
+              <p id="appendix-C-2.2.2.3.1"><code>ARKG-Generate-Seed()</code> replaced with <code>ARKG-Derive-Seed(ikm_bl, ikm_kem)</code><a href="#appendix-C-2.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.2.2.4">
+              <p id="appendix-C-2.2.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-2.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.2.2.5">
+              <p id="appendix-C-2.2.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
+affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-2.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-2.2.2.6">
+              <p id="appendix-C-2.2.2.6.1">Section "Deterministic key generation" deleted<a href="#appendix-C-2.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
       </ul>
 <p id="appendix-C-3">-04<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2982,6 +3067,11 @@ are incompatible with the additive blinding scheme defined in section "Using ell
 <span>URI:</span>
 <a href="https://self-issued.info/" class="url">https://self-issued.info/</a>
 </div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Sander Dijkhuis</span></div>
+<div dir="auto" class="left"><span class="org">Cleverbase</span></div>
+<div dir="auto" class="left"><span class="country-name">Netherlands</span></div>
 </address>
 </section>
 </div>
