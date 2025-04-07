@@ -372,8 +372,8 @@ ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
 
     (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
     (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
-    pk = (pk_kem, pk_bl)
-    sk = (sk_kem, sk_bl)
+    pk = (pk_bl, pk_kem)
+    sk = (sk_bl, sk_kem)
 ~~~
 
 
@@ -388,7 +388,7 @@ this choice does not affect interoperability.
 
 ## The function ARKG-Derive-Public-Key
 
-This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
+This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_bl, pk_kem)`.
 The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols,
 and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
 
@@ -397,14 +397,14 @@ using different `ikm` or `info` arguments,
 in order to generate any number of public keys.
 
 ~~~pseudocode
-ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
+ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, info) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
+        pk_kem    A key encapsulation public key.
         ikm       Input entropy for KEM encapsulation.
         info      An octet string containing optional context
                     and application specific information
@@ -417,8 +417,8 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
     info_bl  = 'ARKG-Derive-Key-BL.'  || info
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
 
     (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
     pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
@@ -427,7 +427,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
 ~~~
 
 If this procedure aborts due to an error,
-the procedure can safely be retried with the same `(pk_kem, pk_bl)` and `info` arguments but a new `ikm` argument.
+the procedure can safely be retried with the same `(pk_bl, pk_kem)` and `info` arguments but a new `ikm` argument.
 
 
 ### Nondeterministic variants
@@ -443,7 +443,7 @@ this choice does not affect interoperability.
 
 ## The function ARKG-Derive-Private-Key
 
-This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
+This function is performed by the delegating party, which holds the ARKG private seed `(sk_bl, sk_kem)`.
 The resulting private key `sk'` can be used in asymmetric cryptography protocols
 to prove possession of `sk'` to an external party that has the corresponding public key.
 
@@ -451,14 +451,14 @@ This function may be invoked any number of times with the same private seed,
 in order to derive the same or different private keys any number of times.
 
 ~~~pseudocode
-ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
+ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, info) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        sk_kem    A key encapsulation private key.
         sk_bl     A key blinding private key.
+        sk_kem    A key encapsulation private key.
         kh        A key handle output from ARKG-Derive-Public-Key.
         info      An octet string containing optional context
                     and application specific information
@@ -469,8 +469,8 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
     info_bl  = 'ARKG-Derive-Key-BL.'  || info
+    info_kem = 'ARKG-Derive-Key-KEM.' || info
 
     tau = KEM-Decaps(sk_kem, kh, info_kem)
     If decapsulation failed:
@@ -1183,6 +1183,8 @@ TODO
   * Instance parameter `hash-to-crv-suite` added to generic formula "Using ECDH as the KEM",
     affecting concrete instances `ARKG-P256ADD-ECDH`, `ARKG-P384ADD-ECDH`, `ARKG-P521ADD-ECDH` and `ARKG-P256kADD-ECDH`.
   * Section "Deterministic key generation" deleted
+* Flipped order of `(pk_bl, pk_kem)` and `(sk_bl, sk_kem)` parameter and return value tuples
+  for consistent ordering between BL and KEM throughout document.
 
 -04
 
