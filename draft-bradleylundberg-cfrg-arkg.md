@@ -50,6 +50,10 @@ contributor:
   uri: https://self-issued.info/
   country: United States
 
+- fullname: Sander Dijkhuis
+  organization: Cleverbase
+  country: NL
+
 normative:
   I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
   I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
@@ -247,6 +251,13 @@ while keeping the _private seed_ secret.
 The subordinate party can then use the public seed to generate derived public keys and _key handles_,
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.
 
+This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
+as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
+Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
+as nondeterministic procedures omitting their respective `ikm` parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.
+
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
 
@@ -257,9 +268,9 @@ ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
 
 - `BL`: An asymmetric key blinding scheme [Wilson], consisting of:
-  - Function `BL-Generate-Keypair() -> (pk, sk)`: Generate a blinding key pair.
+  - Function `BL-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a blinding key pair.
 
-    No input.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
@@ -279,6 +290,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the blinded private key `sk_tau`.
 
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
   `tau` and `info` are an opaque octet strings of arbitrary length.
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk` and `sk_tau` are an undefined implementation detail.
@@ -286,15 +298,16 @@ The parameters of an ARKG instance are:
   See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
 
 - `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
-  - `KEM-Generate-Keypair() -> (pk, sk)`: Generate a key encapsulation key pair.
+  - `KEM-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a key encapsulation key pair.
 
-    No input.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of public key `pk` and private key `sk`.
 
-  - `KEM-Encaps(pk, info) -> (k, c)`: Generate a key encapsulation.
+  - `KEM-Encaps(pk, ikm, info) -> (k, c)`: Derive a key encapsulation.
 
-    Input consists of an encapsulation public key `pk`
+    Input consists of an encapsulation public key `pk`,
+    input entropy `ikm`
     and a domain separation parameter `info`.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
@@ -306,6 +319,7 @@ The parameters of an ARKG instance are:
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
   `k`, `c` and `info` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
@@ -319,34 +333,36 @@ The parameters of an ARKG instance are:
   See [Wilson] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
 
 A concrete ARKG instantiation MUST specify the instantiation
-of each of the above functions and values.
+of each of the above functions.
 
 The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole.
 For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
 We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM`,
-substituting the chosen instantiation for the `BL` and `KEM`.
+substituting the chosen instantiation for `BL` and `KEM`.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
 This is to prevent usage of algorithm combinations that may be incompatible or insecure.
 
 
-## The function ARKG-Generate-Seed
+## The function ARKG-Derive-Seed
 
 This function is performed by the delegating party.
-The delegating party generates the ARKG seed pair `(pk, sk)`
+The delegating party derives the ARKG seed pair `(pk, sk)`
 and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
-The subordinate party will then be able to generate public keys on behalf of the delegating party.
+The subordinate party will then be able to derive public keys on behalf of the delegating party.
 
 ~~~pseudocode
-ARKG-Generate-Seed() -> (pk, sk)
+ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
-    Inputs: None
+    Inputs:
+        ikm_bl    Input keying material entropy for BL.
+        ikm_kem   Input keying material entropy for KEM.
 
     Output:
         (pk, sk)  An ARKG seed pair with public seed pk
@@ -354,27 +370,20 @@ ARKG-Generate-Seed() -> (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Generate-Keypair()
-    (pk_bl, sk_bl) = BL-Generate-Keypair()
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
     pk = (pk_kem, pk_bl)
     sk = (sk_kem, sk_bl)
 ~~~
 
-### Deterministic key generation
 
-Although the above definition expresses the key generation as opaque,
-likely sampling uniformly random key distributions,
-implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
-`KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
-as deterministic functions of some out-of-band input.
-This can be thought of as defining a single-use ARKG instance where these function outputs are static.
-This use case is beyond the scope of this document
-since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
-even if applications choose to distribute the delegating party across multiple processing entities.
+### Nondeterministic variants
 
-For example, one entity may randomly sample `pk_bl`, derive `pk_kem` deterministically from `pk_bl`
-and submit only `pk_bl` to a separate service that uses the same procedure to also derive the same `pk_kem`.
-This document considers both of these entities as parts of the same logical delegating party.
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
+as nondeterministic procedures omitting their respective `ikm` parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.
 
 
 ## The function ARKG-Derive-Public-Key
@@ -384,10 +393,11 @@ The resulting public key `pk'` can be provided to external parties to use in asy
 and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
 
 This function may be invoked any number of times with the same public seed,
+using different `ikm` or `info` arguments,
 in order to generate any number of public keys.
 
 ~~~pseudocode
-ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
+ARKG-Derive-Public-Key((pk_kem, pk_bl), ikm, info) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
@@ -395,6 +405,7 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     Inputs:
         pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
+        ikm       Input entropy for KEM encapsulation.
         info      An octet string containing optional context
                     and application specific information
                     (can be a zero-length string).
@@ -409,14 +420,25 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
     info_kem = 'ARKG-Derive-Key-KEM.' || info
     info_bl  = 'ARKG-Derive-Key-BL.'  || info
 
-    (tau, c) = KEM-Encaps(pk_kem, info_kem)
+    (tau, c) = KEM-Encaps(pk_kem, ikm, info_kem)
     pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
 
     kh = c
 ~~~
 
 If this procedure aborts due to an error,
-the procedure can safely be retried with the same arguments.
+the procedure can safely be retried with the same `(pk_kem, pk_bl)` and `info` arguments but a new `ikm` argument.
+
+
+### Nondeterministic variants
+
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Public-Key` and `KEM-Encaps`
+as nondeterministic procedures omitting their respective `ikm` parameter
+and sampling random entropy internally;
+this choice does not affect interoperability.
+
+`BL-Blind-Public-Key` must always be deterministic for compatibility with `ARKG-Derive-Private-Key`.
 
 
 ## The function ARKG-Derive-Private-Key
@@ -492,9 +514,19 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - The function `hash_to_field` is defined in {{Section 5 of RFC9380}}.
 
 ~~~pseudocode
-BL-Generate-Keypair() -> (pk, sk)
+BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
-    Generate (pk, sk) using some procedure defined for the curve crv.
+    sk = hash_to_field(ikm, 1) with the parameters:
+        DST: 'ARKG-BL-EC-KG.' || DST_ext
+        F: GF(N), the scalar field
+           of the prime order subgroup of crv
+        p: N
+        m: 1
+        L: The L defined in hash-to-crv-suite
+        expand_message: The expand_message function
+                        defined in hash-to-crv-suite
+
+    pk = sk * G
 
 
 BL-Blind-Public-Key(pk, tau, info) -> pk_tau
@@ -546,7 +578,7 @@ This formula has the following parameters:
 - `DST_ext`: A domain separation parameter.
 - `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
   except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
-  `Sub-Kem` defines the functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
+  `Sub-Kem` defines the functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 The `KEM` parameter of ARKG may be instantiated using `Sub-Kem`,
 HMAC [RFC2104] and HKDF [RFC5869] as follows:
@@ -564,15 +596,15 @@ in order to not leak information about the `Sub-KEM` shared secret key.
 
 ~~~pseudocode
 
-KEM-Generate-Keypair() -> (pk, sk)
+KEM-Derive-Key-Pair(ikm) -> (pk, sk)
 
-    (pk, sk) = Sub-Kem-Generate-Keypair()
+    (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encaps(pk, info) -> (k, c)
+KEM-Encaps(pk, ikm, info) -> (k, c)
 
     info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    (k', c') = Sub-Kem-Encaps(pk, info_sub)
+    (k', c') = Sub-Kem-Encaps(pk, ikm, info_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -633,13 +665,15 @@ This formula has the following parameters:
 
 - `crv`: an elliptic curve valid for use with ECDH [RFC6090].
 - `Hash`: A cryptographic hash function.
+- `hash-to-crv-suite`: A hash-to-curve suite [RFC9380]
+  suitable for hashing to the scalar field of `crv`.
 - `DST_ext`: A domain separation parameter.
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
 - `Hash`: `Hash`.
 - `DST_ext`: `'ARKG-ECDH.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
     are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1],
@@ -652,14 +686,24 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   - `N` is the order of `G`.
 
   ~~~pseudocode
-  Sub-Kem-Generate-Keypair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      Generate (pk, sk) using some procedure defined for crv.
+      sk = hash_to_field(ikm, 1) with the parameters:
+          DST: 'ARKG-KEM-ECDH-KG.' || DST_ext
+          F: GF(N), the scalar field
+            of the prime order subgroup of crv
+          p: N
+          m: 1
+          L: The L defined in hash-to-crv-suite
+          expand_message: The expand_message function
+                          defined in hash-to-crv-suite
+
+      pk = sk * G
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Keypair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = ECDH(pk, sk')
       c = Elliptic-Curve-Point-to-Octet-String(pk')
@@ -687,11 +731,8 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 - `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
   or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
 - `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
-  - `Random-Bytes(N)` represents a cryptographically secure,
-    uniformly distributed random octet string of length `N`.
-  - `L` is 32 if `DH-Function` is X25519, or 56 if `DH-Function` is X448.
   - `G` is the octet string `h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'`
     if `DH-Function` is X25519,
     or the octet string `h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'`
@@ -701,15 +742,15 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
     which is the u-coordinate of the generator point of the respective curve group.
 
   ~~~pseudocode
-  Sub-Kem-Generate-Keypair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      sk = Random-Bytes(L)
+      sk = ikm
       pk = DH-Function(sk, G)
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, info) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Keypair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = DH-Function(sk', pk)
       c = pk'
@@ -750,7 +791,11 @@ The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
 ## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
@@ -764,7 +809,11 @@ The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 384 bits of entropy.
 
 
 ## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
@@ -778,7 +827,11 @@ The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `Hash`: SHA-512 [FIPS 180-4].
+  - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 512 bits of entropy.
 
 
 ## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
@@ -792,7 +845,11 @@ The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
+  - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
 # COSE bindings {#cose}
@@ -1118,6 +1175,14 @@ TODO
   `ARKG-edwards25519ADD-X25519` and `ARKG-edwards448ADD-X448`
   since implementations with a non-prime order generator, including EdDSA,
   are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".
+* Remodeled procedures to be fully deterministic:
+  * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`
+  * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`
+  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`
+  * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
+  * Instance parameter `hash-to-crv-suite` added to generic formula "Using ECDH as the KEM",
+    affecting concrete instances `ARKG-P256ADD-ECDH`, `ARKG-P384ADD-ECDH`, `ARKG-P521ADD-ECDH` and `ARKG-P256kADD-ECDH`.
+  * Section "Deterministic key generation" deleted
 
 -04
 
