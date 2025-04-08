@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-06T00:01:01.660379+00:00",
+  "timestamp": "2025-04-08T00:01:29.373790+00:00",
   "repo": "Yubico/arkg-rfc",
   "labels": [
     {
@@ -1523,24 +1523,26 @@
       "id": "PR_kwDOKzkccs6IW8zC",
       "title": "Make deterministic ARKG seeds the default",
       "url": "https://github.com/Yubico/arkg-rfc/pull/30",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "sander",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Rationale: [Avoid The Randomness From The Sky](https://words.filippo.io/dispatches/avoid-the-randomness-from-the-sky/).\r\n\r\nEnables interoperability with [Hierarchical Deterministic Keys](https://github.com/sander/hierarchical-deterministic-keys).\r\n\r\nNote that to achieve the ARKG objectives, we probably do not need to pose particular entropy requirements to ikm. However, applications such as HDK may pose these for privacy reasons.",
       "createdAt": "2025-01-20T13:52:55Z",
-      "updatedAt": "2025-04-04T18:16:21Z",
+      "updatedAt": "2025-04-07T13:20:19Z",
       "baseRepository": "Yubico/arkg-rfc",
       "baseRefName": "main",
       "baseRefOid": "a72728e62b4e6857f90732819e4017aac7183c35",
       "headRepository": "sander/arkg-rfc",
       "headRefName": "feat/deterministic-seed",
-      "headRefOid": "18e37dd9df1aacc497235ed2cf8a8a9499b24da9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "bf63a0c47316313e3083985c499c2a913e1647b9",
+      "closedAt": "2025-04-07T13:20:19Z",
+      "mergedAt": "2025-04-07T13:20:19Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "c5d749085612d5b6fca07f492dde58089596176b"
+      },
       "comments": [],
       "reviews": []
     },
