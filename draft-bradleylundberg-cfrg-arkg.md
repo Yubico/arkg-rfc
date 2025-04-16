@@ -725,7 +725,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
       sk = hash_to_field(ikm, 1) with the parameters:
-          DST: DST_ext
+          DST: DST_aug
           F: GF(N), the scalar field
             of the prime order subgroup of crv
           p: N
@@ -1220,18 +1220,18 @@ ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'04018fcbb2f920282a321da180efe321307d03ed476883c02199cc563ccc66a077
-               ec03e52a66d4de13c85187323f0a06b9d90c287ea774457b9362c1f66b6a177e'
+pk_prime = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
+               dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0x52cb5af8edfb25fe5e945f5e83cb7929de9459bda95ef68085b5cb9018c5cacc'
+sk_prime = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
 ~~~
 
 ~~~cddl
@@ -1244,18 +1244,18 @@ ikm      = h'00'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'04d54c794c2aaf1883a1e52581320ec70caeba03a5b57f8ebf3ae8b80db1e016a3
-               79269f8d519890fcc67439b196b0a8e8518b4794feed03b3ded413cd0d3050e3'
+pk_prime = h'040e983f44cafa9036066857d1831b58cc2227677489df07d1ae0801259ddc0a6a
+               a77f98712ecf662773ef73b6414d752bab57288cdce1299f73e606306bf77c54'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0x35e5bae9b0c15765ca4fef9e01433cbd1dd3ba4633c3dd025967fbc1b4421d1c'
+sk_prime = 0x298271791090c1a0f3ef346a974b8daeab2876f2943207b2cddfe4ddff7a6295
 ~~~
 
 ~~~cddl
@@ -1268,18 +1268,18 @@ ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'047dab2c6ed6cd827750f20487c99d5ac113b6539d0d326bc0ad104a94c4ba3ff3
-               6f5d3f6e82bdbcf8c404f3c64e2e0a07b1b423f85ee05683f592d63235968c51'
+pk_prime = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
+               dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0x02d98cb8ca1ddbe689b75c2e31ba8c1e502977d11f6e28f7493fbba00585d2f0'
+sk_prime = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 ~~~
 
 ~~~cddl
@@ -1292,18 +1292,18 @@ ikm      = h'00'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'04fe2d29db1ffd0e1ef0819500bdbb812b6d8952c0a57a3ba0548910cafeddfce3
-               da32d503cd074cbed924f5bd78b7bddf0f7593a2256dd6876ecbb0e1a44bbbb6'
+pk_prime = h'04dfd47f9357efc0146e243c2cab4601c250b792111d6a364587a728d5624cfaf1
+               6e62dbf37ebc132537038f5daa2ff6cd38f229fd3063c618b4333cea35af6e85'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0x154bb2b991864eef4b254cd148407f19fc32276056f8281b6c6c455cf00a38c1'
+sk_prime = 0xe5e0fab3367300dc45904128a3f8991a9d9059b585aac29e6f4e7cb45f59fce0
 ~~~
 
 ~~~cddl
@@ -1316,18 +1316,18 @@ ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'0421df5ebc51bc67135990608349b66e799f5d7a406a404142c13910a7d488e0ca
-               58bc6bcab558299b7bda9e8b1718e781dc66ca0c9b28f5da2e7a00cf2ada9765'
+pk_prime = h'04cc85763fae2c8f38964ddc1f3dd9eebe2d2cb5c2842b0a622939b608f9cef967
+               aafa50b9b24d6ae5a273f5b5d03b6a1ce8abd4f4dbaf487c417ef7380d1481b5'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0xb3437c08215fb083ff360b1300743fddf7aed2493dfabba718aefa60984ed09b'
+sk_prime = 0x1a60b7fe69b315fe1262c46711af990d47228471ef5a296f6aa26ba6a5a1a6ec
 ~~~
 
 ~~~cddl
@@ -1340,18 +1340,18 @@ ikm      = h'00'
 ; Derive-Seed outputs:
 pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
                65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'042eff91b46617d0628b979405bb871a7593e4b02ec533712bc1cf80d0b0a1ccf3
-               0ec3b161632183ceedf94fbe35a96e60a17c2c79c6379b141eeeba521ea8030f'
+pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
 sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x4253051878eac98187f1394605a3ef5ce1981e664cea41e8094c7d12c606d906
+sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
 ; Derive-Public-Key outputs:
-pk_prime = h'0487c9f65395d4ddba545d6184fbb739440e1e7af008ada987eac44d58e4f9f073
-               22f7099029ca1523e9ea7c07e5b4fff6ac6f7006d156bca8a6496796043a68dd'
+pk_prime = h'04056c654c97ea460ebfae997c8e12314184e45183aefdb8ce9547afca1faaee70
+               da6c6433c8fe71c32284cf0a015eb463ea2fc81438f6698684525f011d7ae83c'
 ;kh      = (implementation defined)
 
 ; Derive-Private-Key outputs:
-sk_prime = 0xc9006d3cac426ecf57ced462f11fba41d2db516a5d3111e058bc0c3c2e469ed2'
+sk_prime = 0xbb609831741d9232ecd7d58770c503992ca78d34361a865a0d6715861955526f
 ~~~
 
 ## Other instances
@@ -1359,6 +1359,12 @@ TODO
 
 
 # Document History
+
+-06
+
+* Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
+  Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
+  but not in the Sub-Kem functions defined in "Using ECDH as the KEM".
 
 -05
 
