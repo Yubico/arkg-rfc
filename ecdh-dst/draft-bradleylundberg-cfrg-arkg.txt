@@ -1600,8 +1600,11 @@ Appendix C.  Document History
 
    -06
 
-   *  Changed DST prefix construction in section "Using ECDH as the KEM"
-      to be less confusing.
+   *  Changed DST construction in section "Using ECDH as the KEM" to
+      include the "ARKG-ECDH." prefix everywhere in the formula.
+      Previously the prefix was added in the argument to the "Using HMAC
+      to adapt a KEM without ciphertext integrity" formula but not in
+      the Sub-Kem functions defined in "Using ECDH as the KEM".
 
    -05
 
