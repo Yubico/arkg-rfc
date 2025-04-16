@@ -701,10 +701,14 @@ This formula has the following parameters:
   suitable for hashing to the scalar field of `crv`.
 - `DST_ext`: A domain separation parameter.
 
+The above parameters define the following intermediate value:
+
+- `DST_aug`: `'ARKG-ECDH.' || DST_ext`.
+
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
 - `Hash`: `Hash`.
-- `DST_ext`: `'ARKG-ECDH.' || DST_ext`.
+- `DST_ext`: `DST_aug`.
 - `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
@@ -721,7 +725,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
       sk = hash_to_field(ikm, 1) with the parameters:
-          DST: 'ARKG-KEM-ECDH-KG.' || DST_ext
+          DST: DST_ext
           F: GF(N), the scalar field
             of the prime order subgroup of crv
           p: N
