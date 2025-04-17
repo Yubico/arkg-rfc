@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 18 October 2025                                   16 April 2025
+Expires: 19 October 2025                                   17 April 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 October 2025.
+   This Internet-Draft will expire on 19 October 2025.
 
 Copyright Notice
 
@@ -729,7 +729,7 @@ Table of Contents
       Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
           sk = hash_to_field(ikm, 1) with the parameters:
-              DST: DST_aug
+              DST: 'ARKG-KEM-ECDH-KG.' || DST_aug
               F: GF(N), the scalar field
                 of the prime order subgroup of crv
               p: N
@@ -1597,6 +1597,11 @@ B.2.  Other instances
    TODO
 
 Appendix C.  Document History
+
+   -07
+
+   *  Fixed hash_to_field DST in Sub-Kem-Derive-Key-Pair in section
+      "Using ECDH as the KEM" to agree with test vectors.
 
    -06
 
