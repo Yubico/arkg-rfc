@@ -725,7 +725,7 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
       sk = hash_to_field(ikm, 1) with the parameters:
-          DST: DST_aug
+          DST: 'ARKG-KEM-ECDH-KG.' || DST_aug
           F: GF(N), the scalar field
             of the prime order subgroup of crv
           p: N
@@ -1359,6 +1359,11 @@ TODO
 
 
 # Document History
+
+-07
+
+* Fixed hash_to_field DST in Sub-Kem-Derive-Key-Pair in section "Using ECDH as the KEM"
+  to agree with test vectors.
 
 -06
 
