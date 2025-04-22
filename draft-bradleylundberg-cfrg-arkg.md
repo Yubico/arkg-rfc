@@ -278,26 +278,33 @@ The parameters of an ARKG instance are:
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
-  - Function `BL-Blind-Public-Key(pk, tau, ctx) -> pk_tau`: Deterministically compute a blinded public key.
+  - Function `BL-PRF(ikm_tau, ctx) -> tau`: Derive a pseudorandom blinding factor.
+
+    Input consists of input entropy `ikm_tau`
+    and a domain separation parameter `ctx`.
+
+    Output consists of the blinding factor `tau`.
+
+  - Function `BL-Blind-Public-Key(pk, tau) -> pk_tau`: Deterministically compute a blinded public key.
 
     Input consists of a blinding public key `pk`,
-    a blinding factor `tau`
-    and a domain separation parameter `ctx`.
+    and a blinding factor `tau`.
 
     Output consists of the blinded public key `pk_tau`.
 
-  - Function `BL-Blind-Private-Key(sk, tau, ctx) -> sk_tau`: Deterministically compute a blinded private key.
+  - Function `BL-Blind-Private-Key(sk, tau) -> sk_tau`: Deterministically compute a blinded private key.
 
     Input consists of a blinding private key `sk`,
-    a blinding factor `tau`
-    and a domain separation parameter `ctx`.
+    and the blinding factor `tau`.
 
     Output consists of the blinded private key `sk_tau`.
 
   `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
-  `tau` and `ctx` are opaque octet strings of arbitrary length.
+  `ikm_tau` is an opaque octet string generated as the `k` output of `KEM-Encaps` and `KEM-Decaps`.
+  `ctx` is an opaque octet string of arbitrary length.
+
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
-  The representations of `sk` and `sk_tau` are an undefined implementation detail.
+  The representations of `sk`, `tau` and `sk_tau` are undefined implementation details.
 
   See [Wilson] for definitions of security properties required of the key blinding scheme `BL`.
 
@@ -429,8 +436,9 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -> (pk', kh)
     ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
     ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
-    (tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
-    pk' = BL-Blind-Public-Key(pk_bl, tau, ctx_bl)
+    (ikm_tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    pk' = BL-Blind-Public-Key(pk_bl, tau)
 
     kh = c
 ~~~
@@ -449,7 +457,8 @@ as nondeterministic procedures omitting their respective `ikm` parameter
 and sampling random entropy internally;
 this choice does not affect interoperability.
 
-`BL-Blind-Public-Key` must always be deterministic for compatibility with `ARKG-Derive-Private-Key`.
+`BL-PRF` and `BL-Blind-Public-Key` must always be deterministic
+for compatibility with `ARKG-Derive-Private-Key`.
 
 
 ## The function ARKG-Derive-Private-Key
@@ -488,11 +497,12 @@ ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, ctx) -> sk'
     ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
     ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
-    tau = KEM-Decaps(sk_kem, kh, ctx_kem)
+    ikm_tau = KEM-Decaps(sk_kem, kh, ctx_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau, ctx_bl)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    sk' = BL-Blind-Private-Key(sk_bl, tau)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
@@ -561,9 +571,9 @@ BL-Derive-Key-Pair(ikm) -> (pk, sk)
     pk = sk * G
 
 
-BL-Blind-Public-Key(pk, tau, ctx) -> pk_tau
+BL-PRF(ikm_tau, ctx) -> tau
 
-    tau' = hash_to_field(tau, 1) with the parameters:
+    tau = hash_to_field(tau, 1) with the parameters:
         DST: 'ARKG-BL-EC.' || DST_ext || ctx
         F: GF(N), the scalar field
            of the prime order subgroup of crv
@@ -573,20 +583,13 @@ BL-Blind-Public-Key(pk, tau, ctx) -> pk_tau
         expand_message: The expand_message function
                         defined in hash-to-crv-suite
 
-    pk_tau = pk + tau' * G
+
+BL-Blind-Public-Key(pk, tau) -> pk_tau
+
+    pk_tau = pk + tau * G
 
 
-BL-Blind-Private-Key(sk, tau, ctx) -> sk_tau
-
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || ctx
-        F: GF(N), the scalar field
-           of the prime order subgroup of crv.
-        p: N
-        m: 1
-        L: The L defined in hash-to-crv-suite
-        expand_message: The expand_message function
-                        defined in hash-to-crv-suite
+BL-Blind-Private-Key(sk, tau) -> sk_tau
 
     sk_tau_tmp = sk + tau'
     If sk_tau_tmp = 0, abort with an error.
@@ -1363,6 +1366,9 @@ TODO
 -08
 
 * Fixed incorrectly swapped `ikm_bl` and `ikm_kem` arguments in `ARKG-Derive-Seed` definition.
+* Extracted parameter function `BL-PRF` and modified signatures
+  of `BL-Blind-Public-Key` and `BL-Blind-Private-Key` accordingly.
+  This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.
 
 -07
 
