@@ -374,8 +374,8 @@ ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
-    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_bl)
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_kem)
     pk = (pk_bl, pk_kem)
     sk = (sk_bl, sk_kem)
 ~~~
@@ -1359,6 +1359,10 @@ TODO
 
 
 # Document History
+
+-08
+
+* Fixed incorrectly swapped `ikm_bl` and `ikm_kem` arguments in `ARKG-Derive-Seed` definition.
 
 -07
 
