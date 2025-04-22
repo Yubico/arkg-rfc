@@ -1366,7 +1366,7 @@ TODO
 
 -07
 
-* Fixed hash_to_field DST in Sub-Kem-Derive-Key-Pair in section "Using ECDH as the KEM"
+* Fixed hash_to_field DST in `Sub-Kem-Derive-Key-Pair` in section "Using ECDH as the KEM"
   to agree with test vectors.
 
 -06
