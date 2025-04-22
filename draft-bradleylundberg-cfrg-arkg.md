@@ -1285,77 +1285,6 @@ pk_prime = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
 sk_prime = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 ~~~
 
-~~~cddl
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.0'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04dfd47f9357efc0146e243c2cab4601c250b792111d6a364587a728d5624cfaf1
-               6e62dbf37ebc132537038f5daa2ff6cd38f229fd3063c618b4333cea35af6e85'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0xe5e0fab3367300dc45904128a3f8991a9d9059b585aac29e6f4e7cb45f59fce0
-~~~
-
-~~~cddl
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.1'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04cc85763fae2c8f38964ddc1f3dd9eebe2d2cb5c2842b0a622939b608f9cef967
-               aafa50b9b24d6ae5a273f5b5d03b6a1ce8abd4f4dbaf487c417ef7380d1481b5'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0x1a60b7fe69b315fe1262c46711af990d47228471ef5a296f6aa26ba6a5a1a6ec
-~~~
-
-~~~cddl
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.1'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04056c654c97ea460ebfae997c8e12314184e45183aefdb8ce9547afca1faaee70
-               da6c6433c8fe71c32284cf0a015eb463ea2fc81438f6698684525f011d7ae83c'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0xbb609831741d9232ecd7d58770c503992ca78d34361a865a0d6715861955526f
-~~~
 
 ## Other instances
 TODO
@@ -1369,6 +1298,7 @@ TODO
 * Extracted parameter function `BL-PRF` and modified signatures
   of `BL-Blind-Public-Key` and `BL-Blind-Private-Key` accordingly.
   This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.
+* Removed three redundant sets of ARKG-P256 test vectors.
 
 -07
 
