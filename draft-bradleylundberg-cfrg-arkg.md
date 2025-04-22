@@ -530,7 +530,7 @@ implementors MAY use techniques such as that described in {{Section 5.3.3 of RFC
 Precise procedure definitions are left as an application-specific implementation detail.
 
 
-# Generic ARKG instantiations
+# Generic ARKG instantiations {#generic-formulae}
 
 This section defines generic formulae for instantiating the individual ARKG parameters,
 which can be used to define concrete ARKG instantiations.
@@ -558,8 +558,9 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 ~~~pseudocode
 BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
+    DST_bl_sk = 'ARKG-BL-EC-KG.' || DST_ext
     sk = hash_to_field(ikm, 1) with the parameters:
-        DST: 'ARKG-BL-EC-KG.' || DST_ext
+        DST: DST_bl_sk
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -573,8 +574,9 @@ BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
 BL-PRF(ikm_tau, ctx) -> tau
 
+    DST_tau = 'ARKG-BL-EC.' || DST_ext || ctx
     tau = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || ctx
+        DST: DST_tau
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -646,17 +648,19 @@ KEM-Encaps(pk, ikm, ctx) -> (k, c)
         salt: not set
         IKM: k'
 
+    info_mk = 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
+        info: info_mk
         L: L
     t = HMAC-Hash-128(K=mk, text=c')
 
+    info_k = 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
+        info: info_k
         L: The length of k' in octets.
     c = t || c'
 
@@ -727,8 +731,9 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   ~~~pseudocode
   Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
+      DST_kem_sk = 'ARKG-KEM-ECDH-KG.' || DST_aug
       sk = hash_to_field(ikm, 1) with the parameters:
-          DST: 'ARKG-KEM-ECDH-KG.' || DST_aug
+          DST: DST_kem_sk
           F: GF(N), the scalar field
             of the prime order subgroup of crv
           p: N
@@ -1206,7 +1211,7 @@ The authors would like to thank all of these authors for their research and deve
 This section lists test vectors for validating implementations.
 
 Test vectors are listed in CDDL [RFC8610] syntax
-using parameter and output names defined in {{arkg}}.
+using variable names defined in {{arkg}} and {{generic-formulae}}.
 Elliptic curve points are encoded using the `Elliptic-Curve-Point-to-Octet-String` procedure
 defined in section 2.3.3 of [SEC1], without point compression.
 
@@ -1215,74 +1220,125 @@ defined in section 2.3.3 of [SEC1], without point compression.
 
 ~~~cddl
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
-               dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'796c615d19ca0044df0a22d64ba8d5367dca18da32b871a3e255db0af7eb53c9'
+t           = h'27987995f184a44cfa548d104b0a461d'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+c           = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x9e042fde2e12c1f4002054a8feac60088cc893b4838423c26a20af686c8c16e3
+pk_prime    = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
+                  dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
+kh          = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
+; Derive-Private-Key:
+sk_prime    = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
 ~~~
 
 ~~~cddl
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'00'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'040e983f44cafa9036066857d1831b58cc2227677489df07d1ae0801259ddc0a6a
-               a77f98712ecf662773ef73b6414d752bab57288cdce1299f73e606306bf77c54'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'3d68d59d6d9e86ee6260580ef37828c64591e43d78909b281f88269826771eba'
+c_prime     = h'04daedc7247e2c600dfb77a50231451108ab6f2fd1d4622d7f901c45b3fc82e54ae1360637824a13976054150759340d0b88479b8872d3bd119bee60a77b0fec4b'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'e2a9243aaddd7834851230759787bbaa0d40d780122a62f104c966f7c22e68c4'
+t           = h'856bf16bb965409f952cd222adaf33d0'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'0c5c55702f92fbcf130eb65ba3ae5e58a90f123ec7661d8ea537c91f3488e1a7'
+c           = h'856bf16bb965409f952cd222adaf33d004daedc7247e2c600dfb77a50231451108ab6f2fd1d4622d7f901c45b3fc82e54ae1360637824a13976054150759340d0b88479b8872d3bd119bee60a77b0fec4b'
+ikm_tau     = h'0c5c55702f92fbcf130eb65ba3ae5e58a90f123ec7661d8ea537c91f3488e1a7'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x5029216d97c3c95125a86c600afb49e4c52c395c181e6e0de261df45cb739391
+pk_prime    = h'040e983f44cafa9036066857d1831b58cc2227677489df07d1ae0801259ddc0a6a
+                  a77f98712ecf662773ef73b6414d752bab57288cdce1299f73e606306bf77c54'
+kh          = h'856bf16bb965409f952cd222adaf33d004daedc7247e2c600dfb77a50231451108ab6f2fd1d4622d7f901c45b3fc82e54ae1360637824a13976054150759340d0b88479b8872d3bd119bee60a77b0fec4b'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x298271791090c1a0f3ef346a974b8daeab2876f2943207b2cddfe4ddff7a6295
+; Derive-Private-Key:
+sk_prime    = 0x298271791090c1a0f3ef346a974b8daeab2876f2943207b2cddfe4ddff7a6295
 ~~~
 
 ~~~cddl
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors.0'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+ctx         = 'ARKG-P256.test vectors.0'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
-               dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+mk          = h'd342e45f224a7278f11cf1468922c8879f4529125181d4159e4bf9ee69842f04'
+t           = h'81c4e65b552e52350b49864b98b87d51'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+k           = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+c           = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+tau         = 0x513ea417b6cdc3536178fa81da36b4e5ecdc142c2d46a52e05257f21794e3789
+pk_prime    = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
+                  dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
+kh          = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
+; Derive-Private-Key:
+sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 ~~~
 
 
@@ -1299,6 +1355,7 @@ TODO
   of `BL-Blind-Public-Key` and `BL-Blind-Private-Key` accordingly.
   This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.
 * Removed three redundant sets of ARKG-P256 test vectors.
+* Added intermediate values to ARKG-P256 test vectors.
 
 -07
 
