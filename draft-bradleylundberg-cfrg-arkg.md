@@ -629,7 +629,7 @@ because as described in {{design-rationale-mac}},
 ARKG needs ciphertext integrity only to ensure correctness, not for security.
 Extendable-output functions used as the `Hash` parameter SHOULD still be instantiated
 with an output length appropriate for the desired security level,
-in order to not leak information about the `Sub-KEM` shared secret key.
+in order to not leak information about the `Sub-Kem` shared secret key.
 
 ~~~pseudocode
 
