@@ -694,6 +694,9 @@ KEM-Decaps(sk, c, ctx) -> k
         Abort with an error.
 ~~~
 
+In concrete instances where `Sub-Kem-Encaps` and `Sub-Kem-Decaps` ignore the `ctx` parameter,
+implementations MAY eliminate the parameter and omit the computation of `ctx_sub`.
+
 
 ## Using ECDH as the KEM {#kem-ecdh}
 
@@ -759,6 +762,8 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
       k = ECDH(pk', sk)
   ~~~
 
+Note: This instance intentionally ignores the `ctx` parameter of `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
+
 
 ## Using X25519 or X448 as the KEM {#kem-x25519-x448}
 
@@ -804,6 +809,8 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 
       k = DH-Function(sk, c)
   ~~~
+
+Note: This instance intentionally ignores the `ctx` parameter of `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 
 ## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
@@ -1357,6 +1364,8 @@ TODO
 * Removed three redundant sets of ARKG-P256 test vectors.
 * Added intermediate values to ARKG-P256 test vectors.
 * Changed second set of ARKG-P256 test vectors to use a 32-byte `ikm` instead of `h'00'`.
+* Clarified in sections "Using HMAC to adapt a KEM without ciphertext integrity", "Using ECDH as the KEM"
+  and "Using X25519 or X448 as the KEM" that `ctx_sub` is intentionally ignored in those instances.
 
 -07
 
