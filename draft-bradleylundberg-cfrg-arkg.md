@@ -575,7 +575,7 @@ BL-Derive-Key-Pair(ikm) -> (pk, sk)
 BL-PRF(ikm_tau, ctx) -> tau
 
     DST_tau = 'ARKG-BL-EC.' || DST_ext || ctx
-    tau = hash_to_field(tau, 1) with the parameters:
+    tau = hash_to_field(ikm_tau, 1) with the parameters:
         DST: DST_tau
         F: GF(N), the scalar field
            of the prime order subgroup of crv
@@ -1354,6 +1354,11 @@ TODO
 
 
 # Document History
+
+-09
+
+* Fixed `hash_to_field` argument `ikm_tau` misnamed as `tau`
+  in section "Using elliptic curve addition for key blinding".
 
 -08
 
