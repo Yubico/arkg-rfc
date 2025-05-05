@@ -25,7 +25,7 @@ We expect that additional instances will be defined in the future.
 <meta content="draft-bradleylundberg-cfrg-arkg-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.28.1
-    Python 3.12.9
+    Python 3.12.10
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -1055,11 +1055,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ARKG</td>
-<td class="right">April 2025</td>
+<td class="right">May 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 19 October 2025</td>
+<td class="center">Expires 6 November 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-04-17" class="published">17 April 2025</time>
+<time datetime="2025-05-05" class="published">5 May 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-10-19">19 October 2025</time></dd>
+<dd class="expires"><time datetime="2025-11-06">6 November 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 October 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 November 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1473,31 +1473,39 @@ Input consists of input keying material entropy <code>ikm</code>.<a href="#secti
 Output consists of a blinding public key <code>pk</code> and a blinding private key <code>sk</code>.<a href="#section-2.1-2.1.2.1.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-2.1.2.2">
-                <p id="section-2.1-2.1.2.2.1">Function <code>BL-Blind-Public-Key(pk, tau, ctx) -&gt; pk_tau</code>: Deterministically compute a blinded public key.<a href="#section-2.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.2.1">Function <code>BL-PRF(ikm_tau, ctx) -&gt; tau</code>: Derive a pseudorandom blinding factor.<a href="#section-2.1-2.1.2.2.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.2.2">
-Input consists of a blinding public key <code>pk</code>,
-a blinding factor <code>tau</code>
+Input consists of input entropy <code>ikm_tau</code>
 and a domain separation parameter <code>ctx</code>.<a href="#section-2.1-2.1.2.2.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.2.3">
-Output consists of the blinded public key <code>pk_tau</code>.<a href="#section-2.1-2.1.2.2.3" class="pilcrow">¶</a></p>
+Output consists of the blinding factor <code>tau</code>.<a href="#section-2.1-2.1.2.2.3" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-2.1-2.1.2.3">
-                <p id="section-2.1-2.1.2.3.1">Function <code>BL-Blind-Private-Key(sk, tau, ctx) -&gt; sk_tau</code>: Deterministically compute a blinded private key.<a href="#section-2.1-2.1.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.3.1">Function <code>BL-Blind-Public-Key(pk, tau) -&gt; pk_tau</code>: Deterministically compute a blinded public key.<a href="#section-2.1-2.1.2.3.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.3.2">
-Input consists of a blinding private key <code>sk</code>,
-a blinding factor <code>tau</code>
-and a domain separation parameter <code>ctx</code>.<a href="#section-2.1-2.1.2.3.2" class="pilcrow">¶</a></p>
+Input consists of a blinding public key <code>pk</code>,
+and a blinding factor <code>tau</code>.<a href="#section-2.1-2.1.2.3.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.3.3">
-Output consists of the blinded private key <code>sk_tau</code>.<a href="#section-2.1-2.1.2.3.3" class="pilcrow">¶</a></p>
+Output consists of the blinded public key <code>pk_tau</code>.<a href="#section-2.1-2.1.2.3.3" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-2.1-2.1.2.4">
+                <p id="section-2.1-2.1.2.4.1">Function <code>BL-Blind-Private-Key(sk, tau) -&gt; sk_tau</code>: Deterministically compute a blinded private key.<a href="#section-2.1-2.1.2.4.1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2.1.2.4.2">
+Input consists of a blinding private key <code>sk</code>,
+and the blinding factor <code>tau</code>.<a href="#section-2.1-2.1.2.4.2" class="pilcrow">¶</a></p>
+<p id="section-2.1-2.1.2.4.3">
+Output consists of the blinded private key <code>sk_tau</code>.<a href="#section-2.1-2.1.2.4.3" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-2.1-2.1.3">
 <code>ikm</code> is an opaque octet string of a suitable length as defined by the ARKG instance.
-<code>tau</code> and <code>ctx</code> are opaque octet strings of arbitrary length.
-The representations of <code>pk</code> and <code>pk_tau</code> are defined by the protocol that invokes ARKG.
-The representations of <code>sk</code> and <code>sk_tau</code> are an undefined implementation detail.<a href="#section-2.1-2.1.3" class="pilcrow">¶</a></p>
+<code>ikm_tau</code> is an opaque octet string generated as the <code>k</code> output of <code>KEM-Encaps</code> and <code>KEM-Decaps</code>.
+<code>ctx</code> is an opaque octet string of arbitrary length.<a href="#section-2.1-2.1.3" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.4">
-See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.4" class="pilcrow">¶</a></p>
+The representations of <code>pk</code> and <code>pk_tau</code> are defined by the protocol that invokes ARKG.
+The representations of <code>sk</code>, <code>tau</code> and <code>sk_tau</code> are undefined implementation details.<a href="#section-2.1-2.1.4" class="pilcrow">¶</a></p>
+<p id="section-2.1-2.1.5">
+See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.5" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
             <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism <span>[<a href="#Shoup" class="cite xref">Shoup</a>]</span>, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
@@ -1581,8 +1589,8 @@ ARKG-Derive-Seed(ikm_bl, ikm_kem) -&gt; (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_bl)
-    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_kem)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_bl)
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_kem)
     pk = (pk_bl, pk_kem)
     sk = (sk_bl, sk_kem)
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
@@ -1642,8 +1650,9 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -&gt; (pk', kh)
     ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
     ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
-    (tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
-    pk' = BL-Blind-Public-Key(pk_bl, tau, ctx_bl)
+    (ikm_tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    pk' = BL-Blind-Public-Key(pk_bl, tau)
 
     kh = c
 </pre><a href="#section-2.3-3" class="pilcrow">¶</a>
@@ -1661,7 +1670,8 @@ to instead implement <code>ARKG-Derive-Public-Key</code> and <code>KEM-Encaps</c
 as nondeterministic procedures omitting their respective <code>ikm</code> parameter
 and sampling random entropy internally;
 this choice does not affect interoperability.<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.3.1-2"><code>BL-Blind-Public-Key</code> must always be deterministic for compatibility with <code>ARKG-Derive-Private-Key</code>.<a href="#section-2.3.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-2"><code>BL-PRF</code> and <code>BL-Blind-Public-Key</code> must always be deterministic
+for compatibility with <code>ARKG-Derive-Private-Key</code>.<a href="#section-2.3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1704,11 +1714,12 @@ ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, ctx) -&gt; sk'
     ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
     ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
 
-    tau = KEM-Decaps(sk_kem, kh, ctx_kem)
+    ikm_tau = KEM-Decaps(sk_kem, kh, ctx_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau, ctx_bl)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    sk' = BL-Blind-Private-Key(sk_bl, tau)
 </pre><a href="#section-2.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-2.4-4">Errors in this procedure are typically unrecoverable.
@@ -1739,7 +1750,7 @@ Precise procedure definitions are left as an application-specific implementation
 </div>
 </section>
 </div>
-<div id="generic-arkg-instantiations">
+<div id="generic-formulae">
 <section id="section-3">
       <h2 id="name-generic-arkg-instantiations">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-generic-arkg-instantiations" class="section-name selfRef">Generic ARKG instantiations</a>
@@ -1783,8 +1794,9 @@ suitable for hashing to the scalar field of <code>crv</code>.<a href="#section-3
 <pre>
 BL-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
+    DST_bl_sk = 'ARKG-BL-EC-KG.' || DST_ext
     sk = hash_to_field(ikm, 1) with the parameters:
-        DST: 'ARKG-BL-EC-KG.' || DST_ext
+        DST: DST_bl_sk
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -1796,10 +1808,11 @@ BL-Derive-Key-Pair(ikm) -&gt; (pk, sk)
     pk = sk * G
 
 
-BL-Blind-Public-Key(pk, tau, ctx) -&gt; pk_tau
+BL-PRF(ikm_tau, ctx) -&gt; tau
 
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || ctx
+    DST_tau = 'ARKG-BL-EC.' || DST_ext || ctx
+    tau = hash_to_field(ikm_tau, 1) with the parameters:
+        DST: DST_tau
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -1808,20 +1821,13 @@ BL-Blind-Public-Key(pk, tau, ctx) -&gt; pk_tau
         expand_message: The expand_message function
                         defined in hash-to-crv-suite
 
-    pk_tau = pk + tau' * G
+
+BL-Blind-Public-Key(pk, tau) -&gt; pk_tau
+
+    pk_tau = pk + tau * G
 
 
-BL-Blind-Private-Key(sk, tau, ctx) -&gt; sk_tau
-
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || ctx
-        F: GF(N), the scalar field
-           of the prime order subgroup of crv.
-        p: N
-        m: 1
-        L: The L defined in hash-to-crv-suite
-        expand_message: The expand_message function
-                        defined in hash-to-crv-suite
+BL-Blind-Private-Key(sk, tau) -&gt; sk_tau
 
     sk_tau_tmp = sk + tau'
     If sk_tau_tmp = 0, abort with an error.
@@ -1873,7 +1879,7 @@ because as described in <a href="#design-rationale-mac" class="auto internal xre
 ARKG needs ciphertext integrity only to ensure correctness, not for security.
 Extendable-output functions used as the <code>Hash</code> parameter <span class="bcp14">SHOULD</span> still be instantiated
 with an output length appropriate for the desired security level,
-in order to not leak information about the <code>Sub-KEM</code> shared secret key.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+in order to not leak information about the <code>Sub-Kem</code> shared secret key.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
 <div class="breakable lang-pseudocode sourcecode" id="section-3.2-8">
 <pre>
 KEM-Derive-Key-Pair(ikm) -&gt; (pk, sk)
@@ -1891,17 +1897,19 @@ KEM-Encaps(pk, ikm, ctx) -&gt; (k, c)
         salt: not set
         IKM: k'
 
+    info_mk = 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
+        info: info_mk
         L: L
     t = HMAC-Hash-128(K=mk, text=c')
 
+    info_k = 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
+        info: info_k
         L: The length of k' in octets.
     c = t || c'
 
@@ -1935,6 +1943,8 @@ KEM-Decaps(sk, c, ctx) -&gt; k
         Abort with an error.
 </pre><a href="#section-3.2-8" class="pilcrow">¶</a>
 </div>
+<p id="section-3.2-9">In concrete instances where <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code> ignore the <code>ctx</code> parameter,
+implementations <span class="bcp14">MAY</span> eliminate the parameter and omit the computation of <code>ctx_sub</code>.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="kem-ecdh">
@@ -1997,8 +2007,9 @@ using public key (curve point) <code>pk</code> and private key (exponent) <code>
 <pre>
 Sub-Kem-Derive-Key-Pair(ikm) -&gt; (pk, sk)
 
+    DST_kem_sk = 'ARKG-KEM-ECDH-KG.' || DST_aug
     sk = hash_to_field(ikm, 1) with the parameters:
-        DST: 'ARKG-KEM-ECDH-KG.' || DST_aug
+        DST: DST_kem_sk
         F: GF(N), the scalar field
           of the prime order subgroup of crv
         p: N
@@ -2026,6 +2037,7 @@ Sub-Kem-Decaps(sk, c, ctx) -&gt; k
 </div>
 </li>
         </ul>
+<p id="section-3.3-8">Note: This instance intentionally ignores the <code>ctx</code> parameter of <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="kem-x25519-x448">
@@ -2089,6 +2101,7 @@ Sub-Kem-Decaps(sk, c, ctx) -&gt; k
 </div>
 </li>
         </ul>
+<p id="section-3.4-6">Note: This instance intentionally ignores the <code>ctx</code> parameter of <code>Sub-Kem-Encaps</code> and <code>Sub-Kem-Decaps</code>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="blinding-kem-same-key">
@@ -2850,7 +2863,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dl class="references">
 <dt id="I-D.jose-fully-spec-algs">[I-D.jose-fully-spec-algs]</dt>
         <dd>
-<span class="refAuthor">Jones, M. B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JOSE and COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-jose-fully-specified-algorithms-09</span>, <time datetime="2025-04-02" class="refDate">2 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-09">https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Jones, M. B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JOSE and COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-jose-fully-specified-algorithms-10</span>, <time datetime="2025-05-04" class="refDate">4 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-10">https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.lundberg-cose-2p-algs">[I-D.lundberg-cose-2p-algs]</dt>
         <dd>
@@ -2987,7 +3000,7 @@ modified by the inclusion of a MAC in the key handles as done in the original co
       </h2>
 <p id="appendix-B-1">This section lists test vectors for validating implementations.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <p id="appendix-B-2">Test vectors are listed in CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> syntax
-using parameter and output names defined in <a href="#arkg" class="auto internal xref">Section 2</a>.
+using variable names defined in <a href="#arkg" class="auto internal xref">Section 2</a> and <a href="#generic-formulae" class="auto internal xref">Section 3</a>.
 Elliptic curve points are encoded using the <code>Elliptic-Curve-Point-to-Octet-String</code> procedure
 defined in section 2.3.3 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>, without point compression.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
 <div id="arkg-p256">
@@ -2998,152 +3011,128 @@ defined in section 2.3.3 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</
 <div class="lang-cddl sourcecode" id="appendix-B.1-1">
 <pre>
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
-               dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'796c615d19ca0044df0a22d64ba8d5367dca18da32b871a3e255db0af7eb53c9'
+t           = h'27987995f184a44cfa548d104b0a461d'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+c           = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x9e042fde2e12c1f4002054a8feac60088cc893b4838423c26a20af686c8c16e3
+pk_prime    = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
+                  dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
+kh          = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
+; Derive-Private-Key:
+sk_prime    = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
 </pre><a href="#appendix-B.1-1" class="pilcrow">¶</a>
 </div>
 <div class="lang-cddl sourcecode" id="appendix-B.1-2">
 <pre>
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'a0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebf'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'040e983f44cafa9036066857d1831b58cc2227677489df07d1ae0801259ddc0a6a
-               a77f98712ecf662773ef73b6414d752bab57288cdce1299f73e606306bf77c54'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'38c79546fc4a144ae2068ff0b515fc9af032b8255a78a829e71be47676a63117'
+c_prime     = h'0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'0806abac4c1d205c3a8826cd178fbf7f91741268e3ca73634035efd76085d2a9'
+t           = h'b7507a82771776fbac41a18d94e19a7e'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'dcdd95c742ddf25b8a95f3d76326cb3593b7860bb3e04c5e5b25cc15ce1e5c84'
+c           = h'b7507a82771776fbac41a18d94e19a7e0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
+ikm_tau     = h'dcdd95c742ddf25b8a95f3d76326cb3593b7860bb3e04c5e5b25cc15ce1e5c84'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x88cf9464b041a52cf2b837281afc67302ec9cb32da1fe515381b79c0d0c92322
+pk_prime    = h'04ea7d962c9f44ffe8b18f1058a471f394ef81b674948eefc1865b5c021cf858f5
+                  77f9632b84220e4a1444a20b9430b86731c37e4dcb285eda38d76bf758918d86'
+kh          = h'b7507a82771776fbac41a18d94e19a7e0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x298271791090c1a0f3ef346a974b8daeab2876f2943207b2cddfe4ddff7a6295
+; Derive-Private-Key:
+sk_prime    = 0x6228e470290e9d7cc0feff32a74caafa14c608c956337eba23997f5904cff226
 </pre><a href="#appendix-B.1-2" class="pilcrow">¶</a>
 </div>
 <div class="lang-cddl sourcecode" id="appendix-B.1-3">
 <pre>
 ; Inputs:
-ctx      = 'ARKG-P256.test vectors.0'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+ctx         = 'ARKG-P256.test vectors.0'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
 
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
 
-; Derive-Public-Key outputs:
-pk_prime = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
-               dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
-;kh      = (implementation defined)
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+mk          = h'd342e45f224a7278f11cf1468922c8879f4529125181d4159e4bf9ee69842f04'
+t           = h'81c4e65b552e52350b49864b98b87d51'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+k           = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+c           = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+tau         = 0x513ea417b6cdc3536178fa81da36b4e5ecdc142c2d46a52e05257f21794e3789
+pk_prime    = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
+                  dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
+kh          = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
 
-; Derive-Private-Key outputs:
-sk_prime = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
+; Derive-Private-Key:
+sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 </pre><a href="#appendix-B.1-3" class="pilcrow">¶</a>
-</div>
-<div class="lang-cddl sourcecode" id="appendix-B.1-4">
-<pre>
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.0'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04dfd47f9357efc0146e243c2cab4601c250b792111d6a364587a728d5624cfaf1
-               6e62dbf37ebc132537038f5daa2ff6cd38f229fd3063c618b4333cea35af6e85'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0xe5e0fab3367300dc45904128a3f8991a9d9059b585aac29e6f4e7cb45f59fce0
-</pre><a href="#appendix-B.1-4" class="pilcrow">¶</a>
-</div>
-<div class="lang-cddl sourcecode" id="appendix-B.1-5">
-<pre>
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.1'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04cc85763fae2c8f38964ddc1f3dd9eebe2d2cb5c2842b0a622939b608f9cef967
-               aafa50b9b24d6ae5a273f5b5d03b6a1ce8abd4f4dbaf487c417ef7380d1481b5'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0x1a60b7fe69b315fe1262c46711af990d47228471ef5a296f6aa26ba6a5a1a6ec
-</pre><a href="#appendix-B.1-5" class="pilcrow">¶</a>
-</div>
-<div class="lang-cddl sourcecode" id="appendix-B.1-6">
-<pre>
-; Inputs:
-ctx      = 'ARKG-P256.test vectors.1'
-ikm_bl   = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
-ikm_kem  = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
-ikm      = h'00'
-
-; Derive-Seed outputs:
-pk_bl    = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
-               65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
-pk_kem   = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
-               dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
-sk_bl    = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
-sk_kem   = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
-
-; Derive-Public-Key outputs:
-pk_prime = h'04056c654c97ea460ebfae997c8e12314184e45183aefdb8ce9547afca1faaee70
-               da6c6433c8fe71c32284cf0a015eb463ea2fc81438f6698684525f011d7ae83c'
-;kh      = (implementation defined)
-
-; Derive-Private-Key outputs:
-sk_prime = 0xbb609831741d9232ecd7d58770c503992ca78d34361a865a0d6715861955526f
-</pre><a href="#appendix-B.1-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -3162,157 +3151,188 @@ sk_prime = 0xbb609831741d9232ecd7d58770c503992ca78d34361a865a0d6715861955526f
       <h2 id="name-document-history">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
-<p id="appendix-C-1">-07<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">-09<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Fixed hash_to_field DST in Sub-Kem-Derive-Key-Pair in section "Using ECDH as the KEM"
-to agree with test vectors.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Fixed <code>hash_to_field</code> argument <code>ikm_tau</code> misnamed as <code>tau</code>
+in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-3">-06<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">-08<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-4.1">
-          <p id="appendix-C-4.1.1">Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
-Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
-but not in the Sub-Kem functions defined in "Using ECDH as the KEM".<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-4.1.1">Fixed incorrectly swapped <code>ikm_bl</code> and <code>ikm_kem</code> arguments in <code>ARKG-Derive-Seed</code> definition.<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.2">
+          <p id="appendix-C-4.2.1">Extracted parameter function <code>BL-PRF</code> and modified signatures
+of <code>BL-Blind-Public-Key</code> and <code>BL-Blind-Private-Key</code> accordingly.
+This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.3">
+          <p id="appendix-C-4.3.1">Removed three redundant sets of ARKG-P256 test vectors.<a href="#appendix-C-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.4">
+          <p id="appendix-C-4.4.1">Added intermediate values to ARKG-P256 test vectors.<a href="#appendix-C-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.5">
+          <p id="appendix-C-4.5.1">Changed second set of ARKG-P256 test vectors to use a 32-byte <code>ikm</code> instead of <code>h'00'</code>.<a href="#appendix-C-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-4.6">
+          <p id="appendix-C-4.6.1">Clarified in sections "Using HMAC to adapt a KEM without ciphertext integrity", "Using ECDH as the KEM"
+and "Using X25519 or X448 as the KEM" that <code>ctx_sub</code> is intentionally ignored in those instances.<a href="#appendix-C-4.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-5">-05<a href="#appendix-C-5" class="pilcrow">¶</a></p>
+<p id="appendix-C-5">-07<a href="#appendix-C-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-6.1">
-          <p id="appendix-C-6.1.1">Deleted concrete instances <code>ARKG-curve25519ADD-X25519</code>, <code>ARKG-curve448ADD-X448</code>,
-<code>ARKG-edwards25519ADD-X25519</code> and <code>ARKG-edwards448ADD-X448</code>
-since implementations with a non-prime order generator, including EdDSA,
-are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-6.2">
-          <p id="appendix-C-6.2.1">Remodeled procedures to be fully deterministic:<a href="#appendix-C-6.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-6.2.2.1">
-              <p id="appendix-C-6.2.2.1.1"><code>BL-Generate-Keypair()</code> replaced with <code>BL-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-6.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.2.2.2">
-              <p id="appendix-C-6.2.2.2.1"><code>KEM-Generate-Keypair()</code> replaced with <code>KEM-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-6.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.2.2.3">
-              <p id="appendix-C-6.2.2.3.1"><code>ARKG-Generate-Seed()</code> replaced with <code>ARKG-Derive-Seed(ikm_bl, ikm_kem)</code>.<a href="#appendix-C-6.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.2.2.4">
-              <p id="appendix-C-6.2.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-6.2.2.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.2.2.5">
-              <p id="appendix-C-6.2.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
-affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-6.2.2.5.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.2.2.6">
-              <p id="appendix-C-6.2.2.6.1">Section "Deterministic key generation" deleted.<a href="#appendix-C-6.2.2.6.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</li>
-        <li class="normal" id="appendix-C-6.3">
-          <p id="appendix-C-6.3.1">Flipped order of <code>(pk_bl, pk_kem)</code> and <code>(sk_bl, sk_kem)</code> parameter and return value tuples
-for consistent ordering between BL and KEM throughout document.<a href="#appendix-C-6.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-6.4">
-          <p id="appendix-C-6.4.1"><code>info</code> parameter renamed to <code>ctx</code>.<a href="#appendix-C-6.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-6.5">
-          <p id="appendix-C-6.5.1"><code>ctx</code> length limited to at most 64 bytes.<a href="#appendix-C-6.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-6.6">
-          <p id="appendix-C-6.6.1">Encoding of <code>ctx</code> in <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code> now embeds the length of <code>ctx</code>.<a href="#appendix-C-6.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-6.7">
-          <p id="appendix-C-6.7.1">Renamed concrete instances and corresponding <code>DST_ext</code> values:<a href="#appendix-C-6.7.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-6.7.2.1">
-              <p id="appendix-C-6.7.2.1.1"><code>ARKG-P256ADD-ECDH</code> to <code>ARKG-P256</code><a href="#appendix-C-6.7.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.7.2.2">
-              <p id="appendix-C-6.7.2.2.1"><code>ARKG-P384ADD-ECDH</code> to <code>ARKG-P384</code><a href="#appendix-C-6.7.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.7.2.3">
-              <p id="appendix-C-6.7.2.3.1"><code>ARKG-P521ADD-ECDH</code> to <code>ARKG-P521</code><a href="#appendix-C-6.7.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-6.7.2.4">
-              <p id="appendix-C-6.7.2.4.1"><code>ARKG-P256kADD-ECDH</code> to <code>ARKG-P256k</code><a href="#appendix-C-6.7.2.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</li>
-        <li class="normal" id="appendix-C-6.8">
-          <p id="appendix-C-6.8.1">Added ARKG-P256 test vectors.<a href="#appendix-C-6.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-6.1.1">Fixed hash_to_field DST in <code>Sub-Kem-Derive-Key-Pair</code> in section "Using ECDH as the KEM"
+to agree with test vectors.<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-7">-04<a href="#appendix-C-7" class="pilcrow">¶</a></p>
+<p id="appendix-C-7">-06<a href="#appendix-C-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-8.1">
-          <p id="appendix-C-8.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.2">
-          <p id="appendix-C-8.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.<a href="#appendix-C-8.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-8.3">
-          <p id="appendix-C-8.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.<a href="#appendix-C-8.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-8.1.1">Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
+Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
+but not in the Sub-Kem functions defined in "Using ECDH as the KEM".<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-9">-03<a href="#appendix-C-9" class="pilcrow">¶</a></p>
+<p id="appendix-C-9">-05<a href="#appendix-C-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-10.1">
-          <p id="appendix-C-10.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.1.1">Deleted concrete instances <code>ARKG-curve25519ADD-X25519</code>, <code>ARKG-curve448ADD-X448</code>,
+<code>ARKG-edwards25519ADD-X25519</code> and <code>ARKG-edwards448ADD-X448</code>
+since implementations with a non-prime order generator, including EdDSA,
+are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-10.2">
-          <p id="appendix-C-10.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.2.1">Remodeled procedures to be fully deterministic:<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-10.2.2.1">
+              <p id="appendix-C-10.2.2.1.1"><code>BL-Generate-Keypair()</code> replaced with <code>BL-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-10.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.2.2.2">
+              <p id="appendix-C-10.2.2.2.1"><code>KEM-Generate-Keypair()</code> replaced with <code>KEM-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-10.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.2.2.3">
+              <p id="appendix-C-10.2.2.3.1"><code>ARKG-Generate-Seed()</code> replaced with <code>ARKG-Derive-Seed(ikm_bl, ikm_kem)</code>.<a href="#appendix-C-10.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.2.2.4">
+              <p id="appendix-C-10.2.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-10.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.2.2.5">
+              <p id="appendix-C-10.2.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
+affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-10.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.2.2.6">
+              <p id="appendix-C-10.2.2.6.1">Section "Deterministic key generation" deleted.<a href="#appendix-C-10.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 </li>
         <li class="normal" id="appendix-C-10.3">
-          <p id="appendix-C-10.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.3.1">Flipped order of <code>(pk_bl, pk_kem)</code> and <code>(sk_bl, sk_kem)</code> parameter and return value tuples
+for consistent ordering between BL and KEM throughout document.<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-10.4">
-          <p id="appendix-C-10.4.1">Added CDDL definition of COSE_Key_Ref.<a href="#appendix-C-10.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.4.1"><code>info</code> parameter renamed to <code>ctx</code>.<a href="#appendix-C-10.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-10.5">
-          <p id="appendix-C-10.5.1">Editorial fixes to references.<a href="#appendix-C-10.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.5.1"><code>ctx</code> length limited to at most 64 bytes.<a href="#appendix-C-10.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-10.6">
-          <p id="appendix-C-10.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-10.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.6.1">Encoding of <code>ctx</code> in <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code> now embeds the length of <code>ctx</code>.<a href="#appendix-C-10.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-10.7">
+          <p id="appendix-C-10.7.1">Renamed concrete instances and corresponding <code>DST_ext</code> values:<a href="#appendix-C-10.7.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-10.7.2.1">
+              <p id="appendix-C-10.7.2.1.1"><code>ARKG-P256ADD-ECDH</code> to <code>ARKG-P256</code><a href="#appendix-C-10.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.7.2.2">
+              <p id="appendix-C-10.7.2.2.1"><code>ARKG-P384ADD-ECDH</code> to <code>ARKG-P384</code><a href="#appendix-C-10.7.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.7.2.3">
+              <p id="appendix-C-10.7.2.3.1"><code>ARKG-P521ADD-ECDH</code> to <code>ARKG-P521</code><a href="#appendix-C-10.7.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-10.7.2.4">
+              <p id="appendix-C-10.7.2.4.1"><code>ARKG-P256kADD-ECDH</code> to <code>ARKG-P256k</code><a href="#appendix-C-10.7.2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="appendix-C-10.8">
+          <p id="appendix-C-10.8.1">Added ARKG-P256 test vectors.<a href="#appendix-C-10.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-11">-02<a href="#appendix-C-11" class="pilcrow">¶</a></p>
+<p id="appendix-C-11">-04<a href="#appendix-C-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-12.1">
-          <p id="appendix-C-12.1.1">Rewritten introduction.<a href="#appendix-C-12.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-12.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-12.2">
-          <p id="appendix-C-12.2.1">Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.<a href="#appendix-C-12.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.<a href="#appendix-C-12.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-12.3">
-          <p id="appendix-C-12.3.1">Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.<a href="#appendix-C-12.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-12.4">
-          <p id="appendix-C-12.4.1">Eliminated top-level MAC and KDF instance parameters.<a href="#appendix-C-12.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-12.5">
-          <p id="appendix-C-12.5.1">Added info parameter to instance parameter functions.<a href="#appendix-C-12.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-12.6">
-          <p id="appendix-C-12.6.1">Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.<a href="#appendix-C-12.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-12.7">
-          <p id="appendix-C-12.7.1">Added curve/edwards25519/448 instances.<a href="#appendix-C-12.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-12.8">
-          <p id="appendix-C-12.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-12.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.<a href="#appendix-C-12.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-13">-01<a href="#appendix-C-13" class="pilcrow">¶</a></p>
+<p id="appendix-C-13">-03<a href="#appendix-C-13" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-14.1">
-          <p id="appendix-C-14.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-14.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-14.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-14.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.2">
+          <p id="appendix-C-14.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-14.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.3">
+          <p id="appendix-C-14.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-14.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.4">
+          <p id="appendix-C-14.4.1">Added CDDL definition of COSE_Key_Ref.<a href="#appendix-C-14.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.5">
+          <p id="appendix-C-14.5.1">Editorial fixes to references.<a href="#appendix-C-14.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-14.6">
+          <p id="appendix-C-14.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-14.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-15">-00<a href="#appendix-C-15" class="pilcrow">¶</a></p>
+<p id="appendix-C-15">-02<a href="#appendix-C-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-16.1">
-          <p id="appendix-C-16.1.1">Initial Version<a href="#appendix-C-16.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.1.1">Rewritten introduction.<a href="#appendix-C-16.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.2">
+          <p id="appendix-C-16.2.1">Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.<a href="#appendix-C-16.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.3">
+          <p id="appendix-C-16.3.1">Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.<a href="#appendix-C-16.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.4">
+          <p id="appendix-C-16.4.1">Eliminated top-level MAC and KDF instance parameters.<a href="#appendix-C-16.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.5">
+          <p id="appendix-C-16.5.1">Added info parameter to instance parameter functions.<a href="#appendix-C-16.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.6">
+          <p id="appendix-C-16.6.1">Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.<a href="#appendix-C-16.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.7">
+          <p id="appendix-C-16.7.1">Added curve/edwards25519/448 instances.<a href="#appendix-C-16.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-16.8">
+          <p id="appendix-C-16.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-16.8.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-17">-01<a href="#appendix-C-17" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-18.1">
+          <p id="appendix-C-18.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-18.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-19">-00<a href="#appendix-C-19" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-20.1">
+          <p id="appendix-C-20.1.1">Initial Version<a href="#appendix-C-20.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
