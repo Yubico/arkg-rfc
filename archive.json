@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-17T00:01:24.798048+00:00",
+  "timestamp": "2025-07-06T00:01:09.978517+00:00",
   "repo": "Yubico/arkg-rfc",
   "labels": [
     {
@@ -71,6 +71,44 @@
           "body": "Fixed in a72728e62b4e6857f90732819e4017aac7183c35.",
           "createdAt": "2025-04-04T18:15:16Z",
           "updatedAt": "2025-04-04T18:16:38Z"
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "I_kwDOKzkccs6-9Fgz",
+      "title": "Invalid test vectors?",
+      "url": "https://github.com/Yubico/arkg-rfc/issues/39",
+      "state": "CLOSED",
+      "author": "alenhorvat",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Dear,\n\nare the test vectors maybe computed using CIRCL library?\nI manage to reproduce the test vector values using the CIRCL library, however, the same library is unable to reproduce the RFC 9380 test vectors (hash to scalar/field function)\n\nPotential related issue: https://github.com/cloudflare/circl/issues/551#issue-3203670094\n\nI've been mainly testing: https://www.ietf.org/archive/id/draft-bradleylundberg-cfrg-arkg-08.html#appendix-B.1\n\nThank you!",
+      "createdAt": "2025-07-04T20:52:54Z",
+      "updatedAt": "2025-07-05T09:16:36Z",
+      "closedAt": "2025-07-05T09:16:36Z",
+      "comments": [
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Hi! They are not, they are computed by an implementation that's currently private. I suppose I should extract and publish that. It has its own implementation of hash_to_field which does successfully reproduce the RFC 9380 test vectors - although for ARKG-P256 we only need hash_to_scalar, and RFC 9380 has no test vectors for that (as far as I could tell), so the hash_to_scalar tests only check that it returns different outputs than hash_to_field for the same inputs.\n\nThe private implementation (which produced the test vectors) is cross-referenced and compatible with this public (but very much experimental) implementation in TypeScript, though, which also has tests that reproduce the ARKG test vectors: https://github.com/wwWallet/wallet-frontend/blob/bf0324c68ec5a71eeed2a52c763e3f34310f132c/src/arkg/index.ts\n\nIt certainly sounds strange that you'd succeed to reproduce the ARKG test vectors but not the hash_to_field ones. But in general: hash_to_scalar (which is what we use in ARKG-P256, but it's not explicitly defined or named in RFC 9380) uses [`hash_to_field`](https://www.rfc-editor.org/rfc/rfc9380#name-hash_to_field-implementatio) with `p` set to the order of the prime-order subgroup, which is also the order of the base (generator) point; while hashing to points uses `hash_to_field` with `p` set to the modulus of the coordinate field (the characteristic of the base field of the curve). The TypeScript implementation above makes this distinction explicit via separate [`hashToCoordinateField` and `hashToScalarField`](https://github.com/wwWallet/wallet-frontend/blob/bf0324c68ec5a71eeed2a52c763e3f34310f132c/src/arkg/hash_to_curve.ts#L187-L192) functions.",
+          "createdAt": "2025-07-04T21:41:28Z",
+          "updatedAt": "2025-07-04T21:45:58Z"
+        },
+        {
+          "author": "emlun",
+          "authorAssociation": "MEMBER",
+          "body": "Ah, right, now I see - I think you're mistaken in https://github.com/cloudflare/circl/issues/551 - like I said, the test vectors at https://www.rfc-editor.org/rfc/rfc9380#appendix-J.1.2 are indeed for the default hash_to_curve suite which sets `p` to the coordinate field order, so it is indeed expected that `HashToScalar` does not reproduce those test vectors. `HashToElement` should, though.",
+          "createdAt": "2025-07-04T21:44:20Z",
+          "updatedAt": "2025-07-04T21:44:20Z"
+        },
+        {
+          "author": "alenhorvat",
+          "authorAssociation": "NONE",
+          "body": "Good morning. Thank you for the clarification.\n\nI'll look further into it. The ticket can be closed.",
+          "createdAt": "2025-07-05T05:08:58Z",
+          "updatedAt": "2025-07-05T05:08:58Z"
         }
       ]
     }
