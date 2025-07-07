@@ -56,7 +56,7 @@ contributor:
 
 normative:
   I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
-  I-D.lundberg-cose-2p-algs: I-D.draft-lundberg-cose-two-party-signing-algs
+  I-D.lundberg-cose-split-algs: I-D.draft-lundberg-cose-two-party-signing-algs
   IANA.cose:
   RFC2104:
   RFC4949:
@@ -908,7 +908,7 @@ SHOULD contain at least 256 bits of entropy.
 This section proposes additions to COSE [RFC9052] to support ARKG use cases.
 These consist of a new key type to represent ARKG public seeds,
 algorithm identifiers for signing using an ARKG-derived private key,
-and new `COSE_Sign_Args` [I-D.lundberg-cose-2p-algs] algorithm parameters for ARKG.
+and new `COSE_Sign_Args` [I-D.lundberg-cose-split-algs] algorithm parameters for ARKG.
 
 
 ## COSE key type: ARKG public seed {#cose-arkg-pub-seed}
@@ -997,7 +997,7 @@ and for signature algorithms combined with using a signing private key derived u
 
 {{tbl-cose-algs-arkg-sign}} defines algorithm identifiers to represent signing algorithms.
 These MAY be used to negotiate algorithm selection between a _digester_ and _signer_
-as described in {{Section 2 of I-D.lundberg-cose-2p-algs}},
+as described in {{Section 2 of I-D.lundberg-cose-split-algs}},
 and in key representations exchanged between such _digesters_ and _signers_,
 but SHOULD NOT appear in COSE structures consumed by signature verifiers.
 COSE structures consumed by signature verifiers SHOULD instead use the corresponding algorithm identifier
@@ -1007,17 +1007,17 @@ listed in the "verification algorithm" column.
 | Name               | Value                    | Verification algorithm | Description |
 | ------------------ | ------------------------ | ---------------------- | ----------- |
 | ESP256-ARKG        | TBD                      | -9 (ESP256)            | ESP256 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
-| ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
 | ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
-| ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
 | ESP521-ARKG        | TBD                      | -52 (ESP521)           | ESP521 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
-| ESP521-split-ARKG  | TBD                      | -52 (ESP521)           | ESP521-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP521-split-ARKG  | TBD                      | -52 (ESP521)           | ESP521-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
 
 
 ## COSE signing arguments {#cose-sign-args-arkg}
 
-This section defines ARKG-specific parameters for the `COSE_Sign_Args` structure [I-D.lundberg-cose-2p-algs].
+This section defines ARKG-specific parameters for the `COSE_Sign_Args` structure [I-D.lundberg-cose-split-algs].
 These consist of the parameters -1 and -2 respectively
 for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
 {{tbl-cose-args-arkg}} defines these algorithm parameters for `COSE_Sign_args`.
@@ -1031,7 +1031,7 @@ for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
 
 
 The following CDDL example conveys the `kh` and `ctx` arguments for signing data
-using the ESP256-split algorithm [I-D.lundberg-cose-2p-algs]
+using the ESP256-split algorithm [I-D.lundberg-cose-split-algs]
 and a key derived using `ARKG-P256`:
 
 ~~~cddl
@@ -1139,7 +1139,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP256-split-ARKG
   - Value: TBD (placeholder -65539)
   - Description: ESP256-split using private key derived by ARKG-P256
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP384-ARKG
@@ -1151,7 +1151,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP384-split-ARKG
   - Value: TBD
   - Description: ESP384-split using private key derived by ARKG-P384
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP521-ARKG
@@ -1163,7 +1163,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP521-split-ARKG
   - Value: TBD
   - Description: ESP521-split using private key derived by ARKG-P521
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP256K-ARKG
@@ -1176,7 +1176,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 ## COSE Signing Arguments Algorithm Parameters Registrations
 
 This section registers the following values
-in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg-cose-2p-algs] (TODO):
+in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg-cose-split-algs] (TODO):
 
 - Name: kh
   - Label: -1
@@ -1405,7 +1405,7 @@ TODO
 
 * Fixed `hash_to_field` argument `ikm_tau` misnamed as `tau`
   in section "Using elliptic curve addition for key blinding".
-* Updated to match draft -02 of [I-D.lundberg-cose-2p-algs].
+* Updated to match draft -02 of [I-D.lundberg-cose-split-algs].
   * COSE algorithm identifier definitions for ARKG instances moved
     from section "COSE key type: ARKG public seed" to new section "COSE algorithms".
   * Added COSE algorithm identifier definitions for signature algorithms with key derived using ARKG.
