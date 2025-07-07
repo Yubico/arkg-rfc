@@ -906,8 +906,9 @@ SHOULD contain at least 256 bits of entropy.
 # COSE bindings {#cose}
 
 This section proposes additions to COSE [RFC9052] to support ARKG use cases.
-These consist of new key type definitions to represent ARKG public seeds
-and references [I-D.lundberg-cose-2p-algs] to private keys derived using ARKG.
+These consist of a new key type to represent ARKG public seeds,
+algorithm identifiers for signing using an ARKG-derived private key,
+and new `COSE_Sign_Args` [I-D.lundberg-cose-2p-algs] algorithm parameters for ARKG.
 
 
 ## COSE key type: ARKG public seed {#cose-arkg-pub-seed}
@@ -930,15 +931,7 @@ SHOULD be set to the `dkalg` (-3) value of the seed.
 
 The `alg` (3) parameter, when present,
 identifies the ARKG instance this public seed is to be used with.
-{{tbl-arkg-pub-algs}} defines an initial set of COSE algorithm identifiers for this purpose.
-
-{: #tbl-arkg-pub-algs title="COSE algorithm identifiers to represent ARKG instances."}
-| Name | Value | Description |
-| ---- | ----- | ----------- |
-| ARKG-P256 | TBD (placeholder -65700) | The ARKG instance defined in {{ARKG-P256}} of this document |
-| ARKG-P384 | TBD (placeholder -65701) | The ARKG instance defined in {{ARKG-P384}} of this document |
-| ARKG-P521 | TBD (placeholder -65702) | The ARKG instance defined in {{ARKG-P521}} of this document |
-| ARKG-P256k | TBD (placeholder -65703) | The ARKG instance defined in {{ARKG-P256k}} of this document |
+An initial set of COSE algorithm identifiers for this purpose is defined in {{cose-algs-arkg}}.
 
 The following CDDL [RFC8610] example represents an `ARKG-P256` public seed
 restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
@@ -986,73 +979,84 @@ h'a6013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
 ~~~
 
 
-## COSE key reference type: ARKG derived private key {#cose-arkg-derived-refs}
+## COSE algorithms {#cose-algs-arkg}
 
-A reference to a private key derived using ARKG
-may be represented as a `COSE_Key_Ref` structure [I-D.lundberg-cose-2p-algs]
-whose `kty` is `TBD` (Ref-ARKG-derived, placeholder -65538).
-This key reference type defines key type parameters -1 and -2 respectively
+This section defines COSE algorithm identifiers [RFC9052] for ARKG instances,
+and for signature algorithms combined with using a signing private key derived using ARKG.
+
+{{tbl-cose-algs-arkg}} defines algorithm identifiers to represent ARKG instances.
+
+{: #tbl-cose-algs-arkg title="COSE algorithm identifiers for ARKG instances."}
+| Name       | Value                    | Description |
+| ---------- | ------------------------ | ----------- |
+| ARKG-P256  | TBD (placeholder -65700) | The ARKG instance `ARKG-P256` defined in {{ARKG-P256}}.
+| ARKG-P384  | TBD (placeholder -65701) | The ARKG instance `ARKG-P384` defined in {{ARKG-P384}}.
+| ARKG-P521  | TBD (placeholder -65702) | The ARKG instance `ARKG-P521` defined in {{ARKG-P521}}.
+| ARKG-P256k | TBD (placeholder -65703) | The ARKG instance `ARKG-P256k` defined in {{ARKG-P256k}}.
+
+
+{{tbl-cose-algs-arkg-sign}} defines algorithm identifiers to represent signing algorithms.
+These MAY be used to negotiate algorithm selection between a _digester_ and _signer_
+as described in {{Section 2 of I-D.lundberg-cose-2p-algs}},
+and in key representations exchanged between such _digesters_ and _signers_,
+but SHOULD NOT appear in COSE structures consumed by signature verifiers.
+COSE structures consumed by signature verifiers SHOULD instead use the corresponding algorithm identifier
+listed in the "verification algorithm" column.
+
+{: #tbl-cose-algs-arkg-sign title="COSE algorithms for signing with an ARKG-derived key."}
+| Name               | Value                    | Verification algorithm | Description |
+| ------------------ | ------------------------ | ---------------------- | ----------- |
+| ESP256-ARKG        | TBD                      | -9 (ESP256)            | ESP256 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP521-ARKG        | TBD                      | -52 (ESP521)           | ESP521 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP521-split-ARKG  | TBD                      | -52 (ESP521)           | ESP521-split [I-D.lundberg-cose-2p-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
+
+
+## COSE signing arguments {#cose-sign-args-arkg}
+
+This section defines ARKG-specific parameters for the `COSE_Sign_Args` structure [I-D.lundberg-cose-2p-algs].
+These consist of the parameters -1 and -2 respectively
 for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
-The `kid` (2) parameter identifies the ARKG private seed `sk`.
-Thus the `COSE_Key_Ref` structure conveys all arguments to use in `ARKG-Derive-Private-Key`
-to derive the referenced private key.
+{{tbl-cose-args-arkg}} defines these algorithm parameters for `COSE_Sign_args`.
+`kh` and `ctx` are both REQUIRED for all the relevant `alg` values.
 
-{{tbl-ref-arkg-params}} defines key type parameters for the Ref-ARKG-derived key type.
-A `COSE_Key_Ref` structure whose `kty` is TBD (Ref-ARKG-derived, placeholder -65538)
-MUST include the parameters `kh` (-1) and `ctx` (-2).
-The `inst` (-3) parameter MAY be used to indicate the ARKG instance
-whose `ARKG-Derive-Private-Key` procedure to use to derive the private key;
-its value is taken from the IANA "COSE Algorithms" registry [IANA.cose]
-and an initial set of values is defined in {{tbl-arkg-pub-params}}.
+{: #tbl-cose-args-arkg title="Algorithm parameters for COSE_Sign_Args."}
+| Name | Label | Type | Required? | Algorithm | Description |
+|------|-------|------|-----------|-----------|-------------|
+| kh   | -1    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG | `kh` argument to `ARKG-Derive-Private-Key`. |
+| ctx  | -2    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG | `ctx` argument to `ARKG-Derive-Private-Key`. |
 
-If `dkalg` (-3) is present in the ARKG public seed used in `ARKG-Derive-Public-Key` to generate the `kh` value,
-then the `alg` (3) parameter of the COSE_Key_Ref SHOULD be set to the `dkalg` (-3) value of the seed.
-If `alg` (3) is present in the seed,
-then the `inst` (-3) parameter of the COSE_Key_Ref SHOULD be set to the `alg` (3) value of the seed.
 
-{: #tbl-ref-arkg-params title="COSE key type parameters for the Ref-ARKG-derived type."}
-| Name | Label | Value type   | Required? | Description |
-| ---- | ----- | ------------ | --------- | ----------- |
-| kh   | -1    | bstr         | Required  | `kh` argument to `ARKG-Derive-Private-Key` |
-| ctx  | -2    | bstr         | Required  | `ctx` argument to `ARKG-Derive-Private-Key` |
-| inst | -3    | int / tstr   | Optional  | COSE algorithm identifier of ARKG instance |
-
-The following CDDL example represents a reference to a key derived using `ARKG-P256`
-and restricted for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
+The following CDDL example conveys the `kh` and `ctx` arguments for signing data
+using the ESP256-split algorithm [I-D.lundberg-cose-2p-algs]
+and a key derived using `ARKG-P256`:
 
 ~~~cddl
 {
-  1: -65538,   ; kty: Ref-ARKG-derived
-               ; kid: Opaque identifier of ARKG-pub
-  2: h'60b6dfddd31659598ae5de49acb220d8
-       704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65539,   ; alg: ESP256-split with ARKG-P256 (placeholder value)
 
                ; ARKG-P256 key handle
                ; (HMAC-SHA-256-128 followed by
                   SEC1 uncompressed ECDH public key)
-  -1: h'ae079e9c52212860678a7cee25b6a6d4
-        048219d973768f8e1adb8eb84b220b0ee3
-          a2532828b9aa65254fe3717a29499e9b
-          aee70cea75b5c8a2ec2eb737834f7467
-          e37b3254776f65f4cfc81e2bc4747a84',
+  -1: h'27987995f184a44cfa548d104b0a461d
+        0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043de
+          c2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361',
 
-               ; ctx argument to ARKG-Derive-Private-Key
-  -2: 'Example application info',
-
-  -3: -65700   ; inst: ARKG-P256 (placeholder value)
+               ; info argument to ARKG-Derive-Private-Key
+  -2: 'ARKG-P256.test vectors',
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a6013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d20328205851ae079e9c52212860678a7cee25b6a6d404
-  8219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a29499e9b
-  aee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2bc4747a84
-  2158184578616d706c65206170706c69636174696f6e20696e666f223a000100
-  a3'
+h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
+  dabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea906
+  0fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361215641524b
+  472d503235362e7465737420766563746f7273'
 ~~~
 
 
@@ -1078,18 +1082,6 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Capabilities: \[kty(-65537), pk_bl, pk_kem\]
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Name: Ref-ARKG-derived
-  - Value: TBD (Placeholder -65538)
-  - Description: Reference to private key derived by ARKG
-  - Capabilities: \[kty(-65538), kh, ctx\]
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
-
-These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref` [I-D.lundberg-cose-2p-algs]:
-
-~~~cddl
-$COSE_kty_ref /= -65538   ; Placeholder value
-~~~
-
 
 ## COSE Key Type Parameters Registrations
 
@@ -1109,20 +1101,6 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Description: ARKG key encapsulation public key
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
-  - Name: kh
-  - Label: -1
-  - CBOR Type: bstr
-  - Description: kh argument to ARKG-Derive-Private-Key
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
-
-- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
-  - Name: ctx
-  - Label: -2
-  - CBOR Type: bstr
-  - Description: ctx argument to ARKG-Derive-Private-Key
-  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-arkg-derived-refs}} of this document
-
 
 ## COSE Algorithms Registrations
 
@@ -1131,26 +1109,94 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ARKG-P256
   - Value: TBD (placeholder -65700)
   - Description: ARKG using ECDH and additive blinding on secp256r1
-  - Reference: {{ARKG-P256}} of this document
+  - Reference: {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ARKG-P384
   - Value: TBD (placeholder -65701)
   - Description: ARKG using ECDH and additive blinding on secp384r1
-  - Reference: {{ARKG-P384}} of this document
+  - Reference: {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ARKG-P521
   - Value: TBD (placeholder -65702)
   - Description: ARKG using ECDH and additive blinding on secp521r1
-  - Reference: {{ARKG-P521}} of this document
+  - Reference: {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ARKG-P256k
   - Value: TBD (placeholder -65703)
   - Description: ARKG using ECDH and additive blinding on secp256k1
-  - Reference: {{ARKG-P256k}} of this document
+  - Reference: {{cose-algs-arkg}} of this document
   - Recommended: TBD
+
+- Name: ESP256-ARKG
+  - Value: TBD
+  - Description: ESP256 using private key derived by ARKG-P256
+  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP256-split-ARKG
+  - Value: TBD (placeholder -65539)
+  - Description: ESP256-split using private key derived by ARKG-P256
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP384-ARKG
+  - Value: TBD
+  - Description: ESP384 using private key derived by ARKG-P384
+  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP384-split-ARKG
+  - Value: TBD
+  - Description: ESP384-split using private key derived by ARKG-P384
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP521-ARKG
+  - Value: TBD
+  - Description: ESP521 using private key derived by ARKG-P521
+  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP521-split-ARKG
+  - Value: TBD
+  - Description: ESP521-split using private key derived by ARKG-P521
+  - Reference: [I-D.lundberg-cose-2p-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP256K-ARKG
+  - Value: TBD
+  - Description: ESP256K using private key derived by ARKG-P256k
+  - Reference: [RFC8812], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+
+## COSE Signing Arguments Algorithm Parameters Registrations
+
+This section registers the following values
+in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg-cose-2p-algs] (TODO):
+
+- Name: kh
+  - Label: -1
+  - Type: bstr
+  - Required: yes
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+  - Description: `kh` argument to `ARKG-Derive-Private-Key`.
+  - Capabilities: \[alg(-65539, TBD)\]
+  - Change Controller: IETF
+  - Reference: {{cose-sign-args-arkg}} of this document
+
+- Name: ctx
+  - Label: -2
+  - Type: bstr
+  - Required: yes
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+  - Description: `ctx` argument to `ARKG-Derive-Private-Key`.
+  - Capabilities: \[alg(-65539, TBD)\]
+  - Change Controller: IETF
+  - Reference: {{cose-sign-args-arkg}} of this document
 
 
 # Design rationale
@@ -1359,6 +1405,14 @@ TODO
 
 * Fixed `hash_to_field` argument `ikm_tau` misnamed as `tau`
   in section "Using elliptic curve addition for key blinding".
+* Updated to match draft -02 of [I-D.lundberg-cose-2p-algs].
+  * COSE algorithm identifier definitions for ARKG instances moved
+    from section "COSE key type: ARKG public seed" to new section "COSE algorithms".
+  * Added COSE algorithm identifier definitions for signature algorithms with key derived using ARKG.
+  * COSE key type `Ref-ARKG-Derived` deleted in favour of new `COSE_Sign_Args` algorithm parameters.
+  * Section "COSE key reference type: ARKG derived private key" replaced
+    with "COSE signing arguments".
+  * Added section "COSE Signing Arguments Algorithm Parameters Registrations"
 
 -08
 
