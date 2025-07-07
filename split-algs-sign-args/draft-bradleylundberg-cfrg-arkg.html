@@ -2315,7 +2315,7 @@ both as the key blinding key and the KEM key.<a href="#section-3.5-1" class="pil
 <p id="section-5-1">This section proposes additions to COSE <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> to support ARKG use cases.
 These consist of a new key type to represent ARKG public seeds,
 algorithm identifiers for signing using an ARKG-derived private key,
-and new <code>COSE_Sign_Args</code> <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span> algorithm parameters for ARKG.<a href="#section-5-1" class="pilcrow">¶</a></p>
+and new <code>COSE_Sign_Args</code> <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span> algorithm parameters for ARKG.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="cose-arkg-pub-seed">
 <section id="section-5.1">
         <h3 id="name-cose-key-type-arkg-public-s">
@@ -2466,7 +2466,7 @@ and for signature algorithms combined with using a signing private key derived u
 </div>
 <p id="section-5.2-4"><a href="#tbl-cose-algs-arkg-sign" class="auto internal xref">Table 3</a> defines algorithm identifiers to represent signing algorithms.
 These <span class="bcp14">MAY</span> be used to negotiate algorithm selection between a <em>digester</em> and <em>signer</em>
-as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01#section-2" class="relref">Section 2</a> of [<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>,
+as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01#section-2" class="relref">Section 2</a> of [<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>,
 and in key representations exchanged between such <em>digesters</em> and <em>signers</em>,
 but <span class="bcp14">SHOULD NOT</span> appear in COSE structures consumed by signature verifiers.
 COSE structures consumed by signature verifiers <span class="bcp14">SHOULD</span> instead use the corresponding algorithm identifier
@@ -2496,7 +2496,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP256-split-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD (placeholder -65539)</td>
               <td class="text-left" rowspan="1" colspan="1">-9 (ESP256)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP256-split <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span> using private key derived by ARKG-P256 (<a href="#ARKG-P256" class="auto internal xref">Section 4.1</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP256-split <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span> using private key derived by ARKG-P256 (<a href="#ARKG-P256" class="auto internal xref">Section 4.1</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ESP384-ARKG</td>
@@ -2508,7 +2508,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP384-split-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD</td>
               <td class="text-left" rowspan="1" colspan="1">-51 (ESP384)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP384-split <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span> using private key derived by ARKG-P384 (<a href="#ARKG-P384" class="auto internal xref">Section 4.2</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP384-split <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span> using private key derived by ARKG-P384 (<a href="#ARKG-P384" class="auto internal xref">Section 4.2</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ESP521-ARKG</td>
@@ -2520,7 +2520,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP521-split-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD</td>
               <td class="text-left" rowspan="1" colspan="1">-52 (ESP521)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP521-split <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span> using private key derived by ARKG-P521 (<a href="#ARKG-P521" class="auto internal xref">Section 4.3</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP521-split <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span> using private key derived by ARKG-P521 (<a href="#ARKG-P521" class="auto internal xref">Section 4.3</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ES256K-ARKG</td>
@@ -2538,7 +2538,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
         <h3 id="name-cose-signing-arguments">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-cose-signing-arguments" class="section-name selfRef">COSE signing arguments</a>
         </h3>
-<p id="section-5.3-1">This section defines ARKG-specific parameters for the <code>COSE_Sign_Args</code> structure <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>.
+<p id="section-5.3-1">This section defines ARKG-specific parameters for the <code>COSE_Sign_Args</code> structure <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>.
 These consist of the parameters -1 and -2 respectively
 for the <code>kh</code> and <code>ctx</code> parameters of <code>ARKG-Derive-Private-Key</code>.
 <a href="#tbl-cose-args-arkg" class="auto internal xref">Table 4</a> defines these algorithm parameters for <code>COSE_Sign_args</code>.
@@ -2582,7 +2582,7 @@ for the <code>kh</code> and <code>ctx</code> parameters of <code>ARKG-Derive-Pri
         </table>
 </div>
 <p id="section-5.3-3">The following CDDL example conveys the <code>kh</code> and <code>ctx</code> arguments for signing data
-using the ESP256-split algorithm <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>
+using the ESP256-split algorithm <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>
 and a key derived using <code>ARKG-P256</code>:<a href="#section-5.3-3" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.3-4">
 <pre>
@@ -2814,7 +2814,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.6.2.2.1">Description: ESP256-split using private key derived by ARKG-P256<a href="#section-8.3-2.6.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.6.2.3">
-                <p id="section-8.3-2.6.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.6.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.6.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.6.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.6.2.4">
                 <p id="section-8.3-2.6.2.4.1">Recommended: TBD<a href="#section-8.3-2.6.2.4.1" class="pilcrow">¶</a></p>
@@ -2848,7 +2848,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.8.2.2.1">Description: ESP384-split using private key derived by ARKG-P384<a href="#section-8.3-2.8.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.8.2.3">
-                <p id="section-8.3-2.8.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.8.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.8.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.8.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.8.2.4">
                 <p id="section-8.3-2.8.2.4.1">Recommended: TBD<a href="#section-8.3-2.8.2.4.1" class="pilcrow">¶</a></p>
@@ -2882,7 +2882,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.10.2.2.1">Description: ESP521-split using private key derived by ARKG-P521<a href="#section-8.3-2.10.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.10.2.3">
-                <p id="section-8.3-2.10.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.10.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.10.2.3.1">Reference: <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.10.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.10.2.4">
                 <p id="section-8.3-2.10.2.4.1">Recommended: TBD<a href="#section-8.3-2.10.2.4.1" class="pilcrow">¶</a></p>
@@ -2915,7 +2915,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
 <a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-cose-signing-arguments-algo" class="section-name selfRef">COSE Signing Arguments Algorithm Parameters Registrations</a>
         </h3>
 <p id="section-8.4-1">This section registers the following values
-in the IANA "COSE Signing Arguments Algorithm Parameters" registry <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span> (TODO):<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+in the IANA "COSE Signing Arguments Algorithm Parameters" registry <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span> (TODO):<a href="#section-8.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-8.4-2.1">
             <p id="section-8.4-2.1.1">Name: kh<a href="#section-8.4-2.1.1" class="pilcrow">¶</a></p>
@@ -3045,7 +3045,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Jones, M. B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JOSE and COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-jose-fully-specified-algorithms-13</span>, <time datetime="2025-05-11" class="refDate">11 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-13">https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-13</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.lundberg-cose-2p-algs">[I-D.lundberg-cose-2p-algs]</dt>
+<dt id="I-D.lundberg-cose-split-algs">[I-D.lundberg-cose-split-algs]</dt>
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"COSE Algorithms for Two-Party Signing"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lundberg-cose-two-party-signing-algs-01</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01">https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
@@ -3338,7 +3338,7 @@ sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.2">
-          <p id="appendix-C-2.2.1">Updated to match draft -02 of <span>[<a href="#I-D.lundberg-cose-2p-algs" class="cite xref">I-D.lundberg-cose-2p-algs</a>]</span>.<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.2.1">Updated to match draft -02 of <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>.<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.2.2.1">
               <p id="appendix-C-2.2.2.1.1">COSE algorithm identifier definitions for ARKG instances moved

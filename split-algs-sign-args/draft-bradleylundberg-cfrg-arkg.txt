@@ -954,7 +954,7 @@ Table of Contents
    This section proposes additions to COSE [RFC9052] to support ARKG use
    cases.  These consist of a new key type to represent ARKG public
    seeds, algorithm identifiers for signing using an ARKG-derived
-   private key, and new COSE_Sign_Args [I-D.lundberg-cose-2p-algs]
+   private key, and new COSE_Sign_Args [I-D.lundberg-cose-split-algs]
    algorithm parameters for ARKG.
 
 5.1.  COSE key type: ARKG public seed
@@ -1063,57 +1063,57 @@ Table of Contents
    Table 3 defines algorithm identifiers to represent signing
    algorithms.  These MAY be used to negotiate algorithm selection
    between a _digester_ and _signer_ as described in Section 2 of
-   [I-D.lundberg-cose-2p-algs], and in key representations exchanged
+   [I-D.lundberg-cose-split-algs], and in key representations exchanged
    between such _digesters_ and _signers_, but SHOULD NOT appear in COSE
    structures consumed by signature verifiers.  COSE structures consumed
    by signature verifiers SHOULD instead use the corresponding algorithm
    identifier listed in the "verification algorithm" column.
 
-    +===========+============+============+===========================+
-    |Name       |Value       |Verification|Description                |
-    |           |            |algorithm   |                           |
-    +===========+============+============+===========================+
-    |ESP256-ARKG|TBD         |-9 (ESP256) |ESP256                     |
-    |           |            |            |[I-D.jose-fully-spec-algs] |
-    |           |            |            |using private key derived  |
-    |           |            |            |by ARKG-P256 (Section 4.1).|
-    +-----------+------------+------------+---------------------------+
-    |ESP256-    |TBD         |-9 (ESP256) |ESP256-split               |
-    |split-ARKG |(placeholder|            |[I-D.lundberg-cose-2p-algs]|
-    |           |-65539)     |            |using private key derived  |
-    |           |            |            |by ARKG-P256 (Section 4.1).|
-    +-----------+------------+------------+---------------------------+
-    |ESP384-ARKG|TBD         |-51 (ESP384)|ESP384                     |
-    |           |            |            |[I-D.jose-fully-spec-algs] |
-    |           |            |            |using private key derived  |
-    |           |            |            |by ARKG-P384 (Section 4.2).|
-    +-----------+------------+------------+---------------------------+
-    |ESP384-    |TBD         |-51 (ESP384)|ESP384-split               |
-    |split-ARKG |            |            |[I-D.lundberg-cose-2p-algs]|
-    |           |            |            |using private key derived  |
-    |           |            |            |by ARKG-P384 (Section 4.2).|
-    +-----------+------------+------------+---------------------------+
-    |ESP521-ARKG|TBD         |-52 (ESP521)|ESP521                     |
-    |           |            |            |[I-D.jose-fully-spec-algs] |
-    |           |            |            |using private key derived  |
-    |           |            |            |by ARKG-P521 (Section 4.3).|
-    +-----------+------------+------------+---------------------------+
-    |ESP521-    |TBD         |-52 (ESP521)|ESP521-split               |
-    |split-ARKG |            |            |[I-D.lundberg-cose-2p-algs]|
-    |           |            |            |using private key derived  |
-    |           |            |            |by ARKG-P521 (Section 4.3).|
-    +-----------+------------+------------+---------------------------+
-    |ES256K-ARKG|TBD         |-47 (ES256K)|ES256K [RFC8812] using     |
-    |           |            |            |private key derived by     |
-    |           |            |            |ARKG-P256k (Section 4.4).  |
-    +-----------+------------+------------+---------------------------+
+   +===========+============+============+==============================+
+   |Name       |Value       |Verification|Description                   |
+   |           |            |algorithm   |                              |
+   +===========+============+============+==============================+
+   |ESP256-ARKG|TBD         |-9 (ESP256) |ESP256                        |
+   |           |            |            |[I-D.jose-fully-spec-algs]    |
+   |           |            |            |using private key derived by  |
+   |           |            |            |ARKG-P256 (Section 4.1).      |
+   +-----------+------------+------------+------------------------------+
+   |ESP256-    |TBD         |-9 (ESP256) |ESP256-split                  |
+   |split-ARKG |(placeholder|            |[I-D.lundberg-cose-split-algs]|
+   |           |-65539)     |            |using private key derived by  |
+   |           |            |            |ARKG-P256 (Section 4.1).      |
+   +-----------+------------+------------+------------------------------+
+   |ESP384-ARKG|TBD         |-51 (ESP384)|ESP384                        |
+   |           |            |            |[I-D.jose-fully-spec-algs]    |
+   |           |            |            |using private key derived by  |
+   |           |            |            |ARKG-P384 (Section 4.2).      |
+   +-----------+------------+------------+------------------------------+
+   |ESP384-    |TBD         |-51 (ESP384)|ESP384-split                  |
+   |split-ARKG |            |            |[I-D.lundberg-cose-split-algs]|
+   |           |            |            |using private key derived by  |
+   |           |            |            |ARKG-P384 (Section 4.2).      |
+   +-----------+------------+------------+------------------------------+
+   |ESP521-ARKG|TBD         |-52 (ESP521)|ESP521                        |
+   |           |            |            |[I-D.jose-fully-spec-algs]    |
+   |           |            |            |using private key derived by  |
+   |           |            |            |ARKG-P521 (Section 4.3).      |
+   +-----------+------------+------------+------------------------------+
+   |ESP521-    |TBD         |-52 (ESP521)|ESP521-split                  |
+   |split-ARKG |            |            |[I-D.lundberg-cose-split-algs]|
+   |           |            |            |using private key derived by  |
+   |           |            |            |ARKG-P521 (Section 4.3).      |
+   +-----------+------------+------------+------------------------------+
+   |ES256K-ARKG|TBD         |-47 (ES256K)|ES256K [RFC8812] using private|
+   |           |            |            |key derived by ARKG-P256k     |
+   |           |            |            |(Section 4.4).                |
+   +-----------+------------+------------+------------------------------+
 
        Table 3: COSE algorithms for signing with an ARKG-derived key.
 
 5.3.  COSE signing arguments
 
    This section defines ARKG-specific parameters for the COSE_Sign_Args
-   structure [I-D.lundberg-cose-2p-algs].  These consist of the
+   structure [I-D.lundberg-cose-split-algs].  These consist of the
    parameters -1 and -2 respectively for the kh and ctx parameters of
    ARKG-Derive-Private-Key. Table 4 defines these algorithm parameters
    for COSE_Sign_args. kh and ctx are both REQUIRED for all the relevant
@@ -1149,7 +1149,7 @@ Table of Contents
 
    The following CDDL example conveys the kh and ctx arguments for
    signing data using the ESP256-split algorithm
-   [I-D.lundberg-cose-2p-algs] and a key derived using ARKG-P256:
+   [I-D.lundberg-cose-split-algs] and a key derived using ARKG-P256:
 
    {
      3: -65539,   ; alg: ESP256-split with ARKG-P256 (placeholder value)
@@ -1289,7 +1289,7 @@ Table of Contents
       -  Description: ESP256-split using private key derived by
          ARKG-P256
 
-      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+      -  Reference: [I-D.lundberg-cose-split-algs], Section 5.2 of this
          document
 
       -  Recommended: TBD
@@ -1312,7 +1312,7 @@ Table of Contents
       -  Description: ESP384-split using private key derived by
          ARKG-P384
 
-      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+      -  Reference: [I-D.lundberg-cose-split-algs], Section 5.2 of this
          document
 
       -  Recommended: TBD
@@ -1335,7 +1335,7 @@ Table of Contents
       -  Description: ESP521-split using private key derived by
          ARKG-P521
 
-      -  Reference: [I-D.lundberg-cose-2p-algs], Section 5.2 of this
+      -  Reference: [I-D.lundberg-cose-split-algs], Section 5.2 of this
          document
 
       -  Recommended: TBD
@@ -1353,8 +1353,8 @@ Table of Contents
 8.4.  COSE Signing Arguments Algorithm Parameters Registrations
 
    This section registers the following values in the IANA "COSE Signing
-   Arguments Algorithm Parameters" registry [I-D.lundberg-cose-2p-algs]
-   (TODO):
+   Arguments Algorithm Parameters" registry
+   [I-D.lundberg-cose-split-algs] (TODO):
 
    *  Name: kh
 
@@ -1454,7 +1454,7 @@ Table of Contents
               2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
               jose-fully-specified-algorithms-13>.
 
-   [I-D.lundberg-cose-2p-algs]
+   [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
               Party Signing", Work in Progress, Internet-Draft, draft-
               lundberg-cose-two-party-signing-algs-01, 3 March 2025,
@@ -1737,7 +1737,7 @@ Appendix C.  Document History
    *  Fixed hash_to_field argument ikm_tau misnamed as tau in section
       "Using elliptic curve addition for key blinding".
 
-   *  Updated to match draft -02 of [I-D.lundberg-cose-2p-algs].
+   *  Updated to match draft -02 of [I-D.lundberg-cose-split-algs].
 
       -  COSE algorithm identifier definitions for ARKG instances moved
          from section "COSE key type: ARKG public seed" to new section
