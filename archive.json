@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T00:01:09.978517+00:00",
+  "timestamp": "2025-07-08T00:01:03.404704+00:00",
   "repo": "Yubico/arkg-rfc",
   "labels": [
     {
@@ -2046,6 +2046,48 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 40,
+      "id": "PR_kwDOKzkccs6dzbym",
+      "title": "Update to match draft [I-D.lundberg-cose-split-algs] draft -02",
+      "url": "https://github.com/Yubico/arkg-rfc/pull/40",
+      "state": "MERGED",
+      "author": "emlun",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-07T17:53:49Z",
+      "updatedAt": "2025-07-07T18:02:28Z",
+      "baseRepository": "Yubico/arkg-rfc",
+      "baseRefName": "main",
+      "baseRefOid": "1f07c6e99d6a42f256db8cfdfb833c9ac2ed0afb",
+      "headRepository": "Yubico/arkg-rfc",
+      "headRefName": "split-algs-sign-args",
+      "headRefOid": "ecebd7b1bcae45b72ccc53c7c787f3a8c0cfa296",
+      "closedAt": "2025-07-07T18:02:27Z",
+      "mergedAt": "2025-07-07T18:02:27Z",
+      "mergedBy": "emlun",
+      "mergeCommit": {
+        "oid": "3ec1134ec0794fd3fb89e167e2c94642f942f287"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKzkccs6ygbYR",
+          "commit": {
+            "abbreviatedOid": "ecebd7b"
+          },
+          "author": "selfissued",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Approved.  I apparently don't have contributor rights to actually approve.",
+          "createdAt": "2025-07-07T17:56:58Z",
+          "updatedAt": "2025-07-07T17:56:58Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
