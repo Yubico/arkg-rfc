@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 8 January 2026                                      7 July 2025
+Expires: 8 March 2026                                   4 September 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2026.
+   This Internet-Draft will expire on 8 March 2026.
 
 Copyright Notice
 
@@ -591,7 +591,7 @@ Table of Contents
 
    BL-Blind-Private-Key(sk, tau) -> sk_tau
 
-       sk_tau_tmp = sk + tau'
+       sk_tau_tmp = sk + tau
        If sk_tau_tmp = 0, abort with an error.
        sk_tau = sk_tau_tmp
 
@@ -1455,11 +1455,11 @@ Table of Contents
               jose-fully-specified-algorithms-13>.
 
    [I-D.lundberg-cose-split-algs]
-              Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
-              Party Signing", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-01, 3 March 2025,
+              Lundberg, E. and M. B. Jones, "Split signing algorithms
+              for COSE", Work in Progress, Internet-Draft, draft-
+              lundberg-cose-two-party-signing-algs-02, 7 July 2025,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-01>.
+              cose-two-party-signing-algs-02>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1731,6 +1731,11 @@ B.2.  Other instances
    TODO
 
 Appendix C.  Document History
+
+   -10
+
+   *  Fixed tau misspelled as tau' in body of BL-Blind-Private-Key in
+      section "Using elliptic curve addition for key blinding".
 
    -09
 

@@ -20,21 +20,21 @@ a set of formulae for instantiating the abstract primitives using concrete primi
 and an initial set of fully specified concrete ARKG instances.
 We expect that additional instances will be defined in the future. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.1" name="generator">
 <meta content="KDF" name="keyword">
 <meta content="draft-bradleylundberg-cfrg-arkg-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.1
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.3.8
+    platformdirs 4.4.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.4
+    requests 2.32.5
     setuptools 80.9.0
     wcwidth 0.2.13
 -->
@@ -1055,11 +1055,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">ARKG</td>
-<td class="right">July 2025</td>
+<td class="right">September 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 8 January 2026</td>
+<td class="center">Expires 8 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-07" class="published">7 July 2025</time>
+<time datetime="2025-09-04" class="published">4 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-08">8 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-03-08">8 March 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1835,7 +1835,7 @@ BL-Blind-Public-Key(pk, tau) -&gt; pk_tau
 
 BL-Blind-Private-Key(sk, tau) -&gt; sk_tau
 
-    sk_tau_tmp = sk + tau'
+    sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
 </pre><a href="#section-3.1-6" class="pilcrow">¶</a>
@@ -2466,7 +2466,7 @@ and for signature algorithms combined with using a signing private key derived u
 </div>
 <p id="section-5.2-4"><a href="#tbl-cose-algs-arkg-sign" class="auto internal xref">Table 3</a> defines algorithm identifiers to represent signing algorithms.
 These <span class="bcp14">MAY</span> be used to negotiate algorithm selection between a <em>digester</em> and <em>signer</em>
-as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01#section-2" class="relref">Section 2</a> of [<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>,
+as described in <span><a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-02#section-2" class="relref">Section 2</a> of [<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>,
 and in key representations exchanged between such <em>digesters</em> and <em>signers</em>,
 but <span class="bcp14">SHOULD NOT</span> appear in COSE structures consumed by signature verifiers.
 COSE structures consumed by signature verifiers <span class="bcp14">SHOULD</span> instead use the corresponding algorithm identifier
@@ -3047,7 +3047,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dd class="break"></dd>
 <dt id="I-D.lundberg-cose-split-algs">[I-D.lundberg-cose-split-algs]</dt>
         <dd>
-<span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"COSE Algorithms for Two-Party Signing"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lundberg-cose-two-party-signing-algs-01</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01">https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"Split signing algorithms for COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lundberg-cose-two-party-signing-algs-02</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-02">https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA.cose">[IANA.cose]</dt>
         <dd>
@@ -3331,210 +3331,217 @@ sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
       <h2 id="name-document-history">
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
-<p id="appendix-C-1">-09<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">-10<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Fixed <code>hash_to_field</code> argument <code>ikm_tau</code> misnamed as <code>tau</code>
+          <p id="appendix-C-2.1.1">Fixed <code>tau</code> misspelled as <code>tau'</code> in body of <code>BL-Blind-Private-Key</code>
 in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-2.2">
-          <p id="appendix-C-2.2.1">Updated to match draft -02 of <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>.<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.2.2.1">
-              <p id="appendix-C-2.2.2.1.1">COSE algorithm identifier definitions for ARKG instances moved
-from section "COSE key type: ARKG public seed" to new section "COSE algorithms".<a href="#appendix-C-2.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-2.2.2.2">
-              <p id="appendix-C-2.2.2.2.1">Added COSE algorithm identifier definitions for signature algorithms with key derived using ARKG.<a href="#appendix-C-2.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-2.2.2.3">
-              <p id="appendix-C-2.2.2.3.1">COSE key type <code>Ref-ARKG-Derived</code> deleted in favour of new <code>COSE_Sign_Args</code> algorithm parameters.<a href="#appendix-C-2.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-2.2.2.4">
-              <p id="appendix-C-2.2.2.4.1">Section "COSE key reference type: ARKG derived private key" replaced
-with "COSE signing arguments".<a href="#appendix-C-2.2.2.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-2.2.2.5">
-              <p id="appendix-C-2.2.2.5.1">Added section "COSE Signing Arguments Algorithm Parameters Registrations"<a href="#appendix-C-2.2.2.5.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</li>
       </ul>
-<p id="appendix-C-3">-08<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">-09<a href="#appendix-C-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-4.1">
-          <p id="appendix-C-4.1.1">Fixed incorrectly swapped <code>ikm_bl</code> and <code>ikm_kem</code> arguments in <code>ARKG-Derive-Seed</code> definition.<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-4.1.1">Fixed <code>hash_to_field</code> argument <code>ikm_tau</code> misnamed as <code>tau</code>
+in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-4.2">
-          <p id="appendix-C-4.2.1">Extracted parameter function <code>BL-PRF</code> and modified signatures
-of <code>BL-Blind-Public-Key</code> and <code>BL-Blind-Private-Key</code> accordingly.
-This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-4.2.1">Updated to match draft -02 of <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.lundberg-cose-split-algs</a>]</span>.<a href="#appendix-C-4.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-4.2.2.1">
+              <p id="appendix-C-4.2.2.1.1">COSE algorithm identifier definitions for ARKG instances moved
+from section "COSE key type: ARKG public seed" to new section "COSE algorithms".<a href="#appendix-C-4.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-4.3">
-          <p id="appendix-C-4.3.1">Removed three redundant sets of ARKG-P256 test vectors.<a href="#appendix-C-4.3.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="appendix-C-4.2.2.2">
+              <p id="appendix-C-4.2.2.2.1">Added COSE algorithm identifier definitions for signature algorithms with key derived using ARKG.<a href="#appendix-C-4.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-4.4">
-          <p id="appendix-C-4.4.1">Added intermediate values to ARKG-P256 test vectors.<a href="#appendix-C-4.4.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="appendix-C-4.2.2.3">
+              <p id="appendix-C-4.2.2.3.1">COSE key type <code>Ref-ARKG-Derived</code> deleted in favour of new <code>COSE_Sign_Args</code> algorithm parameters.<a href="#appendix-C-4.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-4.5">
-          <p id="appendix-C-4.5.1">Changed second set of ARKG-P256 test vectors to use a 32-byte <code>ikm</code> instead of <code>h'00'</code>.<a href="#appendix-C-4.5.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="appendix-C-4.2.2.4">
+              <p id="appendix-C-4.2.2.4.1">Section "COSE key reference type: ARKG derived private key" replaced
+with "COSE signing arguments".<a href="#appendix-C-4.2.2.4.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-C-4.6">
-          <p id="appendix-C-4.6.1">Clarified in sections "Using HMAC to adapt a KEM without ciphertext integrity", "Using ECDH as the KEM"
-and "Using X25519 or X448 as the KEM" that <code>ctx_sub</code> is intentionally ignored in those instances.<a href="#appendix-C-4.6.1" class="pilcrow">¶</a></p>
+            <li class="normal" id="appendix-C-4.2.2.5">
+              <p id="appendix-C-4.2.2.5.1">Added section "COSE Signing Arguments Algorithm Parameters Registrations"<a href="#appendix-C-4.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 </li>
       </ul>
-<p id="appendix-C-5">-07<a href="#appendix-C-5" class="pilcrow">¶</a></p>
+<p id="appendix-C-5">-08<a href="#appendix-C-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-6.1">
-          <p id="appendix-C-6.1.1">Fixed hash_to_field DST in <code>Sub-Kem-Derive-Key-Pair</code> in section "Using ECDH as the KEM"
-to agree with test vectors.<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-6.1.1">Fixed incorrectly swapped <code>ikm_bl</code> and <code>ikm_kem</code> arguments in <code>ARKG-Derive-Seed</code> definition.<a href="#appendix-C-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.2">
+          <p id="appendix-C-6.2.1">Extracted parameter function <code>BL-PRF</code> and modified signatures
+of <code>BL-Blind-Public-Key</code> and <code>BL-Blind-Private-Key</code> accordingly.
+This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.<a href="#appendix-C-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.3">
+          <p id="appendix-C-6.3.1">Removed three redundant sets of ARKG-P256 test vectors.<a href="#appendix-C-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.4">
+          <p id="appendix-C-6.4.1">Added intermediate values to ARKG-P256 test vectors.<a href="#appendix-C-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.5">
+          <p id="appendix-C-6.5.1">Changed second set of ARKG-P256 test vectors to use a 32-byte <code>ikm</code> instead of <code>h'00'</code>.<a href="#appendix-C-6.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-6.6">
+          <p id="appendix-C-6.6.1">Clarified in sections "Using HMAC to adapt a KEM without ciphertext integrity", "Using ECDH as the KEM"
+and "Using X25519 or X448 as the KEM" that <code>ctx_sub</code> is intentionally ignored in those instances.<a href="#appendix-C-6.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-7">-06<a href="#appendix-C-7" class="pilcrow">¶</a></p>
+<p id="appendix-C-7">-07<a href="#appendix-C-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-8.1">
-          <p id="appendix-C-8.1.1">Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
-Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
-but not in the Sub-Kem functions defined in "Using ECDH as the KEM".<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-8.1.1">Fixed hash_to_field DST in <code>Sub-Kem-Derive-Key-Pair</code> in section "Using ECDH as the KEM"
+to agree with test vectors.<a href="#appendix-C-8.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-9">-05<a href="#appendix-C-9" class="pilcrow">¶</a></p>
+<p id="appendix-C-9">-06<a href="#appendix-C-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-10.1">
-          <p id="appendix-C-10.1.1">Deleted concrete instances <code>ARKG-curve25519ADD-X25519</code>, <code>ARKG-curve448ADD-X448</code>,
-<code>ARKG-edwards25519ADD-X25519</code> and <code>ARKG-edwards448ADD-X448</code>
-since implementations with a non-prime order generator, including EdDSA,
-are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.2">
-          <p id="appendix-C-10.2.1">Remodeled procedures to be fully deterministic:<a href="#appendix-C-10.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-10.2.2.1">
-              <p id="appendix-C-10.2.2.1.1"><code>BL-Generate-Keypair()</code> replaced with <code>BL-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-10.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.2.2.2">
-              <p id="appendix-C-10.2.2.2.1"><code>KEM-Generate-Keypair()</code> replaced with <code>KEM-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-10.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.2.2.3">
-              <p id="appendix-C-10.2.2.3.1"><code>ARKG-Generate-Seed()</code> replaced with <code>ARKG-Derive-Seed(ikm_bl, ikm_kem)</code>.<a href="#appendix-C-10.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.2.2.4">
-              <p id="appendix-C-10.2.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-10.2.2.4.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.2.2.5">
-              <p id="appendix-C-10.2.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
-affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-10.2.2.5.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.2.2.6">
-              <p id="appendix-C-10.2.2.6.1">Section "Deterministic key generation" deleted.<a href="#appendix-C-10.2.2.6.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</li>
-        <li class="normal" id="appendix-C-10.3">
-          <p id="appendix-C-10.3.1">Flipped order of <code>(pk_bl, pk_kem)</code> and <code>(sk_bl, sk_kem)</code> parameter and return value tuples
-for consistent ordering between BL and KEM throughout document.<a href="#appendix-C-10.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.4">
-          <p id="appendix-C-10.4.1"><code>info</code> parameter renamed to <code>ctx</code>.<a href="#appendix-C-10.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.5">
-          <p id="appendix-C-10.5.1"><code>ctx</code> length limited to at most 64 bytes.<a href="#appendix-C-10.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.6">
-          <p id="appendix-C-10.6.1">Encoding of <code>ctx</code> in <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code> now embeds the length of <code>ctx</code>.<a href="#appendix-C-10.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-10.7">
-          <p id="appendix-C-10.7.1">Renamed concrete instances and corresponding <code>DST_ext</code> values:<a href="#appendix-C-10.7.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-10.7.2.1">
-              <p id="appendix-C-10.7.2.1.1"><code>ARKG-P256ADD-ECDH</code> to <code>ARKG-P256</code><a href="#appendix-C-10.7.2.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.7.2.2">
-              <p id="appendix-C-10.7.2.2.1"><code>ARKG-P384ADD-ECDH</code> to <code>ARKG-P384</code><a href="#appendix-C-10.7.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.7.2.3">
-              <p id="appendix-C-10.7.2.3.1"><code>ARKG-P521ADD-ECDH</code> to <code>ARKG-P521</code><a href="#appendix-C-10.7.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="appendix-C-10.7.2.4">
-              <p id="appendix-C-10.7.2.4.1"><code>ARKG-P256kADD-ECDH</code> to <code>ARKG-P256k</code><a href="#appendix-C-10.7.2.4.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-</li>
-        <li class="normal" id="appendix-C-10.8">
-          <p id="appendix-C-10.8.1">Added ARKG-P256 test vectors.<a href="#appendix-C-10.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-10.1.1">Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
+Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
+but not in the Sub-Kem functions defined in "Using ECDH as the KEM".<a href="#appendix-C-10.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-11">-04<a href="#appendix-C-11" class="pilcrow">¶</a></p>
+<p id="appendix-C-11">-05<a href="#appendix-C-11" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-12.1">
-          <p id="appendix-C-12.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-12.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.1.1">Deleted concrete instances <code>ARKG-curve25519ADD-X25519</code>, <code>ARKG-curve448ADD-X448</code>,
+<code>ARKG-edwards25519ADD-X25519</code> and <code>ARKG-edwards448ADD-X448</code>
+since implementations with a non-prime order generator, including EdDSA,
+are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".<a href="#appendix-C-12.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-12.2">
-          <p id="appendix-C-12.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.<a href="#appendix-C-12.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.2.1">Remodeled procedures to be fully deterministic:<a href="#appendix-C-12.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-12.2.2.1">
+              <p id="appendix-C-12.2.2.1.1"><code>BL-Generate-Keypair()</code> replaced with <code>BL-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-12.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.2.2.2">
+              <p id="appendix-C-12.2.2.2.1"><code>KEM-Generate-Keypair()</code> replaced with <code>KEM-Derive-Key-Pair(ikm)</code>.<a href="#appendix-C-12.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.2.2.3">
+              <p id="appendix-C-12.2.2.3.1"><code>ARKG-Generate-Seed()</code> replaced with <code>ARKG-Derive-Seed(ikm_bl, ikm_kem)</code>.<a href="#appendix-C-12.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.2.2.4">
+              <p id="appendix-C-12.2.2.4.1">Parameter <code>ikm</code> added to <code>ARKG-Derive-Public-Key</code>.<a href="#appendix-C-12.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.2.2.5">
+              <p id="appendix-C-12.2.2.5.1">Instance parameter <code>hash-to-crv-suite</code> added to generic formula "Using ECDH as the KEM",
+affecting concrete instances <code>ARKG-P256ADD-ECDH</code>, <code>ARKG-P384ADD-ECDH</code>, <code>ARKG-P521ADD-ECDH</code> and <code>ARKG-P256kADD-ECDH</code>.<a href="#appendix-C-12.2.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.2.2.6">
+              <p id="appendix-C-12.2.2.6.1">Section "Deterministic key generation" deleted.<a href="#appendix-C-12.2.2.6.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 </li>
         <li class="normal" id="appendix-C-12.3">
-          <p id="appendix-C-12.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.<a href="#appendix-C-12.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-12.3.1">Flipped order of <code>(pk_bl, pk_kem)</code> and <code>(sk_bl, sk_kem)</code> parameter and return value tuples
+for consistent ordering between BL and KEM throughout document.<a href="#appendix-C-12.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-12.4">
+          <p id="appendix-C-12.4.1"><code>info</code> parameter renamed to <code>ctx</code>.<a href="#appendix-C-12.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-12.5">
+          <p id="appendix-C-12.5.1"><code>ctx</code> length limited to at most 64 bytes.<a href="#appendix-C-12.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-12.6">
+          <p id="appendix-C-12.6.1">Encoding of <code>ctx</code> in <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code> now embeds the length of <code>ctx</code>.<a href="#appendix-C-12.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-12.7">
+          <p id="appendix-C-12.7.1">Renamed concrete instances and corresponding <code>DST_ext</code> values:<a href="#appendix-C-12.7.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-12.7.2.1">
+              <p id="appendix-C-12.7.2.1.1"><code>ARKG-P256ADD-ECDH</code> to <code>ARKG-P256</code><a href="#appendix-C-12.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.7.2.2">
+              <p id="appendix-C-12.7.2.2.1"><code>ARKG-P384ADD-ECDH</code> to <code>ARKG-P384</code><a href="#appendix-C-12.7.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.7.2.3">
+              <p id="appendix-C-12.7.2.3.1"><code>ARKG-P521ADD-ECDH</code> to <code>ARKG-P521</code><a href="#appendix-C-12.7.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="appendix-C-12.7.2.4">
+              <p id="appendix-C-12.7.2.4.1"><code>ARKG-P256kADD-ECDH</code> to <code>ARKG-P256k</code><a href="#appendix-C-12.7.2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="appendix-C-12.8">
+          <p id="appendix-C-12.8.1">Added ARKG-P256 test vectors.<a href="#appendix-C-12.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-13">-03<a href="#appendix-C-13" class="pilcrow">¶</a></p>
+<p id="appendix-C-13">-04<a href="#appendix-C-13" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-14.1">
-          <p id="appendix-C-14.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-14.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-14.1.1">Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.<a href="#appendix-C-14.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-14.2">
-          <p id="appendix-C-14.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-14.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-14.2.1">Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.<a href="#appendix-C-14.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-14.3">
-          <p id="appendix-C-14.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-14.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-14.4">
-          <p id="appendix-C-14.4.1">Added CDDL definition of COSE_Key_Ref.<a href="#appendix-C-14.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-14.5">
-          <p id="appendix-C-14.5.1">Editorial fixes to references.<a href="#appendix-C-14.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-14.6">
-          <p id="appendix-C-14.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-14.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-14.3.1">Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.<a href="#appendix-C-14.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-15">-02<a href="#appendix-C-15" class="pilcrow">¶</a></p>
+<p id="appendix-C-15">-03<a href="#appendix-C-15" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-16.1">
-          <p id="appendix-C-16.1.1">Rewritten introduction.<a href="#appendix-C-16.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.1.1">Renamed section "Using HMAC to adapt a KEM without {integrity protection =&gt; ciphertext integrity}".<a href="#appendix-C-16.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-16.2">
-          <p id="appendix-C-16.2.1">Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.<a href="#appendix-C-16.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.2.1">Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".<a href="#appendix-C-16.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-16.3">
-          <p id="appendix-C-16.3.1">Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.<a href="#appendix-C-16.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.3.1">Added reference to Shoup for definition of key encapsulation mechanism.<a href="#appendix-C-16.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-16.4">
-          <p id="appendix-C-16.4.1">Eliminated top-level MAC and KDF instance parameters.<a href="#appendix-C-16.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.4.1">Added CDDL definition of COSE_Key_Ref.<a href="#appendix-C-16.4.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-16.5">
-          <p id="appendix-C-16.5.1">Added info parameter to instance parameter functions.<a href="#appendix-C-16.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.5.1">Editorial fixes to references.<a href="#appendix-C-16.5.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-16.6">
-          <p id="appendix-C-16.6.1">Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.<a href="#appendix-C-16.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-16.7">
-          <p id="appendix-C-16.7.1">Added curve/edwards25519/448 instances.<a href="#appendix-C-16.7.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="appendix-C-16.8">
-          <p id="appendix-C-16.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-16.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-16.6.1">Renamed proposed COSE Key Types.<a href="#appendix-C-16.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-17">-01<a href="#appendix-C-17" class="pilcrow">¶</a></p>
+<p id="appendix-C-17">-02<a href="#appendix-C-17" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-18.1">
-          <p id="appendix-C-18.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-18.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-18.1.1">Rewritten introduction.<a href="#appendix-C-18.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.2">
+          <p id="appendix-C-18.2.1">Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.<a href="#appendix-C-18.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.3">
+          <p id="appendix-C-18.3.1">Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.<a href="#appendix-C-18.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.4">
+          <p id="appendix-C-18.4.1">Eliminated top-level MAC and KDF instance parameters.<a href="#appendix-C-18.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.5">
+          <p id="appendix-C-18.5.1">Added info parameter to instance parameter functions.<a href="#appendix-C-18.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.6">
+          <p id="appendix-C-18.6.1">Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.<a href="#appendix-C-18.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.7">
+          <p id="appendix-C-18.7.1">Added curve/edwards25519/448 instances.<a href="#appendix-C-18.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-18.8">
+          <p id="appendix-C-18.8.1">Added proposal for COSE bindings and key reference types.<a href="#appendix-C-18.8.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-C-19">-00<a href="#appendix-C-19" class="pilcrow">¶</a></p>
+<p id="appendix-C-19">-01<a href="#appendix-C-19" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-20.1">
-          <p id="appendix-C-20.1.1">Initial Version<a href="#appendix-C-20.1.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-20.1.1">Editorial Fixes to formatting and references.<a href="#appendix-C-20.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-C-21">-00<a href="#appendix-C-21" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-22.1">
+          <p id="appendix-C-22.1.1">Initial Version<a href="#appendix-C-22.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
