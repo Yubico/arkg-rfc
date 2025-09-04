@@ -593,7 +593,7 @@ BL-Blind-Public-Key(pk, tau) -> pk_tau
 
 BL-Blind-Private-Key(sk, tau) -> sk_tau
 
-    sk_tau_tmp = sk + tau'
+    sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
 ~~~
@@ -1400,6 +1400,11 @@ TODO
 
 
 # Document History
+
+-10
+
+* Fixed `tau` misspelled as `tau'` in body of `BL-Blind-Private-Key`
+  in section "Using elliptic curve addition for key blinding".
 
 -09
 
