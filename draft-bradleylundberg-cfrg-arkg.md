@@ -1010,8 +1010,8 @@ listed in the "verification algorithm" column.
 | ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
 | ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
 | ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
-| ESP521-ARKG        | TBD                      | -52 (ESP521)           | ESP521 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
-| ESP521-split-ARKG  | TBD                      | -52 (ESP521)           | ESP521-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP512-ARKG        | TBD                      | -52 (ESP512)           | ESP512 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP512-split-ARKG  | TBD                      | -52 (ESP512)           | ESP512-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
 
 
@@ -1026,8 +1026,8 @@ for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
 {: #tbl-cose-args-arkg title="Algorithm parameters for COSE_Sign_Args."}
 | Name | Label | Type | Required? | Algorithm | Description |
 |------|-------|------|-----------|-----------|-------------|
-| kh   | -1    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG | `kh` argument to `ARKG-Derive-Private-Key`. |
-| ctx  | -2    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG | `ctx` argument to `ARKG-Derive-Private-Key`. |
+| kh   | -1    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG | `kh` argument to `ARKG-Derive-Private-Key`. |
+| ctx  | -2    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG | `ctx` argument to `ARKG-Derive-Private-Key`. |
 
 
 The following CDDL example conveys the `kh` and `ctx` arguments for signing data
@@ -1154,15 +1154,15 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
-- Name: ESP521-ARKG
+- Name: ESP512-ARKG
   - Value: TBD
-  - Description: ESP521 using private key derived by ARKG-P521
+  - Description: ESP512 using private key derived by ARKG-P521
   - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
-- Name: ESP521-split-ARKG
+- Name: ESP512-split-ARKG
   - Value: TBD
-  - Description: ESP521-split using private key derived by ARKG-P521
+  - Description: ESP512-split using private key derived by ARKG-P521
   - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
@@ -1182,7 +1182,7 @@ in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg
   - Label: -1
   - Type: bstr
   - Required: yes
-  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
   - Description: `kh` argument to `ARKG-Derive-Private-Key`.
   - Capabilities: \[alg(-65539, TBD)\]
   - Change Controller: IETF
@@ -1192,7 +1192,7 @@ in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg
   - Label: -2
   - Type: bstr
   - Required: yes
-  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
   - Description: `ctx` argument to `ARKG-Derive-Private-Key`.
   - Capabilities: \[alg(-65539, TBD)\]
   - Change Controller: IETF
@@ -1405,6 +1405,7 @@ TODO
 
 * Fixed `tau` misspelled as `tau'` in body of `BL-Blind-Private-Key`
   in section "Using elliptic curve addition for key blinding".
+* Fixed definitions and references misspelling ESP512 as ESP521.
 
 -09
 
