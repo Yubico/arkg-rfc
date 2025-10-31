@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 8 March 2026                                   4 September 2025
+Expires: 4 May 2026                                      31 October 2025
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 March 2026.
+   This Internet-Draft will expire on 4 May 2026.
 
 Copyright Notice
 
@@ -1093,12 +1093,12 @@ Table of Contents
    |           |            |            |using private key derived by  |
    |           |            |            |ARKG-P384 (Section 4.2).      |
    +-----------+------------+------------+------------------------------+
-   |ESP521-ARKG|TBD         |-52 (ESP521)|ESP521                        |
+   |ESP512-ARKG|TBD         |-52 (ESP512)|ESP512                        |
    |           |            |            |[I-D.jose-fully-spec-algs]    |
    |           |            |            |using private key derived by  |
    |           |            |            |ARKG-P521 (Section 4.3).      |
    +-----------+------------+------------+------------------------------+
-   |ESP521-    |TBD         |-52 (ESP521)|ESP521-split                  |
+   |ESP512-    |TBD         |-52 (ESP512)|ESP512-split                  |
    |split-ARKG |            |            |[I-D.lundberg-cose-split-algs]|
    |           |            |            |using private key derived by  |
    |           |            |            |ARKG-P521 (Section 4.3).      |
@@ -1128,8 +1128,8 @@ Table of Contents
    |      |       |      |           | ESP384-ARKG,      | Private-    |
    |      |       |      |           | ESP384-           | Key.        |
    |      |       |      |           | split-ARKG,       |             |
-   |      |       |      |           | ESP521-ARKG,      |             |
-   |      |       |      |           | ESP521-           |             |
+   |      |       |      |           | ESP512-ARKG,      |             |
+   |      |       |      |           | ESP512-           |             |
    |      |       |      |           | split-ARKG,       |             |
    |      |       |      |           | ES256K-ARKG       |             |
    +------+-------+------+-----------+-------------------+-------------+
@@ -1139,8 +1139,8 @@ Table of Contents
    |      |       |      |           | ESP384-ARKG,      | Derive-     |
    |      |       |      |           | ESP384-           | Private-    |
    |      |       |      |           | split-ARKG,       | Key.        |
-   |      |       |      |           | ESP521-ARKG,      |             |
-   |      |       |      |           | ESP521-           |             |
+   |      |       |      |           | ESP512-ARKG,      |             |
+   |      |       |      |           | ESP512-           |             |
    |      |       |      |           | split-ARKG,       |             |
    |      |       |      |           | ES256K-ARKG       |             |
    +------+-------+------+-----------+-------------------+-------------+
@@ -1317,22 +1317,22 @@ Table of Contents
 
       -  Recommended: TBD
 
-   *  Name: ESP521-ARKG
+   *  Name: ESP512-ARKG
 
       -  Value: TBD
 
-      -  Description: ESP521 using private key derived by ARKG-P521
+      -  Description: ESP512 using private key derived by ARKG-P521
 
       -  Reference: [I-D.jose-fully-spec-algs], Section 5.2 of this
          document
 
       -  Recommended: TBD
 
-   *  Name: ESP521-split-ARKG
+   *  Name: ESP512-split-ARKG
 
       -  Value: TBD
 
-      -  Description: ESP521-split using private key derived by
+      -  Description: ESP512-split using private key derived by
          ARKG-P521
 
       -  Reference: [I-D.lundberg-cose-split-algs], Section 5.2 of this
@@ -1365,7 +1365,7 @@ Table of Contents
       -  Required: yes
 
       -  Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-
-         split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+         split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
 
       -  Description: kh argument to ARKG-Derive-Private-Key.
 
@@ -1384,7 +1384,7 @@ Table of Contents
       -  Required: yes
 
       -  Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-
-         split-ARKG, ESP521-ARKG, ESP521-split-ARKG, ES256K-ARKG
+         split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
 
       -  Description: ctx argument to ARKG-Derive-Private-Key.
 
@@ -1736,6 +1736,8 @@ Appendix C.  Document History
 
    *  Fixed tau misspelled as tau' in body of BL-Blind-Private-Key in
       section "Using elliptic curve addition for key blinding".
+
+   *  Fixed definitions and references misspelling ESP512 as ESP521.
 
    -09
 
