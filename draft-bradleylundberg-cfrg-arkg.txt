@@ -994,7 +994,7 @@ Table of Contents
 
    The following CDDL [RFC8610] example represents an ARKG-P256 public
    seed restricted to generating derived keys for use with the ESP256
-   [I-D.jose-fully-spec-algs] signature algorithm:
+   [RFC9864] signature algorithm:
 
    {
      1: -65537,   ; kty: ARKG-pub (placeholder value)
@@ -1073,30 +1073,27 @@ Table of Contents
    |Name       |Value       |Verification|Description                   |
    |           |            |algorithm   |                              |
    +===========+============+============+==============================+
-   |ESP256-ARKG|TBD         |-9 (ESP256) |ESP256                        |
-   |           |            |            |[I-D.jose-fully-spec-algs]    |
-   |           |            |            |using private key derived by  |
-   |           |            |            |ARKG-P256 (Section 4.1).      |
+   |ESP256-ARKG|TBD         |-9 (ESP256) |ESP256 [RFC9864] using private|
+   |           |            |            |key derived by ARKG-P256      |
+   |           |            |            |(Section 4.1).                |
    +-----------+------------+------------+------------------------------+
    |ESP256-    |TBD         |-9 (ESP256) |ESP256-split                  |
    |split-ARKG |(placeholder|            |[I-D.lundberg-cose-split-algs]|
    |           |-65539)     |            |using private key derived by  |
    |           |            |            |ARKG-P256 (Section 4.1).      |
    +-----------+------------+------------+------------------------------+
-   |ESP384-ARKG|TBD         |-51 (ESP384)|ESP384                        |
-   |           |            |            |[I-D.jose-fully-spec-algs]    |
-   |           |            |            |using private key derived by  |
-   |           |            |            |ARKG-P384 (Section 4.2).      |
+   |ESP384-ARKG|TBD         |-51 (ESP384)|ESP384 [RFC9864] using private|
+   |           |            |            |key derived by ARKG-P384      |
+   |           |            |            |(Section 4.2).                |
    +-----------+------------+------------+------------------------------+
    |ESP384-    |TBD         |-51 (ESP384)|ESP384-split                  |
    |split-ARKG |            |            |[I-D.lundberg-cose-split-algs]|
    |           |            |            |using private key derived by  |
    |           |            |            |ARKG-P384 (Section 4.2).      |
    +-----------+------------+------------+------------------------------+
-   |ESP512-ARKG|TBD         |-52 (ESP512)|ESP512                        |
-   |           |            |            |[I-D.jose-fully-spec-algs]    |
-   |           |            |            |using private key derived by  |
-   |           |            |            |ARKG-P521 (Section 4.3).      |
+   |ESP512-ARKG|TBD         |-52 (ESP512)|ESP512 [RFC9864] using private|
+   |           |            |            |key derived by ARKG-P521      |
+   |           |            |            |(Section 4.3).                |
    +-----------+------------+------------+------------------------------+
    |ESP512-    |TBD         |-52 (ESP512)|ESP512-split                  |
    |split-ARKG |            |            |[I-D.lundberg-cose-split-algs]|
@@ -1277,8 +1274,7 @@ Table of Contents
 
       -  Description: ESP256 using private key derived by ARKG-P256
 
-      -  Reference: [I-D.jose-fully-spec-algs], Section 5.2 of this
-         document
+      -  Reference: [RFC9864], Section 5.2 of this document
 
       -  Recommended: TBD
 
@@ -1300,8 +1296,7 @@ Table of Contents
 
       -  Description: ESP384 using private key derived by ARKG-P384
 
-      -  Reference: [I-D.jose-fully-spec-algs], Section 5.2 of this
-         document
+      -  Reference: [RFC9864], Section 5.2 of this document
 
       -  Recommended: TBD
 
@@ -1323,8 +1318,7 @@ Table of Contents
 
       -  Description: ESP512 using private key derived by ARKG-P521
 
-      -  Reference: [I-D.jose-fully-spec-algs], Section 5.2 of this
-         document
+      -  Reference: [RFC9864], Section 5.2 of this document
 
       -  Recommended: TBD
 
@@ -1447,13 +1441,6 @@ Table of Contents
 
 10.1.  Normative References
 
-   [I-D.jose-fully-spec-algs]
-              Jones, M. B. and O. Steele, "Fully-Specified Algorithms
-              for JOSE and COSE", Work in Progress, Internet-Draft,
-              draft-ietf-jose-fully-specified-algorithms-13, 11 May
-              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              jose-fully-specified-algorithms-13>.
-
    [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "Split signing algorithms
               for COSE", Work in Progress, Internet-Draft, draft-
@@ -1528,6 +1515,12 @@ Table of Contents
               and C. A. Wood, "Hashing to Elliptic Curves", RFC 9380,
               DOI 10.17487/RFC9380, August 2023,
               <https://www.rfc-editor.org/rfc/rfc9380>.
+
+   [RFC9864]  Jones, M.B. and O. Steele, "Fully-Specified Algorithms for
+              JSON Object Signing and Encryption (JOSE) and CBOR Object
+              Signing and Encryption (COSE)", RFC 9864,
+              DOI 10.17487/RFC9864, October 2025,
+              <https://www.rfc-editor.org/rfc/rfc9864>.
 
    [SEC1]     Certicom Research, "SEC 1: Elliptic Curve Cryptography",
               2009, <http://www.secg.org/sec1-v2.pdf>.

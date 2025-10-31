@@ -2372,7 +2372,7 @@ the <code>alg</code> (3) parameter of public keys derived using <code>ARKG-Deriv
 identifies the ARKG instance this public seed is to be used with.
 An initial set of COSE algorithm identifiers for this purpose is defined in <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a>.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <p id="section-5.1-5">The following CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> example represents an <code>ARKG-P256</code> public seed
-restricted to generating derived keys for use with the ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> signature algorithm:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+restricted to generating derived keys for use with the ESP256 <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span> signature algorithm:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 <div class="lang-cddl sourcecode" id="section-5.1-6">
 <pre>
 {
@@ -2489,7 +2489,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP256-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD</td>
               <td class="text-left" rowspan="1" colspan="1">-9 (ESP256)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP256 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> using private key derived by ARKG-P256 (<a href="#ARKG-P256" class="auto internal xref">Section 4.1</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP256 <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span> using private key derived by ARKG-P256 (<a href="#ARKG-P256" class="auto internal xref">Section 4.1</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ESP256-split-ARKG</td>
@@ -2501,7 +2501,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP384-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD</td>
               <td class="text-left" rowspan="1" colspan="1">-51 (ESP384)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP384 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> using private key derived by ARKG-P384 (<a href="#ARKG-P384" class="auto internal xref">Section 4.2</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP384 <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span> using private key derived by ARKG-P384 (<a href="#ARKG-P384" class="auto internal xref">Section 4.2</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ESP384-split-ARKG</td>
@@ -2513,7 +2513,7 @@ listed in the "verification algorithm" column.<a href="#section-5.2-4" class="pi
               <td class="text-left" rowspan="1" colspan="1">ESP512-ARKG</td>
               <td class="text-left" rowspan="1" colspan="1">TBD</td>
               <td class="text-left" rowspan="1" colspan="1">-52 (ESP512)</td>
-              <td class="text-left" rowspan="1" colspan="1">ESP512 <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span> using private key derived by ARKG-P521 (<a href="#ARKG-P521" class="auto internal xref">Section 4.3</a>).</td>
+              <td class="text-left" rowspan="1" colspan="1">ESP512 <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span> using private key derived by ARKG-P521 (<a href="#ARKG-P521" class="auto internal xref">Section 4.3</a>).</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ESP512-split-ARKG</td>
@@ -2796,7 +2796,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.5.2.2.1">Description: ESP256 using private key derived by ARKG-P256<a href="#section-8.3-2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.5.2.3">
-                <p id="section-8.3-2.5.2.3.1">Reference: <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.5.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.5.2.3.1">Reference: <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.5.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.5.2.4">
                 <p id="section-8.3-2.5.2.4.1">Recommended: TBD<a href="#section-8.3-2.5.2.4.1" class="pilcrow">¶</a></p>
@@ -2830,7 +2830,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.7.2.2.1">Description: ESP384 using private key derived by ARKG-P384<a href="#section-8.3-2.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.7.2.3">
-                <p id="section-8.3-2.7.2.3.1">Reference: <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.7.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.7.2.3.1">Reference: <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.7.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.7.2.4">
                 <p id="section-8.3-2.7.2.4.1">Recommended: TBD<a href="#section-8.3-2.7.2.4.1" class="pilcrow">¶</a></p>
@@ -2864,7 +2864,7 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
                 <p id="section-8.3-2.9.2.2.1">Description: ESP512 using private key derived by ARKG-P521<a href="#section-8.3-2.9.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.9.2.3">
-                <p id="section-8.3-2.9.2.3.1">Reference: <span>[<a href="#I-D.jose-fully-spec-algs" class="cite xref">I-D.jose-fully-spec-algs</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.9.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-8.3-2.9.2.3.1">Reference: <span>[<a href="#RFC9864" class="cite xref">RFC9864</a>]</span>, <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a> of this document<a href="#section-8.3-2.9.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-8.3-2.9.2.4">
                 <p id="section-8.3-2.9.2.4.1">Recommended: TBD<a href="#section-8.3-2.9.2.4.1" class="pilcrow">¶</a></p>
@@ -3040,10 +3040,6 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.jose-fully-spec-algs">[I-D.jose-fully-spec-algs]</dt>
-        <dd>
-<span class="refAuthor">Jones, M. B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JOSE and COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-jose-fully-specified-algorithms-13</span>, <time datetime="2025-05-11" class="refDate">11 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-13">https://datatracker.ietf.org/doc/html/draft-ietf-jose-fully-specified-algorithms-13</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.lundberg-cose-split-algs">[I-D.lundberg-cose-split-algs]</dt>
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"Split signing algorithms for COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lundberg-cose-two-party-signing-algs-02</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-02">https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-02</a>&gt;</span>. </dd>
@@ -3103,6 +3099,10 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <dt id="RFC9380">[RFC9380]</dt>
         <dd>
 <span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Scott, S.</span>, <span class="refAuthor">Sullivan, N.</span>, <span class="refAuthor">Wahby, R. S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Hashing to Elliptic Curves"</span>, <span class="seriesInfo">RFC 9380</span>, <span class="seriesInfo">DOI 10.17487/RFC9380</span>, <time datetime="2023-08" class="refDate">August 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9380">https://www.rfc-editor.org/rfc/rfc9380</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9864">[RFC9864]</dt>
+        <dd>
+<span class="refAuthor">Jones, M.B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 9864</span>, <span class="seriesInfo">DOI 10.17487/RFC9864</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9864">https://www.rfc-editor.org/rfc/rfc9864</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SEC1">[SEC1]</dt>
         <dd>
