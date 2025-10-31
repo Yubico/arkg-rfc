@@ -55,7 +55,6 @@ contributor:
   country: NL
 
 normative:
-  I-D.jose-fully-spec-algs: I-D.draft-ietf-jose-fully-specified-algorithms
   I-D.lundberg-cose-split-algs: I-D.draft-lundberg-cose-two-party-signing-algs
   IANA.cose:
   RFC2104:
@@ -69,6 +68,7 @@ normative:
   RFC8812:
   RFC9052:
   RFC9380:
+  RFC9864:
   SEC1:
     target: http://www.secg.org/sec1-v2.pdf
     author:
@@ -934,7 +934,7 @@ identifies the ARKG instance this public seed is to be used with.
 An initial set of COSE algorithm identifiers for this purpose is defined in {{cose-algs-arkg}}.
 
 The following CDDL [RFC8610] example represents an `ARKG-P256` public seed
-restricted to generating derived keys for use with the ESP256 [I-D.jose-fully-spec-algs] signature algorithm:
+restricted to generating derived keys for use with the ESP256 [RFC9864] signature algorithm:
 
 ~~~cddl
 {
@@ -1006,11 +1006,11 @@ listed in the "verification algorithm" column.
 {: #tbl-cose-algs-arkg-sign title="COSE algorithms for signing with an ARKG-derived key."}
 | Name               | Value                    | Verification algorithm | Description |
 | ------------------ | ------------------------ | ---------------------- | ----------- |
-| ESP256-ARKG        | TBD                      | -9 (ESP256)            | ESP256 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP256-ARKG        | TBD                      | -9 (ESP256)            | ESP256 [RFC9864] using private key derived by ARKG-P256 ({{ARKG-P256}}).
 | ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
-| ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [RFC9864] using private key derived by ARKG-P384 ({{ARKG-P384}}).
 | ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
-| ESP512-ARKG        | TBD                      | -52 (ESP512)           | ESP512 [I-D.jose-fully-spec-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP512-ARKG        | TBD                      | -52 (ESP512)           | ESP512 [RFC9864] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ESP512-split-ARKG  | TBD                      | -52 (ESP512)           | ESP512-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
 
@@ -1133,7 +1133,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP256-ARKG
   - Value: TBD
   - Description: ESP256 using private key derived by ARKG-P256
-  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP256-split-ARKG
@@ -1145,7 +1145,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP384-ARKG
   - Value: TBD
   - Description: ESP384 using private key derived by ARKG-P384
-  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP384-split-ARKG
@@ -1157,7 +1157,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 - Name: ESP512-ARKG
   - Value: TBD
   - Description: ESP512 using private key derived by ARKG-P521
-  - Reference: [I-D.jose-fully-spec-algs], {{cose-algs-arkg}} of this document
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
   - Recommended: TBD
 
 - Name: ESP512-split-ARKG
