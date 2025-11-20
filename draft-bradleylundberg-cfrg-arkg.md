@@ -260,7 +260,8 @@ as opposed to the internal random sampling typically used in the academic litera
 Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
 as nondeterministic procedures omitting their respective `ikm` parameters
 and sampling random entropy internally;
-this choice does not affect interoperability.
+this choice does not affect interoperability between the functions
+`ARKG-Derive-Seed`, `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key`.
 
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
@@ -394,7 +395,7 @@ Applications that do not need a deterministic interface MAY choose
 to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
 as nondeterministic procedures omitting their respective `ikm` parameters
 and sampling random entropy internally;
-this choice does not affect interoperability.
+this choice does not affect interoperability with `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key`.
 
 
 ## The function ARKG-Derive-Public-Key
@@ -455,7 +456,7 @@ Applications that do not need a deterministic interface MAY choose
 to instead implement `ARKG-Derive-Public-Key` and `KEM-Encaps`
 as nondeterministic procedures omitting their respective `ikm` parameter
 and sampling random entropy internally;
-this choice does not affect interoperability.
+this choice does not affect interoperability with `ARKG-Derive-Private-Key`.
 
 `BL-PRF` and `BL-Blind-Public-Key` must always be deterministic
 for compatibility with `ARKG-Derive-Private-Key`.
@@ -1406,6 +1407,7 @@ TODO
 * Fixed `tau` misspelled as `tau'` in body of `BL-Blind-Private-Key`
   in section "Using elliptic curve addition for key blinding".
 * Fixed definitions and references misspelling ESP512 as ESP521.
+* Minor editorial clarifications.
 
 -09
 
