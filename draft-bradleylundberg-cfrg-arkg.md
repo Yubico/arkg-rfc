@@ -1420,7 +1420,7 @@ TODO
   * COSE key type `Ref-ARKG-Derived` deleted in favour of new `COSE_Sign_Args` algorithm parameters.
   * Section "COSE key reference type: ARKG derived private key" replaced
     with "COSE signing arguments".
-  * Added section "COSE Signing Arguments Algorithm Parameters Registrations"
+  * Added section "COSE Signing Arguments Algorithm Parameters Registrations".
 
 -08
 
@@ -1499,7 +1499,7 @@ TODO
 
 -01
 
-* Editorial Fixes to formatting and references.
+* Editorial fixes to formatting and references
 
 -00
 
