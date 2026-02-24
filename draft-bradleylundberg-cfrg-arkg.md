@@ -27,7 +27,7 @@ author:
 - role: editor
   fullname: Emil Lundberg
   organization: Yubico
-  street: Kungsgatan 44
+  street: Gävlegatan 22
   city: Stockholm
   country: SE
   email: emil@emlun.se
@@ -44,29 +44,31 @@ contributor:
   organization: Agency for Digital Government
   country: SE
 
+- fullname: Michael B. Jones
+  ins: M.B. Jones
+  organization: Self-Issued Consulting
+  uri: https://self-issued.info/
+  country: United States
+
+- fullname: Sander Dijkhuis
+  organization: Cleverbase
+  country: NL
+
 normative:
-  fully-spec-algs:
-    title: Fully-Specified Algorithms for JOSE and COSE
-    target: https://datatracker.ietf.org/doc/draft-ietf-jose-fully-specified-algorithms/
-    author:
-    - name: Michael B. Jones
-      ins: M.B. Jones
-      org: Self-Issued Consulting
-      email: michael_b_jones@hotmail.com
-      uri: https://self-issued.info
-    date: 2024
-  IANA.cose:
+  I-D.lundberg-cose-split-algs: I-D.draft-lundberg-cose-two-party-signing-algs
   IANA.cose:
   RFC2104:
   RFC4949:
   RFC5869:
   RFC6090:
   RFC7748:
+  RFC8017:
   RFC8032:
   RFC8610:
   RFC8812:
   RFC9052:
   RFC9380:
+  RFC9864:
   SEC1:
     target: http://www.secg.org/sec1-v2.pdf
     author:
@@ -243,8 +245,11 @@ The following notation is used throughout this document:
   and `+` also denotes scalar addition modulo the curve order.
   `*` has higher precedence than `+`, i.e., `a + b * C` is equivalent to `a + (b * C)`.
 
+- `LEN(x)` is the length, in octets, of the octet string `x`.
+- The function `I2OSP` converts a nonnegative integer into an octet string as defined in {{Section 4.1 of RFC8017}}.
 
-# The Asynchronous Remote Key Generation (ARKG) algorithm
+
+# The Asynchronous Remote Key Generation (ARKG) algorithm {#arkg}
 
 The ARKG algorithm consists of three functions, each performed by one of two participants:
 the _delegating party_ or the _subordinate party_.
@@ -252,6 +257,13 @@ The delegating party generates an ARKG _seed pair_ and emits the _public seed_ t
 while keeping the _private seed_ secret.
 The subordinate party can then use the public seed to generate derived public keys and _key handles_,
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.
+
+This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
+as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
+Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
+as nondeterministic procedures omitting their respective `ikm` parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.
 
 The following subsections define the abstract instance parameters used to construct the three ARKG functions,
 followed by the definitions of the three ARKG functions.
@@ -265,59 +277,69 @@ The parameters of an ARKG instance are:
 - `BL`: An asymmetric key blinding scheme [ASIACCS:SteWil24], consisting of:
   - Function `BL-Generate-Keypair() -> (pk, sk)`: Generate a blinding key pair.
 
-    No input.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of a blinding public key `pk` and a blinding private key `sk`.
 
-  - Function `BL-Blind-Public-Key(pk, tau, info) -> pk_tau`: Deterministically compute a blinded public key.
+  - Function `BL-PRF(ikm_tau, ctx) -> tau`: Derive a pseudorandom blinding factor.
+
+    Input consists of input entropy `ikm_tau`
+    and a domain separation parameter `ctx`.
+
+    Output consists of the blinding factor `tau`.
+
+  - Function `BL-Blind-Public-Key(pk, tau) -> pk_tau`: Deterministically compute a blinded public key.
 
     Input consists of a blinding public key `pk`,
-    a blinding factor `tau`
-    and a domain separation parameter `info`.
+    and a blinding factor `tau`.
 
     Output consists of the blinded public key `pk_tau`.
 
-  - Function `BL-Blind-Private-Key(sk, tau, info) -> sk_tau`: Deterministically compute a blinded private key.
+  - Function `BL-Blind-Private-Key(sk, tau) -> sk_tau`: Deterministically compute a blinded private key.
 
     Input consists of a blinding private key `sk`,
-    a blinding factor `tau`
-    and a domain separation parameter `info`.
+    and the blinding factor `tau`.
 
     Output consists of the blinded private key `sk_tau`.
 
-  `tau` and `info` are an opaque octet strings of arbitrary length.
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
+  `ikm_tau` is an opaque octet string generated as the `k` output of `KEM-Encaps` and `KEM-Decaps`.
+  `ctx` is an opaque octet string of arbitrary length.
+
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
-  The representations of `sk` and `sk_tau` are an undefined implementation detail.
+  The representations of `sk`, `tau` and `sk_tau` are undefined implementation details.
 
   See [ASIACCS:SteWil24] for definitions of security properties required of the key blinding scheme `BL`.
 
 - `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
-  - `KEM-Generate-Keypair() -> (pk, sk)`: Generate a key encapsulation key pair.
+  - `KEM-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a key encapsulation key pair.
 
-    No input.
+    Input consists of input keying material entropy `ikm`.
 
     Output consists of public key `pk` and private key `sk`.
 
-  - `KEM-Encaps(pk, info) -> (k, c)`: Generate a key encapsulation.
+  - `KEM-Encaps(pk, ikm, ctx) -> (k, c)`: Derive a key encapsulation.
 
-    Input consists of an encapsulation public key `pk`
-    and a domain separation parameter `info`.
+    Input consists of an encapsulation public key `pk`,
+    input entropy `ikm`
+    and a domain separation parameter `ctx`.
 
     Output consists of a shared secret `k` and an encapsulation ciphertext `c`.
 
-  - `KEM-Decaps(sk, c, info) -> k`: Decapsulate a shared secret.
+  - `KEM-Decaps(sk, c, ctx) -> k`: Decapsulate a shared secret.
 
     Input consists of encapsulation private key `sk`, encapsulation ciphertext `c`
-    and a domain separation parameter `info`.
+    and a domain separation parameter `ctx`.
 
     Output consists of the shared secret `k` on success, or an error otherwise.
 
-  `k`, `c` and `info` are opaque octet strings of arbitrary length.
+  `ikm` is an opaque octet string of a suitable length as defined by the ARKG instance.
+  `k`, `c` and `ctx` are opaque octet strings of arbitrary length.
   The representation of `pk` is defined by the protocol that invokes ARKG.
   The representation of `sk` is an undefined implementation detail.
 
   The KEM MUST guarantee integrity of the ciphertext,
-  meaning that knowledge of the public key `pk` and the domain separation parameter `info`
+  meaning that knowledge of the public key `pk` and the domain separation parameter `ctx`
   is required in order to create any ciphertext `c` that can be successfully decapsulated by the corresponding private key `sk`.
   {{hmac-kem}} describes a general formula for how any KEM can be adapted to include this guarantee.
   {{design-rationale-mac}} discusses the reasons for this requirement.
@@ -325,34 +347,36 @@ The parameters of an ARKG instance are:
   See [ASIACCS:SteWil24] for definitions of additional security properties required of the key encapsulation mechanism `KEM`.
 
 A concrete ARKG instantiation MUST specify the instantiation
-of each of the above functions and values.
+of each of the above functions.
 
 The output keys of the `BL` scheme are also the output keys of the ARKG instance as a whole.
 For example, if `BL-Blind-Public-Key` and `BL-Blind-Private-Key` output ECDSA keys,
 then the ARKG instance will also output ECDSA keys.
 
-We denote a concrete ARKG instance by the pattern `ARKG-BL-KEM`,
-substituting the chosen instantiation for the `BL` and `KEM`.
+We denote a concrete ARKG instance by the pattern `ARKG-NAME`,
+substituting for `NAME` some description of the chosen instantiation for `BL` and `KEM`.
 Note that this pattern cannot in general be unambiguously parsed;
 implementations MUST NOT attempt to construct an ARKG instance by parsing such a pattern string.
 Concrete ARKG instances MUST always be identified by lookup in a registry of fully specified ARKG instances.
 This is to prevent usage of algorithm combinations that may be incompatible or insecure.
 
 
-## The function ARKG-Generate-Seed
+## The function ARKG-Derive-Seed
 
 This function is performed by the delegating party.
-The delegating party generates the ARKG seed pair `(pk, sk)`
+The delegating party derives the ARKG seed pair `(pk, sk)`
 and keeps the private seed `sk` secret, while the public seed `pk` is provided to the subordinate party.
-The subordinate party will then be able to generate public keys on behalf of the delegating party.
+The subordinate party will then be able to derive public keys on behalf of the delegating party.
 
 ~~~pseudocode
-ARKG-Generate-Seed() -> (pk, sk)
+ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
-    Inputs: None
+    Inputs:
+        ikm_bl    Input keying material entropy for BL.
+        ikm_kem   Input keying material entropy for KEM.
 
     Output:
         (pk, sk)  An ARKG seed pair with public seed pk
@@ -360,49 +384,45 @@ ARKG-Generate-Seed() -> (pk, sk)
 
     The output (pk, sk) is calculated as follows:
 
-    (pk_kem, sk_kem) = KEM-Generate-Keypair()
-    (pk_bl, sk_bl) = BL-Generate-Keypair()
-    pk = (pk_kem, pk_bl)
-    sk = (sk_kem, sk_bl)
+    (pk_bl,  sk_bl)  = BL-Derive-Key-Pair(ikm_bl)
+    (pk_kem, sk_kem) = KEM-Derive-Key-Pair(ikm_kem)
+    pk = (pk_bl, pk_kem)
+    sk = (sk_bl, sk_kem)
 ~~~
 
-### Deterministic key generation
 
-Although the above definition expresses the key generation as opaque,
-likely sampling uniformly random key distributions,
-implementations MAY choose to implement the functions `BL-Generate-Keypair()`,
-`KEM-Generate-Keypair()` and `ARKG-Generate-Seed()`
-as deterministic functions of some out-of-band input.
-This can be thought of as defining a single-use ARKG instance where these function outputs are static.
-This use case is beyond the scope of this document
-since the implementation of `ARKG-Generate-Seed` is internal to the delegating party,
-even if applications choose to distribute the delegating party across multiple processing entities.
+### Nondeterministic variants
 
-For example, one entity may randomly sample `pk_bl`, derive `pk_kem` deterministically from `pk_bl`
-and submit only `pk_bl` to a separate service that uses the same procedure to also derive the same `pk_kem`.
-This document considers both of these entities as parts of the same logical delegating party.
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
+as nondeterministic procedures omitting their respective `ikm` parameters
+and sampling random entropy internally;
+this choice does not affect interoperability.
 
 
 ## The function ARKG-Derive-Public-Key
 
-This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_kem, pk_bl)`.
+This function is performed by the subordinate party, which holds the ARKG public seed `pk = (pk_bl, pk_kem)`.
 The resulting public key `pk'` can be provided to external parties to use in asymmetric cryptography protocols,
 and the resulting key handle `kh` can be used by the delegating party to derive the private key corresponding to `pk'`.
 
 This function may be invoked any number of times with the same public seed,
+using different `ikm` or `ctx` arguments,
 in order to generate any number of public keys.
 
 ~~~pseudocode
-ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
+ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -> (pk', kh)
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        pk_kem    A key encapsulation public key.
         pk_bl     A key blinding public key.
-        info      An octet string containing optional context
-                    and application specific information
+        pk_kem    A key encapsulation public key.
+        ikm       Input entropy for KEM encapsulation.
+        ctx       An octet string of length at most 64,
+                    containing optional context and
+                    application specific information
                     (can be a zero-length string).
 
     Output:
@@ -412,22 +432,41 @@ ARKG-Derive-Public-Key((pk_kem, pk_bl), info) -> (pk', kh)
 
     The output (pk', kh) is calculated as follows:
 
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
-    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+    if LEN(ctx) > 64:
+        Abort with an error.
 
-    (tau, c) = KEM-Encaps(pk_kem, info_kem)
-    pk' = BL-Blind-Public-Key(pk_bl, tau, info_bl)
+    ctx'    = I2OSP(LEN(ctx), 1) || ctx
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
+
+    (ikm_tau, c) = KEM-Encaps(pk_kem, ikm, ctx_kem)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    pk' = BL-Blind-Public-Key(pk_bl, tau)
 
     kh = c
 ~~~
 
 If this procedure aborts due to an error,
-the procedure can safely be retried with the same arguments.
+the procedure can safely be retried with the same `(pk_bl, pk_kem)` and `ctx` arguments but a new `ikm` argument.
+
+See {{long-ctx}} for guidance on using `ctx` arguments longer than 64 bytes.
+
+
+### Nondeterministic variants
+
+Applications that do not need a deterministic interface MAY choose
+to instead implement `ARKG-Derive-Public-Key` and `KEM-Encaps`
+as nondeterministic procedures omitting their respective `ikm` parameter
+and sampling random entropy internally;
+this choice does not affect interoperability.
+
+`BL-PRF` and `BL-Blind-Public-Key` must always be deterministic
+for compatibility with `ARKG-Derive-Private-Key`.
 
 
 ## The function ARKG-Derive-Private-Key
 
-This function is performed by the delegating party, which holds the ARKG private seed `(sk_kem, sk_bl)`.
+This function is performed by the delegating party, which holds the ARKG private seed `(sk_bl, sk_kem)`.
 The resulting private key `sk'` can be used in asymmetric cryptography protocols
 to prove possession of `sk'` to an external party that has the corresponding public key.
 
@@ -435,17 +474,18 @@ This function may be invoked any number of times with the same private seed,
 in order to derive the same or different private keys any number of times.
 
 ~~~pseudocode
-ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
+ARKG-Derive-Private-Key((sk_bl, sk_kem), kh, ctx) -> sk'
     ARKG instance parameters:
         BL        A key blinding scheme.
         KEM       A key encapsulation mechanism.
 
     Inputs:
-        sk_kem    A key encapsulation private key.
         sk_bl     A key blinding private key.
+        sk_kem    A key encapsulation private key.
         kh        A key handle output from ARKG-Derive-Public-Key.
-        info      An octet string containing optional context
-                    and application specific information
+        ctx       An octet string of length at most 64,
+                    containing optional context and
+                    application specific information
                     (can be a zero-length string).
 
     Output:
@@ -453,14 +493,19 @@ ARKG-Derive-Private-Key((sk_kem, sk_bl), kh, info) -> sk'
 
     The output sk' is calculated as follows:
 
-    info_kem = 'ARKG-Derive-Key-KEM.' || info
-    info_bl  = 'ARKG-Derive-Key-BL.'  || info
+    if LEN(ctx) > 64:
+        Abort with an error.
 
-    tau = KEM-Decaps(sk_kem, kh, info_kem)
+    ctx'    = I2OSP(LEN(ctx), 1) || ctx
+    ctx_bl  = 'ARKG-Derive-Key-BL.'  || ctx'
+    ctx_kem = 'ARKG-Derive-Key-KEM.' || ctx'
+
+    ikm_tau = KEM-Decaps(sk_kem, kh, ctx_kem)
     If decapsulation failed:
         Abort with an error.
 
-    sk' = BL-Blind-Private-Key(sk_bl, tau, info_bl)
+    tau = BL-PRF(ikm_tau, ctx_bl)
+    sk' = BL-Blind-Private-Key(sk_bl, tau)
 ~~~
 
 Errors in this procedure are typically unrecoverable.
@@ -468,11 +513,27 @@ For example, `KEM-Decaps` may fail to decapsulate the KEM ciphertext `kh` if it 
 ARKG instantiations SHOULD be chosen in a way that such errors are impossible
 if `kh` was generated by an honest and correct implementation of `ARKG-Derive-Public-Key`.
 Incorrect or malicious implementations of `ARKG-Derive-Public-Key` do not degrade the security
-of a correct and honest implementation of `ARKG-Derive-Private-Key`.
+of an honest and correct implementation of `ARKG-Derive-Private-Key`.
 See also {{design-rationale-mac}}.
 
+See {{long-ctx}} for guidance on using `ctx` arguments longer than 64 bytes.
 
-# Generic ARKG instantiations
+
+## Using `ctx` values longer than 64 bytes {#long-ctx}
+
+The `ctx` parameter of `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key`
+is limited to a length of at most 64 bytes.
+This is because this value needs to be communicated from the _subordinate party_ to the _delegating party_
+to use the same argument value in both functions,
+therefore it is necessary in some contexts to limit the size of this parameter
+in order to limit the size of overall protocol messages.
+
+If applications require `ctx` values longer than 64 bytes,
+implementors MAY use techniques such as that described in {{Section 5.3.3 of RFC9380}}.
+Precise procedure definitions are left as an application-specific implementation detail.
+
+
+# Generic ARKG instantiations {#generic-formulae}
 
 This section defines generic formulae for instantiating the individual ARKG parameters,
 which can be used to define concrete ARKG instantiations.
@@ -498,15 +559,11 @@ Then the `BL` parameter of ARKG may be instantiated as follows:
 - The function `hash_to_field` is defined in {{Section 5 of RFC9380}}.
 
 ~~~pseudocode
-BL-Generate-Keypair() -> (pk, sk)
+BL-Derive-Key-Pair(ikm) -> (pk, sk)
 
-    Generate (pk, sk) using some procedure defined for the curve crv.
-
-
-BL-Blind-Public-Key(pk, tau, info) -> pk_tau
-
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+    DST_bl_sk = 'ARKG-BL-EC-KG.' || DST_ext
+    sk = hash_to_field(ikm, 1) with the parameters:
+        DST: DST_bl_sk
         F: GF(N), the scalar field
            of the prime order subgroup of crv
         p: N
@@ -515,22 +572,31 @@ BL-Blind-Public-Key(pk, tau, info) -> pk_tau
         expand_message: The expand_message function
                         defined in hash-to-crv-suite
 
-    pk_tau = pk + tau' * G
+    pk = sk * G
 
 
-BL-Blind-Private-Key(sk, tau, info) -> sk_tau
+BL-PRF(ikm_tau, ctx) -> tau
 
-    tau' = hash_to_field(tau, 1) with the parameters:
-        DST: 'ARKG-BL-EC.' || DST_ext || info
+    DST_tau = 'ARKG-BL-EC.' || DST_ext || ctx
+    tau = hash_to_field(ikm_tau, 1) with the parameters:
+        DST: DST_tau
         F: GF(N), the scalar field
-           of the prime order subgroup of crv.
+           of the prime order subgroup of crv
         p: N
         m: 1
         L: The L defined in hash-to-crv-suite
         expand_message: The expand_message function
                         defined in hash-to-crv-suite
 
-    sk_tau_tmp = sk + tau'
+
+BL-Blind-Public-Key(pk, tau) -> pk_tau
+
+    pk_tau = pk + tau * G
+
+
+BL-Blind-Private-Key(sk, tau) -> sk_tau
+
+    sk_tau_tmp = sk + tau
     If sk_tau_tmp = 0, abort with an error.
     sk_tau = sk_tau_tmp
 ~~~
@@ -551,8 +617,8 @@ This formula has the following parameters:
 - `Hash`: A cryptographic hash function.
 - `DST_ext`: A domain separation parameter.
 - `Sub-Kem`: A key encapsulation mechanism as described for the `KEM` parameter in {{arkg-params}},
-  except `Sub-Kem` MAY ignore the `info` parameter and MAY not guarantee ciphertext integrity.
-  `Sub-Kem` defines the functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
+  except `Sub-Kem` MAY ignore the `ctx` parameter and MAY not guarantee ciphertext integrity.
+  `Sub-Kem` defines the functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 The `KEM` parameter of ARKG may be instantiated using `Sub-Kem`,
 HMAC [RFC2104] and HKDF [RFC5869] as follows:
@@ -566,46 +632,48 @@ because as described in {{design-rationale-mac}},
 ARKG needs ciphertext integrity only to ensure correctness, not for security.
 Extendable-output functions used as the `Hash` parameter SHOULD still be instantiated
 with an output length appropriate for the desired security level,
-in order to not leak information about the `Sub-KEM` shared secret key.
+in order to not leak information about the `Sub-Kem` shared secret key.
 
 ~~~pseudocode
 
-KEM-Generate-Keypair() -> (pk, sk)
+KEM-Derive-Key-Pair(ikm) -> (pk, sk)
 
-    (pk, sk) = Sub-Kem-Generate-Keypair()
+    (pk, sk) = Sub-Kem-Derive-Key-Pair(ikm)
 
 
-KEM-Encaps(pk, info) -> (k, c)
+KEM-Encaps(pk, ikm, ctx) -> (k, c)
 
-    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    (k', c') = Sub-Kem-Encaps(pk, info_sub)
+    ctx_sub = 'ARKG-KEM-HMAC.' || DST_ext || ctx
+    (k', c') = Sub-Kem-Encaps(pk, ikm, ctx_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
         salt: not set
         IKM: k'
 
+    info_mk = 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
+        info: info_mk
         L: L
     t = HMAC-Hash-128(K=mk, text=c')
 
+    info_k = 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
     k = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
+        info: info_k
         L: The length of k' in octets.
     c = t || c'
 
 
-KEM-Decaps(sk, c, info) -> k
+KEM-Decaps(sk, c, ctx) -> k
 
     t = LEFT(c, 16)
     c' = DROP_LEFT(c, 16)
-    info_sub = 'ARKG-KEM-HMAC.' || DST_ext || info
-    k' = Sub-Kem-Decaps(sk, c', info_sub)
+    ctx_sub = 'ARKG-KEM-HMAC.' || DST_ext || ctx
+    k' = Sub-Kem-Decaps(sk, c', ctx_sub)
 
     prk = HKDF-Extract with the arguments:
         Hash: Hash
@@ -615,7 +683,7 @@ KEM-Decaps(sk, c, info) -> k
     mk = HKDF-Expand with the arguments:
         Hash: Hash
         PRK: prk
-        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || info
+        info: 'ARKG-KEM-HMAC-mac.' || DST_ext || ctx
         L: L
 
     t' = HMAC-Hash-128(K=mk, text=c')
@@ -623,11 +691,14 @@ KEM-Decaps(sk, c, info) -> k
         k = HKDF-Expand with the arguments:
             Hash: Hash
             PRK: prk
-            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || info
+            info: 'ARKG-KEM-HMAC-shared.' || DST_ext || ctx
             L: The length of k' in octets.
     Else:
         Abort with an error.
 ~~~
+
+In concrete instances where `Sub-Kem-Encaps` and `Sub-Kem-Decaps` ignore the `ctx` parameter,
+implementations MAY eliminate the parameter and omit the computation of `ctx_sub`.
 
 
 ## Using ECDH as the KEM {#kem-ecdh}
@@ -639,13 +710,19 @@ This formula has the following parameters:
 
 - `crv`: an elliptic curve valid for use with ECDH [RFC6090].
 - `Hash`: A cryptographic hash function.
+- `hash-to-crv-suite`: A hash-to-curve suite [RFC9380]
+  suitable for hashing to the scalar field of `crv`.
 - `DST_ext`: A domain separation parameter.
+
+The above parameters define the following intermediate value:
+
+- `DST_aug`: `'ARKG-ECDH.' || DST_ext`.
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
 - `Hash`: `Hash`.
-- `DST_ext`: `'ARKG-ECDH.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+- `DST_ext`: `DST_aug`.
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
   - `Elliptic-Curve-Point-to-Octet-String` and `Octet-String-to-Elliptic-Curve-Point`
     are the conversion routines defined in sections 2.3.3 and 2.3.4 of [SEC1],
@@ -658,24 +735,37 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
   - `N` is the order of `G`.
 
   ~~~pseudocode
-  Sub-Kem-Generate-Keypair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      Generate (pk, sk) using some procedure defined for crv.
+      DST_kem_sk = 'ARKG-KEM-ECDH-KG.' || DST_aug
+      sk = hash_to_field(ikm, 1) with the parameters:
+          DST: DST_kem_sk
+          F: GF(N), the scalar field
+            of the prime order subgroup of crv
+          p: N
+          m: 1
+          L: The L defined in hash-to-crv-suite
+          expand_message: The expand_message function
+                          defined in hash-to-crv-suite
+
+      pk = sk * G
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, ctx) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Keypair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = ECDH(pk, sk')
       c = Elliptic-Curve-Point-to-Octet-String(pk')
 
 
-  Sub-Kem-Decaps(sk, c, info) -> k
+  Sub-Kem-Decaps(sk, c, ctx) -> k
 
       pk' = Octet-String-to-Elliptic-Curve-Point(c)
       k = ECDH(pk', sk)
   ~~~
+
+Note: This instance intentionally ignores the `ctx` parameter of `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 
 ## Using X25519 or X448 as the KEM {#kem-x25519-x448}
@@ -693,11 +783,8 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
 - `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
   or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
 - `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
-- `Sub-Kem`: The functions `Sub-Kem-Generate-Keypair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
+- `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
-  - `Random-Bytes(N)` represents a cryptographically secure,
-    uniformly distributed random octet string of length `N`.
-  - `L` is 32 if `DH-Function` is X25519, or 56 if `DH-Function` is X448.
   - `G` is the octet string `h'0900000000000000 0000000000000000 0000000000000000 0000000000000000'`
     if `DH-Function` is X25519,
     or the octet string `h'0500000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000'`
@@ -707,24 +794,26 @@ The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-k
     which is the u-coordinate of the generator point of the respective curve group.
 
   ~~~pseudocode
-  Sub-Kem-Generate-Keypair() -> (pk, sk)
+  Sub-Kem-Derive-Key-Pair(ikm) -> (pk, sk)
 
-      sk = Random-Bytes(L)
+      sk = ikm
       pk = DH-Function(sk, G)
 
 
-  Sub-Kem-Encaps(pk, info) -> (k, c)
+  Sub-Kem-Encaps(pk, ikm, ctx) -> (k, c)
 
-      (pk', sk') = Sub-Kem-Generate-Keypair()
+      (pk', sk') = Sub-Kem-Derive-Key-Pair(ikm)
 
       k = DH-Function(sk', pk)
       c = pk'
 
 
-  Sub-Kem-Decaps(sk, c, info) -> k
+  Sub-Kem-Decaps(sk, c, ctx) -> k
 
       k = DH-Function(sk, c)
   ~~~
+
+Note: This instance intentionally ignores the `ctx` parameter of `Sub-Kem-Encaps` and `Sub-Kem-Decaps`.
 
 
 ## Using the same key for both key blinding and KEM {#blinding-kem-same-key}
@@ -745,216 +834,118 @@ This section defines an initial set of concrete ARKG instantiations.
 TODO: IANA registry? COSE/JOSE?
 
 
-## ARKG-P256ADD-ECDH {#ARKG-P256ADD-ECDH}
+## ARKG-P256 {#ARKG-P256}
 
-The identifier `ARKG-P256ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P256` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
-  - `DST_ext`: `'ARKG-P256ADD-ECDH'`.
+  - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
+  - `DST_ext`: `'ARKG-P256'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
-## ARKG-P384ADD-ECDH {#ARKG-P384ADD-ECDH}
+## ARKG-P384 {#ARKG-P384}
 
-The identifier `ARKG-P384ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P384` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P384'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
   - `Hash`: SHA-384 [FIPS 180-4].
-  - `DST_ext`: `'ARKG-P384ADD-ECDH'`.
+  - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
+  - `DST_ext`: `'ARKG-P384'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 384 bits of entropy.
 
 
-## ARKG-P521ADD-ECDH {#ARKG-P521ADD-ECDH}
+## ARKG-P521 {#ARKG-P521}
 
-The identifier `ARKG-P521ADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P521` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P521'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
   - `Hash`: SHA-512 [FIPS 180-4].
-  - `DST_ext`: `'ARKG-P521ADD-ECDH'`.
+  - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
+  - `DST_ext`: `'ARKG-P521'`.
+
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 512 bits of entropy.
 
 
-## ARKG-P256kADD-ECDH {#ARKG-P256kADD-ECDH}
+## ARKG-P256k {#ARKG-P256k}
 
-The identifier `ARKG-P256kADD-ECDH` represents the following ARKG instance:
+The identifier `ARKG-P256k` represents the following ARKG instance:
 
 - `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+  - `DST_ext`: `'ARKG-P256k'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
   - `Hash`: SHA-256 [FIPS 180-4].
-  - `DST_ext`: `'ARKG-P256kADD-ECDH'`.
+  - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
+  - `DST_ext`: `'ARKG-P256k'`.
 
-
-## ARKG-curve25519ADD-X25519 {#ARKG-curve25519ADD-X25519}
-
-The identifier `ARKG-curve25519ADD-X25519` represents the following ARKG instance:
-
-- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
-  - `crv`: The curve `curve25519` [RFC7748].
-  - `hash-to-crv-suite`: `curve25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
-
-  WARNING: Some algorithms on curve25519, including X25519 [RFC7748],
-  construct private key scalars within a particular range
-  to enable optimizations and constant-time guarantees.
-  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
-  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
-
-  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
-  Some algorithms on curve25519, including X25519 [RFC7748],
-  define the private key input as a random octet string and applies some preprocessing to it
-  before interpreting the result as a private key scalar,
-  and define public keys as a particular octet string encoding of a curve point.
-  This `BL` scheme is not compatible with such preprocessing
-  since it breaks the relationship between the blinded private key and the blinded public key.
-  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
-  to the interpreted private key scalar, not the random private key octet string,
-  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
-  not an opaque octet string.
-
-- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
-  - `DH-Function`: X25519 [RFC7748].
-  - `DST_ext`: `'ARKG-curve25519ADD-X25519'`.
-
-
-## ARKG-curve448ADD-X448 {#ARKG-curve448ADD-X448}
-
-The identifier `ARKG-curve448ADD-X448` represents the following ARKG instance:
-
-- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
-  - `crv`: The curve `curve448` [RFC7748].
-  - `hash-to-crv-suite`: `curve448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-curve448ADD-X448'`.
-
-  WARNING: Some algorithms on curve25519, including X448 [RFC7748],
-  construct private key scalars within a particular range
-  to enable optimizations and constant-time guarantees.
-  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
-  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
-
-  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
-  Some algorithms on curve25519, including X448 [RFC7748],
-  define the private key input as a random octet string and applies some preprocessing to it
-  before interpreting the result as a private key scalar,
-  and define public keys as a particular octet string encoding of a curve point.
-  This `BL` scheme is not compatible with such preprocessing
-  since it breaks the relationship between the blinded private key and the blinded public key.
-  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
-  to the interpreted private key scalar, not the random private key octet string,
-  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
-  not an opaque octet string.
-
-- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
-  - `DH-Function`: X448 [RFC7748].
-  - `DST_ext`: `'ARKG-curve448ADD-X448'`.
-
-
-## ARKG-edwards25519ADD-X25519 {#ARKG-edwards25519ADD-X25519}
-
-The identifier `ARKG-edwards25519ADD-X25519` represents the following ARKG instance:
-
-- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
-  - `crv`: The curve `edwards25519` [RFC7748].
-  - `hash-to-crv-suite`: `edwards25519_XMD:SHA-512_ELL2_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
-
-  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
-  construct private key scalars within a particular range
-  to enable optimizations and constant-time guarantees.
-  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
-  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
-
-  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
-  Some algorithms on edwards25519, including EdDSA [RFC8032],
-  define the private key input as a random octet string and applies some preprocessing to it
-  before interpreting the result as a private key scalar,
-  and define public keys as a particular octet string encoding of a curve point.
-  This `BL` scheme is not compatible with such preprocessing
-  since it breaks the relationship between the blinded private key and the blinded public key.
-  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
-  to the interpreted private key scalar, not the random private key octet string,
-  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
-  not an opaque octet string.
-
-- `KEM`: X25519 as described in {{kem-x25519-x448}} with the parameters:
-  - `DH-Function`: X25519 [RFC7748].
-  - `DST_ext`: `'ARKG-edwards25519ADD-X25519'`.
-
-
-## ARKG-edwards448ADD-X448 {#ARKG-edwards448ADD-X448}
-
-The identifier `ARKG-edwards448ADD-X448` represents the following ARKG instance:
-
-- `BL`: Elliptic curve addition as described in {{blinding-ec}} with the parameters:
-  - `crv`: The curve `edwards448` [RFC7748].
-  - `hash-to-crv-suite`: `edwards448_XOF:SHAKE256_ELL2_RO_` [RFC9380].
-  - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
-
-  WARNING: Some algorithms on edwards25519, including EdDSA [RFC8032],
-  construct private key scalars within a particular range
-  to enable optimizations and constant-time guarantees.
-  This `BL` scheme does not guarantee that blinded private scalars remain in that range,
-  so implementations using this ARKG instance MUST NOT rely on such a guarantee.
-
-  Note: Input and output keys of this `BL` scheme are curve scalars and curve points.
-  Some algorithms on edwards25519, including EdDSA [RFC8032],
-  define the private key input as a random octet string and applies some preprocessing to it
-  before interpreting the result as a private key scalar,
-  and define public keys as a particular octet string encoding of a curve point.
-  This `BL` scheme is not compatible with such preprocessing
-  since it breaks the relationship between the blinded private key and the blinded public key.
-  Implementations using this ARKG instance MUST apply `BL-Blind-Private-Key`
-  to the interpreted private key scalar, not the random private key octet string,
-  and implementations of `BL-Blind-Public-Key` MUST interpret the public key input as a curve point,
-  not an opaque octet string.
-
-- `KEM`: X448 as described in {{kem-x25519-x448}} with the parameters:
-  - `DH-Function`: X448 [RFC7748].
-  - `DST_ext`: `'ARKG-edwards448ADD-X448'`.
+Each `ikm_bl`, `ikm_kem` and `ikm` input to the procedures in this ARKG instance
+SHOULD contain at least 256 bits of entropy.
 
 
 # COSE bindings {#cose}
 
 This section proposes additions to COSE [RFC9052] to support ARKG use cases.
-The novelty lies primarily in a new key type definition to represent ARKG public seeds
-and new key type definitions to represent references to private keys rather than the keys themselves.
+These consist of a new key type to represent ARKG public seeds,
+algorithm identifiers for signing using an ARKG-derived private key,
+and new `COSE_Sign_Args` [I-D.lundberg-cose-split-algs] algorithm parameters for ARKG.
 
 
 ## COSE key type: ARKG public seed {#cose-arkg-pub-seed}
 
 An ARKG public seed is represented as a COSE_Key structure [RFC9052]
 with `kty` value TBD (placeholder value -65537).
-This key type defines key type parameters -1 and -2 for the `BL` and `KEM` public key, respectively.
+{{tbl-arkg-pub-params}} defines key type parameters `pkbl` (-1) and `pkkem` (-2) for the `BL` and `KEM` public key, respectively,
+as well as key type parameter `dkalg` (-3), representing the algorithm that derived public and private keys are to be used with.
 
-The `alg` parameter, when present,
-defines the `alg` parameter of ARKG derived public keys derived from this ARKG public seed.
+{: #tbl-arkg-pub-params title="COSE key type parameters for the ARKG-pub key type."}
+| Name  | Label | Value type | Required? | Description |
+| ----- | ----- | ---------- | --------- | ----------- |
+| pkbl  | -1    | COSE_Key   | Required  | BL key of ARKG public seed |
+| pkkem | -2    | COSE_Key   | Required  | KEM key of ARKG public seed |
+| dkalg | -3    | int / tstr | Optional  | `alg` parameter of public and private keys derived from this ARKG public seed |
 
-The following CDDL [RFC8610] example represents an `ARKG-P256ADD-ECDH` public seed
-restricted to generating derived public keys for use with the ESP256 [fully-spec-algs] signature algorithm:
+When `dkalg` (-3) is present in an ARKG public seed,
+the `alg` (3) parameter of public keys derived using `ARKG-Derive-Public-Key` with that seed
+SHOULD be set to the `dkalg` (-3) value of the seed.
+
+The `alg` (3) parameter, when present,
+identifies the ARKG instance this public seed is to be used with.
+An initial set of COSE algorithm identifiers for this purpose is defined in {{cose-algs-arkg}}.
+
+The following CDDL [RFC8610] example represents an `ARKG-P256` public seed
+restricted to generating derived keys for use with the ESP256 [RFC9864] signature algorithm:
 
 ~~~cddl
 {
-  1: -65537,   ; kty: ARKG-pub
+  1: -65537,   ; kty: ARKG-pub (placeholder value)
                ; kid: Opaque identifier
   2: h'60b6dfddd31659598ae5de49acb220d8
        704949e84d484b68344340e2565337d2',
-  3: -9,       ; alg: ESP256
+  3: -65700,   ; alg: ARKG-P256 (placeholder value)
 
   -1: {        ; BL public key
     1: 2,      ; kty: EC2
@@ -972,77 +963,103 @@ restricted to generating derived public keys for use with the ESP256 [fully-spec
           9EC7F543043008BC84967A8D875B5D78',
     -3: h'539D57429FCB1C138DA29010A155DCA1
           4566A8F55AC2F1780810C49D4ED72D58',
-  }
+  },
+
+  -3: -9       ; Derived key algorithm: ESP256
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2032820a40102200121582069380fc1c3b09652134fee
-  fba61776f97af875ce46ca20252c4165102966ebc52258208b515831462ccb0b
-  d55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a4010220012158
-  205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a8d875b5d
-  78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f1780810c49d
-  4ed72d588'
+h'a6013a0001000002582060b6dfddd31659598ae5de49acb220d8704949e84d48
+  4b68344340e2565337d2033a000100a320a40102200121582069380fc1c3b096
+  52134feefba61776f97af875ce46ca20252c4165102966ebc52258208b515831
+  462ccb0bd55cba04bfd50da63faf18bd845433622daf97c06a10d0f121a40102
+  20012158205c099bec31faa581d14e208250d3ffda9ec7f543043008bc84967a
+  8d875b5d78225820539d57429fcb1c138da29010a155dca14566a8f55ac2f178
+  0810c49d4ed72d582228'
 ~~~
 
 
-## COSE key reference types {#cose-key-refs}
+## COSE algorithms {#cose-algs-arkg}
 
-TODO: This should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
+This section defines COSE algorithm identifiers [RFC9052] for ARKG instances,
+and for signature algorithms combined with using a signing private key derived using ARKG.
 
-While keys used by many other algorithms can usually be referenced by a single atomic identifier,
-such as that used in the `kid` parameter in a COSE_Key object or in the unprotected header of a COSE_Recipient,
-users of the function `ARKG-Derive-Secret-Key` need to represent
-a reference to an ARKG private seed along with a key handle for a derived private key.
+{{tbl-cose-algs-arkg}} defines algorithm identifiers to represent ARKG instances.
 
-A COSE key reference is a COSE_Key object whose `kty` value is defined to represent a reference to a key.
-The `kid` parameter MUST be present when `kty` is a key reference type.
-These requirements are encoded in the CDDL [RFC8610] type `COSE_Key_Ref`:
+{: #tbl-cose-algs-arkg title="COSE algorithm identifiers for ARKG instances."}
+| Name       | Value                    | Description |
+| ---------- | ------------------------ | ----------- |
+| ARKG-P256  | TBD (placeholder -65700) | The ARKG instance `ARKG-P256` defined in {{ARKG-P256}}.
+| ARKG-P384  | TBD (placeholder -65701) | The ARKG instance `ARKG-P384` defined in {{ARKG-P384}}.
+| ARKG-P521  | TBD (placeholder -65702) | The ARKG instance `ARKG-P521` defined in {{ARKG-P521}}.
+| ARKG-P256k | TBD (placeholder -65703) | The ARKG instance `ARKG-P256k` defined in {{ARKG-P256k}}.
 
-~~~cddl
-COSE_Key_Ref = COSE_Key .within {
-  1 ^ => $COSE_kty_ref   ; kty: Any reference type
-  2 ^ => any,            ; kid is required
-  any => any,            ; Any other entries allowed by COSE_Key
-}
-~~~
 
-The following CDDL example represents a reference to a key derived by `ARKG-P256ADD-ECDH`
-and restricted for use with the ESP256 [fully-spec-algs] signature algorithm:
+{{tbl-cose-algs-arkg-sign}} defines algorithm identifiers to represent signing algorithms.
+These MAY be used to negotiate algorithm selection between a _digester_ and _signer_
+as described in {{Section 2 of I-D.lundberg-cose-split-algs}},
+and in key representations exchanged between such _digesters_ and _signers_,
+but SHOULD NOT appear in COSE structures consumed by signature verifiers.
+COSE structures consumed by signature verifiers SHOULD instead use the corresponding algorithm identifier
+listed in the "verification algorithm" column.
+
+{: #tbl-cose-algs-arkg-sign title="COSE algorithms for signing with an ARKG-derived key."}
+| Name               | Value                    | Verification algorithm | Description |
+| ------------------ | ------------------------ | ---------------------- | ----------- |
+| ESP256-ARKG        | TBD                      | -9 (ESP256)            | ESP256 [RFC9864] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP256-split-ARKG  | TBD (placeholder -65539) | -9 (ESP256)            | ESP256-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P256 ({{ARKG-P256}}).
+| ESP384-ARKG        | TBD                      | -51 (ESP384)           | ESP384 [RFC9864] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP384-split-ARKG  | TBD                      | -51 (ESP384)           | ESP384-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P384 ({{ARKG-P384}}).
+| ESP512-ARKG        | TBD                      | -52 (ESP512)           | ESP512 [RFC9864] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ESP512-split-ARKG  | TBD                      | -52 (ESP512)           | ESP512-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
+| ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
+
+
+## COSE signing arguments {#cose-sign-args-arkg}
+
+This section defines ARKG-specific parameters for the `COSE_Sign_Args` structure [I-D.lundberg-cose-split-algs].
+These consist of the parameters -1 and -2 respectively
+for the `kh` and `ctx` parameters of `ARKG-Derive-Private-Key`.
+{{tbl-cose-args-arkg}} defines these algorithm parameters for `COSE_Sign_args`.
+`kh` and `ctx` are both REQUIRED for all the relevant `alg` values.
+
+{: #tbl-cose-args-arkg title="Algorithm parameters for COSE_Sign_Args."}
+| Name | Label | Type | Required? | Algorithm | Description |
+|------|-------|------|-----------|-----------|-------------|
+| kh   | -1    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG | `kh` argument to `ARKG-Derive-Private-Key`. |
+| ctx  | -2    | bstr | Required  | ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG | `ctx` argument to `ARKG-Derive-Private-Key`. |
+
+
+The following CDDL example conveys the `kh` and `ctx` arguments for signing data
+using the ESP256-split algorithm [I-D.lundberg-cose-split-algs]
+and a key derived using `ARKG-P256`:
 
 ~~~cddl
 {
-  1: -65538,   ; kty: Ref-ARKG-derived
-               ; kid: Opaque identifier of ARKG-pub
-  2: h'60b6dfddd31659598ae5de49acb220d8
-       704949e84d484b68344340e2565337d2',
-  3: -65539,   ; alg: ESP256-ARKG
+  3: -65539,   ; alg: ESP256-split with ARKG-P256 (placeholder value)
 
-               ; ARKG-P256ADD-ECDH key handle
+               ; ARKG-P256 key handle
                ; (HMAC-SHA-256-128 followed by
                   SEC1 uncompressed ECDH public key)
-  -1: h'ae079e9c52212860678a7cee25b6a6d4
-        048219d973768f8e1adb8eb84b220b0ee3
-          a2532828b9aa65254fe3717a29499e9b
-          aee70cea75b5c8a2ec2eb737834f7467
-          e37b3254776f65f4cfc81e2bc4747a84',
+  -1: h'27987995f184a44cfa548d104b0a461d
+        0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043de
+          c2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361',
 
                ; info argument to ARKG-Derive-Private-Key
-  -2: 'Example application info',
+  -2: 'ARKG-P256.test vectors',
 }
 ~~~
 
 The following is the same example encoded as CBOR:
 
 ~~~
-h'a5013a0001000102582060b6dfddd31659598ae5de49acb220d8704949e84d48
-  4b68344340e2565337d2033a00010002205851ae079e9c52212860678a7cee25
-  b6a6d4048219d973768f8e1adb8eb84b220b0ee3a2532828b9aa65254fe3717a
-  29499e9baee70cea75b5c8a2ec2eb737834f7467e37b3254776f65f4cfc81e2b
-  c4747a842158184578616d706c65206170706c69636174696f6e20696e666f'
+h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
+  dabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea906
+  0fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361215641524b
+  472d503235362e7465737420766563746f7273'
 ~~~
 
 
@@ -1068,36 +1085,8 @@ This section registers the following values in the IANA "COSE Key Types" registr
   - Capabilities: \[kty(-65537), pk_bl, pk_kem\]
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Name: Ref-ARKG-derived
-  - Value: TBD (Placeholder -65538)
-  - Description: Reference to private key derived by ARKG
-  - Capabilities: \[kty(-65538), kh\]
-  - Reference: {{cose-key-refs}} of this document
-
-- Name: Ref-OKP
-  - Value: TBD (Requested assignment -1)
-  - Description: Reference to a key pair of key type "OKP"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-- Name: Ref-EC2
-  - Value: TBD (Requested assignment -2)
-  - Description: Reference to a key pair of key type "EC2"
-  - Capabilities: \[kty(-1), crv\]
-  - Reference: {{cose-key-refs}} of this document
-
-These registrations add the following choices to the CDDL [RFC8610] type socket `$COSE_kty_ref`:
-
-~~~cddl
-$COSE_kty_ref /= -65538   ; Placeholder value
-$COSE_kty_ref /= -1       ; Value TBD
-$COSE_kty_ref /= -2       ; Value TBD
-~~~
-
 
 ## COSE Key Type Parameters Registrations
-
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
 
 This section registers the following values in the IANA "COSE Key Type Parameters" registry [IANA.COSE].
 
@@ -1115,74 +1104,102 @@ This section registers the following values in the IANA "COSE Key Type Parameter
   - Description: ARKG key encapsulation public key
   - Reference: {{cose-arkg-pub-seed}} of this document
 
-- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
-  - Name: kh
-  - Label: -1
-  - CBOR Type: bstr
-  - Description: kh argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
-
-- Key Type: TBD (Ref-ARKG-derived, placeholder -65538)
-  - Name: info
-  - Label: -2
-  - CBOR Type: bstr
-  - Description: info argument to ARKG-Derive-Private-Key
-  - Reference: {{cose-key-refs}} of this document
-
 
 ## COSE Algorithms Registrations
 
-TODO: These should eventually move to a separate "algoritm IDs for two-party signing" spec, see: [](https://mailarchive.ietf.org/arch/msg/cose/BjIO9qDNbuVinxAph7F-Z88GpFY/)
-
 This section registers the following values in the IANA "COSE Algorithms" registry [IANA.COSE].
 
+- Name: ARKG-P256
+  - Value: TBD (placeholder -65700)
+  - Description: ARKG using ECDH and additive blinding on secp256r1
+  - Reference: {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P384
+  - Value: TBD (placeholder -65701)
+  - Description: ARKG using ECDH and additive blinding on secp384r1
+  - Reference: {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P521
+  - Value: TBD (placeholder -65702)
+  - Description: ARKG using ECDH and additive blinding on secp521r1
+  - Reference: {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ARKG-P256k
+  - Value: TBD (placeholder -65703)
+  - Description: ARKG using ECDH and additive blinding on secp256k1
+  - Reference: {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
 - Name: ESP256-ARKG
-  - Value: TBD (Placeholder -65539)
-  - Description: ESP256 with key derived by ARKG-P256ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P256ADD-ECDH}} of this document
-  - Recommended: Yes
+  - Value: TBD
+  - Description: ESP256 using private key derived by ARKG-P256
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP256-split-ARKG
+  - Value: TBD (placeholder -65539)
+  - Description: ESP256-split using private key derived by ARKG-P256
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
 
 - Name: ESP384-ARKG
-  - Value: TBD (Placeholder -65540)
-  - Description: ESP384 with key derived by ARKG-P384ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P384ADD-ECDH}} of this document
-  - Recommended: Yes
+  - Value: TBD
+  - Description: ESP384 using private key derived by ARKG-P384
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
+
+- Name: ESP384-split-ARKG
+  - Value: TBD
+  - Description: ESP384-split using private key derived by ARKG-P384
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
 
 - Name: ESP512-ARKG
-  - Value: TBD (Placeholder -65541)
-  - Description: ESP512 with key derived by ARKG-P521ADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-P521ADD-ECDH}} of this document
-  - Recommended: Yes
+  - Value: TBD
+  - Description: ESP512 using private key derived by ARKG-P521
+  - Reference: [RFC9864], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
 
-- Name: ES256K-ARKG
-  - Value: TBD (Placeholder -65542)
-  - Description: ES256K with key derived by ARKG-P256kADD-ECDH
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [RFC8812], {{ARKG-P256kADD-ECDH}} of this document
-  - Recommended: Yes
+- Name: ESP512-split-ARKG
+  - Value: TBD
+  - Description: ESP512-split using private key derived by ARKG-P521
+  - Reference: [I-D.lundberg-cose-split-algs], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
 
-- Name: Ed25519-ARKG
-  - Value: TBD (Placeholder -65543)
-  - Description: Ed25519 with key derived by ARKG-edwards25519ADD-X25519
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards25519ADD-X25519}} of this document
-  - Recommended: Yes
+- Name: ESP256K-ARKG
+  - Value: TBD
+  - Description: ESP256K using private key derived by ARKG-P256k
+  - Reference: [RFC8812], {{cose-algs-arkg}} of this document
+  - Recommended: TBD
 
-- Name: Ed448-ARKG
-  - Value: TBD (Placeholder -65544)
-  - Description: Ed448 with key derived by ARKG-edwards448ADD-X448
-  - Capabilities: \[kty\]
-  - Change Controller: TBD
-  - Reference: [fully-spec-algs], {{ARKG-edwards448ADD-X448}} of this document
-  - Recommended: Yes
+
+## COSE Signing Arguments Algorithm Parameters Registrations
+
+This section registers the following values
+in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.lundberg-cose-split-algs] (TODO):
+
+- Name: kh
+  - Label: -1
+  - Type: bstr
+  - Required: yes
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
+  - Description: `kh` argument to `ARKG-Derive-Private-Key`.
+  - Capabilities: \[alg(-65539, TBD)\]
+  - Change Controller: IETF
+  - Reference: {{cose-sign-args-arkg}} of this document
+
+- Name: ctx
+  - Label: -2
+  - Type: bstr
+  - Required: yes
+  - Algorithm: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
+  - Description: `ctx` argument to `ARKG-Derive-Private-Key`.
+  - Capabilities: \[alg(-65539, TBD)\]
+  - Change Controller: IETF
+  - Reference: {{cose-sign-args-arkg}} of this document
 
 
 # Design rationale
@@ -1247,29 +1264,244 @@ The authors would like to thank all of these authors for their research and deve
 
 # Test Vectors
 
+This section lists test vectors for validating implementations.
+
+Test vectors are listed in CDDL [RFC8610] syntax
+using variable names defined in {{arkg}} and {{generic-formulae}}.
+Elliptic curve points are encoded using the `Elliptic-Curve-Point-to-Octet-String` procedure
+defined in section 2.3.3 of [SEC1], without point compression.
+
+
+## ARKG-P256
+
+~~~cddl
+; Inputs:
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'796c615d19ca0044df0a22d64ba8d5367dca18da32b871a3e255db0af7eb53c9'
+t           = h'27987995f184a44cfa548d104b0a461d'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+c           = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cf5e8ddbb8078a6a0144d4412f22f89407ecee30ec128ce07836af9fc51c05d0'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x9e042fde2e12c1f4002054a8feac60088cc893b4838423c26a20af686c8c16e3
+pk_prime    = h'04572a111ce5cfd2a67d56a0f7c684184b16ccd212490dc9c5b579df749647d107
+                  dac2a1b197cc10d2376559ad6df6bc107318d5cfb90def9f4a1f5347e086c2cd'
+kh          = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+
+; Derive-Private-Key:
+sk_prime    = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
+~~~
+
+~~~cddl
+; Inputs:
+ctx         = 'ARKG-P256.test vectors'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'a0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebf'
+
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'38c79546fc4a144ae2068ff0b515fc9af032b8255a78a829e71be47676a63117'
+c_prime     = h'0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+mk          = h'0806abac4c1d205c3a8826cd178fbf7f91741268e3ca73634035efd76085d2a9'
+t           = h'b7507a82771776fbac41a18d94e19a7e'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1641524b472d503235362e7465737420766563746f7273'
+k           = h'dcdd95c742ddf25b8a95f3d76326cb3593b7860bb3e04c5e5b25cc15ce1e5c84'
+c           = h'b7507a82771776fbac41a18d94e19a7e0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
+ikm_tau     = h'dcdd95c742ddf25b8a95f3d76326cb3593b7860bb3e04c5e5b25cc15ce1e5c84'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1641524b472d503235362e7465737420766563746f7273'
+tau         = 0x88cf9464b041a52cf2b837281afc67302ec9cb32da1fe515381b79c0d0c92322
+pk_prime    = h'04ea7d962c9f44ffe8b18f1058a471f394ef81b674948eefc1865b5c021cf858f5
+                  77f9632b84220e4a1444a20b9430b86731c37e4dcb285eda38d76bf758918d86'
+kh          = h'b7507a82771776fbac41a18d94e19a7e0457fd1e438280c127dd55a6138d1baf0a35e3e9671f7e42d8345f47374afa83247a078fa2196cd69497aed59ef92c05cb6b03d306ec24f2f4ff2db09cd95d1b11'
+
+; Derive-Private-Key:
+sk_prime    = 0x6228e470290e9d7cc0feff32a74caafa14c608c956337eba23997f5904cff226
+~~~
+
+~~~cddl
+; Inputs:
+ctx         = 'ARKG-P256.test vectors.0'
+ikm_bl      = h'000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f'
+ikm_kem     = h'202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f'
+ikm         = h'404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f'
+
+; Derive-Seed:
+DST_bl_sk   = h'41524b472d424c2d45432d4b472e41524b472d50323536'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+pk_bl       = h'046d3bdf31d0db48988f16d47048fdd24123cd286e42d0512daa9f726b4ecf18df
+                  65ed42169c69675f936ff7de5f9bd93adbc8ea73036b16e8d90adbfabdaddba7'
+pk_kem      = h'04c38bbdd7286196733fa177e43b73cfd3d6d72cd11cc0bb2c9236cf85a42dcff5
+                  dfa339c1e07dfcdfda8d7be2a5a3c7382991f387dfe332b1dd8da6e0622cfb35'
+sk_bl       = 0xd959500a78ccf850ce46c80a8c5043c9a2e33844232b3829df37d05b3069f455
+sk_kem      = 0x74e0a4cd81ca2d24246ff75bfd6d4fb7f9dfc938372627feb2c2348f8b1493b5
+
+; Derive-Public-Key:
+ctx_bl      = h'41524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_kem     = h'41524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+ctx_sub     = h'41524b472d4b454d2d484d41432e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+DST_kem_sk  = h'41524b472d4b454d2d454344482d4b472e41524b472d454344482e41524b472d50323536'
+k_prime     = h'fa027ebc49603a2a41052479f6e9f6d046175df2f00cecb403f53ffcd1cc698f'
+c_prime     = h'0487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+info_mk     = h'41524b472d4b454d2d484d41432d6d61632e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+mk          = h'd342e45f224a7278f11cf1468922c8879f4529125181d4159e4bf9ee69842f04'
+t           = h'81c4e65b552e52350b49864b98b87d51'
+info_k      = h'41524b472d4b454d2d484d41432d7368617265642e41524b472d454344482e41524b472d5032353641524b472d4465726976652d4b65792d4b454d2e1841524b472d503235362e7465737420766563746f72732e30'
+k           = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+c           = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+ikm_tau     = h'cde7e271f8da72e5fd2557de362420ddb170dce520362131670eb1080823a113'
+DST_tau     = h'41524b472d424c2d45432e41524b472d5032353641524b472d4465726976652d4b65792d424c2e1841524b472d503235362e7465737420766563746f72732e30'
+tau         = 0x513ea417b6cdc3536178fa81da36b4e5ecdc142c2d46a52e05257f21794e3789
+pk_prime    = h'04b79b65d6bbb419ff97006a1bd52e3f4ad53042173992423e06e52987a037cb61
+                  dd82b126b162e4e7e8dc5c9fd86e82769d402a1968c7c547ef53ae4f96e10b0e'
+kh          = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91b220e04c681074ec4692a76ffacb9043dec2847ea9060fd42da267f66852e63589f0c00dc88f290d660c65a65a50c86361'
+
+; Derive-Private-Key:
+sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
+~~~
+
+
+## Other instances
 TODO
 
 
 # Document History
 
-- 00 Initial Version
+-10
 
-- 01 Editorial Fixes to formatting and references.
+* Fixed `tau` misspelled as `tau'` in body of `BL-Blind-Private-Key`
+  in section "Using elliptic curve addition for key blinding".
+* Fixed definitions and references misspelling ESP512 as ESP521.
 
-- 02
-  - Rewritten introduction.
-  - Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
-  - Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
-  - Eliminated top-level MAC and KDF instance parameters.
-  - Added info parameter to instance parameter functions.
-  - Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
-  - Added curve/edwards25519/448 instances.
-  - Added proposal for COSE bindings and key reference types.
+-09
 
-- 03
-  - Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
-  - Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
-  - Added reference to Shoup for definition of key encapsulation mechanism.
-  - Added CDDL definition of COSE_Key_Ref
-  - Editorial fixes to references.
-  - Renamed proposed COSE Key Types.
+* Fixed `hash_to_field` argument `ikm_tau` misnamed as `tau`
+  in section "Using elliptic curve addition for key blinding".
+* Updated to match draft -02 of [I-D.lundberg-cose-split-algs].
+  * COSE algorithm identifier definitions for ARKG instances moved
+    from section "COSE key type: ARKG public seed" to new section "COSE algorithms".
+  * Added COSE algorithm identifier definitions for signature algorithms with key derived using ARKG.
+  * COSE key type `Ref-ARKG-Derived` deleted in favour of new `COSE_Sign_Args` algorithm parameters.
+  * Section "COSE key reference type: ARKG derived private key" replaced
+    with "COSE signing arguments".
+  * Added section "COSE Signing Arguments Algorithm Parameters Registrations"
+
+-08
+
+* Fixed incorrectly swapped `ikm_bl` and `ikm_kem` arguments in `ARKG-Derive-Seed` definition.
+* Extracted parameter function `BL-PRF` and modified signatures
+  of `BL-Blind-Public-Key` and `BL-Blind-Private-Key` accordingly.
+  This is an editorial refactorization; overall operation of concrete ARKG instances is unchanged.
+* Removed three redundant sets of ARKG-P256 test vectors.
+* Added intermediate values to ARKG-P256 test vectors.
+* Changed second set of ARKG-P256 test vectors to use a 32-byte `ikm` instead of `h'00'`.
+* Clarified in sections "Using HMAC to adapt a KEM without ciphertext integrity", "Using ECDH as the KEM"
+  and "Using X25519 or X448 as the KEM" that `ctx_sub` is intentionally ignored in those instances.
+
+-07
+
+* Fixed hash_to_field DST in `Sub-Kem-Derive-Key-Pair` in section "Using ECDH as the KEM"
+  to agree with test vectors.
+
+-06
+
+* Changed DST construction in section "Using ECDH as the KEM" to include the "ARKG-ECDH." prefix everywhere in the formula.
+  Previously the prefix was added in the argument to the "Using HMAC to adapt a KEM without ciphertext integrity" formula
+  but not in the Sub-Kem functions defined in "Using ECDH as the KEM".
+
+-05
+
+* Deleted concrete instances `ARKG-curve25519ADD-X25519`, `ARKG-curve448ADD-X448`,
+  `ARKG-edwards25519ADD-X25519` and `ARKG-edwards448ADD-X448`
+  since implementations with a non-prime order generator, including EdDSA,
+  are incompatible with the additive blinding scheme defined in section "Using elliptic curve addition for key blinding".
+* Remodeled procedures to be fully deterministic:
+  * `BL-Generate-Keypair()` replaced with `BL-Derive-Key-Pair(ikm)`.
+  * `KEM-Generate-Keypair()` replaced with `KEM-Derive-Key-Pair(ikm)`.
+  * `ARKG-Generate-Seed()` replaced with `ARKG-Derive-Seed(ikm_bl, ikm_kem)`.
+  * Parameter `ikm` added to `ARKG-Derive-Public-Key`.
+  * Instance parameter `hash-to-crv-suite` added to generic formula "Using ECDH as the KEM",
+    affecting concrete instances `ARKG-P256ADD-ECDH`, `ARKG-P384ADD-ECDH`, `ARKG-P521ADD-ECDH` and `ARKG-P256kADD-ECDH`.
+  * Section "Deterministic key generation" deleted.
+* Flipped order of `(pk_bl, pk_kem)` and `(sk_bl, sk_kem)` parameter and return value tuples
+  for consistent ordering between BL and KEM throughout document.
+* `info` parameter renamed to `ctx`.
+* `ctx` length limited to at most 64 bytes.
+* Encoding of `ctx` in `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key` now embeds the length of `ctx`.
+* Renamed concrete instances and corresponding `DST_ext` values:
+  - `ARKG-P256ADD-ECDH` to `ARKG-P256`
+  - `ARKG-P384ADD-ECDH` to `ARKG-P384`
+  - `ARKG-P521ADD-ECDH` to `ARKG-P521`
+  - `ARKG-P256kADD-ECDH` to `ARKG-P256k`
+* Added ARKG-P256 test vectors.
+
+-04
+
+* Extracted COSE_Key_Ref definition and COSE algorithm registrations to draft-lundberg-cose-two-party-signing-algs.
+* Redefined alg (3) parameter and added dkalg (-3) in ARKG-pub COSE_Key.
+* Defined alg (3) and inst (-3) parameters of Ref-ARKG-derived COSE key type.
+
+-03
+
+* Renamed section "Using HMAC to adapt a KEM without {integrity protection => ciphertext integrity}".
+* Fixed info argument to HMAC in section "Using HMAC to adapt a KEM without ciphertext integrity".
+* Added reference to Shoup for definition of key encapsulation mechanism.
+* Added CDDL definition of COSE_Key_Ref.
+* Editorial fixes to references.
+* Renamed proposed COSE Key Types.
+
+-02
+
+* Rewritten introduction.
+* Renamed ARKG-Derive-Secret-Key to ARKG-Derive-Private-Key.
+* Overhauled EC instantiations to use hash_to_field and account for non-prime order curve key generation.
+* Eliminated top-level MAC and KDF instance parameters.
+* Added info parameter to instance parameter functions.
+* Added requirement of KEM ciphertext integrity and generic formula for augmenting any KEM using HMAC.
+* Added curve/edwards25519/448 instances.
+* Added proposal for COSE bindings and key reference types.
+
+-01
+
+* Editorial Fixes to formatting and references.
+
+-00
+
+* Initial Version

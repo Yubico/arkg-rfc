@@ -1,28 +1,27 @@
-name: "Update Editor's Copy"
+name: "Publish New Draft Version"
 
 on:
   push:
-    paths-ignore:
-    - README.md
-    - CONTRIBUTING.md
-    - LICENSE.md
-    - .gitignore
-  pull_request:
-    paths-ignore:
-    - README.md
-    - CONTRIBUTING.md
-    - LICENSE.md
-    - .gitignore
+    tags:
+      - "draft-*"
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Submitter email"
+        default: ""
+        type: string
 
 jobs:
   build:
-    name: "Update Editor's Copy"
+    name: "Publish New Draft Version"
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
     - name: "Checkout"
       uses: actions/checkout@v4
+
+    # See https://github.com/actions/checkout/issues/290
+    - name: "Get Tag Annotations"
+      run: git fetch -f origin ${{ github.ref }}:${{ github.ref }}
 
     - name: "Setup"
       id: setup
@@ -45,16 +44,14 @@ jobs:
       with:
         token: ${{ github.token }}
 
-    - name: "Update GitHub Pages"
+    - name: "Upload to Datatracker"
       uses: martinthomson/i-d-template@v1
-      if: ${{ github.event_name == 'push' }}
       with:
-        make: gh-pages
-        token: ${{ github.token }}
+        make: upload
+      env:
+        UPLOAD_EMAIL: ${{ inputs.email }}
 
-    - name: "Archive Built Drafts"
+    - name: "Archive Submitted Drafts"
       uses: actions/upload-artifact@v4
       with:
-        path: |
-          draft-*.html
-          draft-*.txt
+        path: "versioned/draft-*-[0-9][0-9].*"
