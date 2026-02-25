@@ -3156,9 +3156,9 @@ depend on <span>[<a href="#I-D.lundberg-cose-split-algs" class="cite xref">I-D.l
         <h3 id="name-future-work">
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-future-work" class="section-name selfRef">Future Work</a>
         </h3>
-<p id="section-10.2-1">Hierarchical Deterministic Keys <span>[<a href="#I-D.dijkhuis-cfrg-hdkeys" class="cite xref">I-D.dijkhuis-cfrg-hdkeys</a>]</span> is a possible application of ARKG
+<p id="section-10.2-1">Hierarchical Deterministic Keys (HDK) <span>[<a href="#I-D.dijkhuis-cfrg-hdkeys" class="cite xref">I-D.dijkhuis-cfrg-hdkeys</a>]</span> is a possible application of ARKG
 which has identified a limitation in the present construction,
-as discussed in GitHub issue <span><a href="https://github.com/sander/hierarchical-deterministic-keys/issues/94">https://github.com/sander/hierarchical-deterministic-keys/issues/94</a></span> .
+as discussed in <a href="https://github.com/sander/hierarchical-deterministic-keys/issues/94">HDK GitHub issue #94</a>.
 ARKG can be used recursively - for example, ARKG-P256 can be used to derive P-256 keys that are themselves used as ARKG seeds -
 but then requires one invocation of <code>ARKG-Derive-Private-Key</code> per layer of recursion
 in order to derive higher-layer private keys.
@@ -3166,9 +3166,8 @@ This can be an issue if the base ARKG private seed is hardware-bound,
 since it would require multiple calls to the secure hardware device,
 especially if each of those calls requires a user gesture for authorization.
 Therefore a modified ARKG construction has been proposed,
+along with a <a href="https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf">draft for a potential security proof</a>,
 which enables multiple layers of recursive ARKG to be condensed into a single invocation of <code>ARKG-Derive-Private-Key</code>.
-A draft potential security proof for this construction is available at
-<span><a href="https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf">https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf</a></span> .
 We would have liked to use this modified construction in this specification,
 but have not been able to get the potential proof appropriately peer reviewed in a timely manner,
 so prototypes have moved forward with the present construction.
