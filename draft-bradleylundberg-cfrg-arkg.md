@@ -266,7 +266,7 @@ The subordinate party can then use the public seed to generate derived public ke
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.
 
 This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
-as opposed to the internal random sampling typically used in the academic literature [Frymann2020][] [Wilson][] [Clermont][].
+as opposed to the internal random sampling typically used in the academic literature [CCS:FGKLMN20][] [Wilson2023][] [AC:BreCleFis24][].
 Implementations MAY choose to instead implement the `ARKG-Derive-Seed` and `KEM-Encaps` functions
 as nondeterministic procedures omitting their respective `ikm` parameters
 and sampling random entropy internally;
@@ -1261,7 +1261,7 @@ Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Wilson [Wilson2023].
+were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [EUROSP:FryGarMan23] and Wilson [Wilson2023].
 
 This document adopts the construction proposed by Wilson [Wilson2023],
 modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
