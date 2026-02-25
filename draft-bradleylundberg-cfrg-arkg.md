@@ -1246,9 +1246,63 @@ Hence if one can break PK-unlinkability or SK-security of the ARKG construction 
 one can also break the same property of the construction by Frymann et al.
 
 
-## Implementation Status
+# Implementation Status {#impl-status}
 
-TODO
+This section is to be removed from the specification by the RFC Editor before publication as an RFC.
+
+There are currently two known implementations using features defined by this specification:
+
+- [wwWallet](https://github.com/wwWallet), an EU Digital Identity pilot project.
+  wwWallet was entered into the
+  ["EUDI Wallet Prototypes" competition held by SprinD GmbH](https://www.sprind.org/en/actions/challenges/eudi-wallet-prototypes),
+  and a branch of the wallet was submitted in the competition.
+  The competition entry implements ARKG
+  for efficiently generating single-use hardware-bound holder binding keys.
+
+  The [implementation](https://github.com/gunet/funke-s3a-wallet-frontend/blob/stage-3/src/services/keystore.ts)
+  uses the `COSE_Key_Ref` data structure defined in version 01 of [I-D.lundberg-cose-split-algs]
+  in order to send ARKG inputs to a WebAuthn authenticator,
+  and uses the placeholder value for ESP256-split-ARKG defined in {{cose-algs-arkg}}
+  to negotiate creation and usage of ARKG-derived keys for signing operations.
+  Work to update the implementation to instead use `COSE_Sign_Args`
+  as defined in version 05 of [I-D.lundberg-cose-split-algs] is ongoing.
+
+- [Yubico](https://www.yubico.com/), a hardware security key vendor,
+  has produced limited-availability prototypes of their YubiKey product
+  with an ARKG implementation interoperable with wwWallet.
+  The YubiKey implementation uses the `COSE_Sign_Args` data structure defined in version 05 of [I-D.lundberg-cose-split-algs]
+  to receive ARKG inputs from a WebAuthn Relying Party,
+  and uses the placeholder value for ESP256-split-ARKG defined in {{cose-algs-arkg}}
+  to negotiate creation and usage of ARKG-derived keys for signing operations.
+
+{{tbl-impl-status-matrix}} summarizes implementation status for individual features.
+
+{: #tbl-impl-status-matrix title="Implementation status of individual features."}
+| Feature           | Implementations  |
+| ----------------- | ---------------- |
+| ARKG-P256         | wwWallet, Yubico |
+| ARKG-P384         | - |
+| ARKG-P521         | - |
+| ARKG-P256k        | - |
+| ESP256-ARKG       | - |
+| ESP256-split-ARKG | wwWallet, Yubico |
+| ESP384-ARKG       | - |
+| ESP384-split-ARKG | - |
+| ESP512-ARKG       | - |
+| ESP512-split-ARKG | - |
+| ES256K-ARKG       | - |
+| `COSE_Sign_Args`  | wwWallet, Yubico |
+
+
+## Related Internet-Drafts {#impl-status-dependencies}
+
+Parts of this specification depend upon definitions from [I-D.lundberg-cose-split-algs]:
+
+- The algorithm identifiers ESP256-split-ARKG, ESP384-split-ARKG and ESP512-split-ARKG defined in {{cose-algs-arkg}}
+  depend respectively on the algorithm identifiers ESP256-split, ESP384-split and ESP512-split defined in [I-D.lundberg-cose-split-algs].
+
+- The ARKG-specific `COSE_Sign_Args` parameter definitions in {{cose-sign-args-arkg}}
+  depend on [I-D.lundberg-cose-split-algs] for the definition of the `COSE_Sign_Args` structure.
 
 
 --- back
@@ -1425,6 +1479,7 @@ The authors would like to thank all of these authors for their research and deve
 * Minor editorial clarifications.
 * Updated informative references to research papers and changed citation style for the same.
 * Made "Acknowledgements" and "Document History" sections un-numbered.
+* Added Implementation Status section.
 
 -09
 
