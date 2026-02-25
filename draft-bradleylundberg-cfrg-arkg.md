@@ -135,7 +135,7 @@ informative:
     author:
     - name: Douglas Stebila
     - name: Spencer MacLaren Wilson
-      org: University of Waterloo,
+      org: University of Waterloo
     title: "Quantum-Safe Account Recovery for WebAuthn. ASIACCS '24"
     date: 2023
     target: https://eprint.iacr.org/2024/678
