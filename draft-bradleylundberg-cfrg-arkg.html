@@ -1398,7 +1398,7 @@ This can be repeated with any number of key handles.<a href="#section-1-5.3.1" c
 <p id="section-1-6">Notably, ARKG can be built entirely using established cryptographic primitives.
 The required primitives are a public key blinding scheme and a key encapsulation mechanism (KEM),
 which may in turn use a key derivation function (KDF) and a message authentication code (MAC) scheme.
-Both conventional primitives and quantum-resistant alternatives exist that meet these requirements. <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span><a href="#section-1-6" class="pilcrow">¶</a></p>
+Both conventional primitives and quantum-resistant alternatives exist that meet these requirements. <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span><a href="#section-1-6" class="pilcrow">¶</a></p>
 <div id="requirements-language">
 <section id="section-1.1">
         <h3 id="name-requirements-language">
@@ -1454,7 +1454,7 @@ while keeping the <em>private seed</em> secret.
 The subordinate party can then use the public seed to generate derived public keys and <em>key handles</em>,
 and the delegating party can use the private seed and a key handle to derive the corresponding private key.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">This construction of ARKG is fully deterministic, extracting input entropy as explicit parameters,
-as opposed to the internal random sampling typically used in the academic literature <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> <span>[<a href="#Clermont" class="cite xref">Clermont</a>]</span>.
+as opposed to the internal random sampling typically used in the academic literature <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span> <span>[<a href="#AC_BreCleFis24" class="cite xref">AC_BreCleFis24</a>]</span>.
 Implementations <span class="bcp14">MAY</span> choose to instead implement the <code>ARKG-Derive-Seed</code> and <code>KEM-Encaps</code> functions
 as nondeterministic procedures omitting their respective <code>ikm</code> parameters
 and sampling random entropy internally;
@@ -1471,10 +1471,10 @@ followed by the definitions of the three ARKG functions.<a href="#section-2-3" c
 The parameters of an ARKG instance are:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.1">
-            <p id="section-2.1-2.1.1"><code>BL</code>: An asymmetric key blinding scheme <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>, consisting of:<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-2.1.1"><code>BL</code>: An asymmetric key blinding scheme <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>, consisting of:<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-2.1.2.1">
-                <p id="section-2.1-2.1.2.1.1">Function <code>BL-Derive-Key-Pair(ikm) -&gt; (pk, sk)</code>: Derive a blinding key pair.<a href="#section-2.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-2.1-2.1.2.1.1">Function <code>BL-Generate-Keypair() -&gt; (pk, sk)</code>: Generate a blinding key pair.<a href="#section-2.1-2.1.2.1.1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.1.2">
 Input consists of input keying material entropy <code>ikm</code>.<a href="#section-2.1-2.1.2.1.2" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.2.1.3">
@@ -1513,7 +1513,7 @@ Output consists of the blinded private key <code>sk_tau</code>.<a href="#section
 The representations of <code>pk</code> and <code>pk_tau</code> are defined by the protocol that invokes ARKG.
 The representations of <code>sk</code>, <code>tau</code> and <code>sk_tau</code> are undefined implementation details.<a href="#section-2.1-2.1.4" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.1.5">
-See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.5" class="pilcrow">¶</a></p>
+See <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span> for definitions of security properties required of the key blinding scheme <code>BL</code>.<a href="#section-2.1-2.1.5" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-2.2">
             <p id="section-2.1-2.2.1"><code>KEM</code>: A key encapsulation mechanism <span>[<a href="#Shoup" class="cite xref">Shoup</a>]</span>, consisting of the functions:<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
@@ -1555,7 +1555,7 @@ is required in order to create any ciphertext <code>c</code> that can be success
 <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> describes a general formula for how any KEM can be adapted to include this guarantee.
 <a href="#design-rationale-mac" class="auto internal xref">Section 9.1</a> discusses the reasons for this requirement.<a href="#section-2.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-2.1-2.2.5">
-See <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> for definitions of additional security properties required of the key encapsulation mechanism <code>KEM</code>.<a href="#section-2.1-2.2.5" class="pilcrow">¶</a></p>
+See <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span> for definitions of additional security properties required of the key encapsulation mechanism <code>KEM</code>.<a href="#section-2.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-2.1-3">A concrete ARKG instantiation <span class="bcp14">MUST</span> specify the instantiation
@@ -1771,7 +1771,7 @@ which can be used to define concrete ARKG instantiations.<a href="#section-3-1" 
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-using-elliptic-curve-additi" class="section-name selfRef">Using elliptic curve addition for key blinding</a>
         </h3>
 <p id="section-3.1-1">Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve addition as the key blinding scheme <code>BL</code> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>.
+can use elliptic curve addition as the key blinding scheme <code>BL</code> <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>.
 This section defines a general formula for such instantiations of <code>BL</code>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">This formula has the following parameters:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1960,7 +1960,7 @@ implementations <span class="bcp14">MAY</span> eliminate the parameter and omit 
         <h3 id="name-using-ecdh-as-the-kem">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-using-ecdh-as-the-kem" class="section-name selfRef">Using ECDH as the KEM</a>
         </h3>
-<p id="section-3.3-1">Instantiations of ARKG can use ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span> as the key encapsulation mechanism <code>KEM</code> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>.
+<p id="section-3.3-1">Instantiations of ARKG can use ECDH <span>[<a href="#RFC6090" class="cite xref">RFC6090</a>]</span> as the key encapsulation mechanism <code>KEM</code> <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span>.
 This section defines a general formula for such instantiations of <code>KEM</code>.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">This formula has the following parameters:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2119,7 +2119,7 @@ Sub-Kem-Decaps(sk, c, ctx) -&gt; k
         </h3>
 <p id="section-3.5-1">When an ARKG instance uses the same type of key for both the key blinding and the KEM -
 for example, if elliptic curve arithmetic is used for key blinding as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a>
-and ECDH is used as the KEM as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.3</a> <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> -
+and ECDH is used as the KEM as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.3</a> <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> -
 then the two keys <span class="bcp14">MAY</span> be the same key.
 Representations of such an ARKG seed <span class="bcp14">MAY</span> allow for omitting the second copy of the constituent key,
 but such representations <span class="bcp14">MUST</span> clearly identify that the single constituent key is to be used
@@ -2992,9 +2992,9 @@ in the IANA "COSE Signing Arguments Algorithm Parameters" registry <span>[<a hre
         <h3 id="name-using-a-mac">
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-using-a-mac" class="section-name selfRef">Using a MAC</a>
         </h3>
-<p id="section-9.1-1">The ARKG construction by Wilson <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span> omits the MAC and instead encodes application context in the PRF labels,
+<p id="section-9.1-1">The ARKG construction by Stebila et al. <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span> omits the MAC and instead encodes application context in the PRF labels,
 arguing that this leads to invalid keys/signatures in cases that would have a bad MAC.
-We choose to keep the MAC from the construction by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
+We choose to keep the MAC from the construction by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
 but allow it to be omitted in case the chosen KEM already guarantees ciphertext integrity.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">The reason for this is to ensure that the delegating party can distinguish key handles that belong to its ARKG seed.
 For example, this is important for applications using the W3C Web Authentication API [WebAuthn],
@@ -3012,12 +3012,12 @@ This would make it difficult or impossible to diagnose the root cause of the iss
 For this reason, we require the KEM to guarantee ciphertext integrity
 so that <code>ARKG-Derive-Private-Key</code> can fail early if the key handle belongs to a different ARKG seed.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 <p id="section-9.1-3">It is straightforward to see that adding the MAC to the construction by Wilson
-does not weaken the security properties defined by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>:
+does not weaken the security properties defined by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
 by instantiating <code>BL</code> as described in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a>
 and <code>KEM</code> as described in <a href="#kem-ecdh" class="auto internal xref">Section 3.3</a>.
-The use of hash_to_field in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> corresponds to the KDF<sub>1</sub> parameter in <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
-and the use of HMAC and HKDF in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> corresponds to the MAC and KDF<sub>2</sub> parameters in <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>.
+The use of hash_to_field in <a href="#blinding-ec" class="auto internal xref">Section 3.1</a> corresponds to the KDF<sub>1</sub> parameter in <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
+and the use of HMAC and HKDF in <a href="#hmac-kem" class="auto internal xref">Section 3.2</a> corresponds to the MAC and KDF<sub>2</sub> parameters in <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.
 Hence if one can break PK-unlinkability or SK-security of the ARKG construction in this document,
 one can also break the same property of the construction by Frymann et al.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -3124,19 +3124,23 @@ one can also break the same property of the construction by Frymann et al.<a hre
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="AC_BreCleFis24">[AC_BreCleFis24]</dt>
+        <dd>
+<span class="refAuthor">Brendel, J.</span>, <span class="refAuthor">Clermont, S.</span>, and <span class="refAuthor">M. Fischlin</span>, <span class="refTitle">"Post-Quantum Asynchronous Remote Key Generation for FIDO2 Account Recovery. ASIACRYPT '24"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/1275">https://eprint.iacr.org/2023/1275</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ASIACCS_SteWil24">[ASIACCS_SteWil24]</dt>
+        <dd>
+<span class="refAuthor">Stebila, D.</span> and <span class="refAuthor">S. M. Wilson</span>, <span class="refTitle">"Quantum-Safe Account Recovery for WebAuthn. ASIACCS '24"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2024/678">https://eprint.iacr.org/2024/678</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="BIP32">[BIP32]</dt>
         <dd>
 <span class="refAuthor">Wuille, P.</span>, <span class="refTitle">"BIP 32 Hierarchical Deterministic Wallets"</span>, <time datetime="2012" class="refDate">2012</time>, <span>&lt;<a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="Clermont">[Clermont]</dt>
-        <dd>
-<span class="refAuthor">Clermont, S. A.</span>, <span class="refTitle">"Post Quantum Asynchronous Remote Key Generation. Master's thesis"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf">https://www.cryptoplexity.informatik.tu-darmstadt.de/media/crypt/teaching_1/theses_1/Sebastian_Clermont_Thesis.pdf</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="Frymann2020">[Frymann2020]</dt>
+<dt id="CCS_FGKLMN20">[CCS_FGKLMN20]</dt>
         <dd>
 <span class="refAuthor">Frymann, N.</span>, <span class="refAuthor">Gardham, D.</span>, <span class="refAuthor">Kiefer, F.</span>, <span class="refAuthor">Lundberg, E.</span>, <span class="refAuthor">Manulis, M.</span>, and <span class="refAuthor">D. Nilsson</span>, <span class="refTitle">"Asynchronous Remote Key Generation: An Analysis of Yubico's Proposal for W3C WebAuthn. CCS '20: Proceedings of the 2020 ACM SIGSAC Conference on Computer and Communications Security"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://eprint.iacr.org/2020/1004">https://eprint.iacr.org/2020/1004</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="Frymann2023">[Frymann2023]</dt>
+<dt id="EUROSP_FryGarMan23">[EUROSP_FryGarMan23]</dt>
         <dd>
 <span class="refAuthor">Frymann, N.</span>, <span class="refAuthor">Gardham, D.</span>, and <span class="refAuthor">M. Manulis</span>, <span class="refTitle">"Asynchronous Remote Key Generation for Post-Quantum Cryptosystems from Lattices. 2023 IEEE 8th European Symposium on Security and Privacy"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/419">https://eprint.iacr.org/2023/419</a>&gt;</span>. </dd>
 <dd class="break"></dd>
@@ -3148,7 +3152,7 @@ one can also break the same property of the construction by Frymann et al.<a hre
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">D. Nilsson</span>, <span class="refTitle">"WebAuthn recovery extension: Asynchronous delegated key generation without shared secrets. GitHub"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://github.com/Yubico/webauthn-recovery-extension">https://github.com/Yubico/webauthn-recovery-extension</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="Wilson">[Wilson]</dt>
+<dt id="Wilson2023">[Wilson2023]</dt>
       <dd>
 <span class="refAuthor">Wilson, S. M.</span>, <span class="refTitle">"Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="http://hdl.handle.net/10012/19316">http://hdl.handle.net/10012/19316</a>&gt;</span>. </dd>
 <dd class="break"></dd>
@@ -3162,16 +3166,19 @@ one can also break the same property of the construction by Frymann et al.<a hre
       <h2 id="name-acknowledgements">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="appendix-A-1">ARKG was first proposed under this name by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>,
+<p id="appendix-A-1">ARKG was first proposed under this name by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
 who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson <span>[<a href="#WebAuthn-Recovery" class="cite xref">WebAuthn-Recovery</a>]</span>,
 which was in turn inspired by a similar construction by Wuille <span>[<a href="#BIP32" class="cite xref">BIP32</a>]</span> used to create privacy-preserving Bitcoin addresses.
-Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span> generalized the constructions by Lundberg, Nilsson and Wuille
+Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> generalized the constructions by Lundberg, Nilsson and Wuille
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Clermont <span>[<a href="#Clermont" class="cite xref">Clermont</a>]</span>, Frymann et al. <span>[<a href="#Frymann2023" class="cite xref">Frymann2023</a>]</span> and Wilson <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">This document adopts the construction proposed by Wilson <span>[<a href="#Wilson" class="cite xref">Wilson</a>]</span>,
-modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. <span>[<a href="#Frymann2020" class="cite xref">Frymann2020</a>]</span>.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+were developed independently by Brendel et al. <span>[<a href="#AC_BreCleFis24" class="cite xref">AC_BreCleFis24</a>]</span>, Frymann et al. <span>[<a href="#EUROSP_FryGarMan23" class="cite xref">EUROSP_FryGarMan23</a>]</span> and Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">This document adopts the construction proposed by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>,
+modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.
+The construction by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span> was later refined by Stebila et al. <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span>,
+but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
+which is not one-for-one compatible with the construction in the present revision of this specification.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <p id="appendix-A-3">The authors would like to thank all of these authors for their research and development work that led to the creation of this document.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 </section>
 </div>

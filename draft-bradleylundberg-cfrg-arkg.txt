@@ -189,7 +189,7 @@ Table of Contents
    and a key encapsulation mechanism (KEM), which may in turn use a key
    derivation function (KDF) and a message authentication code (MAC)
    scheme.  Both conventional primitives and quantum-resistant
-   alternatives exist that meet these requirements.  [Wilson]
+   alternatives exist that meet these requirements.  [ASIACCS_SteWil24]
 
 1.1.  Requirements Language
 
@@ -232,11 +232,11 @@ Table of Contents
 
    This construction of ARKG is fully deterministic, extracting input
    entropy as explicit parameters, as opposed to the internal random
-   sampling typically used in the academic literature [Frymann2020]
-   [Wilson] [Clermont].  Implementations MAY choose to instead implement
-   the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
-   procedures omitting their respective ikm parameters and sampling
-   random entropy internally; this choice does not affect
+   sampling typically used in the academic literature [CCS_FGKLMN20]
+   [Wilson2023] [AC_BreCleFis24].  Implementations MAY choose to instead
+   implement the ARKG-Derive-Seed and KEM-Encaps functions as
+   nondeterministic procedures omitting their respective ikm parameters
+   and sampling random entropy internally; this choice does not affect
    interoperability between the functions ARKG-Derive-Seed, ARKG-Derive-
    Public-Key and ARKG-Derive-Private-Key.
 
@@ -249,9 +249,9 @@ Table of Contents
    ARKG is composed of a suite of other algorithms.  The parameters of
    an ARKG instance are:
 
-   *  BL: An asymmetric key blinding scheme [Wilson], consisting of:
+   *  BL: An asymmetric key blinding scheme [Wilson2023], consisting of:
 
-      -  Function BL-Derive-Key-Pair(ikm) -> (pk, sk): Derive a blinding
+      -  Function BL-Generate-Keypair() -> (pk, sk): Generate a blinding
          key pair.
 
          Input consists of input keying material entropy ikm.
@@ -292,8 +292,8 @@ Table of Contents
       that invokes ARKG.  The representations of sk, tau and sk_tau are
       undefined implementation details.
 
-      See [Wilson] for definitions of security properties required of
-      the key blinding scheme BL.
+      See [Wilson2023] for definitions of security properties required
+      of the key blinding scheme BL.
 
    *  KEM: A key encapsulation mechanism [Shoup], consisting of the
       functions:
@@ -335,8 +335,8 @@ Table of Contents
       adapted to include this guarantee.  Section 9.1 discusses the
       reasons for this requirement.
 
-      See [Wilson] for definitions of additional security properties
-      required of the key encapsulation mechanism KEM.
+      See [ASIACCS_SteWil24] for definitions of additional security
+      properties required of the key encapsulation mechanism KEM.
 
    A concrete ARKG instantiation MUST specify the instantiation of each
    of the above functions.
@@ -536,8 +536,8 @@ Table of Contents
 
    Instantiations of ARKG whose output keys are elliptic curve keys can
    use elliptic curve addition as the key blinding scheme BL
-   [Frymann2020] [Wilson].  This section defines a general formula for
-   such instantiations of BL.
+   [CCS_FGKLMN20] [Wilson2023].  This section defines a general formula
+   for such instantiations of BL.
 
    This formula has the following parameters:
 
@@ -704,8 +704,8 @@ Table of Contents
 3.3.  Using ECDH as the KEM
 
    Instantiations of ARKG can use ECDH [RFC6090] as the key
-   encapsulation mechanism KEM [Frymann2020] [Wilson].  This section
-   defines a general formula for such instantiations of KEM.
+   encapsulation mechanism KEM [CCS_FGKLMN20] [ASIACCS_SteWil24].  This
+   section defines a general formula for such instantiations of KEM.
 
    This formula has the following parameters:
 
@@ -835,9 +835,9 @@ Table of Contents
    When an ARKG instance uses the same type of key for both the key
    blinding and the KEM - for example, if elliptic curve arithmetic is
    used for key blinding as described in Section 3.1 and ECDH is used as
-   the KEM as described in Section 3.3 [Frymann2020] - then the two keys
-   MAY be the same key.  Representations of such an ARKG seed MAY allow
-   for omitting the second copy of the constituent key, but such
+   the KEM as described in Section 3.3 [CCS_FGKLMN20] - then the two
+   keys MAY be the same key.  Representations of such an ARKG seed MAY
+   allow for omitting the second copy of the constituent key, but such
    representations MUST clearly identify that the single constituent key
    is to be used both as the key blinding key and the KEM key.
 
@@ -1394,12 +1394,13 @@ Table of Contents
 
 9.1.  Using a MAC
 
-   The ARKG construction by Wilson [Wilson] omits the MAC and instead
-   encodes application context in the PRF labels, arguing that this
-   leads to invalid keys/signatures in cases that would have a bad MAC.
-   We choose to keep the MAC from the construction by Frymann et al.
-   [Frymann2020], but allow it to be omitted in case the chosen KEM
-   already guarantees ciphertext integrity.
+   The ARKG construction by Stebila et al.  [ASIACCS_SteWil24] omits the
+   MAC and instead encodes application context in the PRF labels,
+   arguing that this leads to invalid keys/signatures in cases that
+   would have a bad MAC.  We choose to keep the MAC from the
+   construction by Frymann et al.  [CCS_FGKLMN20], but allow it to be
+   omitted in case the chosen KEM already guarantees ciphertext
+   integrity.
 
    The reason for this is to ensure that the delegating party can
    distinguish key handles that belong to its ARKG seed.  For example,
@@ -1425,13 +1426,13 @@ Table of Contents
 
    It is straightforward to see that adding the MAC to the construction
    by Wilson does not weaken the security properties defined by Frymann
-   et al.  [Frymann2020]: the construction by Frymann et al. can be
+   et al.  [CCS_FGKLMN20]: the construction by Frymann et al. can be
    reduced to the ARKG construction in this document by instantiating BL
    as described in Section 3.1 and KEM as described in Section 3.3.  The
    use of hash_to_field in Section 3.1 corresponds to the KDF_1
-   parameter in [Frymann2020], and the use of HMAC and HKDF in
+   parameter in [CCS_FGKLMN20], and the use of HMAC and HKDF in
    Section 3.2 corresponds to the MAC and KDF_2 parameters in
-   [Frymann2020].  Hence if one can break PK-unlinkability or SK-
+   [CCS_FGKLMN20].  Hence if one can break PK-unlinkability or SK-
    security of the ARKG construction in this document, one can also
    break the same property of the construction by Frymann et al.
 
@@ -1533,17 +1534,22 @@ Table of Contents
 
 10.2.  Informative References
 
+   [AC_BreCleFis24]
+              Brendel, J., Clermont, S., and M. Fischlin, "Post-Quantum
+              Asynchronous Remote Key Generation for FIDO2 Account
+              Recovery. ASIACRYPT '24", 2023,
+              <https://eprint.iacr.org/2023/1275>.
+
+   [ASIACCS_SteWil24]
+              Stebila, D. and S. M. Wilson, "Quantum-Safe Account
+              Recovery for WebAuthn. ASIACCS '24", 2023,
+              <https://eprint.iacr.org/2024/678>.
+
    [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
               0032.mediawiki>.
 
-   [Clermont] Clermont, S. A., "Post Quantum Asynchronous Remote Key
-              Generation. Master's thesis", 2022,
-              <https://www.cryptoplexity.informatik.tu-
-              darmstadt.de/media/crypt/teaching_1/theses_1/
-              Sebastian_Clermont_Thesis.pdf>.
-
-   [Frymann2020]
+   [CCS_FGKLMN20]
               Frymann, N., Gardham, D., Kiefer, F., Lundberg, E.,
               Manulis, M., and D. Nilsson, "Asynchronous Remote Key
               Generation: An Analysis of Yubico's Proposal for W3C
@@ -1551,7 +1557,7 @@ Table of Contents
               Conference on Computer and Communications Security", 2020,
               <https://eprint.iacr.org/2020/1004>.
 
-   [Frymann2023]
+   [EUROSP_FryGarMan23]
               Frymann, N., Gardham, D., and M. Manulis, "Asynchronous
               Remote Key Generation for Post-Quantum Cryptosystems from
               Lattices. 2023 IEEE 8th European Symposium on Security and
@@ -1567,27 +1573,34 @@ Table of Contents
               secrets. GitHub", 2019,
               <https://github.com/Yubico/webauthn-recovery-extension>.
 
-   [Wilson]   Wilson, S. M., "Post-Quantum Account Recovery for
+   [Wilson2023]
+              Wilson, S. M., "Post-Quantum Account Recovery for
               Passwordless Authentication. Master's thesis", 2023,
               <http://hdl.handle.net/10012/19316>.
 
 Appendix A.  Acknowledgements
 
    ARKG was first proposed under this name by Frymann et al.
-   [Frymann2020], who analyzed a proposed extension to W3C Web
+   [CCS_FGKLMN20], who analyzed a proposed extension to W3C Web
    Authentication by Lundberg and Nilsson [WebAuthn-Recovery], which was
    in turn inspired by a similar construction by Wuille [BIP32] used to
    create privacy-preserving Bitcoin addresses.  Frymann et al.
-   [Frymann2020] generalized the constructions by Lundberg, Nilsson and
+   [CCS_FGKLMN20] generalized the constructions by Lundberg, Nilsson and
    Wuille from elliptic curves to any discrete logarithm (DL) problem,
    and also proved the security of arbitrary asymmetric protocols
    composed with ARKG.  Further generalizations to include quantum-
-   resistant instantiations were developed independently by Clermont
-   [Clermont], Frymann et al.  [Frymann2023] and Wilson [Wilson].
+   resistant instantiations were developed independently by Brendel et
+   al.  [AC_BreCleFis24], Frymann et al.  [EUROSP_FryGarMan23] and
+   Wilson [Wilson2023].
 
-   This document adopts the construction proposed by Wilson [Wilson],
-   modified by the inclusion of a MAC in the key handles as done in the
-   original construction by Frymann et al.  [Frymann2020].
+   This document adopts the construction proposed by Wilson
+   [Wilson2023], modified by the inclusion of a MAC in the key handles
+   as done in the original construction by Frymann et al.
+   [CCS_FGKLMN20].  The construction by Wilson [Wilson2023] was later
+   refined by Stebila et al.  [ASIACCS_SteWil24], but this revision
+   replaced the "key blinding scheme" component with a "key-blinding
+   signature scheme" component which is not one-for-one compatible with
+   the construction in the present revision of this specification.
 
    The authors would like to thank all of these authors for their
    research and development work that led to the creation of this
