@@ -1253,26 +1253,6 @@ TODO
 
 --- back
 
-# Acknowledgements
-
-ARKG was first proposed under this name by Frymann et al. [CCS:FGKLMN20],
-who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson [WebAuthn-Recovery],
-which was in turn inspired by a similar construction by Wuille [BIP32] used to create privacy-preserving Bitcoin addresses.
-Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson and Wuille
-from elliptic curves to any discrete logarithm (DL) problem,
-and also proved the security of arbitrary asymmetric protocols composed with ARKG.
-Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [EUROSP:FryGarMan23] and Wilson [Wilson2023].
-
-This document adopts the construction proposed by Wilson [Wilson2023],
-modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
-The construction by Wilson [Wilson2023] was later refined by Stebila et al. [ASIACCS:SteWil24],
-but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
-which is not one-for-one compatible with the construction in the present revision of this specification.
-
-The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
-
-
 # Test Vectors
 
 This section lists test vectors for validating implementations.
@@ -1413,7 +1393,29 @@ sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 TODO
 
 
+# Acknowledgements
+{: numbered="false"}
+
+ARKG was first proposed under this name by Frymann et al. [CCS:FGKLMN20],
+who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson [WebAuthn-Recovery],
+which was in turn inspired by a similar construction by Wuille [BIP32] used to create privacy-preserving Bitcoin addresses.
+Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson and Wuille
+from elliptic curves to any discrete logarithm (DL) problem,
+and also proved the security of arbitrary asymmetric protocols composed with ARKG.
+Further generalizations to include quantum-resistant instantiations
+were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [EUROSP:FryGarMan23] and Wilson [Wilson2023].
+
+This document adopts the construction proposed by Wilson [Wilson2023],
+modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
+The construction by Wilson [Wilson2023] was later refined by Stebila et al. [ASIACCS:SteWil24],
+but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
+which is not one-for-one compatible with the construction in the present revision of this specification.
+
+The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
+
+
 # Document History
+{: numbered="false"}
 
 -10
 
@@ -1422,6 +1424,7 @@ TODO
 * Fixed definitions and references misspelling ESP512 as ESP521.
 * Minor editorial clarifications.
 * Updated informative references to research papers and changed citation style for the same.
+* Made "Acknowledgements" and "Document History" sections un-numbered.
 
 -09
 
