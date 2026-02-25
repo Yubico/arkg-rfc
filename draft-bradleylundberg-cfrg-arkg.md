@@ -1421,6 +1421,7 @@ TODO
   in section "Using elliptic curve addition for key blinding".
 * Fixed definitions and references misspelling ESP512 as ESP521.
 * Minor editorial clarifications.
+* Updated informative references to research papers and changed citation style for the same.
 
 -09
 
