@@ -107,10 +107,12 @@ Table of Contents
      8.4.  COSE Signing Arguments Algorithm Parameters Registrations
    9.  Design rationale
      9.1.  Using a MAC
-     9.2.  Implementation Status
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   10. Implementation Status
+     10.1.  Related Internet-Drafts
+     10.2.  Future Work
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  ARKG-P256
      A.2.  Other instances
@@ -1436,13 +1438,119 @@ Table of Contents
    security of the ARKG construction in this document, one can also
    break the same property of the construction by Frymann et al.
 
-9.2.  Implementation Status
+10.  Implementation Status
 
-   TODO
+   This section is to be removed from the specification by the RFC
+   Editor before publication as an RFC.
 
-10.  References
+   There are currently two known implementations using features defined
+   by this specification:
 
-10.1.  Normative References
+   *  wwWallet (https://github.com/wwWallet), an EU Digital Identity
+      pilot project. wwWallet was entered into the "EUDI Wallet
+      Prototypes" competition held by SprinD GmbH
+      (https://www.sprind.org/en/actions/challenges/eudi-wallet-
+      prototypes), and a branch of the wallet was submitted in the
+      competition.  The competition entry implements ARKG for
+      efficiently generating single-use hardware-bound holder binding
+      keys.
+
+      The implementation (https://github.com/gunet/funke-s3a-wallet-
+      frontend/blob/stage-3/src/services/keystore.ts) uses the
+      COSE_Key_Ref data structure defined in version 01 of
+      [I-D.lundberg-cose-split-algs] in order to send ARKG inputs to a
+      WebAuthn authenticator, and uses the placeholder value for ESP256-
+      split-ARKG defined in Section 5.2 to negotiate creation and usage
+      of ARKG-derived keys for signing operations.  Work to update the
+      implementation to instead use COSE_Sign_Args as defined in version
+      05 of [I-D.lundberg-cose-split-algs] is ongoing.
+
+   *  Yubico (https://www.yubico.com/), a hardware security key vendor,
+      has produced limited-availability prototypes of their YubiKey
+      product with an ARKG implementation interoperable with wwWallet.
+      The YubiKey implementation uses the COSE_Sign_Args data structure
+      defined in version 05 of [I-D.lundberg-cose-split-algs] to receive
+      ARKG inputs from a WebAuthn Relying Party, and uses the
+      placeholder value for ESP256-split-ARKG defined in Section 5.2 to
+      negotiate creation and usage of ARKG-derived keys for signing
+      operations.
+
+   Table 5 summarizes implementation status for individual features.
+
+                 +===================+==================+
+                 | Feature           | Implementations  |
+                 +===================+==================+
+                 | ARKG-P256         | wwWallet, Yubico |
+                 +-------------------+------------------+
+                 | ARKG-P384         | -                |
+                 +-------------------+------------------+
+                 | ARKG-P521         | -                |
+                 +-------------------+------------------+
+                 | ARKG-P256k        | -                |
+                 +-------------------+------------------+
+                 | ESP256-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP256-split-ARKG | wwWallet, Yubico |
+                 +-------------------+------------------+
+                 | ESP384-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP384-split-ARKG | -                |
+                 +-------------------+------------------+
+                 | ESP512-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP512-split-ARKG | -                |
+                 +-------------------+------------------+
+                 | ES256K-ARKG       | -                |
+                 +-------------------+------------------+
+                 | COSE_Sign_Args    | wwWallet, Yubico |
+                 +-------------------+------------------+
+
+                    Table 5: Implementation status of
+                           individual features.
+
+10.1.  Related Internet-Drafts
+
+   Parts of this specification depend upon definitions from
+   [I-D.lundberg-cose-split-algs]:
+
+   *  The algorithm identifiers ESP256-split-ARKG, ESP384-split-ARKG and
+      ESP512-split-ARKG defined in Section 5.2 depend respectively on
+      the algorithm identifiers ESP256-split, ESP384-split and
+      ESP512-split defined in [I-D.lundberg-cose-split-algs].
+
+   *  The ARKG-specific COSE_Sign_Args parameter definitions in
+      Section 5.3 depend on [I-D.lundberg-cose-split-algs] for the
+      definition of the COSE_Sign_Args structure.
+
+10.2.  Future Work
+
+   Hierarchical Deterministic Keys (HDK) [I-D.dijkhuis-cfrg-hdkeys] is a
+   possible application of ARKG which has identified a limitation in the
+   present construction, as discussed in HDK GitHub issue #94
+   (https://github.com/sander/hierarchical-deterministic-keys/
+   issues/94).  ARKG can be used recursively - for example, ARKG-P256
+   can be used to derive P-256 keys that are themselves used as ARKG
+   seeds - but then requires one invocation of ARKG-Derive-Private-Key
+   per layer of recursion in order to derive higher-layer private keys.
+   This can be an issue if the base ARKG private seed is hardware-bound,
+   since it would require multiple calls to the secure hardware device,
+   especially if each of those calls requires a user gesture for
+   authorization.  Therefore a modified ARKG construction has been
+   proposed, along with a draft for a potential security proof
+   (https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/
+   pqarkg-h.pdf), which enables multiple layers of recursive ARKG to be
+   condensed into a single invocation of ARKG-Derive-Private-Key. We
+   would have liked to use this modified construction in this
+   specification, but have not been able to get the potential proof
+   appropriately peer reviewed in a timely manner, so prototypes have
+   moved forward with the present construction.  The modified
+   construction may be revisited in the future if there is demand for
+   applications, in which case new algorithm identifiers and such can be
+   defined for the modified construction.
+
+11.  References
+
+11.1.  Normative References
 
    [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "Split signing algorithms
@@ -1532,7 +1640,7 @@ Table of Contents
               Domain Parameters", 2010,
               <http://www.secg.org/sec2-v2.pdf>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [AC_BreCleFis24]
               Brendel, J., Clermont, S., and M. Fischlin, "Post-Quantum
@@ -1562,6 +1670,12 @@ Table of Contents
               Remote Key Generation for Post-Quantum Cryptosystems from
               Lattices. 2023 IEEE 8th European Symposium on Security and
               Privacy", 2023, <https://eprint.iacr.org/2023/419>.
+
+   [I-D.dijkhuis-cfrg-hdkeys]
+              Dijkhuis, S., "Hierarchical Deterministic Keys", Work in
+              Progress, Internet-Draft, draft-dijkhuis-cfrg-hdkeys-06,
+              19 January 2025, <https://datatracker.ietf.org/doc/html/
+              draft-dijkhuis-cfrg-hdkeys-06>.
 
    [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
               Encryption (version 2.0)", 2001,
@@ -1754,6 +1868,8 @@ Document History
 
    *  Made "Acknowledgements" and "Document History" sections un-
       numbered.
+
+   *  Added Implementation Status section.
 
    -09
 
