@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 4 May 2026                                      31 October 2025
+Expires: 29 August 2026                                 25 February 2026
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,11 +54,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 May 2026.
+   This Internet-Draft will expire on 29 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -237,7 +237,8 @@ Table of Contents
    the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
    procedures omitting their respective ikm parameters and sampling
    random entropy internally; this choice does not affect
-   interoperability.
+   interoperability between the functions ARKG-Derive-Seed, ARKG-Derive-
+   Public-Key and ARKG-Derive-Private-Key.
 
    The following subsections define the abstract instance parameters
    used to construct the three ARKG functions, followed by the
@@ -388,7 +389,8 @@ Table of Contents
    instead implement ARKG-Derive-Seed, KEM-Derive-Key-Pair and BL-
    Derive-Key-Pair as nondeterministic procedures omitting their
    respective ikm parameters and sampling random entropy internally;
-   this choice does not affect interoperability.
+   this choice does not affect interoperability with ARKG-Derive-Public-
+   Key and ARKG-Derive-Private-Key.
 
 2.3.  The function ARKG-Derive-Public-Key
 
@@ -449,7 +451,7 @@ Table of Contents
    instead implement ARKG-Derive-Public-Key and KEM-Encaps as
    nondeterministic procedures omitting their respective ikm parameter
    and sampling random entropy internally; this choice does not affect
-   interoperability.
+   interoperability with ARKG-Derive-Private-Key.
 
    BL-PRF and BL-Blind-Public-Key must always be deterministic for
    compatibility with ARKG-Derive-Private-Key.
@@ -1444,9 +1446,9 @@ Table of Contents
    [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "Split signing algorithms
               for COSE", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-02, 7 July 2025,
+              lundberg-cose-two-party-signing-algs-05, 23 February 2026,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-02>.
+              cose-two-party-signing-algs-05>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1732,6 +1734,8 @@ Appendix C.  Document History
 
    *  Fixed definitions and references misspelling ESP512 as ESP521.
 
+   *  Minor editorial clarifications.
+
    -09
 
    *  Fixed hash_to_field argument ikm_tau misnamed as tau in section
@@ -1753,7 +1757,7 @@ Appendix C.  Document History
          replaced with "COSE signing arguments".
 
       -  Added section "COSE Signing Arguments Algorithm Parameters
-         Registrations"
+         Registrations".
 
    -08
 
@@ -1890,7 +1894,7 @@ Appendix C.  Document History
 
    -01
 
-   *  Editorial Fixes to formatting and references.
+   *  Editorial fixes to formatting and references
 
    -00
 
