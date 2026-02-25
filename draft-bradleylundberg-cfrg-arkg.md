@@ -83,6 +83,7 @@ normative:
     title: 'SEC 2: Recommended Elliptic Curve Domain Parameters'
 
 informative:
+  I-D.dijkhuis-cfrg-hdkeys: I-D.draft-dijkhuis-cfrg-hdkeys
   BIP32:
     target: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
     title: BIP 32 Hierarchical Deterministic Wallets
@@ -1303,6 +1304,28 @@ Parts of this specification depend upon definitions from [I-D.lundberg-cose-spli
 
 - The ARKG-specific `COSE_Sign_Args` parameter definitions in {{cose-sign-args-arkg}}
   depend on [I-D.lundberg-cose-split-algs] for the definition of the `COSE_Sign_Args` structure.
+
+
+## Future Work {#impl-status-future-work}
+
+Hierarchical Deterministic Keys [I-D.dijkhuis-cfrg-hdkeys] is a possible application of ARKG
+which has identified a limitation in the present construction,
+as discussed in GitHub issue [](https://github.com/sander/hierarchical-deterministic-keys/issues/94) .
+ARKG can be used recursively - for example, ARKG-P256 can be used to derive P-256 keys that are themselves used as ARKG seeds -
+but then requires one invocation of `ARKG-Derive-Private-Key` per layer of recursion
+in order to derive higher-layer private keys.
+This can be an issue if the base ARKG private seed is hardware-bound,
+since it would require multiple calls to the secure hardware device,
+especially if each of those calls requires a user gesture for authorization.
+Therefore a modified ARKG construction has been proposed,
+which enables multiple layers of recursive ARKG to be condensed into a single invocation of `ARKG-Derive-Private-Key`.
+A draft potential security proof for this construction is available at
+[](https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf) .
+We would have liked to use this modified construction in this specification,
+but have not been able to get the potential proof appropriately peer reviewed in a timely manner,
+so prototypes have moved forward with the present construction.
+The modified construction may be revisited in the future if there is demand for applications,
+in which case new algorithm identifiers and such can be defined for the modified construction.
 
 
 --- back
