@@ -139,6 +139,13 @@ informative:
     title: "Quantum-Safe Account Recovery for WebAuthn. ASIACCS '24"
     date: 2023
     target: https://eprint.iacr.org/2024/678
+  Wilson2023:
+    author:
+    - name: Spencer MacLaren Wilson
+      org: University of Waterloo
+    title: "Post-Quantum Account Recovery for Passwordless Authentication. Master's thesis"
+    date: 2023
+    target: http://hdl.handle.net/10012/19316
 
 
 
@@ -274,7 +281,7 @@ followed by the definitions of the three ARKG functions.
 ARKG is composed of a suite of other algorithms.
 The parameters of an ARKG instance are:
 
-- `BL`: An asymmetric key blinding scheme [ASIACCS:SteWil24], consisting of:
+- `BL`: An asymmetric key blinding scheme [Wilson2023], consisting of:
   - Function `BL-Generate-Keypair() -> (pk, sk)`: Generate a blinding key pair.
 
     Input consists of input keying material entropy `ikm`.
@@ -309,7 +316,7 @@ The parameters of an ARKG instance are:
   The representations of `pk` and `pk_tau` are defined by the protocol that invokes ARKG.
   The representations of `sk`, `tau` and `sk_tau` are undefined implementation details.
 
-  See [ASIACCS:SteWil24] for definitions of security properties required of the key blinding scheme `BL`.
+  See [Wilson2023] for definitions of security properties required of the key blinding scheme `BL`.
 
 - `KEM`: A key encapsulation mechanism [Shoup], consisting of the functions:
   - `KEM-Derive-Key-Pair(ikm) -> (pk, sk)`: Derive a key encapsulation key pair.
@@ -542,7 +549,7 @@ which can be used to define concrete ARKG instantiations.
 ## Using elliptic curve addition for key blinding {#blinding-ec}
 
 Instantiations of ARKG whose output keys are elliptic curve keys
-can use elliptic curve addition as the key blinding scheme `BL` [CCS:FGKLMN20]&nbsp;[ASIACCS:SteWil24].
+can use elliptic curve addition as the key blinding scheme `BL` [CCS:FGKLMN20]&nbsp;[Wilson2023].
 This section defines a general formula for such instantiations of `BL`.
 
 This formula has the following parameters:
@@ -1227,7 +1234,7 @@ This would make it difficult or impossible to diagnose the root cause of the iss
 For this reason, we require the KEM to guarantee ciphertext integrity
 so that `ARKG-Derive-Private-Key` can fail early if the key handle belongs to a different ARKG seed.
 
-It is straightforward to see that adding the MAC to the construction by Stebila et al.
+It is straightforward to see that adding the MAC to the construction by Wilson
 does not weaken the security properties defined by Frymann et al. [CCS:FGKLMN20]:
 the construction by Frymann et al. can be reduced to the ARKG construction in this document
 by instantiating `BL` as described in {{blinding-ec}}
@@ -1254,10 +1261,13 @@ Frymann et al. [CCS:FGKLMN20] generalized the constructions by Lundberg, Nilsson
 from elliptic curves to any discrete logarithm (DL) problem,
 and also proved the security of arbitrary asymmetric protocols composed with ARKG.
 Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Stebila et al. [ASIACCS:SteWil24].
+were developed independently by Brendel et al. [AC:BreCleFis24], Frymann et al. [FryGarMan23] and Wilson [Wilson2023].
 
-This document adopts the construction proposed by Stebila et al. [ASIACCS:SteWil24],
+This document adopts the construction proposed by Wilson [Wilson2023],
 modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. [CCS:FGKLMN20].
+The construction by Wilson [Wilson2023] was later refined by Stebila et al. [ASIACCS:SteWil24],
+but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
+which is not one-for-one compatible with the construction in the present revision of this specification.
 
 The authors would like to thank all of these authors for their research and development work that led to the creation of this document.
 
