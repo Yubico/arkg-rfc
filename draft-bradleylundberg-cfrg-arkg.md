@@ -1308,9 +1308,9 @@ Parts of this specification depend upon definitions from [I-D.lundberg-cose-spli
 
 ## Future Work {#impl-status-future-work}
 
-Hierarchical Deterministic Keys [I-D.dijkhuis-cfrg-hdkeys] is a possible application of ARKG
+Hierarchical Deterministic Keys (HDK) [I-D.dijkhuis-cfrg-hdkeys] is a possible application of ARKG
 which has identified a limitation in the present construction,
-as discussed in GitHub issue [](https://github.com/sander/hierarchical-deterministic-keys/issues/94) .
+as discussed in [HDK GitHub issue #94](https://github.com/sander/hierarchical-deterministic-keys/issues/94).
 ARKG can be used recursively - for example, ARKG-P256 can be used to derive P-256 keys that are themselves used as ARKG seeds -
 but then requires one invocation of `ARKG-Derive-Private-Key` per layer of recursion
 in order to derive higher-layer private keys.
@@ -1318,9 +1318,8 @@ This can be an issue if the base ARKG private seed is hardware-bound,
 since it would require multiple calls to the secure hardware device,
 especially if each of those calls requires a user gesture for authorization.
 Therefore a modified ARKG construction has been proposed,
+along with a [draft for a potential security proof](https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf),
 which enables multiple layers of recursive ARKG to be condensed into a single invocation of `ARKG-Derive-Private-Key`.
-A draft potential security proof for this construction is available at
-[](https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/pqarkg-h.pdf) .
 We would have liked to use this modified construction in this specification,
 but have not been able to get the potential proof appropriately peer reviewed in a timely manner,
 so prototypes have moved forward with the present construction.
