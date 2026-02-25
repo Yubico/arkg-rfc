@@ -111,11 +111,11 @@ Table of Contents
    10. References
      10.1.  Normative References
      10.2.  Informative References
-   Appendix A.  Acknowledgements
-   Appendix B.  Test Vectors
-     B.1.  ARKG-P256
-     B.2.  Other instances
-   Appendix C.  Document History
+   Appendix A.  Test Vectors
+     A.1.  ARKG-P256
+     A.2.  Other instances
+   Acknowledgements
+   Document History
    Contributors
    Authors' Addresses
 
@@ -1578,35 +1578,7 @@ Table of Contents
               Passwordless Authentication. Master's thesis", 2023,
               <http://hdl.handle.net/10012/19316>.
 
-Appendix A.  Acknowledgements
-
-   ARKG was first proposed under this name by Frymann et al.
-   [CCS_FGKLMN20], who analyzed a proposed extension to W3C Web
-   Authentication by Lundberg and Nilsson [WebAuthn-Recovery], which was
-   in turn inspired by a similar construction by Wuille [BIP32] used to
-   create privacy-preserving Bitcoin addresses.  Frymann et al.
-   [CCS_FGKLMN20] generalized the constructions by Lundberg, Nilsson and
-   Wuille from elliptic curves to any discrete logarithm (DL) problem,
-   and also proved the security of arbitrary asymmetric protocols
-   composed with ARKG.  Further generalizations to include quantum-
-   resistant instantiations were developed independently by Brendel et
-   al.  [AC_BreCleFis24], Frymann et al.  [EUROSP_FryGarMan23] and
-   Wilson [Wilson2023].
-
-   This document adopts the construction proposed by Wilson
-   [Wilson2023], modified by the inclusion of a MAC in the key handles
-   as done in the original construction by Frymann et al.
-   [CCS_FGKLMN20].  The construction by Wilson [Wilson2023] was later
-   refined by Stebila et al.  [ASIACCS_SteWil24], but this revision
-   replaced the "key blinding scheme" component with a "key-blinding
-   signature scheme" component which is not one-for-one compatible with
-   the construction in the present revision of this specification.
-
-   The authors would like to thank all of these authors for their
-   research and development work that led to the creation of this
-   document.
-
-Appendix B.  Test Vectors
+Appendix A.  Test Vectors
 
    This section lists test vectors for validating implementations.
 
@@ -1615,7 +1587,7 @@ Appendix B.  Test Vectors
    encoded using the Elliptic-Curve-Point-to-Octet-String procedure
    defined in section 2.3.3 of [SEC1], without point compression.
 
-B.1.  ARKG-P256
+A.1.  ARKG-P256
 
    ; Inputs:
    ctx         = 'ARKG-P256.test vectors'
@@ -1734,11 +1706,39 @@ B.1.  ARKG-P256
    ; Derive-Private-Key:
    sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 
-B.2.  Other instances
+A.2.  Other instances
 
    TODO
 
-Appendix C.  Document History
+Acknowledgements
+
+   ARKG was first proposed under this name by Frymann et al.
+   [CCS_FGKLMN20], who analyzed a proposed extension to W3C Web
+   Authentication by Lundberg and Nilsson [WebAuthn-Recovery], which was
+   in turn inspired by a similar construction by Wuille [BIP32] used to
+   create privacy-preserving Bitcoin addresses.  Frymann et al.
+   [CCS_FGKLMN20] generalized the constructions by Lundberg, Nilsson and
+   Wuille from elliptic curves to any discrete logarithm (DL) problem,
+   and also proved the security of arbitrary asymmetric protocols
+   composed with ARKG.  Further generalizations to include quantum-
+   resistant instantiations were developed independently by Brendel et
+   al.  [AC_BreCleFis24], Frymann et al.  [EUROSP_FryGarMan23] and
+   Wilson [Wilson2023].
+
+   This document adopts the construction proposed by Wilson
+   [Wilson2023], modified by the inclusion of a MAC in the key handles
+   as done in the original construction by Frymann et al.
+   [CCS_FGKLMN20].  The construction by Wilson [Wilson2023] was later
+   refined by Stebila et al.  [ASIACCS_SteWil24], but this revision
+   replaced the "key blinding scheme" component with a "key-blinding
+   signature scheme" component which is not one-for-one compatible with
+   the construction in the present revision of this specification.
+
+   The authors would like to thank all of these authors for their
+   research and development work that led to the creation of this
+   document.
+
+Document History
 
    -10
 
@@ -1748,6 +1748,12 @@ Appendix C.  Document History
    *  Fixed definitions and references misspelling ESP512 as ESP521.
 
    *  Minor editorial clarifications.
+
+   *  Updated informative references to research papers and changed
+      citation style for the same.
+
+   *  Made "Acknowledgements" and "Document History" sections un-
+      numbered.
 
    -09
 

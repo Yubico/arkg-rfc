@@ -1304,21 +1304,21 @@ We expect that additional instances will be defined in the future.<a href="#sect
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-test-vectors" class="internal xref">Test Vectors</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-arkg-p256-2" class="internal xref">ARKG-P256</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-arkg-p256-2" class="internal xref">ARKG-P256</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-other-instances" class="internal xref">Other instances</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-other-instances" class="internal xref">Other instances</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-document-history" class="internal xref">Document History</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-document-history" class="internal xref">Document History</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
             <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
@@ -3161,43 +3161,22 @@ one can also break the same property of the construction by Frymann et al.<a hre
 </div>
 </section>
 </div>
-<div id="acknowledgements">
-<section id="appendix-A">
-      <h2 id="name-acknowledgements">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
-      </h2>
-<p id="appendix-A-1">ARKG was first proposed under this name by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
-who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson <span>[<a href="#WebAuthn-Recovery" class="cite xref">WebAuthn-Recovery</a>]</span>,
-which was in turn inspired by a similar construction by Wuille <span>[<a href="#BIP32" class="cite xref">BIP32</a>]</span> used to create privacy-preserving Bitcoin addresses.
-Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> generalized the constructions by Lundberg, Nilsson and Wuille
-from elliptic curves to any discrete logarithm (DL) problem,
-and also proved the security of arbitrary asymmetric protocols composed with ARKG.
-Further generalizations to include quantum-resistant instantiations
-were developed independently by Brendel et al. <span>[<a href="#AC_BreCleFis24" class="cite xref">AC_BreCleFis24</a>]</span>, Frymann et al. <span>[<a href="#EUROSP_FryGarMan23" class="cite xref">EUROSP_FryGarMan23</a>]</span> and Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">This document adopts the construction proposed by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>,
-modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.
-The construction by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span> was later refined by Stebila et al. <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span>,
-but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
-which is not one-for-one compatible with the construction in the present revision of this specification.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
-<p id="appendix-A-3">The authors would like to thank all of these authors for their research and development work that led to the creation of this document.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="test-vectors">
-<section id="appendix-B">
+<section id="appendix-A">
       <h2 id="name-test-vectors">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-test-vectors" class="section-name selfRef">Test Vectors</a>
       </h2>
-<p id="appendix-B-1">This section lists test vectors for validating implementations.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">Test vectors are listed in CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> syntax
+<p id="appendix-A-1">This section lists test vectors for validating implementations.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Test vectors are listed in CDDL <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> syntax
 using variable names defined in <a href="#arkg" class="auto internal xref">Section 2</a> and <a href="#generic-formulae" class="auto internal xref">Section 3</a>.
 Elliptic curve points are encoded using the <code>Elliptic-Curve-Point-to-Octet-String</code> procedure
-defined in section 2.3.3 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>, without point compression.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+defined in section 2.3.3 of <span>[<a href="#SEC1" class="cite xref">SEC1</a>]</span>, without point compression.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <div id="arkg-p256">
-<section id="appendix-B.1">
+<section id="appendix-A.1">
         <h3 id="name-arkg-p256-2">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-arkg-p256-2" class="section-name selfRef">ARKG-P256</a>
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-arkg-p256-2" class="section-name selfRef">ARKG-P256</a>
         </h3>
-<div class="lang-cddl sourcecode" id="appendix-B.1-1">
+<div class="lang-cddl sourcecode" id="appendix-A.1-1">
 <pre>
 ; Inputs:
 ctx         = 'ARKG-P256.test vectors'
@@ -3237,9 +3216,9 @@ kh          = h'27987995f184a44cfa548d104b0a461d0487fc739dbcdabc293ac5469221da91
 
 ; Derive-Private-Key:
 sk_prime    = 0x775d7fe9a6dfba43ce671cb38afca3d272c4d14aff97bd67559eb500a092e5e7
-</pre><a href="#appendix-B.1-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-1" class="pilcrow">¶</a>
 </div>
-<div class="lang-cddl sourcecode" id="appendix-B.1-2">
+<div class="lang-cddl sourcecode" id="appendix-A.1-2">
 <pre>
 ; Inputs:
 ctx         = 'ARKG-P256.test vectors'
@@ -3279,9 +3258,9 @@ kh          = h'b7507a82771776fbac41a18d94e19a7e0457fd1e438280c127dd55a6138d1baf
 
 ; Derive-Private-Key:
 sk_prime    = 0x6228e470290e9d7cc0feff32a74caafa14c608c956337eba23997f5904cff226
-</pre><a href="#appendix-B.1-2" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
 </div>
-<div class="lang-cddl sourcecode" id="appendix-B.1-3">
+<div class="lang-cddl sourcecode" id="appendix-A.1-3">
 <pre>
 ; Inputs:
 ctx         = 'ARKG-P256.test vectors.0'
@@ -3321,24 +3300,45 @@ kh          = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91
 
 ; Derive-Private-Key:
 sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
-</pre><a href="#appendix-B.1-3" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="other-instances">
-<section id="appendix-B.2">
+<section id="appendix-A.2">
         <h3 id="name-other-instances">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-other-instances" class="section-name selfRef">Other instances</a>
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-other-instances" class="section-name selfRef">Other instances</a>
         </h3>
-<p id="appendix-B.2-1">TODO<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-1">TODO<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="appendix-B">
+      <h2 id="name-acknowledgements">
+<a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="appendix-B-1">ARKG was first proposed under this name by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
+who analyzed a proposed extension to W3C Web Authentication by Lundberg and Nilsson <span>[<a href="#WebAuthn-Recovery" class="cite xref">WebAuthn-Recovery</a>]</span>,
+which was in turn inspired by a similar construction by Wuille <span>[<a href="#BIP32" class="cite xref">BIP32</a>]</span> used to create privacy-preserving Bitcoin addresses.
+Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span> generalized the constructions by Lundberg, Nilsson and Wuille
+from elliptic curves to any discrete logarithm (DL) problem,
+and also proved the security of arbitrary asymmetric protocols composed with ARKG.
+Further generalizations to include quantum-resistant instantiations
+were developed independently by Brendel et al. <span>[<a href="#AC_BreCleFis24" class="cite xref">AC_BreCleFis24</a>]</span>, Frymann et al. <span>[<a href="#EUROSP_FryGarMan23" class="cite xref">EUROSP_FryGarMan23</a>]</span> and Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">This document adopts the construction proposed by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span>,
+modified by the inclusion of a MAC in the key handles as done in the original construction by Frymann et al. <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.
+The construction by Wilson <span>[<a href="#Wilson2023" class="cite xref">Wilson2023</a>]</span> was later refined by Stebila et al. <span>[<a href="#ASIACCS_SteWil24" class="cite xref">ASIACCS_SteWil24</a>]</span>,
+but this revision replaced the "key blinding scheme" component with a "key-blinding signature scheme" component
+which is not one-for-one compatible with the construction in the present revision of this specification.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-3">The authors would like to thank all of these authors for their research and development work that led to the creation of this document.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="document-history">
 <section id="appendix-C">
       <h2 id="name-document-history">
-<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-document-history" class="section-name selfRef">Document History</a>
+<a href="#name-document-history" class="section-name selfRef">Document History</a>
       </h2>
 <p id="appendix-C-1">-10<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -3351,6 +3351,12 @@ in section "Using elliptic curve addition for key blinding".<a href="#appendix-C
 </li>
         <li class="normal" id="appendix-C-2.3">
           <p id="appendix-C-2.3.1">Minor editorial clarifications.<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-2.4">
+          <p id="appendix-C-2.4.1">Updated informative references to research papers and changed citation style for the same.<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-C-2.5">
+          <p id="appendix-C-2.5.1">Made "Acknowledgements" and "Document History" sections un-numbered.<a href="#appendix-C-2.5.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="appendix-C-3">-09<a href="#appendix-C-3" class="pilcrow">¶</a></p>
