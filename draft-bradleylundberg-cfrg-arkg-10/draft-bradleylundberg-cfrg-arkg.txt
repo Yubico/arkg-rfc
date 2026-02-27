@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 4 May 2026                                      31 October 2025
+Expires: 31 August 2026                                 27 February 2026
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,11 +54,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 May 2026.
+   This Internet-Draft will expire on 31 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -107,15 +107,17 @@ Table of Contents
      8.4.  COSE Signing Arguments Algorithm Parameters Registrations
    9.  Design rationale
      9.1.  Using a MAC
-     9.2.  Implementation Status
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
-   Appendix A.  Acknowledgements
-   Appendix B.  Test Vectors
-     B.1.  ARKG-P256
-     B.2.  Other instances
-   Appendix C.  Document History
+   10. Implementation Status
+     10.1.  Related Internet-Drafts
+     10.2.  Future Work
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
+   Appendix A.  Test Vectors
+     A.1.  ARKG-P256
+     A.2.  Other instances
+   Acknowledgements
+   Document History
    Contributors
    Authors' Addresses
 
@@ -189,7 +191,7 @@ Table of Contents
    and a key encapsulation mechanism (KEM), which may in turn use a key
    derivation function (KDF) and a message authentication code (MAC)
    scheme.  Both conventional primitives and quantum-resistant
-   alternatives exist that meet these requirements.  [Wilson]
+   alternatives exist that meet these requirements.  [ASIACCS_SteWil24]
 
 1.1.  Requirements Language
 
@@ -232,12 +234,13 @@ Table of Contents
 
    This construction of ARKG is fully deterministic, extracting input
    entropy as explicit parameters, as opposed to the internal random
-   sampling typically used in the academic literature [Frymann2020]
-   [Wilson] [Clermont].  Implementations MAY choose to instead implement
-   the ARKG-Derive-Seed and KEM-Encaps functions as nondeterministic
-   procedures omitting their respective ikm parameters and sampling
-   random entropy internally; this choice does not affect
-   interoperability.
+   sampling typically used in the academic literature [CCS_FGKLMN20]
+   [Wilson2023] [AC_BreCleFis24].  Implementations MAY choose to instead
+   implement the ARKG-Derive-Seed and KEM-Encaps functions as
+   nondeterministic procedures omitting their respective ikm parameters
+   and sampling random entropy internally; this choice does not affect
+   interoperability between the functions ARKG-Derive-Seed, ARKG-Derive-
+   Public-Key and ARKG-Derive-Private-Key.
 
    The following subsections define the abstract instance parameters
    used to construct the three ARKG functions, followed by the
@@ -248,9 +251,9 @@ Table of Contents
    ARKG is composed of a suite of other algorithms.  The parameters of
    an ARKG instance are:
 
-   *  BL: An asymmetric key blinding scheme [Wilson], consisting of:
+   *  BL: An asymmetric key blinding scheme [Wilson2023], consisting of:
 
-      -  Function BL-Derive-Key-Pair(ikm) -> (pk, sk): Derive a blinding
+      -  Function BL-Generate-Keypair() -> (pk, sk): Generate a blinding
          key pair.
 
          Input consists of input keying material entropy ikm.
@@ -291,8 +294,8 @@ Table of Contents
       that invokes ARKG.  The representations of sk, tau and sk_tau are
       undefined implementation details.
 
-      See [Wilson] for definitions of security properties required of
-      the key blinding scheme BL.
+      See [Wilson2023] for definitions of security properties required
+      of the key blinding scheme BL.
 
    *  KEM: A key encapsulation mechanism [Shoup], consisting of the
       functions:
@@ -334,8 +337,8 @@ Table of Contents
       adapted to include this guarantee.  Section 9.1 discusses the
       reasons for this requirement.
 
-      See [Wilson] for definitions of additional security properties
-      required of the key encapsulation mechanism KEM.
+      See [ASIACCS_SteWil24] for definitions of additional security
+      properties required of the key encapsulation mechanism KEM.
 
    A concrete ARKG instantiation MUST specify the instantiation of each
    of the above functions.
@@ -388,7 +391,8 @@ Table of Contents
    instead implement ARKG-Derive-Seed, KEM-Derive-Key-Pair and BL-
    Derive-Key-Pair as nondeterministic procedures omitting their
    respective ikm parameters and sampling random entropy internally;
-   this choice does not affect interoperability.
+   this choice does not affect interoperability with ARKG-Derive-Public-
+   Key and ARKG-Derive-Private-Key.
 
 2.3.  The function ARKG-Derive-Public-Key
 
@@ -449,7 +453,7 @@ Table of Contents
    instead implement ARKG-Derive-Public-Key and KEM-Encaps as
    nondeterministic procedures omitting their respective ikm parameter
    and sampling random entropy internally; this choice does not affect
-   interoperability.
+   interoperability with ARKG-Derive-Private-Key.
 
    BL-PRF and BL-Blind-Public-Key must always be deterministic for
    compatibility with ARKG-Derive-Private-Key.
@@ -534,8 +538,8 @@ Table of Contents
 
    Instantiations of ARKG whose output keys are elliptic curve keys can
    use elliptic curve addition as the key blinding scheme BL
-   [Frymann2020] [Wilson].  This section defines a general formula for
-   such instantiations of BL.
+   [CCS_FGKLMN20] [Wilson2023].  This section defines a general formula
+   for such instantiations of BL.
 
    This formula has the following parameters:
 
@@ -702,8 +706,8 @@ Table of Contents
 3.3.  Using ECDH as the KEM
 
    Instantiations of ARKG can use ECDH [RFC6090] as the key
-   encapsulation mechanism KEM [Frymann2020] [Wilson].  This section
-   defines a general formula for such instantiations of KEM.
+   encapsulation mechanism KEM [CCS_FGKLMN20] [ASIACCS_SteWil24].  This
+   section defines a general formula for such instantiations of KEM.
 
    This formula has the following parameters:
 
@@ -833,9 +837,9 @@ Table of Contents
    When an ARKG instance uses the same type of key for both the key
    blinding and the KEM - for example, if elliptic curve arithmetic is
    used for key blinding as described in Section 3.1 and ECDH is used as
-   the KEM as described in Section 3.3 [Frymann2020] - then the two keys
-   MAY be the same key.  Representations of such an ARKG seed MAY allow
-   for omitting the second copy of the constituent key, but such
+   the KEM as described in Section 3.3 [CCS_FGKLMN20] - then the two
+   keys MAY be the same key.  Representations of such an ARKG seed MAY
+   allow for omitting the second copy of the constituent key, but such
    representations MUST clearly identify that the single constituent key
    is to be used both as the key blinding key and the KEM key.
 
@@ -1392,12 +1396,13 @@ Table of Contents
 
 9.1.  Using a MAC
 
-   The ARKG construction by Wilson [Wilson] omits the MAC and instead
-   encodes application context in the PRF labels, arguing that this
-   leads to invalid keys/signatures in cases that would have a bad MAC.
-   We choose to keep the MAC from the construction by Frymann et al.
-   [Frymann2020], but allow it to be omitted in case the chosen KEM
-   already guarantees ciphertext integrity.
+   The ARKG construction by Stebila et al.  [ASIACCS_SteWil24] omits the
+   MAC and instead encodes application context in the PRF labels,
+   arguing that this leads to invalid keys/signatures in cases that
+   would have a bad MAC.  We choose to keep the MAC from the
+   construction by Frymann et al.  [CCS_FGKLMN20], but allow it to be
+   omitted in case the chosen KEM already guarantees ciphertext
+   integrity.
 
    The reason for this is to ensure that the delegating party can
    distinguish key handles that belong to its ARKG seed.  For example,
@@ -1423,30 +1428,136 @@ Table of Contents
 
    It is straightforward to see that adding the MAC to the construction
    by Wilson does not weaken the security properties defined by Frymann
-   et al.  [Frymann2020]: the construction by Frymann et al. can be
+   et al.  [CCS_FGKLMN20]: the construction by Frymann et al. can be
    reduced to the ARKG construction in this document by instantiating BL
    as described in Section 3.1 and KEM as described in Section 3.3.  The
    use of hash_to_field in Section 3.1 corresponds to the KDF_1
-   parameter in [Frymann2020], and the use of HMAC and HKDF in
+   parameter in [CCS_FGKLMN20], and the use of HMAC and HKDF in
    Section 3.2 corresponds to the MAC and KDF_2 parameters in
-   [Frymann2020].  Hence if one can break PK-unlinkability or SK-
+   [CCS_FGKLMN20].  Hence if one can break PK-unlinkability or SK-
    security of the ARKG construction in this document, one can also
    break the same property of the construction by Frymann et al.
 
-9.2.  Implementation Status
+10.  Implementation Status
 
-   TODO
+   This section is to be removed from the specification by the RFC
+   Editor before publication as an RFC.
 
-10.  References
+   There are currently two known implementations using features defined
+   by this specification:
 
-10.1.  Normative References
+   *  wwWallet (https://github.com/wwWallet), an EU Digital Identity
+      pilot project. wwWallet was entered into the "EUDI Wallet
+      Prototypes" competition held by SprinD GmbH
+      (https://www.sprind.org/en/actions/challenges/eudi-wallet-
+      prototypes), and a branch of the wallet was submitted in the
+      competition.  The competition entry implements ARKG for
+      efficiently generating single-use hardware-bound holder binding
+      keys.
+
+      The implementation (https://github.com/gunet/funke-s3a-wallet-
+      frontend/blob/stage-3/src/services/keystore.ts) uses the
+      COSE_Key_Ref data structure defined in version 01 of
+      [I-D.lundberg-cose-split-algs] in order to send ARKG inputs to a
+      WebAuthn authenticator, and uses the placeholder value for ESP256-
+      split-ARKG defined in Section 5.2 to negotiate creation and usage
+      of ARKG-derived keys for signing operations.  Work to update the
+      implementation to instead use COSE_Sign_Args as defined in version
+      05 of [I-D.lundberg-cose-split-algs] is ongoing.
+
+   *  Yubico (https://www.yubico.com/), a hardware security key vendor,
+      has produced limited-availability prototypes of their YubiKey
+      product with an ARKG implementation interoperable with wwWallet.
+      The YubiKey implementation uses the COSE_Sign_Args data structure
+      defined in version 05 of [I-D.lundberg-cose-split-algs] to receive
+      ARKG inputs from a WebAuthn Relying Party, and uses the
+      placeholder value for ESP256-split-ARKG defined in Section 5.2 to
+      negotiate creation and usage of ARKG-derived keys for signing
+      operations.
+
+   Table 5 summarizes implementation status for individual features.
+
+                 +===================+==================+
+                 | Feature           | Implementations  |
+                 +===================+==================+
+                 | ARKG-P256         | wwWallet, Yubico |
+                 +-------------------+------------------+
+                 | ARKG-P384         | -                |
+                 +-------------------+------------------+
+                 | ARKG-P521         | -                |
+                 +-------------------+------------------+
+                 | ARKG-P256k        | -                |
+                 +-------------------+------------------+
+                 | ESP256-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP256-split-ARKG | wwWallet, Yubico |
+                 +-------------------+------------------+
+                 | ESP384-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP384-split-ARKG | -                |
+                 +-------------------+------------------+
+                 | ESP512-ARKG       | -                |
+                 +-------------------+------------------+
+                 | ESP512-split-ARKG | -                |
+                 +-------------------+------------------+
+                 | ES256K-ARKG       | -                |
+                 +-------------------+------------------+
+                 | COSE_Sign_Args    | wwWallet, Yubico |
+                 +-------------------+------------------+
+
+                    Table 5: Implementation status of
+                           individual features.
+
+10.1.  Related Internet-Drafts
+
+   Parts of this specification depend upon definitions from
+   [I-D.lundberg-cose-split-algs]:
+
+   *  The algorithm identifiers ESP256-split-ARKG, ESP384-split-ARKG and
+      ESP512-split-ARKG defined in Section 5.2 depend respectively on
+      the algorithm identifiers ESP256-split, ESP384-split and
+      ESP512-split defined in [I-D.lundberg-cose-split-algs].
+
+   *  The ARKG-specific COSE_Sign_Args parameter definitions in
+      Section 5.3 depend on [I-D.lundberg-cose-split-algs] for the
+      definition of the COSE_Sign_Args structure.
+
+10.2.  Future Work
+
+   Hierarchical Deterministic Keys (HDK) [I-D.dijkhuis-cfrg-hdkeys] is a
+   possible application of ARKG which has identified a limitation in the
+   present construction, as discussed in HDK GitHub issue #94
+   (https://github.com/sander/hierarchical-deterministic-keys/
+   issues/94).  ARKG can be used recursively - for example, ARKG-P256
+   can be used to derive P-256 keys that are themselves used as ARKG
+   seeds - but then requires one invocation of ARKG-Derive-Private-Key
+   per layer of recursion in order to derive higher-layer private keys.
+   This can be an issue if the base ARKG private seed is hardware-bound,
+   since it would require multiple calls to the secure hardware device,
+   especially if each of those calls requires a user gesture for
+   authorization.  Therefore a modified ARKG construction has been
+   proposed, along with a draft for a potential security proof
+   (https://github.com/Yubico/arkg-rfc/blob/pqarkg-h/pqarkg-h-security/
+   pqarkg-h.pdf), which enables multiple layers of recursive ARKG to be
+   condensed into a single invocation of ARKG-Derive-Private-Key. We
+   would have liked to use this modified construction in this
+   specification, but have not been able to get the potential proof
+   appropriately peer reviewed in a timely manner, so prototypes have
+   moved forward with the present construction.  The modified
+   construction may be revisited in the future if there is demand for
+   applications, in which case new algorithm identifiers and such can be
+   defined for the modified construction.
+
+11.  References
+
+11.1.  Normative References
 
    [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "Split signing algorithms
               for COSE", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-02, 7 July 2025,
+              lundberg-cose-two-party-signing-algs-05, 23 February 2026,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-02>.
+              cose-two-party-signing-algs-05>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1529,19 +1640,24 @@ Table of Contents
               Domain Parameters", 2010,
               <http://www.secg.org/sec2-v2.pdf>.
 
-10.2.  Informative References
+11.2.  Informative References
+
+   [AC_BreCleFis24]
+              Brendel, J., Clermont, S., and M. Fischlin, "Post-Quantum
+              Asynchronous Remote Key Generation for FIDO2 Account
+              Recovery. ASIACRYPT '24", 2023,
+              <https://eprint.iacr.org/2023/1275>.
+
+   [ASIACCS_SteWil24]
+              Stebila, D. and S. M. Wilson, "Quantum-Safe Account
+              Recovery for WebAuthn. ASIACCS '24", 2023,
+              <https://eprint.iacr.org/2024/678>.
 
    [BIP32]    Wuille, P., "BIP 32 Hierarchical Deterministic Wallets",
               2012, <https://github.com/bitcoin/bips/blob/master/bip-
               0032.mediawiki>.
 
-   [Clermont] Clermont, S. A., "Post Quantum Asynchronous Remote Key
-              Generation. Master's thesis", 2022,
-              <https://www.cryptoplexity.informatik.tu-
-              darmstadt.de/media/crypt/teaching_1/theses_1/
-              Sebastian_Clermont_Thesis.pdf>.
-
-   [Frymann2020]
+   [CCS_FGKLMN20]
               Frymann, N., Gardham, D., Kiefer, F., Lundberg, E.,
               Manulis, M., and D. Nilsson, "Asynchronous Remote Key
               Generation: An Analysis of Yubico's Proposal for W3C
@@ -1549,11 +1665,17 @@ Table of Contents
               Conference on Computer and Communications Security", 2020,
               <https://eprint.iacr.org/2020/1004>.
 
-   [Frymann2023]
+   [EUROSP_FryGarMan23]
               Frymann, N., Gardham, D., and M. Manulis, "Asynchronous
               Remote Key Generation for Post-Quantum Cryptosystems from
               Lattices. 2023 IEEE 8th European Symposium on Security and
               Privacy", 2023, <https://eprint.iacr.org/2023/419>.
+
+   [I-D.dijkhuis-cfrg-hdkeys]
+              Dijkhuis, S., "Hierarchical Deterministic Keys", Work in
+              Progress, Internet-Draft, draft-dijkhuis-cfrg-hdkeys-06,
+              19 January 2025, <https://datatracker.ietf.org/doc/html/
+              draft-dijkhuis-cfrg-hdkeys-06>.
 
    [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
               Encryption (version 2.0)", 2001,
@@ -1565,33 +1687,12 @@ Table of Contents
               secrets. GitHub", 2019,
               <https://github.com/Yubico/webauthn-recovery-extension>.
 
-   [Wilson]   Wilson, S. M., "Post-Quantum Account Recovery for
+   [Wilson2023]
+              Wilson, S. M., "Post-Quantum Account Recovery for
               Passwordless Authentication. Master's thesis", 2023,
               <http://hdl.handle.net/10012/19316>.
 
-Appendix A.  Acknowledgements
-
-   ARKG was first proposed under this name by Frymann et al.
-   [Frymann2020], who analyzed a proposed extension to W3C Web
-   Authentication by Lundberg and Nilsson [WebAuthn-Recovery], which was
-   in turn inspired by a similar construction by Wuille [BIP32] used to
-   create privacy-preserving Bitcoin addresses.  Frymann et al.
-   [Frymann2020] generalized the constructions by Lundberg, Nilsson and
-   Wuille from elliptic curves to any discrete logarithm (DL) problem,
-   and also proved the security of arbitrary asymmetric protocols
-   composed with ARKG.  Further generalizations to include quantum-
-   resistant instantiations were developed independently by Clermont
-   [Clermont], Frymann et al.  [Frymann2023] and Wilson [Wilson].
-
-   This document adopts the construction proposed by Wilson [Wilson],
-   modified by the inclusion of a MAC in the key handles as done in the
-   original construction by Frymann et al.  [Frymann2020].
-
-   The authors would like to thank all of these authors for their
-   research and development work that led to the creation of this
-   document.
-
-Appendix B.  Test Vectors
+Appendix A.  Test Vectors
 
    This section lists test vectors for validating implementations.
 
@@ -1600,7 +1701,7 @@ Appendix B.  Test Vectors
    encoded using the Elliptic-Curve-Point-to-Octet-String procedure
    defined in section 2.3.3 of [SEC1], without point compression.
 
-B.1.  ARKG-P256
+A.1.  ARKG-P256
 
    ; Inputs:
    ctx         = 'ARKG-P256.test vectors'
@@ -1719,11 +1820,39 @@ B.1.  ARKG-P256
    ; Derive-Private-Key:
    sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 
-B.2.  Other instances
+A.2.  Other instances
 
    TODO
 
-Appendix C.  Document History
+Acknowledgements
+
+   ARKG was first proposed under this name by Frymann et al.
+   [CCS_FGKLMN20], who analyzed a proposed extension to W3C Web
+   Authentication by Lundberg and Nilsson [WebAuthn-Recovery], which was
+   in turn inspired by a similar construction by Wuille [BIP32] used to
+   create privacy-preserving Bitcoin addresses.  Frymann et al.
+   [CCS_FGKLMN20] generalized the constructions by Lundberg, Nilsson and
+   Wuille from elliptic curves to any discrete logarithm (DL) problem,
+   and also proved the security of arbitrary asymmetric protocols
+   composed with ARKG.  Further generalizations to include quantum-
+   resistant instantiations were developed independently by Brendel et
+   al.  [AC_BreCleFis24], Frymann et al.  [EUROSP_FryGarMan23] and
+   Wilson [Wilson2023].
+
+   This document adopts the construction proposed by Wilson
+   [Wilson2023], modified by the inclusion of a MAC in the key handles
+   as done in the original construction by Frymann et al.
+   [CCS_FGKLMN20].  The construction by Wilson [Wilson2023] was later
+   refined by Stebila et al.  [ASIACCS_SteWil24], but this revision
+   replaced the "key blinding scheme" component with a "key-blinding
+   signature scheme" component which is not one-for-one compatible with
+   the construction in the present revision of this specification.
+
+   The authors would like to thank all of these authors for their
+   research and development work that led to the creation of this
+   document.
+
+Document History
 
    -10
 
@@ -1731,6 +1860,16 @@ Appendix C.  Document History
       section "Using elliptic curve addition for key blinding".
 
    *  Fixed definitions and references misspelling ESP512 as ESP521.
+
+   *  Minor editorial clarifications.
+
+   *  Updated informative references to research papers and changed
+      citation style for the same.
+
+   *  Made "Acknowledgements" and "Document History" sections un-
+      numbered.
+
+   *  Added Implementation Status section.
 
    -09
 
@@ -1753,7 +1892,7 @@ Appendix C.  Document History
          replaced with "COSE signing arguments".
 
       -  Added section "COSE Signing Arguments Algorithm Parameters
-         Registrations"
+         Registrations".
 
    -08
 
@@ -1890,7 +2029,7 @@ Appendix C.  Document History
 
    -01
 
-   *  Editorial Fixes to formatting and references.
+   *  Editorial fixes to formatting and references
 
    -00
 
