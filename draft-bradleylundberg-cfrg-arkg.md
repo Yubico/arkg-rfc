@@ -201,7 +201,7 @@ Some motivating use cases of ARKG include:
   "Since COSE is designed for a store-and-forward environment rather than an online environment,
   \[...\] forward secrecy (see [RFC4949]) is not achievable. A static key will always be used for the receiver of the COSE object."
   As opposed to workarounds like exchanging a large number of keys in advance,
-  ARKG enables the the sender to generate ephemeral recipient public keys on demand.
+  ARKG enables the sender to generate ephemeral recipient public keys on demand.
 
 - __Backup key generation__:
   For example, the W3C Web Authentication API [WebAuthn] (WebAuthn) generates a new key pair for each account on each web site.
@@ -1492,6 +1492,9 @@ The authors would like to thank all of these authors for their research and deve
 
 # Document History
 {: numbered="false"}
+
+-11 (In progress)
+* Editorial fixes.
 
 -10
 
