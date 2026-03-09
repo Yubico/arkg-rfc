@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 29 August 2026                                 25 February 2026
+Expires: 10 September 2026                                  9 March 2026
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2026.
+   This Internet-Draft will expire on 10 September 2026.
 
 Copyright Notice
 
@@ -157,8 +157,8 @@ Table of Contents
       forward secrecy (see [RFC4949]) is not achievable.  A static key
       will always be used for the receiver of the COSE object."  As
       opposed to workarounds like exchanging a large number of keys in
-      advance, ARKG enables the the sender to generate ephemeral
-      recipient public keys on demand.
+      advance, ARKG enables the sender to generate ephemeral recipient
+      public keys on demand.
 
    *  *Backup key generation*: For example, the W3C Web Authentication
       API [WebAuthn] (WebAuthn) generates a new key pair for each
@@ -1555,9 +1555,9 @@ Table of Contents
    [I-D.lundberg-cose-split-algs]
               Lundberg, E. and M. B. Jones, "Split signing algorithms
               for COSE", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-05, 23 February 2026,
+              lundberg-cose-two-party-signing-algs-06, 27 February 2026,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-05>.
+              cose-two-party-signing-algs-06>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1853,6 +1853,8 @@ Acknowledgements
    document.
 
 Document History
+
+   -11 (In progress) * Editorial fixes.
 
    -10
 
