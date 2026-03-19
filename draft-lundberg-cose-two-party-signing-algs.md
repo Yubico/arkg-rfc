@@ -2,8 +2,8 @@
 stand_alone: true
 ipr: trust200902
 
-title: "Split signing algorithms for COSE"
-abbrev: "Split signing algorithms for COSE"
+title: "Split Signing Algorithms for COSE"
+abbrev: "Split Signing Algorithms for COSE"
 lang: en
 category: std
 
@@ -19,8 +19,9 @@ keyword:
  - COSE
  - Signing
  - Algorithms
- - Split algorithms
- - Split signing
+ - Split Algorithms
+ - Split Signing
+ - ARKG
 
 venue:
   group: "COSE"
@@ -437,9 +438,9 @@ rather than requiring a distinct protocol for each signature algorithm for the s
 
 `COSE_Sign_Args` is built on a CBOR map.
 The set of common parameters that can appear in a `COSE_Sign_Args`
-can be found in the IANA "COSE Signing Arguments Common Parameters" registry (TODO).
+can be found in the IANA "COSE Signing Arguments Common Parameters" registry {{common-params-reg}}.
 Additional parameters defined for specific signing algorithms
-can be found in the IANA "COSE Signing Arguments Algorithm Parameters" registry (TODO).
+can be found in the IANA "COSE Signing Arguments Algorithm Parameters" registry {{alg-params-reg}}.
 
 The CDDL grammar describing `COSE_Sign_Args`, using the CDDL fragment defined in {{Section 1.5 of RFC9052}}, is:
 
@@ -646,13 +647,126 @@ This section registers the following values in the IANA "COSE Algorithms" regist
   - Recommended: Yes
 
 
-## COSE Signing Arguments Common Parameters Registry
+## COSE Signing Arguments Common Parameters Registry {#common-params-reg}
 
-TODO
+This specification establishes the "COSE Signing Arguments Common Parameters" registry.
+The registry uses the "Expert Review Required" registration procedure.
+Guidelines for the experts are the same as those in {{Section 11.6 of RFC9052}}.
+It should be noted that, in addition to the expert review,
+some portions of the registry require a specification,
+potentially a Standards Track RFC, be supplied as well.
 
-## COSE Signing Arguments Algorithm Parameters Registry
+The columns of the registry are:
 
-TODO
+Name:
+: This is a descriptive name that enables easier reference to the item.
+  It is not used in the encoding.
+
+Label:
+: The value to be used to identify this algorithm.
+  Key map labels MUST be unique.
+  The label can be a positive integer, a negative integer, or a string.
+  Integer values between 0 and 255 and strings of length 1 are designated as "Standards Action".
+  Integer values from 256 to 65535 and strings of length 2 are designated as "Specification Required".
+  Integer values of greater than 65535 and strings of length greater than 2 are designated as "Expert Review".
+  Integer values in the range -65536 to -1 are
+  "used for key parameters specific to a single algorithm delegated
+  to the COSE Signing Arguments Algorithm Parameters registry".
+  Integer values less than -65536 are marked as private use.
+
+CBOR Type:
+: This field contains the CBOR type for the field.
+
+Value Registry:
+: This field denotes the registry that values come from, if one exists.
+
+Description:
+: This field contains a brief description for the field.
+
+Reference:
+: This contains a pointer to the public specification for the field if one exists.
+
+### Initial Contents
+
+The initial contents of this registry are the values in {{tbl-cose-sign-args-common}}.
+All of the entries in the "References" column of this registry point to this document.
+
+## COSE Signing Arguments Algorithm Parameters Registry {#alg-params-reg}
+
+This specification establishes the "COSE Signing Arguments Algorithm Parameters" registry.
+The registry uses the "Expert Review Required" registration procedure.
+Guidelines for the experts are the same as those in {{Section 11.6 of RFC9052}}.
+
+The columns of the table are:
+
+Name:
+: This is a descriptive name that enables easier reference to the item.
+  It is not used in the encoding.
+
+Label:
+: The label is to be unique for every value of key type.
+  The range of values is from -65536 to -1.
+  Labels are expected to be reused for multiple algorithms.
+
+CBOR Type:
+: This field contains the CBOR type for the field.
+
+Required:
+: "Required" if parameter is required for this algorithm, otherwise "Optional"
+
+Algorithms:
+: Algorithms that this parameter is used with
+
+Description:
+: This field contains a brief description for the field.
+
+Reference:
+: This contains a pointer to the public specification for the field if one exists.
+
+### Initial Contents
+
+The initial contents of this registry are as follows.
+These values come from {{Section 5.3 of I-D.bradleylundberg-ARKG}}.
+
+#### kh
+
+Name:
+: kh
+
+Label:
+: -1
+
+Cbor Type:
+: bstr
+
+Required:
+: Required
+
+Algorithms:
+: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
+
+Description:
+: kh argument to ARKG-Derive-Private-Key.
+
+#### ctx
+
+Name:
+: ctx
+
+Label:
+: -2
+
+Cbor Type:
+: bstr
+
+Required:
+: Required
+
+Algorithms:
+: ESP256-ARKG, ESP256-split-ARKG, ESP384-ARKG, ESP384-split-ARKG, ESP512-ARKG, ESP512-split-ARKG, ES256K-ARKG
+
+Description:
+: ctx argument to ARKG-Derive-Private-Key.
 
 
 # Implementation Status {#impl-status}
@@ -719,9 +833,10 @@ the Internet-Draft of ARKG [I-D.bradleylundberg-ARKG] extends this specification
 {: numbered="false"}
 
 We would like to thank
+David Dong,
 Ilari Liusvaara,
 Lucas Prabel,
-Sophie Schmieg
+Sophie Schmieg,
 and
 Falko Strenzke
 for their reviews of and contributions to this specification.
@@ -729,6 +844,10 @@ for their reviews of and contributions to this specification.
 
 # Document History
 {: numbered="false"}
+
+-07
+
+* Populated IANA Considerations sections.
 
 -06
 
