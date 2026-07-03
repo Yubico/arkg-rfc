@@ -2028,7 +2028,8 @@ Document History
    algorithm identifiers for signing algorithms, and added "walk-
    through" examples of usage. * Added subsection "Security Properties"
    to Security Considerations. * Added subsection "Public Seed Secrecy"
-   to Privacy Considerations.
+   to Privacy Considerations. * Updated "Split Signing Algorithms for
+   COSE" reference from individual-draft to WG draft.
 
    -10
 
