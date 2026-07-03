@@ -1259,19 +1259,9 @@ We expect that additional instances will be defined in the future.<a href="#sect
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-security-properties" class="internal xref">Security Properties</a></p>
-</li>
-            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-public-seed-secrecy" class="internal xref">Public Seed Secrecy</a></p>
-</li>
-            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -2729,46 +2719,6 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-6-1">TODO<a href="#section-6-1" class="pilcrow">¶</a></p>
-<div id="security-properties">
-<section id="section-6.1">
-        <h3 id="name-security-properties">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-security-properties" class="section-name selfRef">Security Properties</a>
-        </h3>
-<p id="section-6.1-1">ARKG satisfies two security properties, defined in <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.
-Informally, they are:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6.1-2.1">
-            <p id="section-6.1-2.1.1"><strong>Public key unlinkability</strong>:
-Derived public keys are indistinguishable from randomly sampled public keys,
-even with knowledge of the ARKG public seed.
-Consequently, it is also not distinguishable whether two derived public keys
-were derived from the same ARKG public seed or from different public seeds.<a href="#section-6.1-2.1.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2.1.2">
-This property holds under the assumption that the adversary does not know
-the <code>tau</code> or <code>ikm_tau</code> value that was computed in <code>ARKG-Derive-Public-Key</code>
-when deriving the public key.
-Indeed, knowledge of <code>tau</code> along with a public seed <code>pk</code> and derived public key <code>pk'</code>
-is sufficient to determine with certainty whether <code>pk'</code> is derived from <code>pk</code>.
-This also means that is is possible to <em>prove</em>, by revealing <code>tau</code>, that <code>pk'</code> is derived from <code>pk</code>,
-and therefore that knowledge of the corresponding derived private key <code>sk'</code>
-implies knowledge of the private seed <code>sk</code>.<a href="#section-6.1-2.1.2" class="pilcrow">¶</a></p>
-<p id="section-6.1-2.1.3">
-This property is called <em>PK-unlinkability</em> in <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>.<a href="#section-6.1-2.1.3" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.1-2.2">
-            <p id="section-6.1-2.2.1"><strong>Private key security</strong>:
-Derived private keys cannot be recovered without knowledge of the ARKG private seed,
-even with knowledge of other public and private keys derived from the same seed.
-Consequently, signatures by derived private keys enjoy the same unforgeability properties
-as signatures made by equivalent keys generated without ARKG.<a href="#section-6.1-2.2.1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2.2.2">
-This property is called <em>SK-security</em> in <span>[<a href="#CCS_FGKLMN20" class="cite xref">CCS_FGKLMN20</a>]</span>,
-specifically the <em>msKS</em> variant ("malicious-strong SK-security")
-which is the strongest of the four variants defined.<a href="#section-6.1-2.2.2" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
 </section>
 </div>
 <div id="Privacy">
@@ -2777,49 +2727,6 @@ which is the strongest of the four variants defined.<a href="#section-6.1-2.2.2"
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
       </h2>
 <p id="section-7-1">TODO<a href="#section-7-1" class="pilcrow">¶</a></p>
-<div id="privacy-pub-seed-secrecy">
-<section id="section-7.1">
-        <h3 id="name-public-seed-secrecy">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-public-seed-secrecy" class="section-name selfRef">Public Seed Secrecy</a>
-        </h3>
-<p id="section-7.1-1">The security properties described in <a href="#security-properties" class="auto internal xref">Section 6.1</a> hold even if the ARKG public seed is publicly known,
-as the name suggests,
-but there are situations when it may nevertheless be desirable to keep an ARKG public seed confidential.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7.1-2.1">
-            <p id="section-7.1-2.1.1">If ARKG is used to derive multiple "pseudonym" public keys,
-then the public seed is a correlation handle
-that may reveal that some pseudonyms are related,
-even without conclusive proof that they were derived from that seed.
-The public seed should therefore not be revealed along with such pseudonyms.<a href="#section-7.1-2.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-7.1-2.2">
-            <p id="section-7.1-2.2.1">Knowledge of an ARKG public seed is sufficient to derive public keys from it,
-and prove that they were derived from that seed by revealing <code>tau</code> (see <a href="#security-properties" class="auto internal xref">Section 6.1</a>).
-A malicious actor could use this to, for example:<a href="#section-7.1-2.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7.1-2.2.2.1">
-                <p id="section-7.1-2.2.2.1.1">make purchases at the seed owner's expense,
-if the seller does not require proof of private key possession at the time of the purchase.<a href="#section-7.1-2.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-7.1-2.2.2.2">
-                <p id="section-7.1-2.2.2.2.1">accuse the seed owner of wrongdoing by planting incriminating keys in their name.<a href="#section-7.1-2.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-<p id="section-7.1-2.2.3">
-To prevent such and other abuse,
-it is prudent to keep the public seed confidential.<a href="#section-7.1-2.2.3" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-7.1-2.3">
-            <p id="section-7.1-2.3.1">Knowledge of the KEM component of an ARKG public seed is sufficient
-to generate ARKG key handles valid for that ARKG private seed.
-If this is undesirable -
-for example if it could lead to the delegating party being overloaded -
-then the KEM component of the public seed should be kept confidential.<a href="#section-7.1-2.3.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-</section>
-</div>
 </section>
 </div>
 <div id="IANA">
@@ -3674,9 +3581,7 @@ which is not one-for-one compatible with the construction in the present revisio
 <p id="appendix-C-1">-11 (In progress)
 * Editorial fixes.
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
-  and added "walk-through" examples of usage.
-* Added subsection "Security Properties" to Security Considerations.
-* Added subsection "Public Seed Secrecy" to Privacy Considerations.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+  and added "walk-through" examples of usage.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <p id="appendix-C-2">-10<a href="#appendix-C-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-3.1">
