@@ -1193,6 +1193,35 @@ Informally, they are:
 
 TODO
 
+## Public Seed Secrecy {#privacy-pub-seed-secrecy}
+
+The security properties described in {{security-properties}} hold even if the ARKG public seed is publicly known,
+as the name suggests,
+but there are situations when it may nevertheless be desirable to keep an ARKG public seed confidential.
+
+- If ARKG is used to derive multiple "pseudonym" public keys,
+  then the public seed is a correlation handle
+  that may reveal that some pseudonyms are related,
+  even without conclusive proof that they were derived from that seed.
+  The public seed should therefore not be revealed along with such pseudonyms.
+
+- Knowledge of an ARKG public seed is sufficient to derive public keys from it,
+  and prove that they were derived from that seed by revealing `tau` (see {{security-properties}}).
+  A malicious actor could use this to, for example:
+
+    - make purchases at the seed owner's expense,
+      if the seller does not require proof of private key possession at the time of the purchase.
+    - accuse the seed owner of wrongdoing by planting incriminating keys in their name.
+
+  To prevent such and other abuse,
+  it is prudent to keep the public seed confidential when possible.
+
+- Knowledge of the KEM component of an ARKG public seed is sufficient
+  to generate ARKG key handles valid for that ARKG private seed.
+  If this is undesirable -
+  for example if it could lead to the delegating party being overloaded -
+  then the KEM component of the public seed should be kept confidential.
+
 
 # IANA Considerations {#IANA}
 
@@ -1610,6 +1639,7 @@ The authors would like to thank all of these authors for their research and deve
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
   and added "walk-through" examples of usage.
 * Added subsection "Security Properties" to Security Considerations.
+* Added subsection "Public Seed Secrecy" to Privacy Considerations.
 
 -10
 
