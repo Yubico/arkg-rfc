@@ -1015,6 +1015,20 @@ but SHOULD NOT appear in COSE structures consumed by signature verifiers.
 COSE structures consumed by signature verifiers SHOULD instead use the corresponding algorithm identifier
 listed in the "verification algorithm" column.
 
+All algorithm identifiers in {{tbl-cose-algs-arkg-sign}} denote signature algorithm suites where:
+
+- Key generation consists of executing `ARKG-Derive-Seed` to derive or generate an ARKG seed pair,
+  and disclosing the public seed.
+
+- Signing consists of first executing `ARKG-Derive-Public-Key`
+  to derive a verification public key and key handle,
+  then executing `ARKG-Derive-Private-Key` with that key handle to derive the private signing key,
+  and finally using the derived private signing key to generate a signature valid under the derived verification public key.
+  Multiple signings can also be done with the same verification public key and key handle.
+
+- Verification consists of executing the verification algorithm indicated in the table,
+  using the derived verification public key.
+
 {: #tbl-cose-algs-arkg-sign title="COSE algorithms for signing with an ARKG-derived key."}
 | Name               | Value                    | Verification algorithm | Description |
 | ------------------ | ------------------------ | ---------------------- | ----------- |
@@ -1025,6 +1039,71 @@ listed in the "verification algorithm" column.
 | ESP512-ARKG        | TBD                      | -52 (ESP512)           | ESP512 [RFC9864] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ESP512-split-ARKG  | TBD                      | -52 (ESP512)           | ESP512-split [I-D.lundberg-cose-split-algs] using private key derived by ARKG-P521 ({{ARKG-P521}}).
 | ES256K-ARKG        | TBD                      | -47 (ES256K)           | ES256K [RFC8812] using private key derived by ARKG-P256k ({{ARKG-P256k}}).
+
+
+As an example of the intended uses of these algorithm identifiers,
+consider a split signing [I-D.lundberg-cose-split-algs] use case
+with signing keys derived using ARKG-P256:
+
+- First, a _digester_ and _signer_ use the algorithm identifier -65539 (ESP256-split-ARKG, placeholder value)
+  to negotiate a signing protocol and their respective roles in it.
+  This identifier expresses that the _signer_ will generate ARKG seed pairs,
+  the _digester_ will use `ARKG-Derive-Public-Key` with those public seeds to derive public keys,
+  and the _signer_ will use `ARKG-Derive-Private-Key` and ESP256-split [I-D.lundberg-cose-split-algs]
+  to sign data with private keys corresponding to those derived public keys.
+
+- The _signer_, acting as the ARKG _delegating party_, then generates an ARKG-P256 seed pair
+  and discloses the public seed to the _digester_.
+  The public seed is encoded as a `COSE_Key`, with
+  `1 (kty): -65537 (ARKG-pub, placeholder value)` to indicate it is an ARKG public seed,
+  `3 (alg): -67000 (ARKG-P256, placeholder value)` to indicate
+  which instance of `ARKG-Derive-Public-Key` to use it with,
+  and `-3 (dkalg): -9 (ESP256)` to indicate which verification algorithm
+  third-party verifiers may use to verify signatures made by keys derived from this public seed.
+
+- The _digester_ uses the ARKG public seed in `ARKG-Derive-Public-Key`.
+  The resulting public key is encoded as a `COSE_Key`
+  with `1 (kty): 2 (EC2)` to indicate it is an elliptic curve key
+  and `3 (alg): -9 (ESP256)` to indicate its verification algorithm.
+  The _digester_ then provides this derived public key to some third party.
+
+- That third party later requests a signature by the derived public key.
+  The _digester_ relays this request to the _signer_,
+  along with some identifier for the ARKG seed pair if necessary,
+  and uses a `COSE_Sign_Args` structure to convey `ARKG-Derive-Private-Key` inputs to the _signer_.
+  The `COSE_Sign_Args` structure has `3 (alg): -65539 (ESP256-split-ARKG, placeholder value)`
+  to indicate the _digester_'s intent as initially negotiated,
+  and includes the `kh` and `ctx` arguments for the _signer_ to use in `ARKG-Derive-Private-Key`.
+
+  Since the negotiated algorithm is ESP256-split-ARKG,
+  the _digester_ performs the hash step of the ECDSA signing procedure
+  as defined in {{Section 2.1 of I-D.lundberg-cose-split-algs}},
+  and provides the digest as the "data to be signed" input to the _signer_.
+
+  The _signer_ uses the indicated ARKG private seed in `ARKG-Derive-Private-Key`
+  and uses the resulting derived private key to generate the requested signature.
+
+- The third party receives the signature,
+  uses the `3 (alg): -9 (ESP256)` attribute of the public key to identify the verification algorithm to run,
+  and uses that algorithm to verify the signature.
+
+Note how in this example, the identifier -65539 (ESP256-split-ARKG, placeholder value)
+is not exposed to the third-party verifier;
+it is used only between _digester_ and _signer_ to negotiate and execute a signing protocol.
+The verifier does not need to know the internal details of the signing protocol,
+only what algorithm to use to verify the signature.
+
+Consider also an example using ESP256-ARKG instead:
+
+- A _digester_ and _signer_ use the algorithm identifier TBD (ESP256-ARKG) to negotiate a signing protocol.
+  This identifier expresses that the _signer_ will generate ARKG seed pairs,
+  the _digester_ will use `ARKG-Derive-Public-Key` with those public seeds to derive public keys,
+  and the _signer_ will use `ARKG-Derive-Private-Key` and ESP256 [RFC9864]
+  to sign data with private keys corresponding to those derived public keys.
+
+- The example proceeds just like the the ESP256-split-ARKG example above,
+  except the _signer_ uses the derived private key with ESP256 instead of ESP256-split.
+  Therefore, the _digester_ relays the "data to be signed" unaltered from the third party to the _signer_ in this case.
 
 
 ## COSE signing arguments {#cose-sign-args-arkg}
@@ -1495,6 +1574,8 @@ The authors would like to thank all of these authors for their research and deve
 
 -11 (In progress)
 * Editorial fixes.
+* Clarified meaning of COSE algorithm identifiers for signing algorithms,
+  and added "walk-through" examples of usage.
 
 -10
 
