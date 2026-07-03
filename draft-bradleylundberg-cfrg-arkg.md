@@ -1214,7 +1214,7 @@ but there are situations when it may nevertheless be desirable to keep an ARKG p
     - accuse the seed owner of wrongdoing by planting incriminating keys in their name.
 
   To prevent such and other abuse,
-  it is prudent to keep the public seed confidential when possible.
+  it is prudent to keep the public seed confidential.
 
 - Knowledge of the KEM component of an ARKG public seed is sufficient
   to generate ARKG key handles valid for that ARKG private seed.
