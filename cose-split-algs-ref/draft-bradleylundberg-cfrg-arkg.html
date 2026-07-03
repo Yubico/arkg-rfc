@@ -3231,7 +3231,8 @@ The competition entry implements ARKG
 for efficiently generating single-use hardware-bound holder binding keys.<a href="#section-10-3.1.1" class="pilcrow">¶</a></p>
 <p id="section-10-3.1.2">
 The <a href="https://github.com/gunet/funke-s3a-wallet-frontend/blob/stage-3/src/services/keystore.ts">implementation</a>
-uses the <code>COSE_Key_Ref</code> data structure defined in version 01 of <span>[<a href="#I-D.lundberg-cose-split-algs-01" class="cite xref">I-D.lundberg-cose-split-algs-01</a>]</span>
+uses the <code>COSE_Key_Ref</code> data structure defined in an earlier version of <span>[<a href="#I-D.cose-split-algs" class="cite xref">I-D.cose-split-algs</a>]</span>
+(version -01 of the Individual-Draft <code>I-D.draft-lundberg-cose-two-party-signing-algs-01</code>)
 in order to send ARKG inputs to a WebAuthn authenticator,
 and uses the placeholder value for ESP256-split-ARKG defined in <a href="#cose-algs-arkg" class="auto internal xref">Section 5.2</a>
 to negotiate creation and usage of ARKG-derived keys for signing operations.
@@ -3374,10 +3375,6 @@ in which case new algorithm identifiers and such can be defined for the modified
         <dd>
 <span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"Split Signing Algorithms for COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-split-signing-algs-00</span>, <time datetime="2026-04-24" class="refDate">24 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-split-signing-algs-00">https://datatracker.ietf.org/doc/html/draft-ietf-cose-split-signing-algs-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.lundberg-cose-split-algs-01">[I-D.lundberg-cose-split-algs-01]</dt>
-        <dd>
-<span class="refAuthor">Lundberg, E.</span> and <span class="refAuthor">M. B. Jones</span>, <span class="refTitle">"COSE Algorithms for Two-Party Signing"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lundberg-cose-two-party-signing-algs-01</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01">https://datatracker.ietf.org/doc/html/draft-lundberg-cose-two-party-signing-algs-01</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="IANA.cose">[IANA.cose]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose">https://www.iana.org/assignments/cose</a>&gt;</span>. </dd>
@@ -3436,7 +3433,7 @@ in which case new algorithm identifiers and such can be defined for the modified
 <dd class="break"></dd>
 <dt id="RFC9864">[RFC9864]</dt>
         <dd>
-<span class="refTitle">"*** BROKEN REFERENCE ***"</span>. </dd>
+<span class="refAuthor">Jones, M.B.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"Fully-Specified Algorithms for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 9864</span>, <span class="seriesInfo">DOI 10.17487/RFC9864</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9864">https://www.rfc-editor.org/rfc/rfc9864</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SEC1">[SEC1]</dt>
         <dd>

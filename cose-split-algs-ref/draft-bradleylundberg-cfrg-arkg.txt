@@ -1625,13 +1625,14 @@ Table of Contents
 
       The implementation (https://github.com/gunet/funke-s3a-wallet-
       frontend/blob/stage-3/src/services/keystore.ts) uses the
-      COSE_Key_Ref data structure defined in version 01 of
-      [I-D.lundberg-cose-split-algs-01] in order to send ARKG inputs to
-      a WebAuthn authenticator, and uses the placeholder value for
-      ESP256-split-ARKG defined in Section 5.2 to negotiate creation and
-      usage of ARKG-derived keys for signing operations.  Work to update
-      the implementation to instead use COSE_Sign_Args as defined in
-      [I-D.cose-split-algs] is ongoing.
+      COSE_Key_Ref data structure defined in an earlier version of
+      [I-D.cose-split-algs] (version -01 of the Individual-Draft I-
+      D.draft-lundberg-cose-two-party-signing-algs-01) in order to send
+      ARKG inputs to a WebAuthn authenticator, and uses the placeholder
+      value for ESP256-split-ARKG defined in Section 5.2 to negotiate
+      creation and usage of ARKG-derived keys for signing operations.
+      Work to update the implementation to instead use COSE_Sign_Args as
+      defined in [I-D.cose-split-algs] is ongoing.
 
    *  Yubico (https://www.yubico.com/), a hardware security key vendor,
       has produced limited-availability prototypes of their YubiKey
@@ -1726,13 +1727,6 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
               split-signing-algs-00>.
 
-   [I-D.lundberg-cose-split-algs-01]
-              Lundberg, E. and M. B. Jones, "COSE Algorithms for Two-
-              Party Signing", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-01, 3 March 2025,
-              <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-01>.
-
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
               <https://www.iana.org/assignments/cose>.
@@ -1801,7 +1795,11 @@ Table of Contents
               DOI 10.17487/RFC9380, August 2023,
               <https://www.rfc-editor.org/rfc/rfc9380>.
 
-   [RFC9864]  "*** BROKEN REFERENCE ***".
+   [RFC9864]  Jones, M.B. and O. Steele, "Fully-Specified Algorithms for
+              JSON Object Signing and Encryption (JOSE) and CBOR Object
+              Signing and Encryption (COSE)", RFC 9864,
+              DOI 10.17487/RFC9864, October 2025,
+              <https://www.rfc-editor.org/rfc/rfc9864>.
 
    [SEC1]     Certicom Research, "SEC 1: Elliptic Curve Cryptography",
               2009, <http://www.secg.org/sec1-v2.pdf>.
