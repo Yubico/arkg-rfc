@@ -5,7 +5,7 @@
 Crypto Forum                                            E. Lundberg, Ed.
 Internet-Draft                                                J. Bradley
 Intended status: Informational                                    Yubico
-Expires: 10 September 2026                                  9 March 2026
+Expires: 4 January 2027                                      3 July 2026
 
 
         The Asynchronous Remote Key Generation (ARKG) algorithm
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 September 2026.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
@@ -99,7 +99,9 @@ Table of Contents
      5.2.  COSE algorithms
      5.3.  COSE signing arguments
    6.  Security Considerations
+     6.1.  Security Properties
    7.  Privacy Considerations
+     7.1.  Public Seed Secrecy
    8.  IANA Considerations
      8.1.  COSE Key Types Registrations
      8.2.  COSE Key Type Parameters Registrations
@@ -1073,6 +1075,23 @@ Table of Contents
    by signature verifiers SHOULD instead use the corresponding algorithm
    identifier listed in the "verification algorithm" column.
 
+   All algorithm identifiers in Table 3 denote signature algorithm
+   suites where:
+
+   *  Key generation consists of executing ARKG-Derive-Seed to derive or
+      generate an ARKG seed pair, and disclosing the public seed.
+
+   *  Signing consists of first executing ARKG-Derive-Public-Key to
+      derive a verification public key and key handle, then executing
+      ARKG-Derive-Private-Key with that key handle to derive the private
+      signing key, and finally using the derived private signing key to
+      generate a signature valid under the derived verification public
+      key.  Multiple signings can also be done with the same
+      verification public key and key handle.
+
+   *  Verification consists of executing the verification algorithm
+      indicated in the table, using the derived verification public key.
+
    +===========+============+============+==============================+
    |Name       |Value       |Verification|Description                   |
    |           |            |algorithm   |                              |
@@ -1110,6 +1129,84 @@ Table of Contents
    +-----------+------------+------------+------------------------------+
 
        Table 3: COSE algorithms for signing with an ARKG-derived key.
+
+   As an example of the intended uses of these algorithm identifiers,
+   consider a split signing [I-D.lundberg-cose-split-algs] use case with
+   signing keys derived using ARKG-P256:
+
+   *  First, a _digester_ and _signer_ use the algorithm identifier
+      -65539 (ESP256-split-ARKG, placeholder value) to negotiate a
+      signing protocol and their respective roles in it.  This
+      identifier expresses that the _signer_ will generate ARKG seed
+      pairs, the _digester_ will use ARKG-Derive-Public-Key with those
+      public seeds to derive public keys, and the _signer_ will use
+      ARKG-Derive-Private-Key and ESP256-split
+      [I-D.lundberg-cose-split-algs] to sign data with private keys
+      corresponding to those derived public keys.
+
+   *  The _signer_, acting as the ARKG _delegating party_, then
+      generates an ARKG-P256 seed pair and discloses the public seed to
+      the _digester_. The public seed is encoded as a COSE_Key, with 1
+      (kty): -65537 (ARKG-pub, placeholder value) to indicate it is an
+      ARKG public seed, 3 (alg): -67000 (ARKG-P256, placeholder value)
+      to indicate which instance of ARKG-Derive-Public-Key to use it
+      with, and -3 (dkalg): -9 (ESP256) to indicate which verification
+      algorithm third-party verifiers may use to verify signatures made
+      by keys derived from this public seed.
+
+   *  The _digester_ uses the ARKG public seed in ARKG-Derive-Public-
+      Key. The resulting public key is encoded as a COSE_Key with 1
+      (kty): 2 (EC2) to indicate it is an elliptic curve key and 3
+      (alg): -9 (ESP256) to indicate its verification algorithm.  The
+      _digester_ then provides this derived public key to some third
+      party.
+
+   *  That third party later requests a signature by the derived public
+      key.  The _digester_ relays this request to the _signer_, along
+      with some identifier for the ARKG seed pair if necessary, and uses
+      a COSE_Sign_Args structure to convey ARKG-Derive-Private-Key
+      inputs to the _signer_. The COSE_Sign_Args structure has 3 (alg):
+      -65539 (ESP256-split-ARKG, placeholder value) to indicate the
+      _digester_'s intent as initially negotiated, and includes the kh
+      and ctx arguments for the _signer_ to use in ARKG-Derive-Private-
+      Key.
+
+      Since the negotiated algorithm is ESP256-split-ARKG, the
+      _digester_ performs the hash step of the ECDSA signing procedure
+      as defined in Section 2.1 of [I-D.lundberg-cose-split-algs], and
+      provides the digest as the "data to be signed" input to the
+      _signer_.
+
+      The _signer_ uses the indicated ARKG private seed in ARKG-Derive-
+      Private-Key and uses the resulting derived private key to generate
+      the requested signature.
+
+   *  The third party receives the signature, uses the 3 (alg): -9
+      (ESP256) attribute of the public key to identify the verification
+      algorithm to run, and uses that algorithm to verify the signature.
+
+   Note how in this example, the identifier -65539 (ESP256-split-ARKG,
+   placeholder value) is not exposed to the third-party verifier; it is
+   used only between _digester_ and _signer_ to negotiate and execute a
+   signing protocol.  The verifier does not need to know the internal
+   details of the signing protocol, only what algorithm to use to verify
+   the signature.
+
+   Consider also an example using ESP256-ARKG instead:
+
+   *  A _digester_ and _signer_ use the algorithm identifier TBD
+      (ESP256-ARKG) to negotiate a signing protocol.  This identifier
+      expresses that the _signer_ will generate ARKG seed pairs, the
+      _digester_ will use ARKG-Derive-Public-Key with those public seeds
+      to derive public keys, and the _signer_ will use ARKG-Derive-
+      Private-Key and ESP256 [RFC9864] to sign data with private keys
+      corresponding to those derived public keys.
+
+   *  The example proceeds just like the the ESP256-split-ARKG example
+      above, except the _signer_ uses the derived private key with
+      ESP256 instead of ESP256-split.  Therefore, the _digester_ relays
+      the "data to be signed" unaltered from the third party to the
+      _signer_ in this case.
 
 5.3.  COSE signing arguments
 
@@ -1177,9 +1274,77 @@ Table of Contents
 
    TODO
 
+6.1.  Security Properties
+
+   ARKG satisfies two security properties, defined in [CCS_FGKLMN20].
+   Informally, they are:
+
+   *  *Public key unlinkability*: Derived public keys are
+      indistinguishable from randomly sampled public keys, even with
+      knowledge of the ARKG public seed.  Consequently, it is also not
+      distinguishable whether two derived public keys were derived from
+      the same ARKG public seed or from different public seeds.
+
+      This property holds under the assumption that the adversary does
+      not know the tau or ikm_tau value that was computed in ARKG-
+      Derive-Public-Key when deriving the public key.  Indeed, knowledge
+      of tau along with a public seed pk and derived public key pk' is
+      sufficient to determine with certainty whether pk' is derived from
+      pk.  This also means that is is possible to _prove_, by revealing
+      tau, that pk' is derived from pk, and therefore that knowledge of
+      the corresponding derived private key sk' implies knowledge of the
+      private seed sk.
+
+      This property is called _PK-unlinkability_ in [CCS_FGKLMN20].
+
+   *  *Private key security*: Derived private keys cannot be recovered
+      without knowledge of the ARKG private seed, even with knowledge of
+      other public and private keys derived from the same seed.
+      Consequently, signatures by derived private keys enjoy the same
+      unforgeability properties as signatures made by equivalent keys
+      generated without ARKG.
+
+      This property is called _SK-security_ in [CCS_FGKLMN20],
+      specifically the _msKS_ variant ("malicious-strong SK-security")
+      which is the strongest of the four variants defined.
+
 7.  Privacy Considerations
 
    TODO
+
+7.1.  Public Seed Secrecy
+
+   The security properties described in Section 6.1 hold even if the
+   ARKG public seed is publicly known, as the name suggests, but there
+   are situations when it may nevertheless be desirable to keep an ARKG
+   public seed confidential.
+
+   *  If ARKG is used to derive multiple "pseudonym" public keys, then
+      the public seed is a correlation handle that may reveal that some
+      pseudonyms are related, even without conclusive proof that they
+      were derived from that seed.  The public seed should therefore not
+      be revealed along with such pseudonyms.
+
+   *  Knowledge of an ARKG public seed is sufficient to derive public
+      keys from it, and prove that they were derived from that seed by
+      revealing tau (see Section 6.1).  A malicious actor could use this
+      to, for example:
+
+      -  make purchases at the seed owner's expense, if the seller does
+         not require proof of private key possession at the time of the
+         purchase.
+
+      -  accuse the seed owner of wrongdoing by planting incriminating
+         keys in their name.
+
+      To prevent such and other abuse, it is prudent to keep the public
+      seed confidential.
+
+   *  Knowledge of the KEM component of an ARKG public seed is
+      sufficient to generate ARKG key handles valid for that ARKG
+      private seed.  If this is undesirable - for example if it could
+      lead to the delegating party being overloaded - then the KEM
+      component of the public seed should be kept confidential.
 
 8.  IANA Considerations
 
@@ -1553,11 +1718,11 @@ Table of Contents
 11.1.  Normative References
 
    [I-D.lundberg-cose-split-algs]
-              Lundberg, E. and M. B. Jones, "Split signing algorithms
+              Lundberg, E. and M. B. Jones, "Split Signing Algorithms
               for COSE", Work in Progress, Internet-Draft, draft-
-              lundberg-cose-two-party-signing-algs-06, 27 February 2026,
+              lundberg-cose-two-party-signing-algs-07, 19 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-lundberg-
-              cose-two-party-signing-algs-06>.
+              cose-two-party-signing-algs-07>.
 
    [IANA.cose]
               IANA, "CBOR Object Signing and Encryption (COSE)",
@@ -1627,11 +1792,7 @@ Table of Contents
               DOI 10.17487/RFC9380, August 2023,
               <https://www.rfc-editor.org/rfc/rfc9380>.
 
-   [RFC9864]  Jones, M.B. and O. Steele, "Fully-Specified Algorithms for
-              JSON Object Signing and Encryption (JOSE) and CBOR Object
-              Signing and Encryption (COSE)", RFC 9864,
-              DOI 10.17487/RFC9864, October 2025,
-              <https://www.rfc-editor.org/rfc/rfc9864>.
+   [RFC9864]  "*** BROKEN REFERENCE ***".
 
    [SEC1]     Certicom Research, "SEC 1: Elliptic Curve Cryptography",
               2009, <http://www.secg.org/sec1-v2.pdf>.
@@ -1854,7 +2015,11 @@ Acknowledgements
 
 Document History
 
-   -11 (In progress) * Editorial fixes.
+   -11 (In progress) * Editorial fixes. * Clarified meaning of COSE
+   algorithm identifiers for signing algorithms, and added "walk-
+   through" examples of usage. * Added subsection "Security Properties"
+   to Security Considerations. * Added subsection "Public Seed Secrecy"
+   to Privacy Considerations.
 
    -10
 
