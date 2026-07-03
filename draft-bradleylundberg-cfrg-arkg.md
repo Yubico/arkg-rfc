@@ -1156,6 +1156,39 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
 TODO
 
 
+## Security Properties {#security-properties}
+
+ARKG satisfies two security properties, defined in [CCS:FGKLMN20].
+Informally, they are:
+
+- **Public key unlinkability**:
+  Derived public keys are indistinguishable from randomly sampled public keys,
+  even with knowledge of the ARKG public seed.
+  Consequently, it is also not distinguishable whether two derived public keys
+  were derived from the same ARKG public seed or from different public seeds.
+
+  This property holds under the assumption that the adversary does not know
+  the `tau` or `ikm_tau` value that was computed in `ARKG-Derive-Public-Key`
+  when deriving the public key.
+  Indeed, knowledge of `tau` along with a public seed `pk` and derived public key `pk'`
+  is sufficient to determine with certainty whether `pk'` is derived from `pk`.
+  This also means that is is possible to _prove_, by revealing `tau`, that `pk'` is derived from `pk`,
+  and therefore that knowledge of the corresponding derived private key `sk'`
+  implies knowledge of the private seed `sk`.
+
+  This property is called _PK-unlinkability_ in [CCS:FGKLMN20].
+
+- **Private key security**:
+  Derived private keys cannot be recovered without knowledge of the ARKG private seed,
+  even with knowledge of other public and private keys derived from the same seed.
+  Consequently, signatures by derived private keys enjoy the same unforgeability properties
+  as signatures made by equivalent keys generated without ARKG.
+
+  This property is called _SK-security_ in [CCS:FGKLMN20],
+  specifically the _msKS_ variant ("malicious-strong SK-security")
+  which is the strongest of the four variants defined.
+
+
 # Privacy Considerations {#Privacy}
 
 TODO
@@ -1576,6 +1609,7 @@ The authors would like to thank all of these authors for their research and deve
 * Editorial fixes.
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
   and added "walk-through" examples of usage.
+* Added subsection "Security Properties" to Security Considerations.
 
 -10
 
