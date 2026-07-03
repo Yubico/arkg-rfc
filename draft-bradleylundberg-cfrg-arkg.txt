@@ -117,7 +117,6 @@ Table of Contents
      11.2.  Informative References
    Appendix A.  Test Vectors
      A.1.  ARKG-P256
-     A.2.  Other instances
    Acknowledgements
    Document History
    Contributors
@@ -849,8 +848,6 @@ Table of Contents
 
    This section defines an initial set of concrete ARKG instantiations.
 
-   TODO: IANA registry?  COSE/JOSE?
-
 4.1.  ARKG-P256
 
    The identifier ARKG-P256 represents the following ARKG instance:
@@ -1278,8 +1275,6 @@ Table of Contents
 
 6.  Security Considerations
 
-   TODO
-
 6.1.  Security Properties
 
    ARKG satisfies two security properties, defined in [CCS_FGKLMN20].
@@ -1315,8 +1310,6 @@ Table of Contents
       which is the strongest of the four variants defined.
 
 7.  Privacy Considerations
-
-   TODO
 
 7.1.  Public Seed Secrecy
 
@@ -1519,8 +1512,7 @@ Table of Contents
 8.4.  COSE Signing Arguments Algorithm Parameters Registrations
 
    This section registers the following values in the IANA "COSE Signing
-   Arguments Algorithm Parameters" registry [I-D.cose-split-algs]
-   (TODO):
+   Arguments Algorithm Parameters" registry [I-D.cose-split-algs]:
 
    *  Name: kh
 
@@ -1987,10 +1979,6 @@ A.1.  ARKG-P256
 
    ; Derive-Private-Key:
    sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
-
-A.2.  Other instances
-
-   TODO
 
 Acknowledgements
 
