@@ -840,8 +840,6 @@ both as the key blinding key and the KEM key.
 
 This section defines an initial set of concrete ARKG instantiations.
 
-TODO: IANA registry? COSE/JOSE?
-
 
 ## ARKG-P256 {#ARKG-P256}
 
@@ -1153,9 +1151,6 @@ h'a3033a0001000220585127987995f184a44cfa548d104b0a461d0487fc739dbc
 
 # Security Considerations {#Security}
 
-TODO
-
-
 ## Security Properties {#security-properties}
 
 ARKG satisfies two security properties, defined in [CCS:FGKLMN20].
@@ -1190,8 +1185,6 @@ Informally, they are:
 
 
 # Privacy Considerations {#Privacy}
-
-TODO
 
 ## Public Seed Secrecy {#privacy-pub-seed-secrecy}
 
@@ -1329,7 +1322,7 @@ This section registers the following values in the IANA "COSE Algorithms" regist
 ## COSE Signing Arguments Algorithm Parameters Registrations
 
 This section registers the following values
-in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.cose-split-algs] (TODO):
+in the IANA "COSE Signing Arguments Algorithm Parameters" registry [I-D.cose-split-algs]:
 
 - Name: kh
   - Label: -1
@@ -1605,10 +1598,6 @@ kh          = h'81c4e65b552e52350b49864b98b87d510487fc739dbcdabc293ac5469221da91
 ; Derive-Private-Key:
 sk_prime    = 0x2a97f4232f9abba32fbfc28c6686f8afd2d851c2a95a3ed2f0a384b9ad55068d
 ~~~
-
-
-## Other instances
-TODO
 
 
 # Acknowledgements
