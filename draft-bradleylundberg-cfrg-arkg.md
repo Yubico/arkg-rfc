@@ -55,7 +55,6 @@ contributor:
   country: NL
 
 normative:
-  I-D.lundberg-cose-split-algs-01: I-D.draft-lundberg-cose-two-party-signing-algs-01
   I-D.cose-split-algs: I-D.draft-ietf-cose-split-signing-algs-00
   IANA.cose:
   RFC2104:
@@ -1403,7 +1402,8 @@ There are currently two known implementations using features defined by this spe
   for efficiently generating single-use hardware-bound holder binding keys.
 
   The [implementation](https://github.com/gunet/funke-s3a-wallet-frontend/blob/stage-3/src/services/keystore.ts)
-  uses the `COSE_Key_Ref` data structure defined in version 01 of [I-D.lundberg-cose-split-algs-01]
+  uses the `COSE_Key_Ref` data structure defined in an earlier version of [I-D.cose-split-algs]
+  (version -01 of the Individual-Draft `I-D.draft-lundberg-cose-two-party-signing-algs-01`)
   in order to send ARKG inputs to a WebAuthn authenticator,
   and uses the placeholder value for ESP256-split-ARKG defined in {{cose-algs-arkg}}
   to negotiate creation and usage of ARKG-derived keys for signing operations.
