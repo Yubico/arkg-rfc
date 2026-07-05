@@ -140,6 +140,7 @@ informative:
     title: "Quantum-Safe Account Recovery for WebAuthn. ASIACCS '24"
     date: 2023
     target: https://eprint.iacr.org/2024/678
+  WebAuthn: W3C.webauthn-3
   Wilson2023:
     author:
     - name: Spencer MacLaren Wilson
@@ -1713,6 +1714,7 @@ The authors would like to thank all of these authors for their research and deve
 * Added subsection "KEM Ciphertext Integrity" to Security Considerations.
 * Added subsection "Public Seed Secrecy" to Privacy Considerations.
 * Updated "Split Signing Algorithms for COSE" reference from individual-draft to WG draft.
+* Fixed undefined reference `WebAuthn`.
 
 -10
 
