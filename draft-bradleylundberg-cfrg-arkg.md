@@ -57,6 +57,8 @@ contributor:
 normative:
   I-D.cose-split-algs: I-D.draft-ietf-cose-split-signing-algs-00
   IANA.cose:
+  NIST.FIPS.180-4:
+  NIST.FIPS.202:
   RFC2104:
   RFC4949:
   RFC5869:
@@ -790,8 +792,8 @@ This formula has the following parameters:
 
 The `KEM` parameter of ARKG may be instantiated as described in section {{hmac-kem}} with the parameters:
 
-- `Hash`: SHA-512 [FIPS 180-4] if `DH-Function` is X25519,
-  or SHAKE256 [FIPS 202] with output length 64 octets if `DH-Function` is X448.
+- `Hash`: SHA-512 [NIST.FIPS.180-4] if `DH-Function` is X25519,
+  or SHAKE256 [NIST.FIPS.202] with output length 64 octets if `DH-Function` is X448.
 - `DST_ext`: `'ARKG-ECDHX.' || DST_ext`.
 - `Sub-Kem`: The functions `Sub-Kem-Derive-Key-Pair`, `Sub-Kem-Encaps` and `Sub-Kem-Decaps` defined as follows:
 
@@ -852,7 +854,7 @@ The identifier `ARKG-P256` represents the following ARKG instance:
   - `DST_ext`: `'ARKG-P256'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp256r1` [SEC2].
-  - `Hash`: SHA-256 [FIPS 180-4].
+  - `Hash`: SHA-256 [NIST.FIPS.180-4].
   - `hash-to-crv-suite`: `P256_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256'`.
 
@@ -870,7 +872,7 @@ The identifier `ARKG-P384` represents the following ARKG instance:
   - `DST_ext`: `'ARKG-P384'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp384r1` [SEC2].
-  - `Hash`: SHA-384 [FIPS 180-4].
+  - `Hash`: SHA-384 [NIST.FIPS.180-4].
   - `hash-to-crv-suite`: `P384_XMD:SHA-384_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P384'`.
 
@@ -888,7 +890,7 @@ The identifier `ARKG-P521` represents the following ARKG instance:
   - `DST_ext`: `'ARKG-P521'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The NIST curve `secp521r1` [SEC2].
-  - `Hash`: SHA-512 [FIPS 180-4].
+  - `Hash`: SHA-512 [NIST.FIPS.180-4].
   - `hash-to-crv-suite`: `P521_XMD:SHA-512_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P521'`.
 
@@ -906,7 +908,7 @@ The identifier `ARKG-P256k` represents the following ARKG instance:
   - `DST_ext`: `'ARKG-P256k'`.
 - `KEM`: ECDH as described in {{kem-ecdh}} with the parameters:
   - `crv`: The SECG curve `secp256k1` [SEC2].
-  - `Hash`: SHA-256 [FIPS 180-4].
+  - `Hash`: SHA-256 [NIST.FIPS.180-4].
   - `hash-to-crv-suite`: `secp256k1_XMD:SHA-256_SSWU_RO_` [RFC9380].
   - `DST_ext`: `'ARKG-P256k'`.
 
@@ -1714,7 +1716,7 @@ The authors would like to thank all of these authors for their research and deve
 * Added subsection "KEM Ciphertext Integrity" to Security Considerations.
 * Added subsection "Public Seed Secrecy" to Privacy Considerations.
 * Updated "Split Signing Algorithms for COSE" reference from individual-draft to WG draft.
-* Fixed undefined reference `WebAuthn`.
+* Fixed undefined references `WebAuthn`, `FIPS 180-4` and `FIPS 202`.
 
 -10
 
