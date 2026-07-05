@@ -1699,6 +1699,7 @@ The authors would like to thank all of these authors for their research and deve
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
   and added "walk-through" examples of usage.
 * Added subsection "Security Properties" to Security Considerations.
+* Added subsection "Secret Values" to Security Considerations.
 * Added subsection "Public Seed Secrecy" to Privacy Considerations.
 * Updated "Split Signing Algorithms for COSE" reference from individual-draft to WG draft.
 
