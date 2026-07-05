@@ -400,7 +400,7 @@ ARKG-Derive-Seed(ikm_bl, ikm_kem) -> (pk, sk)
 ~~~
 
 
-### Nondeterministic variants
+### Nondeterministic variants {#derive-seed-nondeterministic}
 
 Applications that do not need a deterministic interface MAY choose
 to instead implement `ARKG-Derive-Seed`, `KEM-Derive-Key-Pair` and `BL-Derive-Key-Pair`
@@ -461,7 +461,7 @@ the procedure can safely be retried with the same `(pk_bl, pk_kem)` and `ctx` ar
 See {{long-ctx}} for guidance on using `ctx` arguments longer than 64 bytes.
 
 
-### Nondeterministic variants
+### Nondeterministic variants {#derive-pk-nondeterministic}
 
 Applications that do not need a deterministic interface MAY choose
 to instead implement `ARKG-Derive-Public-Key` and `KEM-Encaps`
