@@ -101,6 +101,7 @@ Table of Contents
    6.  Security Considerations
      6.1.  Security Properties
      6.2.  Secret Values
+     6.3.  KEM Ciphertext Integrity
    7.  Privacy Considerations
      7.1.  Public Seed Secrecy
    8.  IANA Considerations
@@ -1390,6 +1391,17 @@ Table of Contents
       k should not be revealed unnecessarily since it encodes private
       key material.
 
+6.3.  KEM Ciphertext Integrity
+
+   Section 2.1 requires that the KEM scheme guarantees ciphertext
+   integrity, meaning that a valid KEM ciphertext can be created only
+   with knowledge of the KEM public key.  This is not a security
+   requirement; failure to satisfy this property does not weaken either
+   of the security properties discussed in Section 6.1.  It may however
+   degrade the correctness of the ARKG instance, as explained in
+   Section 9.1, potentially causing protocol failures that may be
+   difficult to troubleshoot or for end-users to understand.
+
 7.  Privacy Considerations
 
 7.1.  Public Seed Secrecy
@@ -2095,9 +2107,10 @@ Document History
    algorithm identifiers for signing algorithms, and added "walk-
    through" examples of usage. * Added subsection "Security Properties"
    to Security Considerations. * Added subsection "Secret Values" to
-   Security Considerations. * Added subsection "Public Seed Secrecy" to
-   Privacy Considerations. * Updated "Split Signing Algorithms for COSE"
-   reference from individual-draft to WG draft.
+   Security Considerations. * Added subsection "KEM Ciphertext
+   Integrity" to Security Considerations. * Added subsection "Public
+   Seed Secrecy" to Privacy Considerations. * Updated "Split Signing
+   Algorithms for COSE" reference from individual-draft to WG draft.
 
    -10
 
