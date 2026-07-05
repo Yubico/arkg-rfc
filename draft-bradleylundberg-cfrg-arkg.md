@@ -1707,7 +1707,7 @@ The authors would like to thank all of these authors for their research and deve
 # Document History
 {: numbered="false"}
 
--11 (In progress)
+-11
 * Editorial fixes.
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
   and added "walk-through" examples of usage.
