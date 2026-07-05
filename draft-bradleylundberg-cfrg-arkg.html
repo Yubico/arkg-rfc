@@ -1059,7 +1059,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Lundberg &amp; Bradley</td>
-<td class="center">Expires 4 January 2027</td>
+<td class="center">Expires 6 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg {
 <dd class="internet-draft">draft-bradleylundberg-cfrg-arkg-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-03" class="published">3 July 2026</time>
+<time datetime="2026-07-05" class="published">5 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-04">4 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-06">6 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ We expect that additional instances will be defined in the future.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1262,6 +1262,9 @@ We expect that additional instances will be defined in the future.<a href="#sect
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-security-properties" class="internal xref">Security Properties</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-secret-values" class="internal xref">Secret Values</a></p>
 </li>
             </ul>
 </li>
@@ -1617,7 +1620,7 @@ ARKG-Derive-Seed(ikm_bl, ikm_kem) -&gt; (pk, sk)
     sk = (sk_bl, sk_kem)
 </pre><a href="#section-2.2-2" class="pilcrow">¶</a>
 </div>
-<div id="nondeterministic-variants">
+<div id="derive-seed-nondeterministic">
 <section id="section-2.2.1">
           <h4 id="name-nondeterministic-variants">
 <a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-nondeterministic-variants" class="section-name selfRef">Nondeterministic variants</a>
@@ -1682,7 +1685,7 @@ ARKG-Derive-Public-Key((pk_bl, pk_kem), ikm, ctx) -&gt; (pk', kh)
 <p id="section-2.3-4">If this procedure aborts due to an error,
 the procedure can safely be retried with the same <code>(pk_bl, pk_kem)</code> and <code>ctx</code> arguments but a new <code>ikm</code> argument.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
 <p id="section-2.3-5">See <a href="#long-ctx" class="auto internal xref">Section 2.5</a> for guidance on using <code>ctx</code> arguments longer than 64 bytes.<a href="#section-2.3-5" class="pilcrow">¶</a></p>
-<div id="nondeterministic-variants-1">
+<div id="derive-pk-nondeterministic">
 <section id="section-2.3.1">
           <h4 id="name-nondeterministic-variants-2">
 <a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-nondeterministic-variants-2" class="section-name selfRef">Nondeterministic variants</a>
@@ -2764,6 +2767,87 @@ which is the strongest of the four variants defined.<a href="#section-6.1-2.2.2"
         </ul>
 </section>
 </div>
+<div id="security-secrets">
+<section id="section-6.2">
+        <h3 id="name-secret-values">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-secret-values" class="section-name selfRef">Secret Values</a>
+        </h3>
+<p id="section-6.2-1">Both security properties discussed in <a href="#security-properties" class="auto internal xref">Section 6.1</a>
+rely on the secrecy of the ARKG private seed.
+This is the primary secret which must be kept confidential in all circumstances.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">The ARKG functions also use other values of varying levels of sensitivity:<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-3.1">
+            <p id="section-6.2-3.1.1">The <code>ikm_bl</code> and <code>ikm_kem</code> arguments to <code>ARKG-Derive-Seed</code>:
+These uniquely determine the ARKG private seed,
+and so must be at least equally well protected as the private seed itself.
+Note that implementations can choose to not store <code>ikm_bl</code> or <code>ikm_kem</code>
+if the resulting <code>pk</code> and <code>sk</code> are instead stored directly.<a href="#section-6.2-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.1.2">
+See also <a href="#derive-seed-nondeterministic" class="auto internal xref">Section 2.2.1</a> for discussion
+of nondeterministic variants that eliminate the <code>ikm_bl</code> and <code>ikm_kem</code> parameters;
+note however that the same considerations apply to any and all random entropy used to replace them.<a href="#section-6.2-3.1.2" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.2">
+            <p id="section-6.2-3.2.1">The arguments to <code>ARKG-Derive-Public-Key</code>, and all intermediate variables used during its execution,
+do not need to be kept confidential for private key security to hold.
+No special protection of them is needed during execution of <code>ARKG-Derive-Public-Key</code>,
+they do not need to be securely erased,
+and no additional protection is needed for outputs in transit between subordinate party and delegating party.
+The private key derived by <code>ARKG-Derive-Public-Key</code> remains secure
+even if <code>ARKG-Derive-Public-Key</code> is executed entirely in public.<a href="#section-6.2-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.2.2">
+However, some of these values enable varying levels of attack on privacy
+or public key unlinkability if known.
+Some of them ultimately become private key material,
+so they should not be revealed unnecessarily.<a href="#section-6.2-3.2.2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.2.3">
+The subsequent list items expand on these considerations.<a href="#section-6.2-3.2.3" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.3">
+            <p id="section-6.2-3.3.1">The <code>ikm</code> argument to <code>ARKG-Derive-Public-Key</code>
+determines <code>ikm_tau</code> and therefore <code>tau</code>.
+<code>ikm</code> must therefore be confidential for public key unlinkability to hold;
+the considerations in <a href="#privacy-pub-seed-secrecy" class="auto internal xref">Section 7.1</a> also apply to <code>ikm</code>.<a href="#section-6.2-3.3.1" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.3.2">
+Since <code>ikm</code> is used to derive private key material, it should not be revealed unnecessarily.<a href="#section-6.2-3.3.2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.3.3">
+See also <a href="#derive-pk-nondeterministic" class="auto internal xref">Section 2.3.1</a> for discussion
+of nondeterministic variants that eliminate the <code>ikm</code> parameters;
+note however that the same considerations apply to any and all random entropy used to replace it.<a href="#section-6.2-3.3.3" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.4">
+            <p id="section-6.2-3.4.1">The <code>ctx</code> argument to <code>ARKG-Derive-Public-Key</code> and <code>ARKG-Derive-Private-Key</code>
+is fuctionally similar to <code>ikm</code>,
+but intended for domain separation rather than a primary entropy source.
+It is not intended to be kept confidential and can safely be a public constant,
+or an application constant appended with a key index, or similar.<a href="#section-6.2-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.5">
+            <p id="section-6.2-3.5.1">The <code>pk'</code> output from <code>ARKG-Derive-Public-Key</code> may safely be made public,
+but may become a correlation handle if the same <code>pk'</code> is shared with multiple recipients.
+Privacy considerations for public keys in general apply.<a href="#section-6.2-3.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.6">
+            <p id="section-6.2-3.6.1">The <code>kh</code> output from <code>ARKG-Derive-Public-Key</code> does not need to be kept confidential,
+but - unlike the <code>pk'</code> output - also does not need to be revealed to third parties.
+It should not be revealed unnecessarily since it encodes private key material.<a href="#section-6.2-3.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.7">
+            <p id="section-6.2-3.7.1">The <code>kh</code> argument to <code>ARKG-Derive-Private-Key</code> is equivalent to
+the <code>kh</code> output from <code>ARKG-Derive-Public-Key</code>; the same considerations apply.<a href="#section-6.2-3.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-6.2-3.8">
+            <p id="section-6.2-3.8.1">The values <code>prk</code>, <code>mk</code> and <code>k</code> in the procedures of <a href="#hmac-kem" class="auto internal xref">Section 3.2</a>
+do not need to be kept confidential for private key security to hold,
+but knowledge of at least one of them enables distinguishing
+the <code>kh</code> output produced by that execution of <code>ARKG-Derive-Public-Key</code>.
+This could enable a limited de-anonymization attack against that particular <code>kh</code> value.<a href="#section-6.2-3.8.1" class="pilcrow">¶</a></p>
+<p id="section-6.2-3.8.2"><code>k</code> should not be revealed unnecessarily since it encodes private key material.<a href="#section-6.2-3.8.2" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="Privacy">
@@ -3663,6 +3747,7 @@ which is not one-for-one compatible with the construction in the present revisio
 * Clarified meaning of COSE algorithm identifiers for signing algorithms,
   and added "walk-through" examples of usage.
 * Added subsection "Security Properties" to Security Considerations.
+* Added subsection "Secret Values" to Security Considerations.
 * Added subsection "Public Seed Secrecy" to Privacy Considerations.
 * Updated "Split Signing Algorithms for COSE" reference from individual-draft to WG draft.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <p id="appendix-C-2">-10<a href="#appendix-C-2" class="pilcrow">¶</a></p>
