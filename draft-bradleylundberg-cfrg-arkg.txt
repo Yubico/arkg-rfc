@@ -796,8 +796,9 @@ Table of Contents
    The KEM parameter of ARKG may be instantiated as described in section
    Section 3.2 with the parameters:
 
-   *  Hash: SHA-512 [FIPS 180-4] if DH-Function is X25519, or SHAKE256
-      [FIPS 202] with output length 64 octets if DH-Function is X448.
+   *  Hash: SHA-512 [NIST.FIPS.180-4] if DH-Function is X25519, or
+      SHAKE256 [NIST.FIPS.202] with output length 64 octets if DH-
+      Function is X448.
 
    *  DST_ext: 'ARKG-ECDHX.' || DST_ext.
 
@@ -867,7 +868,7 @@ Table of Contents
 
       -  crv: The NIST curve secp256r1 [SEC2].
 
-      -  Hash: SHA-256 [FIPS 180-4].
+      -  Hash: SHA-256 [NIST.FIPS.180-4].
 
       -  hash-to-crv-suite: P256_XMD:SHA-256_SSWU_RO_ [RFC9380].
 
@@ -893,7 +894,7 @@ Table of Contents
 
       -  crv: The NIST curve secp384r1 [SEC2].
 
-      -  Hash: SHA-384 [FIPS 180-4].
+      -  Hash: SHA-384 [NIST.FIPS.180-4].
 
       -  hash-to-crv-suite: P384_XMD:SHA-384_SSWU_RO_ [RFC9380].
 
@@ -919,7 +920,7 @@ Table of Contents
 
       -  crv: The NIST curve secp521r1 [SEC2].
 
-      -  Hash: SHA-512 [FIPS 180-4].
+      -  Hash: SHA-512 [NIST.FIPS.180-4].
 
       -  hash-to-crv-suite: P521_XMD:SHA-512_SSWU_RO_ [RFC9380].
 
@@ -945,7 +946,7 @@ Table of Contents
 
       -  crv: The SECG curve secp256k1 [SEC2].
 
-      -  Hash: SHA-256 [FIPS 180-4].
+      -  Hash: SHA-256 [NIST.FIPS.180-4].
 
       -  hash-to-crv-suite: secp256k1_XMD:SHA-256_SSWU_RO_ [RFC9380].
 
@@ -1816,6 +1817,21 @@ Table of Contents
               IANA, "CBOR Object Signing and Encryption (COSE)",
               <https://www.iana.org/assignments/cose>.
 
+   [NIST.FIPS.180-4]
+              Dang, Q. H. and NIST, "Secure Hash Standard", NIST Federal
+              Information Processing Standards Publications 180-4,
+              DOI 10.6028/NIST.FIPS.180-4, July 2015,
+              <https://nvlpubs.nist.gov/nistpubs/FIPS/
+              NIST.FIPS.180-4.pdf>.
+
+   [NIST.FIPS.202]
+              Dworkin, M., Dworkin, M. J., and NIST, "SHA-3 Standard:
+              Permutation-Based Hash and Extendable-Output Functions",
+              FIPS PUB 202, NIST Federal Information Processing
+              Standards Publications 202, DOI 10.6028/nist.fips.202,
+              DOI 10.6028/NIST.FIPS.202, August 2015,
+              <http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf>.
+
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
               DOI 10.17487/RFC2104, February 1997,
@@ -1933,6 +1949,10 @@ Table of Contents
    [Shoup]    Shoup, V., "A Proposal for an ISO Standard for Public Key
               Encryption (version 2.0)", 2001,
               <https://www.shoup.net/papers/iso-2.pdf>.
+
+   [WebAuthn] "Web Authentication: An API for accessing Public Key
+              Credentials - Level 3", W3C WD webauthn-3, W3C webauthn-3,
+              <https://www.w3.org/TR/webauthn-3/>.
 
    [WebAuthn-Recovery]
               Lundberg, E. and D. Nilsson, "WebAuthn recovery extension:
@@ -2110,7 +2130,8 @@ Document History
    Security Considerations. * Added subsection "KEM Ciphertext
    Integrity" to Security Considerations. * Added subsection "Public
    Seed Secrecy" to Privacy Considerations. * Updated "Split Signing
-   Algorithms for COSE" reference from individual-draft to WG draft.
+   Algorithms for COSE" reference from individual-draft to WG draft. *
+   Fixed undefined references WebAuthn, FIPS 180-4 and FIPS 202.
 
    -10
 
