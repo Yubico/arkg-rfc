@@ -1184,6 +1184,76 @@ Informally, they are:
   which is the strongest of the four variants defined.
 
 
+## Secret Values {#security-secrets}
+
+Both security properties discussed in {{security-properties}}
+rely on the secrecy of the ARKG private seed.
+This is the primary secret which must be kept confidential in all circumstances.
+
+The ARKG functions also use other values of varying levels of sensitivity:
+
+- The `ikm_bl` and `ikm_kem` arguments to `ARKG-Derive-Seed`:
+  These uniquely determine the ARKG private seed,
+  and so must be at least equally well protected as the private seed itself.
+  Note that implementations can choose to not store `ikm_bl` or `ikm_kem`
+  if the resulting `pk` and `sk` are instead stored directly.
+
+  See also {{derive-seed-nondeterministic}} for discussion
+  of nondeterministic variants that eliminate the `ikm_bl` and `ikm_kem` parameters;
+  note however that the same considerations apply to any and all random entropy used to replace them.
+
+- The arguments to `ARKG-Derive-Public-Key`, and all intermediate variables used during its execution,
+  do not need to be kept confidential for private key security to hold.
+  No special protection of them is needed during execution of `ARKG-Derive-Public-Key`,
+  they do not need to be securely erased,
+  and no additional protection is needed for outputs in transit between subordinate party and delegating party.
+  The private key derived by `ARKG-Derive-Public-Key` remains secure
+  even if `ARKG-Derive-Public-Key` is executed entirely in public.
+
+  However, some of these values enable varying levels of attack on privacy
+  or public key unlinkability if known.
+  Some of them ultimately become private key material,
+  so they should not be revealed unnecessarily.
+
+  The subsequent list items expand on these considerations.
+
+- The `ikm` argument to `ARKG-Derive-Public-Key`
+  determines `ikm_tau` and therefore `tau`.
+  `ikm` must therefore be confidential for public key unlinkability to hold;
+  the considerations in {{privacy-pub-seed-secrecy}} also apply to `ikm`.
+
+  Since `ikm` is used to derive private key material, it should not be revealed unnecessarily.
+
+  See also {{derive-pk-nondeterministic}} for discussion
+  of nondeterministic variants that eliminate the `ikm` parameters;
+  note however that the same considerations apply to any and all random entropy used to replace it.
+
+- The `ctx` argument to `ARKG-Derive-Public-Key` and `ARKG-Derive-Private-Key`
+  is fuctionally similar to `ikm`,
+  but intended for domain separation rather than a primary entropy source.
+  It is not intended to be kept confidential and can safely be a public constant,
+  or an application constant appended with a key index, or similar.
+
+- The `pk'` output from `ARKG-Derive-Public-Key` may safely be made public,
+  but may become a correlation handle if the same `pk'` is shared with multiple recipients.
+  Privacy considerations for public keys in general apply.
+
+- The `kh` output from `ARKG-Derive-Public-Key` does not need to be kept confidential,
+  but - unlike the `pk'` output - also does not need to be revealed to third parties.
+  It should not be revealed unnecessarily since it encodes private key material.
+
+- The `kh` argument to `ARKG-Derive-Private-Key` is equivalent to
+  the `kh` output from `ARKG-Derive-Public-Key`; the same considerations apply.
+
+- The values `prk`, `mk` and `k` in the procedures of {{hmac-kem}}
+  do not need to be kept confidential for private key security to hold,
+  but knowledge of at least one of them enables distinguishing
+  the `kh` output produced by that execution of `ARKG-Derive-Public-Key`.
+  This could enable a limited de-anonymization attack against that particular `kh` value.
+
+  `k` should not be revealed unnecessarily since it encodes private key material.
+
+
 # Privacy Considerations {#Privacy}
 
 ## Public Seed Secrecy {#privacy-pub-seed-secrecy}
