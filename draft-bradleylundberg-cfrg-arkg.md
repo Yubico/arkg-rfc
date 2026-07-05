@@ -1254,6 +1254,16 @@ The ARKG functions also use other values of varying levels of sensitivity:
   `k` should not be revealed unnecessarily since it encodes private key material.
 
 
+## KEM Ciphertext Integrity {#security-kem-integrity}
+
+{{arkg-params}} requires that the `KEM` scheme guarantees ciphertext integrity,
+meaning that a valid KEM ciphertext can be created only with knowledge of the KEM public key.
+This is not a security requirement; failure to satisfy this property
+does not weaken either of the security properties discussed in {{security-properties}}.
+It may however degrade the correctness of the ARKG instance, as explained in {{design-rationale-mac}},
+potentially causing protocol failures that may be difficult to troubleshoot or for end-users to understand.
+
+
 # Privacy Considerations {#Privacy}
 
 ## Public Seed Secrecy {#privacy-pub-seed-secrecy}
