@@ -2106,9 +2106,11 @@ Document History
    -11 (In progress) * Editorial fixes. * Clarified meaning of COSE
    algorithm identifiers for signing algorithms, and added "walk-
    through" examples of usage. * Added subsection "Security Properties"
-   to Security Considerations. * Added subsection "Public Seed Secrecy"
-   to Privacy Considerations. * Updated "Split Signing Algorithms for
-   COSE" reference from individual-draft to WG draft.
+   to Security Considerations. * Added subsection "Secret Values" to
+   Security Considerations. * Added subsection "KEM Ciphertext
+   Integrity" to Security Considerations. * Added subsection "Public
+   Seed Secrecy" to Privacy Considerations. * Updated "Split Signing
+   Algorithms for COSE" reference from individual-draft to WG draft.
 
    -10
 
